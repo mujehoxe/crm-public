@@ -70,8 +70,6 @@ export async function PATCH(request, { params }) {
         continue;
       }
 
-      console.log(reqBody);
-
       if (reqBody[field] && field !== "previousStatus") {
         updateObj[field] = reqBody[field].value
           ? reqBody[field].value
