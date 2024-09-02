@@ -280,7 +280,7 @@ const LeadCard = ({
           <div className="  size-8 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
             {currentLead?.Assigned?.Avatar ? (
               <img
-                src={`http://65.20.87.36:3333${currentLead?.Assigned.Avatar}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}${currentLead?.Assigned.Avatar}`}
               />
             ) : (
               <FaRegUserCircle />
@@ -353,7 +353,7 @@ const LeadCard = ({
       {isUpdateDescriptionInput && (
         <div className="mt-2 flex flex-row items-center align-middle gap-2">
           <input
-            placeholder="Update Description"
+            placeholder="Describe your changes"
             autoFocus={true}
             className="absloute css-19bb58m css-1jqq78o-placeholder border-2 rounded-sm border-blue-300 p-1 inline w-min text-xs text-gray-500"
             style={{

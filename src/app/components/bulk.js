@@ -300,7 +300,7 @@ const BulkModal = ({ onClose, selectedLeads, setBulkOperationMade }) => {
               {!isDescriptionDisabled && (
                 <div class="pl-2 css-13cymwt-control">
                   <textarea
-                    placeholder="Description..."
+                    placeholder="Description your changes"
                     className="css-19bb58m css-1jqq78o-placeholder h-32 pt-1 text-gray-500"
                     style={{
                       color: "inherit",
