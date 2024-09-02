@@ -34,14 +34,11 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: replace
 
-      - name: Create necessary directories on the server (excluding .next)
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/nextjs-app/public"
-
       - name: Deploy with rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --delete .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --delete --existing -v .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
       - name: Setup and run application
         run: |
@@ -51,5 +48,5 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm install -g pm2 &&
             npm ci --omit=dev &&
-            pm2 restart nextjs-app > pm2.log 2>&1 || pm2 start 'npx next start' --name nextjs-app > pm2.log 2>&1
+            pm2 restart nextjs-app || pm2 start 'npx next start' --name nextjs-app
           "
