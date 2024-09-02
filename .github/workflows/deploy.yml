@@ -48,5 +48,5 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm install -g pm2 &&
             npm ci --omit=dev &&
-            pm2 restart nextjs-app || pm2 start 'npx next start' --name nextjs-app
+            pm2 restart nextjs-app || pm2 start 'next start -H 0.0.0.0 -p 3000' --name nextjs-app
           "
