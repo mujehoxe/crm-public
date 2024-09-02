@@ -36,7 +36,6 @@ jobs:
 
       - name: Create remote directory and deploy with rsync
         run: |
-          ssh -o ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/nextjs-app/.next"
           rsync -avz -e "ssh -o .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
           rsync -avz -e "ssh -o package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
           rsync -avz -e "ssh -o public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
