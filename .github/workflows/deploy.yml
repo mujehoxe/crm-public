@@ -36,9 +36,9 @@ jobs:
 
       - name: Deploy with rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --delete --existing -v .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
       - name: Setup and run application
         run: |
@@ -48,5 +48,5 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm install -g pm2 &&
             npm ci --omit=dev &&
-            pm2 restart nextjs-app || pm2 start 'next start -H 0.0.0.0 -p 3000' --name nextjs-app
+            pm2 restart nextjs-app || pm2 start 'npx next start' --name nextjs-app
           "
