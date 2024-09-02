@@ -46,7 +46,7 @@ jobs:
             cd ~/nextjs-app &&
             echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
-            npm install -g pm2 &&
             npm ci --omit=dev &&
-            pm2 restart nextjs-app || pm2 start 'npx next start' --name nextjs-app
+            pkill -f 'node.*next' || true &&
+            nohup npm run start > app.log 2>&1 &
           "
