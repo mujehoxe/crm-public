@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import RootLayout from "@/app/components/layout";
 import SearchableSelect from "@/app/Leads/dropdown";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
 import { LuPlus } from "react-icons/lu";
 import { ImPlus } from "react-icons/im";
 import { FaRegEye } from "react-icons/fa";
-import TokenDecoder from '../components/Cookies';
+import TokenDecoder from "../components/Cookies";
 import { IoMdClose } from "react-icons/io";
 import {
   Accordion,
@@ -23,35 +23,44 @@ import {
 } from "react-accessible-accordion";
 
 function Invoice() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <WS />
+    </Suspense>
+  );
+}
+
+function WS() {
   const router = useRouter();
-  const[submitting, setSubmitting] = useState(false)
+  const [submitting, setSubmitting] = useState(false);
   const [myData, setMyData] = useState([]);
   const [formCounter, setFormCounter] = useState(1);
-  const [buyerKycImages, setBuyerKycImages] = useState([[
-  ]]);
-  const [buyerKycImages1, setBuyerKycImages1] = useState([
-    [],
-  ]);
+  const [buyerKycImages, setBuyerKycImages] = useState([[]]);
+  const [buyerKycImages1, setBuyerKycImages1] = useState([[]]);
   const [extraBuyers, setExtraBuyers] = useState([]);
   const [orgData, setOrgData] = useState([]);
-  const [buyerImagesApi1, setBuyerImagesApi1] = useState([[null, null, null, null]]);
-  const [buyerImagesApi2, setBuyerImagesApi2] = useState([[null, null, null, null]]);
-    
+  const [buyerImagesApi1, setBuyerImagesApi1] = useState([
+    [null, null, null, null],
+  ]);
+  const [buyerImagesApi2, setBuyerImagesApi2] = useState([
+    [null, null, null, null],
+  ]);
+
   const toggleInputType = () => {
     setIsDateInput((prevIsDateInput) => !prevIsDateInput);
   };
- const [isDateInput, setIsDateInput] = useState(false);
+  const [isDateInput, setIsDateInput] = useState(false);
   const options1 = [
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" },
   ];
-    const [submitError, setSubmitError] = useState(false)
+  const [submitError, setSubmitError] = useState(false);
   const searchParams = useSearchParams();
 
   const leadId = searchParams.get("leadId");
-  
+
   console.log(formCounter);
-    
+
   useEffect(() => {
     axios
       .get("/api/invoice/get")
@@ -77,7 +86,6 @@ function Invoice() {
           }
 
           imagesArrays.push(imagesArray);
-          
         });
 
         const kycImages2 = [];
@@ -99,14 +107,15 @@ function Invoice() {
         setMyData(buyerData);
         setOrgData(buyerData);
         setExtraBuyers(buyerData[0]?.additionalBuyers);
-      
       })
       .catch((err) => console.log(err));
   }, []);
-  
+
   const path = "https://crm-milestonehomes.com/public/kyc/";
 
-    const [buyerExtraDocs, setBuyerExtraDocs] = useState([[null, null, null, null]])
+  const [buyerExtraDocs, setBuyerExtraDocs] = useState([
+    [null, null, null, null],
+  ]);
   useEffect(() => {
     if (orgData && orgData.length > 0) {
       const passFront1 = orgData[0]?.passfront?.split("kyc/");
@@ -117,7 +126,12 @@ function Invoice() {
           ? orgData[0]?.emiratephoto?.split("kyc/")
           : " ";
       setBuyerImagesApi1([
-        [path + passFront1[1], path + passBack1[1], path + visa[1] ,path + emirates[1]],
+        [
+          path + passFront1[1],
+          path + passBack1[1],
+          path + visa[1],
+          path + emirates[1],
+        ],
       ]);
     }
   }, [orgData]);
@@ -131,36 +145,41 @@ function Invoice() {
           ? orgData[0]?.SPAmage?.split("kyc/")
           : " ";
       setBuyerExtraDocs([
-        [path + eoiimage[1], path + bookingmage[1],path + SPAmage[1] ],
+        [path + eoiimage[1], path + bookingmage[1], path + SPAmage[1]],
       ]);
     }
   }, [orgData]);
-  
+
   useEffect(() => {
     if (orgData && orgData.length > 0) {
-      const kyc1 = orgData[0]?.KYCimage != "" && orgData[0]?.KYCimage != null
+      const kyc1 =
+        orgData[0]?.KYCimage != "" && orgData[0]?.KYCimage != null
           ? orgData[0]?.KYCimage?.split("kyc/")
           : " ";
-      const unSanction = orgData[0]?.Sanctionimage != "" && orgData[0]?.Sanctionimage != null
+      const unSanction =
+        orgData[0]?.Sanctionimage != "" && orgData[0]?.Sanctionimage != null
           ? orgData[0]?.Sanctionimage?.split("kyc/")
           : " ";
       const riskform =
         orgData[0]?.Riskimage != "" && orgData[0]?.Riskimage != null
           ? orgData[0]?.Riskimage?.split("kyc/")
           : " ";
-         const uaeSanction =
+      const uaeSanction =
         orgData[0]?.UNimage != "" && orgData[0]?.UNimage != null
           ? orgData[0]?.UNimage?.split("kyc/")
           : " ";
-        
+
       setBuyerKycImages([
-        [path + kyc1[1] != null ? path+ kyc1[1] : '', path + unSanction[1] != null ? path+unSanction[1] :'', path + riskform[1] != null ? path+riskform[1] :'', path+uaeSanction[1] != null ? path+uaeSanction[1] : ''],
+        [
+          path + kyc1[1] != null ? path + kyc1[1] : "",
+          path + unSanction[1] != null ? path + unSanction[1] : "",
+          path + riskform[1] != null ? path + riskform[1] : "",
+          path + uaeSanction[1] != null ? path + uaeSanction[1] : "",
+        ],
       ]);
     }
   }, [orgData]);
- 
-    
-    
+
   const handleFileChange1 = (index, fileIndex, files) => {
     setBuyerKycImages((prev) => {
       const updatedImages = [...prev];
@@ -169,7 +188,7 @@ function Invoice() {
       return updatedImages;
     });
   };
-  
+
   const handleExtraDocs = (index, fileIndex, files) => {
     setBuyerExtraDocs((prev) => {
       const updatedImages = [...prev];
@@ -178,9 +197,7 @@ function Invoice() {
       return updatedImages;
     });
   };
-  
-  
-  
+
   const handleFileChange2 = (index, fileIndex, files) => {
     setBuyerKycImages1((prev) => {
       const updatedImages = [...prev];
@@ -212,12 +229,11 @@ function Invoice() {
     buyerOneData: myData,
     additionalBuyers: extraBuyers,
   };
- 
+
   const HandleSubmit = async (e) => {
-      setSubmitting(true)
-      const imagePromises = [];
-       e.preventDefault()
-   
+    setSubmitting(true);
+    const imagePromises = [];
+    e.preventDefault();
 
     // Convert buyerKycImages to Base64
     const buyerImagesBase64 = buyerKycImages.map((images) =>
@@ -236,38 +252,40 @@ function Invoice() {
       })
     );
     buyerKycImages.forEach((images, index) => {
-    images.forEach((image) => {
-      if (typeof image === 'string' && image.includes('https://crm-milestonehomes.com/public/kyc/undefined')) {
-        toast.error("Buyer KYC / Customer Due Diligence are Mandatory Fields");
-        setSubmitError(true);
-        window.location.reload();
-      }
+      images.forEach((image) => {
+        if (
+          typeof image === "string" &&
+          image.includes("https://crm-milestonehomes.com/public/kyc/undefined")
+        ) {
+          toast.error(
+            "Buyer KYC / Customer Due Diligence are Mandatory Fields"
+          );
+          setSubmitError(true);
+          window.location.reload();
+        }
+      });
     });
-  });
-  
 
     // Convert buyerKycImages1 to Base64
-  const buyerImages1Base64 = buyerKycImages1.map((innerArray) => {
-  if (Array.isArray(innerArray) && innerArray.length > 0) {
-    return innerArray.map((image) => {
-      if (image instanceof File) {
-        const reader = new FileReader();
-        reader.readAsDataURL(image);
-        return new Promise((resolve) => {
-          reader.onloadend = () => {
-            resolve(reader.result);
-          };
+    const buyerImages1Base64 = buyerKycImages1.map((innerArray) => {
+      if (Array.isArray(innerArray) && innerArray.length > 0) {
+        return innerArray.map((image) => {
+          if (image instanceof File) {
+            const reader = new FileReader();
+            reader.readAsDataURL(image);
+            return new Promise((resolve) => {
+              reader.onloadend = () => {
+                resolve(reader.result);
+              };
+            });
+          } else {
+            return Promise.resolve(image); // If not a File, assume it's already a link
+          }
         });
       } else {
-        return Promise.resolve(image); // If not a File, assume it's already a link
+        return []; // Return an empty array if innerArray is not defined or empty
       }
     });
-  } else {
-    return []; // Return an empty array if innerArray is not defined or empty
-  }
-});
-
-
 
     const buyerRegImagesBase64 = buyerImagesApi1.map((innerArray) =>
       innerArray.map((image) => {
@@ -340,21 +358,18 @@ function Invoice() {
       ...data,
     };
 
-     try {
-      const response = await axios.put(
-        `/api/invoice/update/${leadId}`,
-        {
-          buyerImages1Base64: imageData,
-          data: updatedData,
-        }
-      );
-       
-    setFormCounter((curr) => curr + 1);
+    try {
+      const response = await axios.put(`/api/invoice/update/${leadId}`, {
+        buyerImages1Base64: imageData,
+        data: updatedData,
+      });
+
+      setFormCounter((curr) => curr + 1);
     } catch (error) {
       console.error(error);
-      setSubmitError(true)
+      setSubmitError(true);
     }
-   setSubmitting(false)
+    setSubmitting(false);
   };
 
   const updateLead = async () => {
@@ -370,8 +385,8 @@ function Invoice() {
   const [showEOI, setShowEOI] = useState(false);
   const [showBooking, setShowBooking] = useState(false);
   const [showSPA, setShowSPA] = useState(false);
-const [showVisa1, setShowVisa1] = useState(false);
-const [showVisa2, setShowVisa2] = useState(false);
+  const [showVisa1, setShowVisa1] = useState(false);
+  const [showVisa2, setShowVisa2] = useState(false);
   const [showKyc1, setShowKyc1] = useState(false);
   const [showRiskForm1, setShowRiskForm1] = useState(false);
   const [showUnSanction1, setShowUnSanction1] = useState(false);
@@ -385,39 +400,48 @@ const [showVisa2, setShowVisa2] = useState(false);
   const [showemirates1, setShowemirates1] = useState(false);
   const decodedToken = TokenDecoder();
   const approvedBy = decodedToken ? decodedToken.id : null;
-  const [finalReason, setFinalReason] = useState('')
+  const [finalReason, setFinalReason] = useState("");
   const approved = async () => {
-        try {
-                await axios.put(`/api/invoice/status/${myData[0]._id}`, { status: 50, approvedBy, Resons:finalReason })
-                window.location.href = 'http://crm-milestonehomes.com:8080/KYC-and-Sanctions';
-            }
-
-         catch (error) {
-            console.error('Error updating lead status:', error);
-        }
-        
-    };
+    try {
+      await axios.put(`/api/invoice/status/${myData[0]._id}`, {
+        status: 50,
+        approvedBy,
+        Resons: finalReason,
+      });
+      window.location.href =
+        "http://crm-milestonehomes.com:8080/KYC-and-Sanctions";
+    } catch (error) {
+      console.error("Error updating lead status:", error);
+    }
+  };
   const Reject = async () => {
-        try {
-             
-                await axios.put(`/api/invoice/status/${myData[0]._id}`, { status: 51, approvedBy, Resons:finalReason })
-                window.location.href = 'http://crm-milestonehomes.com:8080/KYC-and-Sanctions';
-            }
-
-         catch (error) {
-            console.error('Error updating lead status:', error);
-        }
-    };
-   const isDisabled = extraBuyers.some(buyer => {return(!buyer.buyername || !buyer.buyerContact || !buyer.buyerEmail || !buyer.buyerdob || !buyer.buyerpassport || !buyer.nationality || !buyer.address 
- )});
-    const handleKeyDown = (event) => {
+    try {
+      await axios.put(`/api/invoice/status/${myData[0]._id}`, {
+        status: 51,
+        approvedBy,
+        Resons: finalReason,
+      });
+      window.location.href =
+        "http://crm-milestonehomes.com:8080/KYC-and-Sanctions";
+    } catch (error) {
+      console.error("Error updating lead status:", error);
+    }
+  };
+  const isDisabled = extraBuyers.some((buyer) => {
+    return (
+      !buyer.buyername ||
+      !buyer.buyerContact ||
+      !buyer.buyerEmail ||
+      !buyer.buyerdob ||
+      !buyer.buyerpassport ||
+      !buyer.nationality ||
+      !buyer.address
+    );
+  });
+  const handleKeyDown = (event) => {
     event.preventDefault();
   };
-  
-  
-  
-    
-    
+
   return (
     <RootLayout>
       <div className={`w-full mt-4`}>
@@ -428,7 +452,10 @@ const [showVisa2, setShowVisa2] = useState(false);
                 <h4 className="text-white mb-0 text-center">Deal Type</h4>
               </div>
               {formCounter === 1 && (
-                <form action={HandleSubmit} className="w-full max-w-[85%] mt-3 !bg-transparent">
+                <form
+                  action={HandleSubmit}
+                  className="w-full max-w-[85%] mt-3 !bg-transparent"
+                >
                   <Accordion allowZeroExpanded>
                     {myData.map((buyer, index) => {
                       return (
@@ -436,7 +463,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                           <AccordionItemHeading className="bg-white !border !border-gray-400 rounded-md py-2 px-2">
                             <AccordionItemButton className="flex w-full justify-between items-center">
                               Buyer {index + 1}
-                              <ImPlus className="!mb-0"/>
+                              <ImPlus className="!mb-0" />
                             </AccordionItemButton>
                           </AccordionItemHeading>
                           <AccordionItemPanel>
@@ -444,9 +471,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Full name{" "}
-                                  <span className="text-red-500 !mb-0">
-                                      *
-                                    </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -467,9 +492,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Phone{" "}
-                                  <span className="text-red-500 !mb-0">
-                                      *
-                                    </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -488,10 +511,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 />
                               </div>
                               <div className="">
-                                <label className="!mb-0">
-                                  Email{" "}
-                                  
-                                </label>
+                                <label className="!mb-0">Email </label>
                                 <input
                                   className="form-control"
                                   required
@@ -511,9 +531,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Date of Birth{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -538,9 +556,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Passport Number{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -562,9 +578,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Passport Expiry{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -588,9 +602,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   Nationality{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -611,18 +623,15 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="">
                                 <label className="!mb-0">
                                   UAE Resident/Non Resident{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
 
                                 <SearchableSelect
                                   options={options1}
-                                    disabled
+                                  disabled
                                   className={`form-control disabled:!bg-slate-200`}
                                   defaultValue={buyer?.Resident}
                                   value={buyer?.Resident}
-                                    
                                 ></SearchableSelect>
                               </div>
                               <div className="">
@@ -652,9 +661,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                               <div className="col-span-2">
                                 <label className="!mb-0">
                                   Address{" "}
-                                  <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                  <span className="text-red-500 !mb-0">*</span>
                                 </label>
                                 <input
                                   className="form-control"
@@ -693,7 +700,9 @@ const [showVisa2, setShowVisa2] = useState(false);
                                     <div>
                                       <div className="flex items-center gap-2 ">
                                         <div className="input-group relative">
-                                            <p className={`text-gray-700 !mr-2` }>Front:</p>
+                                          <p className={`text-gray-700 !mr-2`}>
+                                            Front:
+                                          </p>
                                           <div className="relative">
                                             <input
                                               type="text"
@@ -717,7 +726,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             >
                                               <LuPlus />
                                             </label>
-                                          
                                           </div>
 
                                           <input
@@ -733,7 +741,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             id="front"
                                             type="file"
                                             accept=".jpg, .jpeg, .png, .pdf"
-                                            
                                           />
                                           <FaRegEye
                                             className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
@@ -742,67 +749,84 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             }
                                           />
 
-                                       {showPassFront && (
-                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowpassFront(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="w-full !h-screen flex justify-center items-start overflow-auto">
-                                                 {buyerImagesApi1[0][0] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi1[0][0] instanceof File && buyerImagesApi1[0][0].name ? (
-                                                            buyerImagesApi1[0][0].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][0])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][0])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi1[0][0].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerImagesApi1[0][0]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerImagesApi1[0][0]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
-                                                        </div>
-                                                      </div>
-                                                    </div>
+                                          {showPassFront && (
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div
+                                                className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                              >
+                                                <div className="flex justify-end w-full">
+                                                  <IoMdClose
+                                                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                    onClick={() =>
+                                                      setShowpassFront(false)
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="w-full h-full flex justify-center items-center">
+                                                  <div className="w-full !h-screen flex justify-center items-start overflow-auto">
+                                                    {buyerImagesApi1[0][0] ? (
+                                                      // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                      buyerImagesApi1[0][0] instanceof
+                                                        File &&
+                                                      buyerImagesApi1[0][0]
+                                                        .name ? (
+                                                        buyerImagesApi1[0][0].name.endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                          // Render PDF if it's a PDF file
+                                                          <embed
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][0]
+                                                            )}
+                                                            type="application/pdf"
+                                                            className="w-[90%] !h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if it's an image file
+                                                          <img
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][0]
+                                                            )}
+                                                            alt="Image"
+                                                            className="w-auto "
+                                                          />
+                                                        )
+                                                      ) : // Assume it's a URL, check extension from the URL
+                                                      buyerImagesApi1[0][0].endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                        // Render PDF if URL ends with .pdf
+                                                        <embed
+                                                          src={
+                                                            buyerImagesApi1[0][0]
+                                                          }
+                                                          type="application/pdf"
+                                                          className="w-[90%] h-[80%]"
+                                                        />
+                                                      ) : (
+                                                        // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                        <img
+                                                          src={
+                                                            buyerImagesApi1[0][0]
+                                                          }
+                                                          alt="Image"
+                                                          className="w-auto"
+                                                        />
+                                                      )
+                                                    ) : null}
                                                   </div>
-                                                )}
-
-
+                                                </div>
+                                              </div>
+                                            </div>
+                                          )}
                                         </div>
                                       </div>
 
                                       <div className="flex items-top gap-2 mt-2">
                                         <div className="input-group relative">
-                                        <p className={`text-gray-700 !mr-2` }>Back:&nbsp;</p>
+                                          <p className={`text-gray-700 !mr-2`}>
+                                            Back:&nbsp;
+                                          </p>
                                           <div className="relative">
                                             <input
                                               type="text"
@@ -838,7 +862,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             aria-describedby="file_input_help"
                                             id="back"
                                             type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
+                                            accept=".jpg, .jpeg, .png, .pdf"
                                           />
                                           <FaRegEye
                                             className="absolute  cursor-pointer text-xl right-[-30px] mx-auto my-auto"
@@ -846,58 +870,75 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               setShowpassBack(true)
                                             }
                                           />
-                                          {showPassback && (  
-                                               <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowpassBack(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="max-w-full max-h-full overflow-auto">
-                                                 {buyerImagesApi1[0][1] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi1[0][1] instanceof File && buyerImagesApi1[0][1].name ? (
-                                                            buyerImagesApi1[0][1].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][1])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][1])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi1[0][1].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerImagesApi1[0][1]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerImagesApi1[0][1]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
+                                          {showPassback && (
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div
+                                                className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                              >
+                                                <div className="flex justify-end w-full">
+                                                  <IoMdClose
+                                                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                    onClick={() =>
+                                                      setShowpassBack(false)
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="w-full h-full flex justify-center items-center">
+                                                  <div className="max-w-full max-h-full overflow-auto">
+                                                    {buyerImagesApi1[0][1] ? (
+                                                      // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                      buyerImagesApi1[0][1] instanceof
+                                                        File &&
+                                                      buyerImagesApi1[0][1]
+                                                        .name ? (
+                                                        buyerImagesApi1[0][1].name.endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                          // Render PDF if it's a PDF file
+                                                          <embed
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][1]
+                                                            )}
+                                                            type="application/pdf"
+                                                            className="w-[90%] !h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if it's an image file
+                                                          <img
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][1]
+                                                            )}
+                                                            alt="Image"
+                                                            className="w-auto "
+                                                          />
+                                                        )
+                                                      ) : // Assume it's a URL, check extension from the URL
+                                                      buyerImagesApi1[0][1].endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                        // Render PDF if URL ends with .pdf
+                                                        <embed
+                                                          src={
+                                                            buyerImagesApi1[0][1]
+                                                          }
+                                                          type="application/pdf"
+                                                          className="w-[90%] h-[80%]"
+                                                        />
+                                                      ) : (
+                                                        // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                        <img
+                                                          src={
+                                                            buyerImagesApi1[0][1]
+                                                          }
+                                                          alt="Image"
+                                                          className="w-auto"
+                                                        />
+                                                      )
+                                                    ) : null}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
                                           )}
                                         </div>
                                       </div>
@@ -943,7 +984,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               placeholder="Emirates ID"
                                               readOnly
                                             />
-                                              <label
+                                            <label
                                               for="emirateID"
                                               className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
                                             >
@@ -963,65 +1004,83 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             aria-describedby="file_input_help"
                                             id="emirateID"
                                             type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
+                                            accept=".jpg, .jpeg, .png, .pdf"
                                           />
                                           <FaRegEye
                                             className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                            onClick={() => setShowemirates(true)}
+                                            onClick={() =>
+                                              setShowemirates(true)
+                                            }
                                           />
                                           {showemirates && (
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowemirates(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="w-full h-screen overflow-auto flex justify-center items-center">
-                                                   {buyerImagesApi1[0][3] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi1[0][3] instanceof File && buyerImagesApi1[0][3].name ? (
-                                                            buyerImagesApi1[0][3].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][3])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file.
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][3])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi1[0][3].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerImagesApi1[0][3]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerImagesApi1[0][3]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div
+                                                className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                              >
+                                                <div className="flex justify-end w-full">
+                                                  <IoMdClose
+                                                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                    onClick={() =>
+                                                      setShowemirates(false)
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="w-full h-full flex justify-center items-center">
+                                                  <div className="w-full h-screen overflow-auto flex justify-center items-center">
+                                                    {buyerImagesApi1[0][3] ? (
+                                                      // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                      buyerImagesApi1[0][3] instanceof
+                                                        File &&
+                                                      buyerImagesApi1[0][3]
+                                                        .name ? (
+                                                        buyerImagesApi1[0][3].name.endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                          // Render PDF if it's a PDF file
+                                                          <embed
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][3]
+                                                            )}
+                                                            type="application/pdf"
+                                                            className="w-[90%] !h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if it's an image file.
+                                                          <img
+                                                            src={URL.createObjectURL(
+                                                              buyerImagesApi1[0][3]
+                                                            )}
+                                                            alt="Image"
+                                                            className="w-auto "
+                                                          />
+                                                        )
+                                                      ) : // Assume it's a URL, check extension from the URL
+                                                      buyerImagesApi1[0][3].endsWith(
+                                                          ".pdf"
+                                                        ) ? (
+                                                        // Render PDF if URL ends with .pdf
+                                                        <embed
+                                                          src={
+                                                            buyerImagesApi1[0][3]
+                                                          }
+                                                          type="application/pdf"
+                                                          className="w-[90%] h-[80%]"
+                                                        />
+                                                      ) : (
+                                                        // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                        <img
+                                                          src={
+                                                            buyerImagesApi1[0][3]
+                                                          }
+                                                          alt="Image"
+                                                          className="w-auto"
+                                                        />
+                                                      )
+                                                    ) : null}
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
-                                            
                                           )}
                                         </div>
                                       </div>
@@ -1029,490 +1088,521 @@ const [showVisa2, setShowVisa2] = useState(false);
                                   </div>
                                 )}
                               </div>
-                              
-                            <div className={`mt-2 grid grid-cols-2 gap-x-2 gap-y-3`}>
-                              
-                                    <div className="flex items-center gap-4">
-                                      <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[195px]">
-                                        Visa{" "}
-                                        <span className="text-red-500 !mb-0">
-                                          *
-                                        </span>
-                                      </p>
-                                      <div>
-                                        <div className="flex items-center relative gap-2">
-                                          <div className="relative">
-                                            <input
-                                               
-                                              
-                                              value={
-                                                buyerImagesApi1[0] &&
-                                                buyerImagesApi1[0][2] &&
-                                                buyerImagesApi1[0][2]?.name
-                                                  ? buyerImagesApi1[0][2]?.name
-                                                  : buyerImagesApi1[0][2]
-                                                      ?.split("kyc/")
-                                                      .pop()
-                                              }
-                                             
-                                              type="text"
-                                              className="px-2 py-1"
-                                              placeholder="Visa"
-                                              readOnly
-                                            />
-                                              <label
-                                              for="Visa"
-                                              className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
-                                            >
-                                              <LuPlus />
-                                            </label>
-                                          </div>
 
-                                          <input
-                                            onChange={(e) =>
-                                              handleApiFileChange1(
-                                                0,
-                                                2,
-                                                e.target.files
-                                              )
-                                            }
-                                            className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-                                            aria-describedby="file_input_help"
-                                            id="Visa"
-                                            type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
-                                          />
-                                          <FaRegEye
-                                            className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                            onClick={() => setShowVisa1(true)}
-                                          />
-                                          {showVisa1 && (
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowVisa1(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className=" !w-[80%] !h-screen overflow-auto flex justify-center items-center">
-                                                  {buyerImagesApi1[0][2] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi1[0][2] instanceof File && buyerImagesApi1[0][2].name ? (
-                                                            buyerImagesApi1[0][2].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][2])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file.
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi1[0][2])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi1[0][2].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerImagesApi1[0][2]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerImagesApi1[0][2]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          )}
-                                        </div>
+                              <div
+                                className={`mt-2 grid grid-cols-2 gap-x-2 gap-y-3`}
+                              >
+                                <div className="flex items-center gap-4">
+                                  <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[195px]">
+                                    Visa{" "}
+                                    <span className="text-red-500 !mb-0">
+                                      *
+                                    </span>
+                                  </p>
+                                  <div>
+                                    <div className="flex items-center relative gap-2">
+                                      <div className="relative">
+                                        <input
+                                          value={
+                                            buyerImagesApi1[0] &&
+                                            buyerImagesApi1[0][2] &&
+                                            buyerImagesApi1[0][2]?.name
+                                              ? buyerImagesApi1[0][2]?.name
+                                              : buyerImagesApi1[0][2]
+                                                  ?.split("kyc/")
+                                                  .pop()
+                                          }
+                                          type="text"
+                                          className="px-2 py-1"
+                                          placeholder="Visa"
+                                          readOnly
+                                        />
+                                        <label
+                                          for="Visa"
+                                          className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
+                                        >
+                                          <LuPlus />
+                                        </label>
                                       </div>
-                                    </div>
-                                  
-                                  
-                                  <div className="flex items-center gap-4">
-                                      <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[200px]">
-                                        EOI Receipt{" "}
-                                        <span className="text-red-500 !mb-0">
-                                          *
-                                        </span>
-                                      </p>
-                                      <div>
-                                        <div className="flex items-center relative gap-2">
-                                          <div className="relative">
-                                            <input
-                                               
-                                              
-                                              value={
-                                                buyerExtraDocs[0] &&
-                                                buyerExtraDocs[0][0] &&
-                                                buyerExtraDocs[0][0]?.name
-                                                  ? buyerExtraDocs[0][0]?.name
-                                                  : buyerExtraDocs[0][0]
-                                                      ?.split("kyc/")
-                                                      .pop()
-                                              }
-                                             
-                                              type="text"
-                                              className="px-2 py-1"
-                                              placeholder="EOI Receipt"
-                                              readOnly
-                                            />
-                                              <label
-                                              for="EOIR"
-                                              className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
-                                            >
-                                              <LuPlus />
-                                            </label>
-                                          </div>
 
-                                          <input
-                                            onChange={(e) =>
-                                              handleExtraDocs(
-                                                0,
-                                                0,
-                                                e.target.files
-                                              )
-                                            }
-                                            className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-                                            aria-describedby="file_input_help"
-                                            id="EOIR"
-                                            type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
-                                          />
-                                          <FaRegEye
-                                            className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                            onClick={() => setShowEOI(true)}
-                                          />
-                                          {showEOI && ( 
-                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowEOI(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="w-full h-screen overflow-auto flex justify-center items-center">
-                                                  {buyerExtraDocs[0][0] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerExtraDocs[0][0] instanceof File && buyerExtraDocs[0][0].name ? (
-                                                            buyerExtraDocs[0][0].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][0])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][0])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerExtraDocs[0][0].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerExtraDocs[0][0]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerExtraDocs[0][0]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
-                                                </div>
-                                              </div>
+                                      <input
+                                        onChange={(e) =>
+                                          handleApiFileChange1(
+                                            0,
+                                            2,
+                                            e.target.files
+                                          )
+                                        }
+                                        className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
+                                        aria-describedby="file_input_help"
+                                        id="Visa"
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png, .pdf"
+                                      />
+                                      <FaRegEye
+                                        className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
+                                        onClick={() => setShowVisa1(true)}
+                                      />
+                                      {showVisa1 && (
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                          <div
+                                            className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                          >
+                                            <div className="flex justify-end w-full">
+                                              <IoMdClose
+                                                className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                onClick={() =>
+                                                  setShowVisa1(false)
+                                                }
+                                              />
                                             </div>
-                                          </div>
-                                            
-                                            
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    
-                                    
-                                                                      <div className="flex items-center gap-4">
-                                      <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[195px]">
-                                        Booking Form{" "}
-                                        <span className="text-red-500 !mb-0">
-                                          *
-                                        </span>
-                                      </p>
-                                      <div>
-                                        <div className="flex items-center relative gap-2">
-                                          <div className="relative">
-                                            <input
-                                              value={
-                                                buyerExtraDocs[0] &&
-                                                buyerExtraDocs[0][1] &&
-                                                buyerExtraDocs[0][1]?.name
-                                                  ? buyerExtraDocs[0][1]?.name
-                                                  : buyerExtraDocs[0][1]
-                                                      ?.split("kyc/")
-                                                      .pop()
-                                              }
-                                             
-                                              type="text"
-                                              className="px-2 py-1"
-                                              placeholder="Booking Form"
-                                              readOnly
-                                            />
-                                              <label
-                                              for="Booking"
-                                              className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
-                                            >
-                                              <LuPlus />
-                                            </label>
-                                          </div>
-
-                                          <input
-                                            onChange={(e) =>
-                                              handleExtraDocs(
-                                                0,
-                                                1,
-                                                e.target.files
-                                              )
-                                            }
-                                            className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-                                            aria-describedby="file_input_help"
-                                            id="Booking"
-                                            type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
-                                          />
-                                          <FaRegEye
-                                            className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                            onClick={() => setShowBooking(true)}
-                                          />
-                                          {showBooking && (
-                                          
-                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowBooking(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="w-full h-screen overflow-auto flex justify-center items-center">
-                                                   {buyerExtraDocs[0][0] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerExtraDocs[0][1] instanceof File && buyerExtraDocs[0][1].name ? (
-                                                            buyerExtraDocs[0][1].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][1])}
-                                                                type="application/pdf"
-                                                                className="!w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][1])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerExtraDocs[0][1].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerExtraDocs[0][1]}
-                                                                type="application/pdf"
-                                                                className="!w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerExtraDocs[0][1]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                            
-                                            
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    
-                                    
-                                    
-                                                                      <div className="flex items-center gap-4">
-                                      <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[200px]">
-                                        SPA Copy{" "}
-                                        
-                                      </p>
-                                      <div>
-                                        <div className="flex items-center relative gap-2">
-                                          <div className="relative">
-                                            <input
-                                               
-                                                                                  
-                                            value={
-                                                buyerExtraDocs[0] && buyerExtraDocs[0][2] && buyerExtraDocs[0][2]?.name ? buyerExtraDocs[0][2]?.name : buyerExtraDocs[0][2]?.split("kyc/").pop() == 'undefined' ? ' ' : buyerExtraDocs[0][2]?.split("kyc/").pop()
-                                              }
-
-                                             
-                                              type="text"
-                                              className="px-2 py-1"
-                                              placeholder="SPA"
-                                              readOnly
-                                            />
-                                              <label
-                                              for="SPA"
-                                              className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
-                                            >
-                                              <LuPlus />
-                                            </label>
-                                          </div>
-
-                                          <input
-                                            onChange={(e) =>
-                                              handleExtraDocs(
-                                                0,
-                                                2,
-                                                e.target.files
-                                              )
-                                            }
-                                            className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-                                            aria-describedby="file_input_help"
-                                            id="SPA"
-                                            type="file"
-                                             accept=".jpg, .jpeg, .png, .pdf"
-                                          />
-                                          <FaRegEye
-                                            className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                           onClick={() => {
-                                                  // Check if buyerExtraDocs[0] exists and is truthy
-                                                  if (buyerExtraDocs[0]) {
-                                                    // Check if buyerExtraDocs[0][2] exists and is not null
-                                                    if (buyerExtraDocs[0][2] !== null) {
-                                                      // Check if buyerExtraDocs[0][2] is an instance of File
-                                                      if (buyerExtraDocs[0][2] instanceof File) {
-                                                        // If buyerExtraDocs[0][2] is a File object, check if it has a name
-                                                        if (buyerExtraDocs[0][2]?.name) {
-                                                          setShowSPA(true);
-                                                        } else {
-                                                          setShowSPA(false);
-                                                        }
-                                                      } else {
-                                                        // If buyerExtraDocs[0][2] is not a File object, but not null, show SPA
-                                                        setShowSPA(true);
+                                            <div className="w-full h-full flex justify-center items-center">
+                                              <div className=" !w-[80%] !h-screen overflow-auto flex justify-center items-center">
+                                                {buyerImagesApi1[0][2] ? (
+                                                  // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                  buyerImagesApi1[0][2] instanceof
+                                                    File &&
+                                                  buyerImagesApi1[0][2].name ? (
+                                                    buyerImagesApi1[0][2].name.endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                      // Render PDF if it's a PDF file
+                                                      <embed
+                                                        src={URL.createObjectURL(
+                                                          buyerImagesApi1[0][2]
+                                                        )}
+                                                        type="application/pdf"
+                                                        className="w-[90%] !h-[80%]"
+                                                      />
+                                                    ) : (
+                                                      // Render image if it's an image file.
+                                                      <img
+                                                        src={URL.createObjectURL(
+                                                          buyerImagesApi1[0][2]
+                                                        )}
+                                                        alt="Image"
+                                                        className="w-auto "
+                                                      />
+                                                    )
+                                                  ) : // Assume it's a URL, check extension from the URL
+                                                  buyerImagesApi1[0][2].endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                    // Render PDF if URL ends with .pdf
+                                                    <embed
+                                                      src={
+                                                        buyerImagesApi1[0][2]
                                                       }
-                                                    } else {
-                                                      // If buyerExtraDocs[0][2] is null, hide SPA
-                                                      setShowSPA(false);
-                                                    }
-                                                  } else {
-                                                    // If buyerExtraDocs[0] does not exist or is falsy, hide SPA
-                                                    setShowSPA(false);
-                                                  }
-                                                }}
+                                                      type="application/pdf"
+                                                      className="w-[90%] h-[80%]"
+                                                    />
+                                                  ) : (
+                                                    // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                    <img
+                                                      src={
+                                                        buyerImagesApi1[0][2]
+                                                      }
+                                                      alt="Image"
+                                                      className="w-auto"
+                                                    />
+                                                  )
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
 
-                                          />
-                                          {buyerExtraDocs[0] && buyerExtraDocs[0][2] && showSPA && (
-                                            
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
+                                <div className="flex items-center gap-4">
+                                  <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[200px]">
+                                    EOI Receipt{" "}
+                                    <span className="text-red-500 !mb-0">
+                                      *
+                                    </span>
+                                  </p>
+                                  <div>
+                                    <div className="flex items-center relative gap-2">
+                                      <div className="relative">
+                                        <input
+                                          value={
+                                            buyerExtraDocs[0] &&
+                                            buyerExtraDocs[0][0] &&
+                                            buyerExtraDocs[0][0]?.name
+                                              ? buyerExtraDocs[0][0]?.name
+                                              : buyerExtraDocs[0][0]
+                                                  ?.split("kyc/")
+                                                  .pop()
+                                          }
+                                          type="text"
+                                          className="px-2 py-1"
+                                          placeholder="EOI Receipt"
+                                          readOnly
+                                        />
+                                        <label
+                                          for="EOIR"
+                                          className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
+                                        >
+                                          <LuPlus />
+                                        </label>
+                                      </div>
+
+                                      <input
+                                        onChange={(e) =>
+                                          handleExtraDocs(0, 0, e.target.files)
+                                        }
+                                        className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
+                                        aria-describedby="file_input_help"
+                                        id="EOIR"
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png, .pdf"
+                                      />
+                                      <FaRegEye
+                                        className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
+                                        onClick={() => setShowEOI(true)}
+                                      />
+                                      {showEOI && (
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                          <div
+                                            className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                          >
+                                            <div className="flex justify-end w-full">
+                                              <IoMdClose
+                                                className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                onClick={() =>
+                                                  setShowEOI(false)
+                                                }
+                                              />
+                                            </div>
+                                            <div className="w-full h-full flex justify-center items-center">
+                                              <div className="w-full h-screen overflow-auto flex justify-center items-center">
+                                                {buyerExtraDocs[0][0] ? (
+                                                  // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                  buyerExtraDocs[0][0] instanceof
+                                                    File &&
+                                                  buyerExtraDocs[0][0].name ? (
+                                                    buyerExtraDocs[0][0].name.endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                      // Render PDF if it's a PDF file
+                                                      <embed
+                                                        src={URL.createObjectURL(
+                                                          buyerExtraDocs[0][0]
+                                                        )}
+                                                        type="application/pdf"
+                                                        className="w-[90%] !h-[80%]"
+                                                      />
+                                                    ) : (
+                                                      // Render image if it's an image file
+                                                      <img
+                                                        src={URL.createObjectURL(
+                                                          buyerExtraDocs[0][0]
+                                                        )}
+                                                        alt="Image"
+                                                        className="w-auto "
+                                                      />
+                                                    )
+                                                  ) : // Assume it's a URL, check extension from the URL
+                                                  buyerExtraDocs[0][0].endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                    // Render PDF if URL ends with .pdf
+                                                    <embed
+                                                      src={buyerExtraDocs[0][0]}
+                                                      type="application/pdf"
+                                                      className="w-[90%] h-[80%]"
+                                                    />
+                                                  ) : (
+                                                    // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                    <img
+                                                      src={buyerExtraDocs[0][0]}
+                                                      alt="Image"
+                                                      className="w-auto"
+                                                    />
+                                                  )
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                  <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[195px]">
+                                    Booking Form{" "}
+                                    <span className="text-red-500 !mb-0">
+                                      *
+                                    </span>
+                                  </p>
+                                  <div>
+                                    <div className="flex items-center relative gap-2">
+                                      <div className="relative">
+                                        <input
+                                          value={
+                                            buyerExtraDocs[0] &&
+                                            buyerExtraDocs[0][1] &&
+                                            buyerExtraDocs[0][1]?.name
+                                              ? buyerExtraDocs[0][1]?.name
+                                              : buyerExtraDocs[0][1]
+                                                  ?.split("kyc/")
+                                                  .pop()
+                                          }
+                                          type="text"
+                                          className="px-2 py-1"
+                                          placeholder="Booking Form"
+                                          readOnly
+                                        />
+                                        <label
+                                          for="Booking"
+                                          className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
+                                        >
+                                          <LuPlus />
+                                        </label>
+                                      </div>
+
+                                      <input
+                                        onChange={(e) =>
+                                          handleExtraDocs(0, 1, e.target.files)
+                                        }
+                                        className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
+                                        aria-describedby="file_input_help"
+                                        id="Booking"
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png, .pdf"
+                                      />
+                                      <FaRegEye
+                                        className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
+                                        onClick={() => setShowBooking(true)}
+                                      />
+                                      {showBooking && (
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                          <div
+                                            className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                          >
+                                            <div className="flex justify-end w-full">
+                                              <IoMdClose
+                                                className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                onClick={() =>
+                                                  setShowBooking(false)
+                                                }
+                                              />
+                                            </div>
+                                            <div className="w-full h-full flex justify-center items-center">
+                                              <div className="w-full h-screen overflow-auto flex justify-center items-center">
+                                                {buyerExtraDocs[0][0] ? (
+                                                  // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                  buyerExtraDocs[0][1] instanceof
+                                                    File &&
+                                                  buyerExtraDocs[0][1].name ? (
+                                                    buyerExtraDocs[0][1].name.endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                      // Render PDF if it's a PDF file
+                                                      <embed
+                                                        src={URL.createObjectURL(
+                                                          buyerExtraDocs[0][1]
+                                                        )}
+                                                        type="application/pdf"
+                                                        className="!w-[90%] !h-[80%]"
+                                                      />
+                                                    ) : (
+                                                      // Render image if it's an image file
+                                                      <img
+                                                        src={URL.createObjectURL(
+                                                          buyerExtraDocs[0][1]
+                                                        )}
+                                                        alt="Image"
+                                                        className="w-auto "
+                                                      />
+                                                    )
+                                                  ) : // Assume it's a URL, check extension from the URL
+                                                  buyerExtraDocs[0][1].endsWith(
+                                                      ".pdf"
+                                                    ) ? (
+                                                    // Render PDF if URL ends with .pdf
+                                                    <embed
+                                                      src={buyerExtraDocs[0][1]}
+                                                      type="application/pdf"
+                                                      className="!w-[90%] h-[80%]"
+                                                    />
+                                                  ) : (
+                                                    // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                    <img
+                                                      src={buyerExtraDocs[0][1]}
+                                                      alt="Image"
+                                                      className="w-auto"
+                                                    />
+                                                  )
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                  <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[200px]">
+                                    SPA Copy{" "}
+                                  </p>
+                                  <div>
+                                    <div className="flex items-center relative gap-2">
+                                      <div className="relative">
+                                        <input
+                                          value={
+                                            buyerExtraDocs[0] &&
+                                            buyerExtraDocs[0][2] &&
+                                            buyerExtraDocs[0][2]?.name
+                                              ? buyerExtraDocs[0][2]?.name
+                                              : buyerExtraDocs[0][2]
+                                                  ?.split("kyc/")
+                                                  .pop() == "undefined"
+                                              ? " "
+                                              : buyerExtraDocs[0][2]
+                                                  ?.split("kyc/")
+                                                  .pop()
+                                          }
+                                          type="text"
+                                          className="px-2 py-1"
+                                          placeholder="SPA"
+                                          readOnly
+                                        />
+                                        <label
+                                          for="SPA"
+                                          className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
+                                        >
+                                          <LuPlus />
+                                        </label>
+                                      </div>
+
+                                      <input
+                                        onChange={(e) =>
+                                          handleExtraDocs(0, 2, e.target.files)
+                                        }
+                                        className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
+                                        aria-describedby="file_input_help"
+                                        id="SPA"
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png, .pdf"
+                                      />
+                                      <FaRegEye
+                                        className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
+                                        onClick={() => {
+                                          // Check if buyerExtraDocs[0] exists and is truthy
+                                          if (buyerExtraDocs[0]) {
+                                            // Check if buyerExtraDocs[0][2] exists and is not null
+                                            if (buyerExtraDocs[0][2] !== null) {
+                                              // Check if buyerExtraDocs[0][2] is an instance of File
+                                              if (
+                                                buyerExtraDocs[0][2] instanceof
+                                                File
+                                              ) {
+                                                // If buyerExtraDocs[0][2] is a File object, check if it has a name
+                                                if (
+                                                  buyerExtraDocs[0][2]?.name
+                                                ) {
+                                                  setShowSPA(true);
+                                                } else {
+                                                  setShowSPA(false);
+                                                }
+                                              } else {
+                                                // If buyerExtraDocs[0][2] is not a File object, but not null, show SPA
+                                                setShowSPA(true);
+                                              }
+                                            } else {
+                                              // If buyerExtraDocs[0][2] is null, hide SPA
+                                              setShowSPA(false);
+                                            }
+                                          } else {
+                                            // If buyerExtraDocs[0] does not exist or is falsy, hide SPA
+                                            setShowSPA(false);
+                                          }
+                                        }}
+                                      />
+                                      {buyerExtraDocs[0] &&
+                                        buyerExtraDocs[0][2] &&
+                                        showSPA && (
+                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                            <div
+                                              className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                            >
+                                              <div className="flex justify-end w-full">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowSPA(false)}
+                                                  onClick={() =>
+                                                    setShowSPA(false)
+                                                  }
                                                 />
                                               </div>
                                               <div className="w-full h-full flex justify-center items-center">
                                                 <div className="w-full h-screen overflow-auto flex justify-center items-center">
                                                   {buyerExtraDocs[0][0] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerExtraDocs[0][2] instanceof File && buyerExtraDocs[0][2].name ? (
-                                                            buyerExtraDocs[0][2].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file.
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][2])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerExtraDocs[0][2])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerExtraDocs[0][0].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={buyerExtraDocs[0][2]}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={buyerExtraDocs[0][2]}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
+                                                    // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                    buyerExtraDocs[0][2] instanceof
+                                                      File &&
+                                                    buyerExtraDocs[0][2]
+                                                      .name ? (
+                                                      buyerExtraDocs[0][2].name.endsWith(
+                                                        ".pdf"
+                                                      ) ? (
+                                                        // Render PDF if it's a PDF file.
+                                                        <embed
+                                                          src={URL.createObjectURL(
+                                                            buyerExtraDocs[0][2]
+                                                          )}
+                                                          type="application/pdf"
+                                                          className="w-[90%] !h-[80%]"
+                                                        />
+                                                      ) : (
+                                                        // Render image if it's an image file
+                                                        <img
+                                                          src={URL.createObjectURL(
+                                                            buyerExtraDocs[0][2]
+                                                          )}
+                                                          alt="Image"
+                                                          className="w-auto "
+                                                        />
+                                                      )
+                                                    ) : // Assume it's a URL, check extension from the URL
+                                                    buyerExtraDocs[0][0].endsWith(
+                                                        ".pdf"
+                                                      ) ? (
+                                                      // Render PDF if URL ends with .pdf
+                                                      <embed
+                                                        src={
+                                                          buyerExtraDocs[0][2]
+                                                        }
+                                                        type="application/pdf"
+                                                        className="w-[90%] h-[80%]"
+                                                      />
+                                                    ) : (
+                                                      // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                      <img
+                                                        src={
+                                                          buyerExtraDocs[0][2]
+                                                        }
+                                                        alt="Image"
+                                                        className="w-auto"
+                                                      />
+                                                    )
+                                                  ) : null}
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
-                                            
-                                            
-                                            
-                                            
-                                          )}
-                                        </div>
-                                      </div>
+                                        )}
                                     </div>
-                                    
-                                    
-                                  
-                                  
-                                  
-                            </div>
-                            
+                                  </div>
+                                </div>
+                              </div>
+
                               <p className="text-xl mt-8 font-bold">
                                 Buyer KYC / Customer Due Diligence
                               </p>
@@ -1525,7 +1615,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <span className="text-red-500 !mb-0">
                                         *
                                       </span>
-
                                     </p>
 
                                     <div className="flex items-center gap-2 ">
@@ -1534,11 +1623,19 @@ const [showVisa2, setShowVisa2] = useState(false);
                                           <input
                                             type="text"
                                             className="px-2 bg-gray-50"
-                                             
-                                            
-                                             value={
-                                                buyerKycImages[0] && buyerKycImages[0][0] && buyerKycImages[0][0]?.name ? buyerKycImages[0][0]?.name : buyerKycImages[0][0]?.split("kyc/").pop() == 'undefined' ? ' ' : buyerKycImages[0][0]?.split("kyc/").pop()
-                                              }
+                                            value={
+                                              buyerKycImages[0] &&
+                                              buyerKycImages[0][0] &&
+                                              buyerKycImages[0][0]?.name
+                                                ? buyerKycImages[0][0]?.name
+                                                : buyerKycImages[0][0]
+                                                    ?.split("kyc/")
+                                                    .pop() == "undefined"
+                                                ? " "
+                                                : buyerKycImages[0][0]
+                                                    ?.split("kyc/")
+                                                    .pop()
+                                            }
                                             placeholder="KYC"
                                             readOnly
                                           />
@@ -1605,7 +1702,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                   <div className="flex  gap-3">
                                     <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
                                       UN Sanction Report{" "}
-                                        <span className="text-red-500 !mb-0">
+                                      <span className="text-red-500 !mb-0">
                                         *
                                       </span>
                                     </p>
@@ -1617,8 +1714,18 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             type="text"
                                             className="px-2 !bg-gray-50"
                                             value={
-                                                buyerKycImages[0] && buyerKycImages[0][1] && buyerKycImages[0][1]?.name ? buyerKycImages[0][1]?.name : buyerKycImages[0][1]?.split("kyc/").pop() == 'undefined' ? ' ' : buyerKycImages[0][1]?.split("kyc/").pop()
-                                              }
+                                              buyerKycImages[0] &&
+                                              buyerKycImages[0][1] &&
+                                              buyerKycImages[0][1]?.name
+                                                ? buyerKycImages[0][1]?.name
+                                                : buyerKycImages[0][1]
+                                                    ?.split("kyc/")
+                                                    .pop() == "undefined"
+                                                ? " "
+                                                : buyerKycImages[0][1]
+                                                    ?.split("kyc/")
+                                                    .pop()
+                                            }
                                             placeholder="UN report"
                                             readOnly
                                           />
@@ -1689,7 +1796,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <span className="text-red-500 !mb-0">
                                         *
                                       </span>
-
                                     </p>
 
                                     <div className="flex items-center gap-2 ">
@@ -1697,9 +1803,19 @@ const [showVisa2, setShowVisa2] = useState(false);
                                         <div className="relative flex items-center">
                                           <input
                                             type="text"
-                                             value={
-                                                buyerKycImages[0] && buyerKycImages[0][2] && buyerKycImages[0][2]?.name ? buyerKycImages[0][2]?.name : buyerKycImages[0][2]?.split("kyc/").pop() == 'undefined' ? ' ' : buyerKycImages[0][2]?.split("kyc/").pop()
-                                              }
+                                            value={
+                                              buyerKycImages[0] &&
+                                              buyerKycImages[0][2] &&
+                                              buyerKycImages[0][2]?.name
+                                                ? buyerKycImages[0][2]?.name
+                                                : buyerKycImages[0][2]
+                                                    ?.split("kyc/")
+                                                    .pop() == "undefined"
+                                                ? " "
+                                                : buyerKycImages[0][2]
+                                                    ?.split("kyc/")
+                                                    .pop()
+                                            }
                                             className="px-2 !bg-gray-50"
                                             placeholder="Risk Form"
                                             readOnly
@@ -1772,11 +1888,10 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 <div>
                                   <div className="flex  gap-3">
                                     <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
-                                      UAE Sanction Report {" "}
+                                      UAE Sanction Report{" "}
                                       <span className="text-red-500 !mb-0">
                                         *
                                       </span>
-
                                     </p>
 
                                     <div className="flex items-center gap-2 ">
@@ -1784,9 +1899,19 @@ const [showVisa2, setShowVisa2] = useState(false);
                                         <div className="relative flex items-center">
                                           <input
                                             type="text"
-                                             value={
-                                                buyerKycImages[0] && buyerKycImages[0][3] && buyerKycImages[0][3]?.name ? buyerKycImages[0][3]?.name : buyerKycImages[0][3]?.split("kyc/").pop() == 'undefined' ? ' ' : buyerKycImages[0][3]?.split("kyc/").pop()
-                                              }
+                                            value={
+                                              buyerKycImages[0] &&
+                                              buyerKycImages[0][3] &&
+                                              buyerKycImages[0][3]?.name
+                                                ? buyerKycImages[0][3]?.name
+                                                : buyerKycImages[0][3]
+                                                    ?.split("kyc/")
+                                                    .pop() == "undefined"
+                                                ? " "
+                                                : buyerKycImages[0][3]
+                                                    ?.split("kyc/")
+                                                    .pop()
+                                            }
                                             className="px-2 !bg-gray-50"
                                             placeholder="UAE Sanction Report"
                                             readOnly
@@ -1889,7 +2014,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                             <AccordionItemHeading className="bg-white !border !border-gray-400 rounded-md py-2 px-2">
                               <AccordionItemButton className="flex w-full justify-between items-center">
                                 Buyer {id + 2}
-                                <ImPlus className="!mb-0"/>
+                                <ImPlus className="!mb-0" />
                               </AccordionItemButton>
                             </AccordionItemHeading>
                             <AccordionItemPanel>
@@ -1955,10 +2080,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                   />
                                 </div>
                                 <div className="">
-                                  <label className="!mb-0">
-                                    Email{" "}
-                                    
-                                  </label>
+                                  <label className="!mb-0">Email </label>
                                   <input
                                     className="form-control"
                                     required
@@ -1985,13 +2107,12 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 <div className="">
                                   <label className="!mb-0">
                                     Date of Birth{" "}
-                                    
                                   </label>
                                   <input
                                     className="form-control"
                                     required
                                     type="date"
-                                   onKeyDown={handleKeyDown}
+                                    onKeyDown={handleKeyDown}
                                     onFocus={toggleInputType}
                                     value={addBuyers?.buyerdob}
                                     onChange={(e) => {
@@ -2016,7 +2137,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 <div className="">
                                   <label className="!mb-0">
                                     Passport Number{" "}
-                                   
                                   </label>
                                   <input
                                     className="form-control"
@@ -2045,7 +2165,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 <div className="">
                                   <label className="!mb-0">
                                     Passport Expiry{" "}
-                                    
                                   </label>
                                   <input
                                     className="form-control"
@@ -2073,10 +2192,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                   />
                                 </div>
                                 <div className="">
-                                  <label className="!mb-0">
-                                    Nationality{" "}
-                                   
-                                  </label>
+                                  <label className="!mb-0">Nationality </label>
                                   <input
                                     className="form-control"
                                     required
@@ -2103,7 +2219,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 <div className="">
                                   <label className="!mb-0">
                                     UAE Resident/Non Resident{" "}
-                                   
                                   </label>
 
                                   <SearchableSelect
@@ -2141,10 +2256,7 @@ const [showVisa2, setShowVisa2] = useState(false);
                                 </div>
 
                                 <div className="col-span-2">
-                                  <label className="!mb-0">
-                                    Address{" "}
-                                   
-                                  </label>
+                                  <label className="!mb-0">Address </label>
                                   <input
                                     className="form-control"
                                     required
@@ -2189,12 +2301,15 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <div>
                                         <div className="flex items-center gap-2 ">
                                           <div className="input-group relative">
-                                          <p className={`text-gray-700 !mr-2` }>Front:</p>
+                                            <p
+                                              className={`text-gray-700 !mr-2`}
+                                            >
+                                              Front:
+                                            </p>
                                             <div className="relative">
                                               <input
                                                 type="text"
                                                 className="px-2 !bg-gray-50"
-                                                
                                                 value={
                                                   buyerImagesApi2 &&
                                                   buyerImagesApi2[id] &&
@@ -2235,7 +2350,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               aria-describedby="file_input_help"
                                               id={`front${id}`}
                                               type="file"
-                                            
                                             />
                                             <FaRegEye
                                               className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
@@ -2244,72 +2358,110 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               }
                                             />
                                             {showPassFront1 && (
-                                               <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowpassFront1(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className="w-full h-screen overflow-auto flex justify-center items-center">
-                                                   {buyerImagesApi2[id][0] ? (
-                                                     // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi2[id][0] instanceof File && buyerImagesApi2[id][0].name ? (
-                                                            buyerImagesApi2[id][0].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(+buyerImagesApi2[id][0])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][0])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                                <div
+                                                  className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                                >
+                                                  <div className="flex justify-end w-full">
+                                                    <IoMdClose
+                                                      className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                      onClick={() =>
+                                                        setShowpassFront1(false)
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="w-full h-full flex justify-center items-center">
+                                                    <div className="w-full h-screen overflow-auto flex justify-center items-center">
+                                                      {buyerImagesApi2[
+                                                        id
+                                                      ][0] ? (
+                                                        // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                        buyerImagesApi2[
+                                                          id
+                                                        ][0] instanceof File &&
+                                                        buyerImagesApi2[id][0]
+                                                          .name ? (
+                                                          buyerImagesApi2[
+                                                            id
+                                                          ][0].name.endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                            // Render PDF if it's a PDF file
+                                                            <embed
+                                                              src={URL.createObjectURL(
+                                                                +buyerImagesApi2[
+                                                                  id
+                                                                ][0]
+                                                              )}
+                                                              type="application/pdf"
+                                                              className="w-[90%] !h-[80%]"
+                                                            />
                                                           ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi2[id][0].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={path+buyerImagesApi2[id][0]?.split("kyc/").pop()}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={path+buyerImagesApi2[id][0]?.split("kyc/").pop()}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
+                                                            // Render image if it's an image file
+                                                            <img
+                                                              src={URL.createObjectURL(
+                                                                buyerImagesApi2[
+                                                                  id
+                                                                ][0]
+                                                              )}
+                                                              alt="Image"
+                                                              className="w-auto "
+                                                            />
                                                           )
-                                                        ) : null}
+                                                        ) : // Assume it's a URL, check extension from the URL
+                                                        buyerImagesApi2[
+                                                            id
+                                                          ][0].endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                          // Render PDF if URL ends with .pdf
+                                                          <embed
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][0]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            type="application/pdf"
+                                                            className="w-[90%] h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                          <img
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][0]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            alt="Image"
+                                                            className="w-auto"
+                                                          />
+                                                        )
+                                                      ) : null}
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          </div>
-                                              
-                                              
-                                              
                                             )}
                                           </div>
                                         </div>
 
                                         <div className="flex items-top gap-2 mt-2">
                                           <div className="input-group relative">
-                                          <p className={`text-gray-700 !mr-2` }>Back:&nbsp;</p>
+                                            <p
+                                              className={`text-gray-700 !mr-2`}
+                                            >
+                                              Back:&nbsp;
+                                            </p>
                                             <div className="relative">
                                               <input
                                                 type="text"
                                                 className="px-2 !bg-gray-50"
-                                                
                                                 value={
                                                   buyerImagesApi2 &&
                                                   buyerImagesApi2[id] &&
@@ -2349,7 +2501,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               aria-describedby="file_input_help"
                                               id={`back${id}`}
                                               type="file"
-                                             
                                             />
                                             <FaRegEye
                                               className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
@@ -2358,59 +2509,95 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               }
                                             />
                                             {showPassback1 && (
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowpassBack1(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className=" w-full h-screen overflow-auto flex justify-center items-center">
-                                                 {buyerImagesApi2[id][1] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi2[id][1] instanceof File && buyerImagesApi2[id][1].name ? (
-                                                            buyerImagesApi2[id][1].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][1])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][1])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                                <div
+                                                  className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                                >
+                                                  <div className="flex justify-end w-full">
+                                                    <IoMdClose
+                                                      className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                      onClick={() =>
+                                                        setShowpassBack1(false)
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="w-full h-full flex justify-center items-center">
+                                                    <div className=" w-full h-screen overflow-auto flex justify-center items-center">
+                                                      {buyerImagesApi2[
+                                                        id
+                                                      ][1] ? (
+                                                        // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                        buyerImagesApi2[
+                                                          id
+                                                        ][1] instanceof File &&
+                                                        buyerImagesApi2[id][1]
+                                                          .name ? (
+                                                          buyerImagesApi2[
+                                                            id
+                                                          ][1].name.endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                            // Render PDF if it's a PDF file
+                                                            <embed
+                                                              src={URL.createObjectURL(
+                                                                buyerImagesApi2[
+                                                                  id
+                                                                ][1]
+                                                              )}
+                                                              type="application/pdf"
+                                                              className="w-[90%] !h-[80%]"
+                                                            />
                                                           ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi2[id][1].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={path+buyerImagesApi2[id][0]?.split("kyc/").pop()}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={path+buyerImagesApi2[id][1]?.split("kyc/").pop()}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
+                                                            // Render image if it's an image file
+                                                            <img
+                                                              src={URL.createObjectURL(
+                                                                buyerImagesApi2[
+                                                                  id
+                                                                ][1]
+                                                              )}
+                                                              alt="Image"
+                                                              className="w-auto "
+                                                            />
                                                           )
-                                                        ) : null}
+                                                        ) : // Assume it's a URL, check extension from the URL
+                                                        buyerImagesApi2[
+                                                            id
+                                                          ][1].endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                          // Render PDF if URL ends with .pdf
+                                                          <embed
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][0]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            type="application/pdf"
+                                                            className="w-[90%] h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                          <img
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][1]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            alt="Image"
+                                                            className="w-auto"
+                                                          />
+                                                        )
+                                                      ) : null}
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          </div>
-                                              
-                                              
                                             )}
                                           </div>
                                         </div>
@@ -2434,7 +2621,6 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               <input
                                                 type="text"
                                                 className="px-2 !bg-gray-50"
-                                                
                                                 value={
                                                   buyerImagesApi2 &&
                                                   buyerImagesApi2[id] &&
@@ -2475,64 +2661,103 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               aria-describedby="file_input_help"
                                               id={`emirateID${id}`}
                                               type="file"
-                                             
                                             />
                                             <FaRegEye
                                               className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                              onClick={() => setShowemirates1(true)}
+                                              onClick={() =>
+                                                setShowemirates1(true)
+                                              }
                                             />
                                             {showemirates1 && (
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
-                                                <IoMdClose
-                                                  className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowemirates1(false)}
-                                                />
-                                              </div>
-                                              <div className="w-full h-full flex justify-center items-center">
-                                                <div className=" w-full h-screen overflow-auto flex justify-center items-center">
-                                                 {buyerImagesApi2[id][0] ? (
-          // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi2[id][3] instanceof File && buyerImagesApi2[id][3].name ? (
-                                                            buyerImagesApi2[id][3].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][3])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][3])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                                <div
+                                                  className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                                >
+                                                  <div className="flex justify-end w-full">
+                                                    <IoMdClose
+                                                      className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
+                                                      onClick={() =>
+                                                        setShowemirates1(false)
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="w-full h-full flex justify-center items-center">
+                                                    <div className=" w-full h-screen overflow-auto flex justify-center items-center">
+                                                      {buyerImagesApi2[
+                                                        id
+                                                      ][0] ? (
+                                                        // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
+                                                        buyerImagesApi2[
+                                                          id
+                                                        ][3] instanceof File &&
+                                                        buyerImagesApi2[id][3]
+                                                          .name ? (
+                                                          buyerImagesApi2[
+                                                            id
+                                                          ][3].name.endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                            // Render PDF if it's a PDF file
+                                                            <embed
+                                                              src={URL.createObjectURL(
+                                                                buyerImagesApi2[
+                                                                  id
+                                                                ][3]
+                                                              )}
+                                                              type="application/pdf"
+                                                              className="w-[90%] !h-[80%]"
+                                                            />
                                                           ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi2[id][3].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={path+buyerImagesApi2[id][3]?.split("kyc/").pop()}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={path+buyerImagesApi2[id][3]?.split("kyc/").pop()}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
+                                                            // Render image if it's an image file
+                                                            <img
+                                                              src={URL.createObjectURL(
+                                                                buyerImagesApi2[
+                                                                  id
+                                                                ][3]
+                                                              )}
+                                                              alt="Image"
+                                                              className="w-auto "
+                                                            />
                                                           )
-                                                        ) : null}
+                                                        ) : // Assume it's a URL, check extension from the URL
+                                                        buyerImagesApi2[
+                                                            id
+                                                          ][3].endsWith(
+                                                            ".pdf"
+                                                          ) ? (
+                                                          // Render PDF if URL ends with .pdf
+                                                          <embed
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][3]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            type="application/pdf"
+                                                            className="w-[90%] h-[80%]"
+                                                          />
+                                                        ) : (
+                                                          // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                          <img
+                                                            src={
+                                                              path +
+                                                              buyerImagesApi2[
+                                                                id
+                                                              ][3]
+                                                                ?.split("kyc/")
+                                                                .pop()
+                                                            }
+                                                            alt="Image"
+                                                            className="w-auto"
+                                                          />
+                                                        )
+                                                      ) : null}
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          </div>
                                             )}
                                           </div>
                                         </div>
@@ -2540,120 +2765,145 @@ const [showVisa2, setShowVisa2] = useState(false);
                                     </div>
                                   )}
                                 </div>
-                                 <div className={`mt-2`}>
-                              
-                                    <div className="flex items-center gap-4">
-                                      <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[140px]">
-                                        Visa{" "}
-                                        <span className="text-red-500 !mb-0">
-                                          *
-                                        </span>
-                                      </p>
-                                      <div>
-                                        <div className="flex items-center relative gap-2">
-                                          <div className="relative">
-                                            <input
-                                               
-                                              
-                                              value={
-                                                buyerImagesApi2[id] &&
-                                                buyerImagesApi2[id][2] &&
-                                                buyerImagesApi2[id][2]?.name
-                                                  ? buyerImagesApi2[id][2]?.name
-                                                  : buyerImagesApi2[id][2]
-                                                      ?.split("kyc/")
-                                                      .pop()
-                                              }
-                                             
-                                              type="text"
-                                              className="px-2 py-1"
-                                              placeholder="Visa"
-                                              readOnly
-                                            />
-                                              <label
-                                              for={`Visa${id}`}
-                                              className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
-                                            >
-                                              <LuPlus />
-                                            </label>
-                                          </div>
-
+                                <div className={`mt-2`}>
+                                  <div className="flex items-center gap-4">
+                                    <p className="block text-lg mb-0 leading-normal font-medium text-gray-900 w-[140px]">
+                                      Visa{" "}
+                                      <span className="text-red-500 !mb-0">
+                                        *
+                                      </span>
+                                    </p>
+                                    <div>
+                                      <div className="flex items-center relative gap-2">
+                                        <div className="relative">
                                           <input
-                                            onChange={(e) =>
-                                              handleApiFileChange2(
-                                                id,
-                                                2,
-                                                e.target.files
-                                              )
+                                            value={
+                                              buyerImagesApi2[id] &&
+                                              buyerImagesApi2[id][2] &&
+                                              buyerImagesApi2[id][2]?.name
+                                                ? buyerImagesApi2[id][2]?.name
+                                                : buyerImagesApi2[id][2]
+                                                    ?.split("kyc/")
+                                                    .pop()
                                             }
-                                            className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-                                            aria-describedby="file_input_help"
-                                            id={`Visa${id}`}
-                                            type="file"
-                                            accept=".pdf"
+                                            type="text"
+                                            className="px-2 py-1"
+                                            placeholder="Visa"
+                                            readOnly
                                           />
-                                          <FaRegEye
-                                            className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
-                                            onClick={() => setShowVisa2(true)}
-                                          />
-                                          {showVisa2 && (
-                                             <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
-                                            <div className={`w-full h-full aspect-auto bg-slate-800/20`}>
-                                              <div className='flex justify-end w-full'>
+                                          <label
+                                            for={`Visa${id}`}
+                                            className="absolute px-1 !bg-slate-50 !mb-0 cursor-pointer text-xl right-0 mx-auto my-auto"
+                                          >
+                                            <LuPlus />
+                                          </label>
+                                        </div>
+
+                                        <input
+                                          onChange={(e) =>
+                                            handleApiFileChange2(
+                                              id,
+                                              2,
+                                              e.target.files
+                                            )
+                                          }
+                                          className="!hidden text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
+                                          aria-describedby="file_input_help"
+                                          id={`Visa${id}`}
+                                          type="file"
+                                          accept=".pdf"
+                                        />
+                                        <FaRegEye
+                                          className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
+                                          onClick={() => setShowVisa2(true)}
+                                        />
+                                        {showVisa2 && (
+                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                            <div
+                                              className={`w-full h-full aspect-auto bg-slate-800/20`}
+                                            >
+                                              <div className="flex justify-end w-full">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300 !text-gray-900"
-                                                  onClick={() => setShowVisa2(false)}
+                                                  onClick={() =>
+                                                    setShowVisa2(false)
+                                                  }
                                                 />
                                               </div>
                                               <div className="w-full h-full flex justify-center items-center">
                                                 <div className="w-full h-screen overflow-auto flex justify-center items-center">
-                                                 {buyerImagesApi2[id][2] ? (
+                                                  {buyerImagesApi2[id][2] ? (
                                                     // Check if it's a file object (assuming buyerImagesApi1[0][0] is a File object)
-                                                          buyerImagesApi2[id][2] instanceof File && buyerImagesApi2[id][2].name ? (
-                                                            buyerImagesApi2[id][2].name.endsWith('.pdf') ? (
-                                                              // Render PDF if it's a PDF file
-                                                              <embed
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][2])}
-                                                                type="application/pdf"
-                                                                className="w-[90%] !h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if it's an image file
-                                                              <img
-                                                                src={URL.createObjectURL(buyerImagesApi2[id][2])}
-                                                                alt="Image"
-                                                                className="w-auto "
-                                                              />
-                                                            )
-                                                          ) : (
-                                                            // Assume it's a URL, check extension from the URL
-                                                            buyerImagesApi2[id][2].endsWith('.pdf') ? (
-                                                              // Render PDF if URL ends with .pdf
-                                                              <embed
-                                                                src={path+buyerImagesApi2[id][2]?.split("kyc/").pop()}
-                                                                type="application/pdf"
-                                                                className="w-[90%] h-[80%]"
-                                                              />
-                                                            ) : (
-                                                              // Render image if URL ends with .jpg or .jpeg (adjust as needed)
-                                                              <img
-                                                                src={path+buyerImagesApi2[id][2]?.split("kyc/").pop()}
-                                                                alt="Image"
-                                                                className="w-auto"
-                                                              />
-                                                            )
-                                                          )
-                                                        ) : null}
+                                                    buyerImagesApi2[
+                                                      id
+                                                    ][2] instanceof File &&
+                                                    buyerImagesApi2[id][2]
+                                                      .name ? (
+                                                      buyerImagesApi2[
+                                                        id
+                                                      ][2].name.endsWith(
+                                                        ".pdf"
+                                                      ) ? (
+                                                        // Render PDF if it's a PDF file
+                                                        <embed
+                                                          src={URL.createObjectURL(
+                                                            buyerImagesApi2[
+                                                              id
+                                                            ][2]
+                                                          )}
+                                                          type="application/pdf"
+                                                          className="w-[90%] !h-[80%]"
+                                                        />
+                                                      ) : (
+                                                        // Render image if it's an image file
+                                                        <img
+                                                          src={URL.createObjectURL(
+                                                            buyerImagesApi2[
+                                                              id
+                                                            ][2]
+                                                          )}
+                                                          alt="Image"
+                                                          className="w-auto "
+                                                        />
+                                                      )
+                                                    ) : // Assume it's a URL, check extension from the URL
+                                                    buyerImagesApi2[
+                                                        id
+                                                      ][2].endsWith(".pdf") ? (
+                                                      // Render PDF if URL ends with .pdf
+                                                      <embed
+                                                        src={
+                                                          path +
+                                                          buyerImagesApi2[id][2]
+                                                            ?.split("kyc/")
+                                                            .pop()
+                                                        }
+                                                        type="application/pdf"
+                                                        className="w-[90%] h-[80%]"
+                                                      />
+                                                    ) : (
+                                                      // Render image if URL ends with .jpg or .jpeg (adjust as needed)
+                                                      <img
+                                                        src={
+                                                          path +
+                                                          buyerImagesApi2[id][2]
+                                                            ?.split("kyc/")
+                                                            .pop()
+                                                        }
+                                                        alt="Image"
+                                                        className="w-auto"
+                                                      />
+                                                    )
+                                                  ) : null}
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
-                                          )}
-                                        </div>
+                                        )}
                                       </div>
                                     </div>
-                                  
-                            </div>
+                                  </div>
+                                </div>
 
                                 <p className="text-xl mt-8 font-bold">
                                   Buyer KYC / Customer Due Diligence
@@ -2665,9 +2915,8 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
                                         KYC{" "}
                                         <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
-
+                                          *
+                                        </span>
                                       </p>
 
                                       <div className="flex items-center gap-2 ">
@@ -2677,26 +2926,20 @@ const [showVisa2, setShowVisa2] = useState(false);
                                               type="text"
                                               className="px-2 :bg-gray-50"
                                               value={
+                                                buyerKycImages1 &&
                                                 buyerKycImages1[id] &&
-                                                buyerKycImages1[id][0]?.name
+                                                buyerKycImages1[id][0] &&
+                                                typeof buyerKycImages1[
+                                                  id
+                                                ][0] === "string"
+                                                  ? buyerKycImages1[id][0]
+                                                      .split("kyc/")
+                                                      .pop()
+                                                  : buyerKycImages1[id] &&
+                                                    buyerKycImages1[id][0]?.name
+                                                  ? buyerKycImages1[id][0]?.name
+                                                  : ""
                                               }
-                                              value={
-                                                  buyerKycImages1 &&
-                                                  buyerKycImages1[id] &&
-                                                  buyerKycImages1[id][0] &&
-                                                  typeof buyerKycImages1[
-                                                    id
-                                                  ][0] === "string"
-                                                    ? buyerKycImages1[id][0]
-                                                        .split("kyc/")
-                                                        .pop()
-                                                    : buyerKycImages1[id] &&
-                                                      buyerKycImages1[id][0]
-                                                        ?.name
-                                                    ? buyerKycImages1[id][0]
-                                                        ?.name
-                                                    : ""
-                                                }
                                               placeholder="KYC"
                                               readOnly
                                             />
@@ -2767,9 +3010,8 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
                                         UN Sanction Report{" "}
                                         <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
-
+                                          *
+                                        </span>
                                       </p>
 
                                       <div className="flex items-center gap-2 ">
@@ -2778,23 +3020,21 @@ const [showVisa2, setShowVisa2] = useState(false);
                                             <input
                                               type="text"
                                               className="px-2 :bg-gray-50"
-                                               value={
-                                                  buyerKycImages1 &&
-                                                  buyerKycImages1[id] &&
-                                                  buyerKycImages1[id][1] &&
-                                                  typeof buyerKycImages1[
-                                                    id
-                                                  ][1] === "string"
-                                                    ? buyerKycImages1[id][1]
-                                                        .split("kyc/")
-                                                        .pop()
-                                                    : buyerKycImages1[id] &&
-                                                      buyerKycImages1[id][1]
-                                                        ?.name
-                                                    ? buyerKycImages1[id][1]
-                                                        ?.name
-                                                    : ""
-                                                }
+                                              value={
+                                                buyerKycImages1 &&
+                                                buyerKycImages1[id] &&
+                                                buyerKycImages1[id][1] &&
+                                                typeof buyerKycImages1[
+                                                  id
+                                                ][1] === "string"
+                                                  ? buyerKycImages1[id][1]
+                                                      .split("kyc/")
+                                                      .pop()
+                                                  : buyerKycImages1[id] &&
+                                                    buyerKycImages1[id][1]?.name
+                                                  ? buyerKycImages1[id][1]?.name
+                                                  : ""
+                                              }
                                               placeholder="UN report"
                                               readOnly
                                             />
@@ -2865,8 +3105,8 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
                                         Risk Anaylysis Form{" "}
                                         <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
+                                          *
+                                        </span>
                                       </p>
 
                                       <div className="flex items-center gap-2 ">
@@ -2874,23 +3114,21 @@ const [showVisa2, setShowVisa2] = useState(false);
                                           <div className="relative">
                                             <input
                                               type="text"
-                                                value={
-                                                  buyerKycImages1 &&
-                                                  buyerKycImages1[id] &&
-                                                  buyerKycImages1[id][2] &&
-                                                  typeof buyerKycImages1[
-                                                    id
-                                                  ][2] === "string"
-                                                    ? buyerKycImages1[id][2]
-                                                        .split("kyc/")
-                                                        .pop()
-                                                    : buyerKycImages1[id] &&
-                                                      buyerKycImages1[id][2]
-                                                        ?.name
-                                                    ? buyerKycImages1[id][2]
-                                                        ?.name
-                                                    : ""
-                                                }
+                                              value={
+                                                buyerKycImages1 &&
+                                                buyerKycImages1[id] &&
+                                                buyerKycImages1[id][2] &&
+                                                typeof buyerKycImages1[
+                                                  id
+                                                ][2] === "string"
+                                                  ? buyerKycImages1[id][2]
+                                                      .split("kyc/")
+                                                      .pop()
+                                                  : buyerKycImages1[id] &&
+                                                    buyerKycImages1[id][2]?.name
+                                                  ? buyerKycImages1[id][2]?.name
+                                                  : ""
+                                              }
                                               className="px-2 :bg-gray-50"
                                               placeholder="Risk Form"
                                               readOnly
@@ -2963,9 +3201,8 @@ const [showVisa2, setShowVisa2] = useState(false);
                                       <p className="block mb-0 text-lg font-medium  text-gray-900 leading-normal w-[200px]">
                                         UAE Sanction Report{" "}
                                         <span className="text-red-500 !mb-0">
-                                        *
-                                      </span>
-
+                                          *
+                                        </span>
                                       </p>
 
                                       <div className="flex items-center gap-2 ">
@@ -2973,23 +3210,21 @@ const [showVisa2, setShowVisa2] = useState(false);
                                           <div className="relative">
                                             <input
                                               type="text"
-                                                 value={
-                                                  buyerKycImages1 &&
-                                                  buyerKycImages1[id] &&
-                                                  buyerKycImages1[id][3] &&
-                                                  typeof buyerKycImages1[
-                                                    id
-                                                  ][3] === "string"
-                                                    ? buyerKycImages1[id][3]
-                                                        .split("kyc/")
-                                                        .pop()
-                                                    : buyerKycImages1[id] &&
-                                                      buyerKycImages1[id][3]
-                                                        ?.name
-                                                    ? buyerKycImages1[id][3]
-                                                        ?.name
-                                                    : ""
-                                                }
+                                              value={
+                                                buyerKycImages1 &&
+                                                buyerKycImages1[id] &&
+                                                buyerKycImages1[id][3] &&
+                                                typeof buyerKycImages1[
+                                                  id
+                                                ][3] === "string"
+                                                  ? buyerKycImages1[id][3]
+                                                      .split("kyc/")
+                                                      .pop()
+                                                  : buyerKycImages1[id] &&
+                                                    buyerKycImages1[id][3]?.name
+                                                  ? buyerKycImages1[id][3]?.name
+                                                  : ""
+                                              }
                                               className="px-2 :bg-gray-50"
                                               placeholder="UAE Sanction Report"
                                               readOnly
@@ -3065,27 +3300,41 @@ const [showVisa2, setShowVisa2] = useState(false);
 
                   <div className="flex gap-4 w-full justify-end mt-5">
                     <button
-                      className={`text-white flex items-center disabled:bg-slate-300  ${submitError ? 'bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300': 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300'}  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 `}
+                      className={`text-white flex items-center disabled:bg-slate-300  ${
+                        submitError
+                          ? "bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300"
+                          : "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                      }  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 `}
                       onClick={HandleSubmit}
-                      disabled={ myData[0]?.buyername == '' || myData[0]?.buyerContact == '' }
+                      disabled={
+                        myData[0]?.buyername == "" ||
+                        myData[0]?.buyerContact == ""
+                      }
                       type="submit"
                     >
-                        {
-                            submitting ? <div role="status">
-                            <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="black" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                            </svg>
-                        
-                        </div>:
-                        'Submit'
-                        }
-                        
-                         
-                        
-                    
+                      {submitting ? (
+                        <div role="status">
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                            viewBox="0 0 100 101"
+                            fill="black"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                              fill="currentFill"
+                            />
+                          </svg>
+                        </div>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
-                    
                   </div>
                 </form>
               )}
@@ -3107,19 +3356,23 @@ const [showVisa2, setShowVisa2] = useState(false);
                       placeholder="Add Comments here"
                       value={finalReason}
                       onChange={(e) => setFinalReason(e.target.value)}
-                      
                     />
-                    
                   </div>
 
                   <div className="flex gap-4 w-full justify-center mt-5">
-                    <div >
-                      <button onClick={approved}  className="text-black text-lg bg-green-400 hover:bg-green-500 focus:ring-4  font-medium rounded-lg  px-5 py-2.5 me-2 mb-2 ">
+                    <div>
+                      <button
+                        onClick={approved}
+                        className="text-black text-lg bg-green-400 hover:bg-green-500 focus:ring-4  font-medium rounded-lg  px-5 py-2.5 me-2 mb-2 "
+                      >
                         Submit
                       </button>
                     </div>
                     <div>
-                      <button  onClick={Reject} className="text-white bg-red-700 text-lg hover:bg-red-800 focus:ring-4  font-medium rounded-lg  px-5 py-2.5 me-2 mb-2 ">
+                      <button
+                        onClick={Reject}
+                        className="text-white bg-red-700 text-lg hover:bg-red-800 focus:ring-4  font-medium rounded-lg  px-5 py-2.5 me-2 mb-2 "
+                      >
                         Reject
                       </button>
                     </div>

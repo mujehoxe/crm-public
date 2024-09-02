@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import SearchableSelect from "../dropdown";
 import "bootstrap/dist/css/bootstrap.css";
@@ -12,6 +12,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { NumericFormat } from "react-number-format";
 
 function Add() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuspenseWrappde />
+    </Suspense>
+  );
+}
+
+function SuspenseWrappde() {
   const userdata = TokenDecoder();
   const userid = userdata ? userdata.id : null;
   const username = userdata ? userdata.name : null;
@@ -207,6 +215,7 @@ function Add() {
     }));
     setoptions10(newOptions);
   }, [TagsCount]);
+
   const leadpara = searchParams.get("lead");
 
   const options3 = [{ value: "Test@gmail.com", label: "Test Staff" }];

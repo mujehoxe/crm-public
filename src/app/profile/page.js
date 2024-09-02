@@ -1,27 +1,24 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect, useRef } from "react";
-import Calendar from "../components/calender";
-import RootLayout from "../components/layout";
-import TokenDecoder from "../components/Cookies";
-import AnimatedNumbers from "react-animated-numbers";
-import { ToastContainer, toast } from "react-toastify";
-import { motion } from "framer-motion";
-import "react-toastify/dist/ReactToastify.css";
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler,
 } from "chart.js";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+// import AnimatedNumbers from "react-animated-numbers";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Calendar from "../components/calender";
+import TokenDecoder from "../components/Cookies";
+import RootLayout from "../components/layout";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -34,6 +31,7 @@ ChartJS.register(
 );
 
 import { Line } from "react-chartjs-2";
+
 function ProfilePage() {
   const [sales, setsales] = useState(0);
   const [tsales, settsales] = useState(0);
@@ -48,11 +46,8 @@ function ProfilePage() {
   const userid = userdata ? userdata.id : null;
   const userrole = userdata ? userdata.role : null;
   const [personalSales, setPersonalSales] = useState(0);
-  const [newLeads, setNewLeads] = useState(0)
+  const [newLeads, setNewLeads] = useState(0);
   const [graphData, setGraphData] = useState([]);
-  const [yourSalesRevenue, setYourSalesRevenue] = useState(0);
-
-  const [salesRevenue, setSalesRevenue] = useState(0);
 
   useEffect(() => {
     if ("Notification" in window && Notification.permission !== "granted") {
@@ -217,19 +212,16 @@ function ProfilePage() {
           url = `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
         }
         const response = await axios.get(url);
-        
-        
-        const leadArray = []
-        
-        response.data.data.map((lead, index)=>{
-            if(lead.LeadStatus._id == '669901be09b3b0c976dabedf'){
-                leadArray.push(lead)
-            }
-        })
-        setNewLeads(leadArray.length )
-        
-        
-        
+
+        const leadArray = [];
+
+        response.data.data.map((lead, index) => {
+          if (lead.LeadStatus._id == "669901be09b3b0c976dabedf") {
+            leadArray.push(lead);
+          }
+        });
+        setNewLeads(leadArray.length);
+
         const followUpLeads = response.data.data.filter(
           (lead) => lead.LeadStatus === "Follow up"
         );
@@ -246,8 +238,8 @@ function ProfilePage() {
 
     fetchLead();
   }, [userrole]);
- 
-  console.log(newLeads, 'new Leads')
+
+  console.log(newLeads, "new Leads");
   const monthNames = [
     "January",
     "February",
@@ -467,7 +459,9 @@ function ProfilePage() {
                           } pt-2 pb-4 justify-between`}
                         >
                           <div className="flex w-full items-center gap-3">
-                            <p className="!mb-0 tablet:text-2xl mobile:text-lg">{index+1}.)</p>
+                            <p className="!mb-0 tablet:text-2xl mobile:text-lg">
+                              {index + 1}.)
+                            </p>
                             <p className="!mb-0 tablet:text-2xl mobile:text-lg">
                               {dev.name}
                             </p>
@@ -559,14 +553,7 @@ function ProfilePage() {
                     </p>
                     <p className="!mb-0 py-2 tablet:text-2xl mobile:text-lg">
                       <span className="tablet:text-4xl mobile:text-xl font-[500] inline-block font-Ranade tracking-tight">
-                        <AnimatedNumbers
-                          transitions={(index) => ({
-                            type: "spring",
-                            duration: index + 0.3,
-                          })}
-                          animateToNumber={parseFloat(lead.data)}
-                          includeComma={true}
-                        />
+                        <div>{parseFloat(lead.data)}</div>
                       </span>
                     </p>
                   </div>
