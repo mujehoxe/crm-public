@@ -43,12 +43,13 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
-      - name: Setup environment and restart app
+      - name: Setup and run application
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd ~/nextjs-app && 
-            echo 'mongo_url=${{ secrets.mongo_url }}' > .env &&
-            echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' > .env &&
-            npm ci --only=production && 
+            echo 'mongo_url=${{ secrets.MONGO_URL }}' > .env &&
+            echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
+            npm install -g pm2 &&
+            npm ci --omit=dev && 
             pm2 restart nextjs-app || pm2 start 'npm run start' --name nextjs-app
           "
