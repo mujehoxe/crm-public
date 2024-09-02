@@ -36,7 +36,7 @@ export async function POST(request) {
     const leadid = Lead;
 
     const leadResponse = await axios.get(
-      process.env.BASE_URL + `/api/Lead/${leadid}`
+      (process.env.BASE_URL || "") + `/api/Lead/${leadid}`
     );
     const {
       Leadname: Name,

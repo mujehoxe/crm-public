@@ -2,11 +2,13 @@ name: Deploy Next.js App
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    env:
+      MONGO_URL: ${{ secrets.MONGO_URL }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -21,6 +23,9 @@ jobs:
 
       - name: Build project
         run: npm run build
+        env:
+          mongo_url: ${{ secrets.mongo_url }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -31,8 +36,15 @@ jobs:
       - name: Deploy with rsync
         run: |
           rsync -avz --delete .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
-          rsync -avz package.json package-lock.json ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
-      - name: Restart PM2 process
+      - name: Setup environment and restart app
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ~/nextjs-app && npm install --production && pm2 restart nextjs-app || pm2 start npm --name nextjs-app -- start"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd ~/nextjs-app && 
+            echo 'mongo_url=${{ secrets.mongo_url }}' > .env &&
+            echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' > .env &&
+            npm ci --only=production && 
+            pm2 restart nextjs-app || pm2 start 'npm run start' --name nextjs-app
+          "

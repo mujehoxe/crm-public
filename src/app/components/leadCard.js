@@ -265,7 +265,9 @@ const LeadCard = ({
           <div className="  size-8 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
             {currentLead?.Assigned?.Avatar ? (
               <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${currentLead?.Assigned.Avatar}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
+                  currentLead?.Assigned.Avatar
+                }`}
               />
             ) : (
               <FaRegUserCircle />

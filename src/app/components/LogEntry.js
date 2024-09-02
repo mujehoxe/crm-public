@@ -78,7 +78,9 @@ const LogEntry = ({ log, leadData, index }) => {
         <div className="relative w-10 h-10 flex items-center justify-center">
           <img
             className="rounded-full border-0 p-1 border-white bg-transparent object-cover w-full top-0 right-0 h-full z-10"
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}${log.Userid?.Avatar}`}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
+              log.Userid?.Avatar
+            }`}
             alt=""
           />
           <i className="absolute w-full h-full text-center align-middle pt-[6px] text-gray-500 fa fa-user z-0"></i>
