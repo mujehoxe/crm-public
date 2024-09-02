@@ -123,7 +123,7 @@ const Topbar = ({
               {avtaar != null ? (
                 <div className="overflow-hidden">
                   <img
-                    src={process.env.NEXT_PUBLIC_BASE_URL + avtaar}
+                    src={"http://65.20.87.36:3333" + avtaar}
                     className="tablet:w-[35px] mobile:w-[25px]"
                   />
                 </div>
