@@ -21,75 +21,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Set file permissions
-        run: |
-          echo "Starting file permission setup..."
-
-          # Create a tar archive of the current directory
-          tar -czf ./archive.tar.gz .
-
-          # Transfer the archive to the remote server
-          scp ./archive.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/
-
-          # SSH into the remote server and extract the archive
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            cd ~
-            rm -rf nextjs-app
-            mkdir nextjs-app
-            tar -xzvf archive.tar.gz -C nextjs-app
-            cd nextjs-app
-            find . -type d -exec chmod 755 {} \;
-            find . -type f -exec chmod 644 {} \;
-            rm archive.tar.gz
-            ls -l nextjs-app  # List contents for verification
-          "
-
-          # Check if the extraction was successful
-          if [ $? -eq 0 ]; then
-            echo "File permissions setup completed successfully."
-          else
-            echo "Error setting file permissions. Please check the logs for details."
-            exit 1
-          fi
-
-          # Clean up local archive
-          rm ./archive.tar.gz
-
       - name: Build project
         run: npm run build
         env:
-          MONGO_URL: ${{ secrets.MONGO_URL }}
+          mongo_url: ${{ secrets.mongo_url }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
-      - name: Install SSH Key
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: replace
 
-      - name: Create remote directory and deploy with rsync
+      - name: Deploy with rsync
         run: |
-          ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'SSH connection successful'; exit 0"
-          if [ $? -eq 0 ]; then
-            ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/nextjs-app/.next"
-            rsync -avz --delete .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
-            rsync -avz package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
-            rsync -avz public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
-          else
-            echo "SSH connection failed"
-            exit 1
-          fi
-
-      - name: Check remote directory permissions
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -ld ~/nextjs-app"
+          rsync -avz --delete .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
+          rsync -avz package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
       - name: Setup environment and restart app
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd ~/nextjs-app && 
-            echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
+            echo 'mongo_url=${{ secrets.mongo_url }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' > .env &&
             npm ci --only=production && 
             pm2 restart nextjs-app || pm2 start 'npm run start' --name nextjs-app
