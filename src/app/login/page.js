@@ -16,7 +16,6 @@ function LoginPage() {
     email: "",
     password: "",
   });
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [loginStatus, setLoginStatus] = useState();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -39,18 +38,6 @@ function LoginPage() {
       setIsLoggingIn(false);
     }
   };
-
-  useEffect(() => {
-    setDisabled();
-  }, [user]);
-
-  function setDisabled() {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtonDisabled(true);
-    } else {
-      setButtonDisabled(false);
-    }
-  }
 
   return (
     <RootLayout>
@@ -106,7 +93,6 @@ function LoginPage() {
                     value={user.password}
                     onChange={(e) => {
                       setUser({ ...user, password: e.target.value });
-                      setDisabled();
                     }}
                     className="w-full !bg-transparent  !border !border-gray-700 focus:outline-none h-12 !pl-8 !rounded-lg hover:shadow-md transition-all duration-300 focus:shadow-md placeholder:text-slate-600 placeholder:font-semibold !text-[1rem]"
                     placeholder="Enter your password"
@@ -126,7 +112,6 @@ function LoginPage() {
                 onClick={onLogin}
                 type="submit"
                 className="disabled:!bg-gray-800 disabled:text-gray-500 !mt-0 !border-0 disabled:font-semibold w-full font-medium bg-black text-slate-50 !rounded-lg py-2 text-xl font-Satoshi hover:!bg-gray-900"
-                disabled={buttonDisabled}
               >
                 {isLoggingIn ? (
                   <p className="!mb-0">Logging in...</p>
