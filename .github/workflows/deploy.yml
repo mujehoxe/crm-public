@@ -24,26 +24,28 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          mongo_url: ${{ secrets.mongo_url }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
-      - name: Install SSH key
+      - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
 
-      - name: Deploy with rsync
+      - name: Create remote directory and deploy with rsync
         run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/nextjs-app/.next"
           rsync -avz --delete .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
           rsync -avz package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
           rsync -avz public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
       - name: Setup environment and restart app
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd ~/nextjs-app && 
-            echo 'mongo_url=${{ secrets.mongo_url }}' > .env &&
+            echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' > .env &&
             npm ci --only=production && 
             pm2 restart nextjs-app || pm2 start 'npm run start' --name nextjs-app
