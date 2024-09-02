@@ -83,7 +83,6 @@ function LoginPage() {
                     value={user.email}
                     onChange={(e) => {
                       setUser({ ...user, email: e.target.value });
-                      setDisabled();
                     }}
                     className="w-full !border !border-gray-700 !bg-transparent  focus:outline-none h-12 !pl-8 !rounded-lg hover:shadow-md transition-all placeholder:text-slate-600 placeholder:font-semibold duration-300 focus:shadow-md !text-[1rem]"
                     placeholder="Enter your email"
