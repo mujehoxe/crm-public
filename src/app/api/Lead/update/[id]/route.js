@@ -48,6 +48,7 @@ export async function PATCH(request, { params }) {
     for (const field of expectedFields) {
       if (
         !reqBody[field] ||
+        reqBody[field] == "" ||
         field === "updateDescription" ||
         field === "currentLead"
       )
