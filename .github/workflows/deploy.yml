@@ -51,22 +51,9 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
             
-            # Ensure correct permissions on public folder
             chmod -R 755 public &&
             
-            # Debug: List contents of public/users
-            echo 'Contents of public/users:' &&
-            ls -la public/users &&
-            
-            # Kill any existing Next.js process
             pkill -f 'node.*next' || true &&
             
-            # Start Next.js in the background
             nohup npm run start > app.log 2>&1 &
-            
-            # Wait for the app to start
-            sleep 10
-            
-            # Debug: Check if the file is accessible
-            curl -I http://localhost:3000/users/1719319112270_Super%20admin.png
           "
