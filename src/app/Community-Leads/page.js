@@ -387,20 +387,6 @@ function Cold() {
     fetchSource();
   }, []);
 
-  const [allTags, setAllTags] = useState([]);
-  useEffect(() => {
-    const fetchSource = async () => {
-      try {
-        const response = await axios.get(`/api/tags/get`);
-        setAllTags(response.data.data);
-      } catch (error) {
-        console.error("Error fetching Source:", error);
-      }
-    };
-
-    fetchSource();
-  }, []);
-
   const handleParse = (data) => {
     setParsedData(data);
   };
@@ -812,7 +798,6 @@ function Cold() {
                           selectedLeads={selectedLeads}
                           setEdit={setEdit}
                           options2={options2}
-                          allTags={allTags}
                         />
                         {edit === currentLead._id && (
                           <EditModal

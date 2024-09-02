@@ -46,7 +46,6 @@ const LeadCard = ({
   selectedLeads,
   setEdit,
   options2,
-  allTags,
 }) => {
   const divRef = useRef(null);
 
