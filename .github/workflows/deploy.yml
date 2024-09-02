@@ -46,10 +46,10 @@ jobs:
       - name: Setup and run application
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            cd ~/nextjs-app && 
-            echo 'mongo_url=${{ secrets.MONGO_URL }}' > .env &&
+            cd ~/nextjs-app &&
+            echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm install -g pm2 &&
-            npm ci --omit=dev && 
-            pm2 restart nextjs-app || pm2 start 'npm run start' --name nextjs-app
+            npm ci --omit=dev &&
+            pm2 restart nextjs-app > pm2.log 2>&1 || pm2 start 'npx next start' --name nextjs-app > pm2.log 2>&1
           "
