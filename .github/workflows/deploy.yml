@@ -34,11 +34,12 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
           if_key_exists: replace
 
-      - name: Deploy with rsync
+      - name: Create remote directory and deploy with rsync
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --delete --existing -v .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --existing -v public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
+          ssh -o ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/nextjs-app/.next"
+          rsync -avz -e "ssh -o .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
+          rsync -avz -e "ssh -o package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
+          rsync -avz -e "ssh -o public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
 
       - name: Setup and run application
         run: |
