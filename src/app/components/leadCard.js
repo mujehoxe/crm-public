@@ -5,7 +5,7 @@ import { IoIosArrowDropright } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import { Select } from "antd";
+import { Descriptions, Select } from "antd";
 import axios from "axios";
 
 const ReadMore = ({ children, setEdit, id }) => {
@@ -40,8 +40,6 @@ const LeadCard = ({
   currentLead,
   currentLeads,
   setCurrentLeads,
-  updateLeadStatus,
-  updateLeadSource,
   handleCardClick,
   selectedLeads,
   setEdit,
@@ -80,36 +78,31 @@ const LeadCard = ({
     show: { x: 0 },
   };
 
-  const [selected, setSelected] = useState({
+  const [updateBody, setUpdateBody] = useState({
     Source: currentLead.Source,
     LeadStatus: currentLead.LeadStatus,
+    Description: currentLead.Description,
+    tags: currentLead.tags,
+    MarketingTags: currentLead.MarketingTags,
+    updateDescription: "",
+    currentLead,
   });
 
-  const [tagInput, setTagInput] = useState("");
   const [isTagInput, setIsTagInput] = useState(false);
-  const [marketingtagInput, setMarketingTagInput] = useState("");
   const [isMarketingTagInput, setIsMarketingTagInput] = useState(false);
-  const [description, setDescription] = useState("");
   const [isDescriptionInput, setIsDescriptionInput] = useState(false);
-
-  const [updateDescription, setUpdateDescription] = useState("");
   const [isUpdateDescriptionInput, setIsUpdateDescriptionInput] =
     useState(false);
 
   async function handleTagSubmit() {
-    const body = { updateDescription, currentLead };
-    marketingtagInput && (body.MarketingTags = marketingtagInput);
-    tagInput && (body.tags = tagInput);
-    description && description != "" && (body.Description = description);
-
     const response = await axios.patch(
       "/api/Lead/update/" + currentLead._id,
-      body
+      updateBody
     );
 
     response.status === 200 &&
       (setIsUpdateDescriptionInput(false) ||
-        setUpdateDescription("") ||
+        setUpdateBody({ ...updateBody, updateDescription: "" }) ||
         setCurrentLeads(
           currentLeads.map((lead) => {
             lead._id == currentLead._id ? response.data.data : lead;
@@ -117,13 +110,13 @@ const LeadCard = ({
         ));
   }
 
-  function tagChange(e, setTagInput) {
+  function tagChange({ target: { innerText } }, field) {
     if (
-      e.target.innerText != "" &&
-      e.target.innerText != "No Tag" &&
-      e.target.innerText != currentLead?.marketingtags?.Tag
+      innerText != "" &&
+      innerText != "No Tag" &&
+      innerText != currentLead?.marketingtags?.Tag
     ) {
-      setTagInput(e.target.innerText);
+      setUpdateBody({ ...updateBody, [field]: innerText });
       setIsUpdateDescriptionInput(true);
     }
   }
@@ -150,12 +143,8 @@ const LeadCard = ({
             allowClear
             style={{ width: "100%", height: "100%" }}
             onChange={(_, selectedOption) => {
-              updateLeadStatus(
-                currentLead._id,
-                selected.LeadStatus,
-                selectedOption
-              );
-              setSelected({ ...selected, LeadStatus: selectedOption });
+              setUpdateBody({ ...updateBody, LeadStatus: selectedOption });
+              setIsUpdateDescriptionInput(true);
             }}
             options={options}
             placeholder={"Users"}
@@ -170,12 +159,8 @@ const LeadCard = ({
               allowClear
               style={{ width: "100%", height: "100%" }}
               onChange={(_, selectedOption) => {
-                updateLeadSource(
-                  currentLead._id,
-                  selected.Source,
-                  selectedOption
-                );
-                setSelected({ ...selected, Source: selectedOption });
+                setUpdateBody({ ...updateBody, Source: selectedOption });
+                setIsUpdateDescriptionInput(true);
               }}
               options={options2}
               placeholder={"Users"}
@@ -297,7 +282,7 @@ const LeadCard = ({
             e.stopPropagation();
             setIsMarketingTagInput(true);
           }}
-          onBlur={(e) => tagChange(e, setMarketingTagInput)}
+          onBlur={(e) => tagChange(e, "MarketingTags")}
           contentEditable={isMarketingTagInput}
           className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
@@ -314,7 +299,7 @@ const LeadCard = ({
             e.stopPropagation();
             setIsTagInput(true);
           }}
-          onBlur={(e) => tagChange(e, setTagInput)}
+          onBlur={(e) => tagChange(e, "tags")}
           contentEditable={isTagInput}
           className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
@@ -328,8 +313,9 @@ const LeadCard = ({
           onBlur={({ target: { innerText } }) =>
             setIsDescriptionInput(false) ||
             (innerText != "No Description" &&
-              innerText != description &&
-              (setDescription(innerText) || setIsUpdateDescriptionInput(true)))
+              innerText != updateBody.Description &&
+              (setUpdateBody({ ...updateBody, Description: innerText }) ||
+                setIsUpdateDescriptionInput(true)))
           }
           className={`line-clamp-2 w-full ${
             isDescriptionInput && "border-2 border-blue-400 rounded-sm"
@@ -363,7 +349,12 @@ const LeadCard = ({
               gridArea: "1 / 2",
             }}
             onClick={(e) => e.stopPropagation()}
-            onBlur={(e) => setUpdateDescription(e.target.value)}
+            onBlur={(e) =>
+              setUpdateBody({
+                ...updateBody,
+                updateDescription: e.target.value,
+              })
+            }
           ></input>
           <i
             onClick={handleTagSubmit}

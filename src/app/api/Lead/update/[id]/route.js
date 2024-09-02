@@ -54,7 +54,6 @@ export async function PATCH(request, { params }) {
         continue;
 
       if (field === "tags" || field == "MarketingTags") {
-        console.log(field, reqBody[field]);
         const existingTag = await TagsModel.findOne({ Tag: reqBody[field] });
         let newTag;
         if (!existingTag) {
@@ -71,11 +70,12 @@ export async function PATCH(request, { params }) {
         continue;
       }
 
-      if (reqBody[field] !== undefined && field !== "previousStatus") {
-        updateObj[field] =
-          reqBody[field].value !== undefined
-            ? reqBody[field].value
-            : reqBody[field];
+      console.log(reqBody);
+
+      if (reqBody[field] && field !== "previousStatus") {
+        updateObj[field] = reqBody[field].value
+          ? reqBody[field].value
+          : reqBody[field];
       }
     }
 
@@ -98,7 +98,8 @@ export async function PATCH(request, { params }) {
           leadstatus: reqBody[updatedField]?.label || reqBody[updatedField],
           date: currentDate,
           previousLeadstatus:
-            reqBody.previousStatus?.label || reqBody.currentLead[updatedField],
+            reqBody.previousStatus?.label ||
+            (reqBody.currentLead && reqBody.currentLead[updatedField]),
           description: reqBody.updateDescription,
         });
         return activityLog.save();
