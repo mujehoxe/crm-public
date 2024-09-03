@@ -187,10 +187,9 @@ function Staff() {
                         )}
                       </td>
                       <td>
-                        <i
-                          className="ri-upload-cloud-2-fill f-24"
-                          onClick={(e) => toggleDocumentModal(e, user._id)}
-                        ></i>
+                        <i className="fas fa-cloud-upload-alt f-24">
+                          onClick={(e) => toggleDocumentModal(e, user._id)}>
+                        </i>
                       </td>
 
                       <td>
@@ -247,7 +246,7 @@ function Staff() {
                     className="page-link"
                     onClick={prevPage}
                   >
-                    <i className="mdi mdi-chevron-left" />
+                    <i className="fa fa-chevron-left" />
                   </a>
                 </li>
                 {Array.from(
@@ -294,7 +293,7 @@ function Staff() {
                     className="page-link"
                     onClick={nextPage}
                   >
-                    <i className="mdi mdi-chevron-right" />
+                    <i className="fa fa-chevron-right" />
                   </a>
                 </li>
               </ul>

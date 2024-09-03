@@ -113,14 +113,14 @@ function Leads() {
                               </div>
                               <div className="text-primary ml-15">
                                 <a href={`tel:${currentLead.Phone}`}>
-                                  <i className="ri-phone-fill font-size-24" />
+                                  <i className="fa fa-phone font-size-24" />
                                 </a>
                               </div>
                               <div className="text-primary ml-15">
                                 <a
                                   href={`https://wa.me/${currentLead.Phone}?text=Your%20custom%20message%20here`}
                                 >
-                                  <i className="ri-whatsapp-fill font-size-24" />
+                                  <i className="fab fa-whatsapp" />
                                 </a>
                               </div>
                             </div>
@@ -182,7 +182,7 @@ function Leads() {
                               className="page-link"
                               onClick={prevPage}
                             >
-                              <i className="mdi mdi-chevron-left" />
+                              <i className="fa fa-chevron-left" />
                             </a>
                           </li>
                           {Array.from(
@@ -233,7 +233,7 @@ function Leads() {
                               className="page-link"
                               onClick={nextPage}
                             >
-                              <i className="mdi mdi-chevron-right" />
+                              <i className="fa fa-chevron-right" />
                             </a>
                           </li>
                         </ul>

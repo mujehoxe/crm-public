@@ -22,7 +22,7 @@ import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
 import ReminderModal from "../components/Remindermodal";
 import BulkModal from "./Bulk/bulk";
-import LeadCard from "./leadCard";
+import LeadCard from "./LeadCard";
 import EditModal from "./EditModal/EditModal";
 import MeetingModal from "./EditModal/MeetingModal";
 
@@ -733,7 +733,7 @@ function Cold() {
                   onClick={openexcelmodal}
                   animate={{ bottom: btnShow ? "120%" : 0 }}
                   transition={{ duration: 0.4, type: "spring", delay: 0.2 }}
-                  className={`size-12 cursor-pointer bg-sky-300  text-2xl -z-[99] flex items-center justify-center cursor-default rounded-full absolute  `}
+                  className={`size-12 cursor-pointer bg-sky-300  text-2xl -z-[99] flex items-center justify-center rounded-full absolute  `}
                 >
                   <RiUploadCloud2Fill />
                 </motion.div>
@@ -741,7 +741,7 @@ function Cold() {
                   onClick={fetchDataAndDownloadExcel}
                   animate={{ right: btnShow ? "120%" : 0 }}
                   transition={{ duration: 0.4, type: "spring" }}
-                  className={`size-12 bg-sky-300 cursor-pointer  text-2xl -z-[99] flex items-center justify-center bottom-0 cursor-default rounded-full absolute  `}
+                  className={`size-12 bg-sky-300 cursor-pointer  text-2xl -z-[99] flex items-center justify-center bottom-0 rounded-full absolute  `}
                 >
                   <SiGooglesheets />
                 </motion.div>
@@ -751,7 +751,7 @@ function Cold() {
                     bottom: btnShow ? "120%" : 0,
                   }}
                   transition={{ duration: 0.4, type: "spring", delay: 0.1 }}
-                  className={`size-12 bg-sky-300 cursor-pointer text-2xl -z-[99] flex items-center justify-center cursor-default rounded-full absolute  `}
+                  className={`size-12 bg-sky-300 cursor-pointer text-2xl -z-[99] flex items-center justify-center rounded-full absolute  `}
                 >
                   <Link
                     href={{
@@ -789,7 +789,7 @@ function Cold() {
                           className="page-link"
                           onClick={prevPage}
                         >
-                          <i className="mdi mdi-chevron-left" />
+                          <i className="fa fa-chevron-left" />
                         </a>
                       </li>
                       <li className="p-2 rounded-full">{currentPage}</li>
@@ -803,7 +803,7 @@ function Cold() {
                       >
                         <button onClick={nextPage} className="page-link">
                           {" "}
-                          <i className="mdi mdi-chevron-right" />
+                          <i className="fa fa-chevron-right" />
                         </button>
                       </li>
                     </>
