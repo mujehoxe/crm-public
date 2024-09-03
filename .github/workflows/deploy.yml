@@ -39,6 +39,12 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" --delete -v .next/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/.next/
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" -v package.json package-lock.json next.config.js ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" -v public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/nextjs-app/public/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            if [ ! -d ~/nextjs-app/public/users ]; then
+              mkdir -p ~/nextjs-app/public
+              cp -r ~/crm/public/users ~/nextjs-app/public/
+            fi
+          "
 
       - name: Setup and run application
         run: |
