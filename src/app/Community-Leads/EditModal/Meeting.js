@@ -1,68 +1,113 @@
 import React from "react";
-import moment from "moment";
 
 const priorityMap = {
-  Low: { bg: "bg-yellow-200", text: "text-yellow-800" },
-  Medium: { bg: "bg-orange-200", text: "text-orange-800" },
-  High: { bg: "bg-purple-200", text: "text-purple-800" },
-  Urgent: { bg: "bg-red-200", text: "text-red-800" },
+  Low: { bg: "bg-yellow-100", text: "text-yellow-800" },
+  Medium: { bg: "bg-orange-100", text: "text-orange-800" },
+  High: { bg: "bg-purple-100", text: "text-purple-800" },
+  Urgent: { bg: "bg-red-100", text: "text-red-800" },
 };
 
 function Meeting({ meeting }) {
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(date).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <article className="flex flex-col gap-2 p-4 border rounded-md shadow-sm">
-      <header className="flex justify-between items-center mb-2">
-        <h3 className="font-semibold text-lg">{meeting.Subject}</h3>
-        <span
-          className={`text-xs px-2 py-1 rounded-full ${
-            priorityMap[meeting.Priority]?.bg || "bg-gray-100"
-          }`}
-        >
-          <i
-            className={`fa fa-circle ${
-              priorityMap[meeting.Priority]?.text || "text-gray-700"
-            } mr-1`}
-          />{" "}
-          {meeting.Priority}
-        </span>
+    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      <header className="p-4 border-b border-gray-200">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="font-semibold text-lg text-gray-800">
+            {meeting.Subject}
+          </h3>
+          <span
+            className={`text-xs px-2 py-1 rounded-full ${
+              priorityMap[meeting.Priority]?.bg || "bg-gray-100"
+            } ${priorityMap[meeting.Priority]?.text || "text-gray-700"}`}
+          >
+            <i
+              className={`fa fa-circle mr-2 ${
+                priorityMap[meeting.Priority]?.text || "text-gray-700"
+              } mr-1`}
+            />{" "}
+            {meeting.Priority}
+          </span>
+        </div>
+        <p className="text-sm text-gray-600">
+          Status: <span className="font-medium">{meeting.Status}</span>
+        </p>
       </header>
 
-      <div className="flex flex-wrap gap-2">
-        <div className="flex-col">
-          <p className="mb-2">
-            <i className="fa fa-user" /> Added by: {meeting.addedby.username}
-          </p>
-          <p className="mb-2">
-            <i className="fa fa-calendar" />{" "}
-            {((date) => moment(date).format("DD/MM/YYYY"))(meeting.MeetingDate)}
-          </p>
+      <div className="p-4 space-y-3">
+        <div className="flex items-center text-sm text-gray-600">
+          <i className="fa fa-user mr-2" />
+          <span>
+            Added by:{" "}
+            <span className="font-medium">{meeting.addedby.username}</span>
+          </span>
         </div>
 
-        {meeting.MeetingType === "Secondary" ? (
-          <p className="mb-2">
-            <i className="fa fa-user" /> Agent Name: {meeting.directoragnet}
-          </p>
-        ) : (
-          <p className="mb-2">
-            <i className="fa fa-user" /> Developer: {meeting.Developer}
-          </p>
-        )}
+        <div className="flex items-center text-sm text-gray-600">
+          <i className="fa fa-calendar mr-2" />
+          <span>{formatDate(meeting.MeetingDate)}</span>
+        </div>
 
-        <p className="mb-2">
-          <i className="fa fa-map-marker-alt" /> {meeting.Location}
-        </p>
-        <p className="mb-2">Status: {meeting.Status}</p>
+        {meeting.MeetingType &&
+          (meeting.Developer || meeting.directoragnet) && (
+            <div className="flex text-sm text-gray-600 rounded-lg p-3 bg-gray-50">
+              <i className="fa fa-user mt-1 mr-2" />
+              {meeting.MeetingType === "Secondary" ? (
+                meeting.directoragnet == "Agent" ? (
+                  <div className="flex flex-col">
+                    <span className="">Agent</span>
+                    <span>
+                      Name:{" "}
+                      <span className="font-medium">{meeting.agentName}</span>
+                    </span>
+                    <span>
+                      Phone:{" "}
+                      <span className="font-medium">{meeting.agentPhone}</span>
+                    </span>
+                    <span>
+                      Company:{" "}
+                      <span className="font-medium">
+                        {meeting.agentCompany}
+                      </span>
+                    </span>
+                  </div>
+                ) : (
+                  <span>Direct / No Agent</span>
+                )
+              ) : (
+                <div>
+                  {meeting.Developer && (
+                    <span>
+                      Developer:{" "}
+                      <span className="font-medium">{meeting.Developer}</span>
+                    </span>
+                  )}
+                  {meeting.Location && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <i className="fa fa-map-marker-alt mr-2" />
+                      <span>{meeting.Location}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
       </div>
 
-      <footer className="mt-auto flex justify-between items-center">
-        <p className="text-xs text-gray-500">
-          Meeting Type: {meeting.MeetingType}
-        </p>
-        {meeting.Comment && (
-          <p className="text-xs text-gray-500">
-            <i className="fas fa-comment" /> {meeting.Comment}
-          </p>
-        )}
+      <footer className="bg-gray-100 px-4 py-3">
+        <div className="flex justify-between items-center text-xs text-gray-500">
+          <span>Meeting Type: {meeting.MeetingType}</span>
+          {meeting.Comment && (
+            <div className="flex items-center">
+              <i className="fas fa-comment mr-2" />
+              <span>{meeting.Comment}</span>
+            </div>
+          )}
+        </div>
       </footer>
     </article>
   );
