@@ -16,9 +16,9 @@ import Loader from "./Loader"; // Import the Loader component
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const [sidePanelStat, setSidePanelStat] = useState(false);
-  const userdata = TokenDecoder();
-  const avtaar = userdata ? userdata.avatar : null;
-  const userrole = userdata ? userdata.role : null;
+  const userData = TokenDecoder();
+  const avtaar = userData ? userData.avatar : null;
+  const userrole = userData ? userData.role : null;
   const buttonRef = useRef(null);
   const pathname = usePathname();
   setTimeout(() => {
@@ -42,9 +42,7 @@ export default function RootLayout({ children }) {
                 <Topbar
                   sidePanelStat={sidePanelStat}
                   setSidePanelStat={setSidePanelStat}
-                  avtaar={avtaar}
-                  userrole={userrole}
-                  userdata={userdata}
+                  userData={userData}
                   buttonRef={buttonRef}
                 />
               </div>
@@ -55,7 +53,7 @@ export default function RootLayout({ children }) {
                   setSidePanelStat={setSidePanelStat}
                   avtaar={avtaar}
                   userrole={userrole}
-                  userdata={userdata}
+                  userdata={userData}
                 />
               </div>
             </div>

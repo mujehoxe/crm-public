@@ -6,19 +6,13 @@ import { motion } from "framer-motion";
 import { MdOutlineSettings } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 
-const Topbar = ({
-  sidePanelStat,
-  setSidePanelStat,
-  avtaar,
-  userdata,
-  userrole,
-  buttonRef,
-}) => {
+const Topbar = ({ sidePanelStat, setSidePanelStat, userData, buttonRef }) => {
   const [isBodyClassActive, setIsBodyClassActive] = useState(false);
   const [isMobileScreen, setIsMobileScreen] = useState(false);
   const [settingRotate, setSettingRotate] = useState(false);
 
-  const username = userdata ? userdata.name : null;
+  const username = userData ? userData.name : null;
+  const avatar = userData ? userData.avatar : null;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -120,10 +114,10 @@ const Topbar = ({
               {username}
             </p>
             <div className="size-10 bg-slate-300/40 text-black rounded-full overflow-hidden flex justify-center items-center cursor-pointer group-hover:bg-slate-300/70 transition-all duration-300">
-              {avtaar != null ? (
+              {avatar ? (
                 <div className="overflow-hidden">
                   <img
-                    src={process.env.NEXT_PUBLIC_BASE_URL || "" + avtaar}
+                    src={(process.env.NEXT_PUBLIC_BASE_URL || "") + avatar}
                     className="tablet:w-[35px] mobile:w-[25px]"
                   />
                 </div>

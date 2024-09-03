@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../Modal.module.css";
+import styles from "../../Modal.module.css";
 import axios from "axios";
-import SearchableSelect from "../Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
-import TokenDecoder from "./Cookies";
+import SearchableSelect from "@/app/Leads/dropdown";
+import TokenDecoder from "@/app/components/Cookies";
 
 const BulkModal = ({ onClose, selectedLeads, setBulkOperationMade }) => {
   const userdata = TokenDecoder();

@@ -38,11 +38,8 @@ export async function POST(request) {
     const leadResponse = await axios.get(
       (process.env.BASE_URL || "") + `/api/Lead/${leadid}`
     );
-    const {
-      Leadname: Name,
-      Leademail: Email,
-      Leadphone: Phone,
-    } = leadResponse.data;
+
+    const { Name, Email, Phone } = leadResponse.data.data;
 
     const newMeeting = new Meeting({
       Subject,
@@ -67,7 +64,10 @@ export async function POST(request) {
     logger.info("New Meeting added:", savedMeeting);
     const currentDate = new Date().toLocaleDateString();
 
-    const action = `Meeting added by ${username} and Lead Name ${Name}, Lead Email ${Email}, Lead Phone ${Phone}`;
+    const action = `Meeting added by ${username} to Lead: ${
+      Name ? `Name: "${Name}"` : ""
+    }${Email ? ` Email: ${Email}` : ""}${Phone ? ` Phone: ${Phone}` : ""}`;
+
     const activityLog = new ActivityLog({
       action,
       Userid: userId,

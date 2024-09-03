@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LogEntry from "./LogEntry";
+import axios from "axios";
 
-const LogDisplay = ({ loading, logs, leadData }) => {
+const LogDisplay = ({ leadData }) => {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (leadData._id) {
+          setLoading(true);
+          const response = await axios.get(`/api/log/${leadData._id}`);
+          setLogs(response.data.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching meetings:", error);
+      }
+    };
+
+    fetchData();
+  }, [leadData._id]);
+
   return (
     <div className="container mx-auto space-y-4">
       {loading ? (
@@ -18,7 +39,7 @@ const LogDisplay = ({ loading, logs, leadData }) => {
           </div>
         </div>
       ) : logs.length <= 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-96 text-center">
+        <div className="bg-white rounded-lg shadow-md p-6 md:w-96 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="mx-auto mb-4 h-12 w-12 text-gray-400"

@@ -1,5 +1,4 @@
 "use client";
-import EditModal from "@/app/components/editModal";
 import RootLayout from "@/app/components/layout";
 import { DatePicker, Select } from "antd";
 import axios from "axios";
@@ -16,9 +15,10 @@ import "rsuite/dist/rsuite.min.css";
 import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
 import ReminderModal from "../components/Remindermodal";
-import BulkModal from "../components/bulk";
-import LeadCard from "../components/leadCard";
-import MeetingModal from "../components/meetingmodal";
+import BulkModal from "./Bulk/bulk";
+import LeadCard from "./leadCard";
+import EditModal from "./EditModal/EditModal";
+import MeetingModal from "./EditModal/MeetingModal";
 
 const { RangePicker } = DatePicker;
 
@@ -241,23 +241,6 @@ function Cold() {
     }));
     setStatusOptions(newStatusOptions);
   }, [StatusCount]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (leadid) {
-          const response = await axios.get(`/api/Meeting/get/${leadid}`);
-          setMeetings(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching meetings:", error);
-      }
-    };
-
-    if (leadid) {
-      fetchData();
-    }
-  }, []);
 
   const [Reminders, setReminders] = useState([]);
   useEffect(() => {
@@ -672,7 +655,6 @@ function Cold() {
                         {meetingId === currentLead._id && (
                           <MeetingModal
                             onClose={() => {
-                              setShowModal(false);
                               setMeetingId(null);
                             }}
                             lead={currentLead._id}
@@ -721,10 +703,9 @@ function Cold() {
                         />
                       )}
 
-                      {meetingId === currentLead._id && (
+                      {meetingId && meetingId === currentLead._id && (
                         <MeetingModal
                           onClose={() => {
-                            setShowModal(false);
                             setMeetingId(null);
                           }}
                           lead={currentLead._id}
