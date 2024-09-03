@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Meeting from "./Meeting";
+import MeetingCard from "./MeetingCard";
 
 const Meetings = ({
   meetingModalOpenForLead,
@@ -87,7 +87,7 @@ const Meetings = ({
             <ul className="space-y-2 list-none pl-[0.1px]">
               {meetings.map((meeting, index) => (
                 <li key={index} className="rounded-lg">
-                  <Meeting
+                  <MeetingCard
                     meeting={meeting}
                     onDelete={() => handleDeleteMeeting(meeting._id)}
                     isLoading={isLoading}
