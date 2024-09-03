@@ -9,8 +9,8 @@ import LogDisplay from "./LogDisplay";
 
 const EditModal = ({
   leadData,
-  meetingModalOpen,
-  setMeetingModalOpen,
+  meetingModalOpenForLead,
+  setMeetingModalOpenForLead,
   setReminderId,
   onClose,
 }) => {
@@ -148,8 +148,8 @@ const EditModal = ({
               )}
               {activeTab === "tab3" && (
                 <Meetings
-                  meetingModalOpen={meetingModalOpen}
-                  setMeetingModalOpen={setMeetingModalOpen}
+                  meetingModalOpenForLead={meetingModalOpenForLead}
+                  setMeetingModalOpenForLead={setMeetingModalOpenForLead}
                   leadData={leadData}
                 ></Meetings>
               )}

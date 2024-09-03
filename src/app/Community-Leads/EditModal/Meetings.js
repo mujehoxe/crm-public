@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import Meeting from "./Meeting";
 
-const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
+const Meetings = ({
+  meetingModalOpenForLead,
+  setMeetingModalOpenForLead,
+  leadData,
+}) => {
   const [meetings, setMeetings] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -26,9 +30,9 @@ const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
       }
     };
 
-    !meetingModalOpen && fetchMeetings();
+    !meetingModalOpenForLead && fetchMeetings();
     console.log(leadData);
-  }, [meetingModalOpen]);
+  }, [meetingModalOpenForLead]);
 
   const handleDeleteMeeting = async (meetingId) => {
     setIsLoading(true);
@@ -45,7 +49,7 @@ const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => setMeetingModalOpen(true)}
+          onClick={() => setMeetingModalOpenForLead(leadData._id)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         >
           <i className="fa fa-plus" /> Add Meeting

@@ -487,7 +487,7 @@ function Cold() {
     };
   }, []);
 
-  const [meetingModalOpen, setMeetingModalOpen] = useState(false);
+  const [meetingModalOpenForLead, setMeetingModalOpenForLead] = useState(0);
   const [reminderModalOpen, setReminderModalOpen] = useState(false);
 
   const renderLeadCards = useCallback(
@@ -525,15 +525,15 @@ function Cold() {
           {edit === lead._id && (
             <EditModal
               leadData={lead}
-              meetingModalOpen={meetingModalOpen}
-              setMeetingModalOpen={setMeetingModalOpen}
+              meetingModalOpenForLead={meetingModalOpenForLead}
+              setMeetingModalOpenForLead={setMeetingModalOpenForLead}
               setReminderId={setReminderModalOpen}
               onClose={(e) => toggleModal(e)}
             />
           )}
-          {meetingModalOpen && (
+          {meetingModalOpenForLead === lead._id && (
             <MeetingModal
-              onClose={() => setMeetingModalOpen(false)}
+              onClose={() => setMeetingModalOpenForLead(0)}
               leadId={lead._id}
             />
           )}
@@ -548,8 +548,8 @@ function Cold() {
     },
     [
       edit,
-      meetingModalOpen,
-      setMeetingModalOpen,
+      meetingModalOpenForLead,
+      setMeetingModalOpenForLead,
       reminderModalOpen,
       setReminderModalOpen,
       toggleModal,
