@@ -48,5 +48,5 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
             pkill -f 'node.*next' || true &&
-            nohup npm next start > app.log 2>&1 &
+            nohup npx next start
           "
