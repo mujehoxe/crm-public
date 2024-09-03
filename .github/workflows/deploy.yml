@@ -53,7 +53,7 @@ jobs:
             echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
-            npm install -g pm2 &&
+            npm install -g pm2 next &&
             pm2 delete nextjs-app || true &&
             pm2 start npm --name 'nextjs-app' -- start &&
             pm2 save &&

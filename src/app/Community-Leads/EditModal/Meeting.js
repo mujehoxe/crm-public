@@ -50,7 +50,7 @@ function Meeting({ meeting, onDelete, isLoading }) {
             Added by:{" "}
             <span className="font-medium">{meeting.addedby.username}</span>
           </span>
-          <div className="size-6 ml-1 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
+          <div className="size-6 ml-1 bg-gray-200 group-hover:bg-blue-300 overflow-hidden rounded-full flex justify-center items-center">
             {meeting?.addedby.Avatar ? (
               <img
                 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
