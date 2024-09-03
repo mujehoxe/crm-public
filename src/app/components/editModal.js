@@ -1,86 +1,48 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import styles from "../Modal.module.css";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SearchableSelect from "../Leads/dropdown";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { useDropzone } from "react-dropzone";
-import DocumentModal from "./doument";
-import { NumericFormat } from "react-number-format";
 import { MdOutlineClose } from "react-icons/md";
-import { FaCirclePlus } from "react-icons/fa6";
-import Meetingshowmodal from "../components/meetingshow";
-import { IoIosArrowDropright } from "react-icons/io";
 import moment from "moment/moment";
 import LogDisplay from "./LogDisplay";
-const EditModal = ({
-  userData,
-  onClose2,
-  meetingshowtogle,
-  setMeetingId,
-  setReminderId,
-}) => {
+import Meetings from "./Meetings";
+
+const EditModal = ({ leadData, onClose2, setMeetingId, setReminderId }) => {
   const [showModal, setShowModal] = useState(true);
-  const [savedUser, setSavedUser] = useState(null);
-  const [parentStaff, setParentStaff] = useState([]);
-  const [userid, setuserid] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
-  const [activeTab, setActiveTab] = useState("tab1"); // State to keep track of active tab
+  const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tabId, e) => {
     setActiveTab(tabId);
-    e.stopPropagation(); // Update active tab state when tab is clicked
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const imageData = formData.filePreview.split(",")[1];
-      const response = await axios.post("/api/staff/add", {
-        ...formData,
-        image: imageData,
-        PrentStaff: formData.PrentStaff, // Use PrentStaff as the key
-      });
-      setSavedUser(response.data.savedUser);
-      setuserid(response.data.savedUser._id);
-      setShowModal(false); // Close the Modal
-      setIsDocumentModalOpen(true);
-      setUsers((prevUsers) => [...prevUsers, response.data.savedUser]); // Update the list of users
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
+    e.stopPropagation();
   };
 
   const [Reminders, setReminders] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userData._id) {
-          const response = await axios.get(`/api/Reminder/get/${userData._id}`);
+        if (leadData._id) {
+          const response = await axios.get(`/api/Reminder/get/${leadData._id}`);
           setReminders(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching meetings:", error);
       }
     };
-    if (userData._id) {
+    if (leadData._id) {
       fetchData();
     }
-  }, [userData._id]);
+  }, [leadData._id]);
 
   const [logs, setLogs] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userData._id) {
+        if (leadData._id) {
           setLoading(true);
-          const response = await axios.get(`/api/log/${userData._id}`);
+          const response = await axios.get(`/api/log/${leadData._id}`);
           setLogs(response.data.data);
           setLoading(false);
         }
@@ -88,17 +50,16 @@ const EditModal = ({
         console.error("Error fetching meetings:", error);
       }
     };
-    if (userData._id) {
+    if (leadData._id) {
       fetchData();
     }
-  }, [userData._id]);
+  }, [leadData._id]);
 
-  const [Meeting, setMeetings] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userData._id) {
-          const response = await axios.get(`/api/Meeting/get/${userData._id}`);
+        if (leadData._id) {
+          const response = await axios.get(`/api/Meeting/get/${leadData._id}`);
           setMeetings(response.data.data);
         }
       } catch (error) {
@@ -106,10 +67,10 @@ const EditModal = ({
       }
     };
 
-    if (userData._id) {
+    if (leadData._id) {
       fetchData();
     }
-  }, [userData._id]);
+  }, [leadData._id]);
 
   return (
     <>
@@ -122,8 +83,8 @@ const EditModal = ({
           <div className={`bg-white px-7 py-4 rounded-lg m-28`}>
             <div className="flex w-full justify-between items-center">
               <p className="!mt-0 capitalize !mb-0 text-3xl font-Satoshi font-[500] flex items-end gap-2">
-                {userData.Name}
-                <span className="text-lg">({userData.Phone})</span>
+                {leadData.Name}
+                <span className="text-lg">({leadData.Phone})</span>
               </p>
               <p
                 className="text-4xl hover:text-red-500 !mt-0 !mb-0 cursor-pointer "
@@ -177,9 +138,12 @@ const EditModal = ({
                   </button>
                 </div>
                 <div className="border rounded-lg p-4 h-[28rem] overflow-y-auto">
-                  {activeTab === "tab1" && (
-                    <div>This is tab 1 content. desc </div>
-                  )}
+                  {activeTab === "tab1" &&
+                    (leadData.Description ? (
+                      <div> {leadData.Description} </div>
+                    ) : (
+                      <div> No Description </div>
+                    ))}
                   {activeTab === "tab2" && (
                     <div className="flex flex-col justify-center gap-2 items-center">
                       <div className="w-full flex items-center gap-2">
@@ -222,8 +186,7 @@ const EditModal = ({
                       )}
                       <button
                         onClick={() => {
-                          meetingshowtogle(userData._id);
-                          setReminderId(userData._id._id);
+                          setReminderId(leadData._id._id);
                         }}
                         className=" font-Satoshi text-lg !border-0 bg-gray-100 hover:!bg-gray-200 rounded-lg px-3 py-2 font-[400]"
                       >
@@ -232,133 +195,18 @@ const EditModal = ({
                     </div>
                   )}
                   {activeTab === "tab3" && (
-                    <div className="flex flex-col justify-center gap-2 items-center">
-                      <div className="w-full flex items-center gap-2">
-                        <p className="text-lg font-[500] !mb-0 !mt-0">
-                          Total Meetings{" "}
-                        </p>{" "}
-                        <div className="text-lg  !mb-0 !mt-0">
-                          {Meeting.length}
-                        </div>
-                      </div>
-                      {Meeting.length <= 0 ? (
-                        <div className="">
-                          <p className="text-2xl">No Meeting to show</p>
-                        </div>
-                      ) : (
-                        <div className={`w-full flex flex-col gap-2`}>
-                          {Meeting.map((meeting, index) => {
-                            return (
-                              <div
-                                key={index}
-                                className={`w-full bg-slate-50 rounded-md py-2 px-1`}
-                              >
-                                <div className="gap-2 items-center">
-                                  <div className="flex w-full justify-between items-center">
-                                    <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                      Added by:{" "}
-                                      <span className="text-lg font-[400]">
-                                        {meeting.addedby.username}
-                                      </span>{" "}
-                                    </p>{" "}
-                                    <p className="!mb-0 !mt-0 mr-3">
-                                      {moment(meeting.MeetingDate).format(
-                                        "DD/MM/YYYY"
-                                      )}
-                                    </p>
-                                  </div>
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Subject:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {meeting.Subject}
-                                    </span>{" "}
-                                  </p>
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Priority:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {" "}
-                                      {meeting.Priority}{" "}
-                                    </span>
-                                  </p>
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Type:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {" "}
-                                      {meeting.MeetingType}{" "}
-                                    </span>
-                                  </p>
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Location:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {meeting.Location}
-                                    </span>
-                                  </p>
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Status:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {meeting.Status}
-                                    </span>
-                                  </p>
-                                  {meeting.MeetingType == "Secondary" ? (
-                                    meeting.directoragnet != "Direct" && (
-                                      <div>
-                                        {" "}
-                                        <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                          Agent Name:{" "}
-                                          <span className="text-lg font-[400]">
-                                            {" "}
-                                            {meeting.agentName}
-                                          </span>
-                                        </p>{" "}
-                                        <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                          Agent Company:{" "}
-                                          <span className="text-lg font-[400]">
-                                            {" "}
-                                            {meeting.agentCompany}
-                                          </span>
-                                        </p>{" "}
-                                        <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                          Agent Phone:{" "}
-                                          <span className="text-lg font-[400]">
-                                            {" "}
-                                            {meeting.agentPhone}
-                                          </span>
-                                        </p>{" "}
-                                      </div>
-                                    )
-                                  ) : (
-                                    <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                      Developer:{" "}
-                                      <span className="text-lg font-[400]">
-                                        {meeting.Developer}
-                                      </span>
-                                    </p>
-                                  )}
-                                  <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                    Comment:{" "}
-                                    <span className="text-lg font-[400]">
-                                      {meeting.Comment}
-                                    </span>
-                                  </p>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                      <button
-                        onClick={() => {
-                          meetingshowtogle(userData._id);
-                          setMeetingId(userData._id);
-                        }}
-                        className=" font-Satoshi text-lg !border-0 bg-gray-100 hover:!bg-gray-200 rounded-lg px-3 py-2 font-[400]"
-                      >
-                        Add Meeting
-                      </button>
-                    </div>
+                    <Meetings
+                      meetings={leadData.meetings}
+                      setMeetingId={setMeetingId}
+                      leadData={leadData}
+                    ></Meetings>
                   )}
                   {activeTab === "tab4" && (
-                    <LogDisplay loading={loading} logs={logs} userData={userData} />
+                    <LogDisplay
+                      loading={loading}
+                      logs={logs}
+                      leadData={leadData}
+                    />
                   )}
                 </div>
               </div>

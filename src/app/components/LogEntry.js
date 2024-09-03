@@ -68,7 +68,7 @@ const LogEntry = ({ log, leadData, index }) => {
   };
 
   return (
-    <div key={index} className="border-b border-gray-200 pb-4 mb-4">
+    <div key={index} className="border-b w-full border-gray-200 pb-4 mb-4">
       <div className="flex items-center justify-between mb-2">
         <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
           {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}

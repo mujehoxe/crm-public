@@ -6,8 +6,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import { RiUploadCloud2Fill } from "react-icons/ri";
@@ -22,6 +21,7 @@ import LeadCard from "../components/leadCard";
 import MeetingModal from "../components/meetingmodal";
 
 const { RangePicker } = DatePicker;
+
 function Cold() {
   const [Leadss, setLeadss] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,14 +37,19 @@ function Cold() {
   const [users, setUsers] = useState([]);
   const [selecteduser, setselecteduser] = useState([]);
   const [totalLeads, setTotalLeads] = useState(0);
-  const [selectedstatus, setselectedstatus] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectedValues2, setSelectedValues2] = useState([]);
   const [selectedValues3, setSelectedValues3] = useState([]);
   const [selectedValues4, setSelectedValues4] = useState([]);
   const [date, setDate] = useState([]);
-  const [options2, setoptions2] = useState([]);
+
+  const [sourceOptions, setSourceOptions] = useState([]);
   const [SourceCount, setSourceCount] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]);
+  const [StatusCount, setStatusCount] = useState([]);
+
+  const [Meeting, setMeetings] = useState([]);
 
   const userdata = TokenDecoder();
   const userid = userdata ? userdata.id : null;
@@ -56,161 +61,62 @@ function Cold() {
 
   const fetchLead = async (pageNumber = 1) => {
     try {
-      let url = "";
-      if (userrole === "Admin") {
-        url = `/api/Lead/get?page=${pageNumber}&limit=${leadsPerPage}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "superAdmin") {
-        url = `/api/Lead/get?page=${pageNumber}&limit=${leadsPerPage}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "FOS") {
-        url = `/api/Lead/FOS/${userid}?page=${pageNumber}&limit=${leadsPerPage}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "BussinessHead") {
-        url = `/api/Lead/hiearchy?page=${currentPage}&limit=${leadsPerPage}?role=ATL&userid=${userid}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "PNL") {
-        url = `/api/Lead/hiearchy?page=${currentPage}&limit=${leadsPerPage}?role=PNL&userid=${userid}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "TL") {
-        url = `/api/Lead/hiearchy?page=${currentPage}&limit=${leadsPerPage}?role=TL&userid=${userid}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      } else if (userrole === "ATL") {
-        url = `/api/Lead/hiearchy?page=${currentPage}&limit=${leadsPerPage}?role=ATL&userid=${userid}`;
-        if (searchTerm) {
-          url += `&searchterm=${searchTerm}`;
-        }
-        if (selectedValues.length > 0) {
-          url += `&selectedValues=${selectedValues}`;
-        }
-        if (selectedValues2.length > 0) {
-          url += `&selectedValues2=${selectedValues2}`;
-        }
-        if (selectedValues3.length > 0) {
-          url += `&selectedValues3=${selectedValues3}`;
-        }
-        if (selectedValues4.length > 0) {
-          url += `&selectedTag=${selectedValues4}`;
-        }
-        if (date) {
-          url += `&date=${date}`;
-        }
-      }
-
-      const response = await axios.get(url);
-      let filteredLeads = response.data.data.filter(
-        (lead) =>
-          lead.Phone.toString() === searchTerm ||
-          lead.Name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
+      const url = getBaseURL();
+      const params = getQueryParams();
+      const response = await axios.get(`${url}?${params}`);
+      const filteredLeads = filterLeads(response.data.data);
       setLeadss(filteredLeads);
       setTotalLeads(response.data.totalLeads);
     } catch (error) {
       console.error("Error fetching leads:", error);
     }
+  };
+
+  const getBaseURL = () => {
+    switch (userrole) {
+      case "Admin":
+      case "superAdmin":
+        return `/api/Lead/get`;
+      case "FOS":
+        return `/api/Lead/FOS/${userid}`;
+      case "BussinessHead":
+        return `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
+      case "PNL":
+        return `/api/Lead/hiearchy?role=PNL&userid=${userid}`;
+      case "TL":
+        return `/api/Lead/hiearchy?role=TL&userid=${userid}`;
+      case "ATL":
+        return `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
+      default:
+        throw new Error("Invalid user role");
+    }
+  };
+
+  const getQueryParams = () => {
+    const params = new URLSearchParams();
+    params.append("page", currentPage);
+    params.append("limit", leadsPerPage);
+
+    if (searchTerm) params.append("searchterm", searchTerm);
+    if (selectedValues.length > 0)
+      params.append("selectedValues", selectedValues);
+    if (selectedValues2.length > 0)
+      params.append("selectedValues2", selectedValues2);
+    if (selectedValues3.length > 0)
+      params.append("selectedValues3", selectedValues3);
+    if (selectedValues4.length > 0)
+      params.append("selectedTag", selectedValues4);
+    if (date) params.append("date", date);
+
+    return params.toString();
+  };
+
+  const filterLeads = (leads) => {
+    return leads.filter(
+      (lead) =>
+        lead.Phone.toString() === searchTerm ||
+        lead.Name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   };
 
   const [bulkOperationMade, setBulkOperationMade] = useState(false);
@@ -289,7 +195,7 @@ function Cold() {
         selectedLeads.filter((lead) => lead._id !== cardLead._id)
       );
     } else {
-      setSelectedLeads([...selectedLeads, cardLead]); // Select if not selected
+      setSelectedLeads([...selectedLeads, cardLead]);
     }
   };
 
@@ -306,9 +212,6 @@ function Cold() {
     return current && current > moment().endOf("day");
   }
 
-  const [StatusCount, setStatusCount] = useState([]);
-  const [options, setoptions10] = useState([]);
-
   useEffect(() => {
     const fetchStatus = async () => {
       try {
@@ -324,22 +227,21 @@ function Cold() {
   }, []);
 
   useEffect(() => {
-    const newOptions2 = SourceCount.map((SourceCount) => ({
+    const newSourceOptions = SourceCount.map((SourceCount) => ({
       value: SourceCount._id,
       label: SourceCount.Source,
     }));
-    setoptions2(newOptions2);
+    setSourceOptions(newSourceOptions);
   }, [SourceCount]);
 
   useEffect(() => {
-    const newOptions1 = StatusCount.map((StatusCount) => ({
+    const newStatusOptions = StatusCount.map((StatusCount) => ({
       value: StatusCount._id,
       label: StatusCount.Status,
     }));
-    setoptions10(newOptions1);
+    setStatusOptions(newStatusOptions);
   }, [StatusCount]);
 
-  const [Meeting, setMeetings] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -410,55 +312,17 @@ function Cold() {
     value: tag._id,
   }));
 
-  const options5 = [
+  const countOptions = [
     { value: "100", label: "100" },
     { value: "200", label: "200" },
     { value: "1000 ", label: "1000" },
   ];
 
-  const updateLeadStatus = async (leadId, previousStatus, newStatus) => {
-    try {
-      await axios.put(`/api/Lead/status/${leadId}`, {
-        status: newStatus,
-        previousStatus,
-      });
-      updateCurrentLeads(leadId, "LeadStatus", newStatus);
-    } catch (error) {
-      console.error("Error updating lead status:", error);
-    }
-  };
-
-  async function updateLeadSource(leadId, previousSource, newSource) {
-    try {
-      await axios.patch(`/api/Lead/update/${leadId}`, {
-        Source: newSource,
-        previousStatus: previousSource,
-      });
-      updateCurrentLeads(leadId, "source", newSource);
-    } catch (error) {
-      console.error("Error updating lead source:", error);
-    }
-  }
-
-  function updateCurrentLeads(leadId, field, newValue) {
-    setCurrentLeads((prevLeads) =>
-      prevLeads.map((lead) =>
-        lead._id === leadId ? { ...lead, [field]: newValue } : lead
-      )
-    );
-  }
-
-  const handleInvoiceClick = (leadId) => {
-    setSelectedLeadId(leadId);
-  };
-
-  const meetingshowtogle = () => {
-    setmeetingshow((prevState) => !prevState);
-  };
   const leadcountf = (value) => {
     setCurrentPage(1);
     setleadsPerPage(parseInt(value, 10));
   };
+
   const deleteSelectedLeads = async () => {
     try {
       await axios.delete(`/api/Lead/delete`, {
@@ -591,7 +455,7 @@ function Cold() {
   };
 
   const handlestatusChange = (selected) => {
-    setselectedstatus(selected);
+    setSelectedStatus(selected);
     const selectedValues2 = selected.map((status) => status);
     setSelectedValues2(selectedValues2);
   };
@@ -689,9 +553,9 @@ function Cold() {
                     mode="multiple"
                     allowClear
                     style={{ width: "100%", height: "100%" }}
-                    defaultValue={selectedstatus}
+                    defaultValue={selectedStatus}
                     onChange={handlestatusChange}
-                    options={options}
+                    options={statusOptions}
                     placeholder={"Status"}
                     maxTagCount="responsive"
                   />
@@ -703,7 +567,7 @@ function Cold() {
                     style={{ width: "100%", height: "100%" }}
                     allowClear
                     onChange={handlesourceChange}
-                    options={options2}
+                    options={sourceOptions}
                     placeholder={"Source"}
                     maxTagCount="responsive"
                   />
@@ -729,7 +593,7 @@ function Cold() {
                     onChange={(selectedOption) =>
                       leadcountf(selectedOption.value)
                     }
-                    options={options5}
+                    options={countOptions}
                     placeholder={"Count"}
                   />
                 </div>
@@ -788,22 +652,19 @@ function Cold() {
                     return (
                       <>
                         <LeadCard
-                          options={options}
+                          statusOptions={statusOptions}
+                          sourceOptions={sourceOptions}
                           currentLead={currentLead}
                           currentLeads={currentLeads}
                           setCurrentLeads={setCurrentLeads}
-                          updateLeadStatus={updateLeadStatus}
-                          updateLeadSource={updateLeadSource}
                           handleCardClick={handleCardClick}
                           selectedLeads={selectedLeads}
                           setEdit={setEdit}
-                          options2={options2}
                         />
                         {edit === currentLead._id && (
                           <EditModal
-                            userData={currentLead}
+                            leadData={currentLead}
                             onClose2={(e) => toggleModal(e)}
-                            meetingshowtogle={meetingshowtogle}
                             setMeetingId={setMeetingId}
                             setReminderId={setReminderId}
                           />
@@ -837,23 +698,20 @@ function Cold() {
                   return (
                     <>
                       <LeadCard
-                        options={options}
+                        statusOptions={statusOptions}
+                        sourceOptions={sourceOptions}
                         currentLead={currentLead}
                         currentLeads={currentLeads}
                         setCurrentLeads={setCurrentLeads}
-                        updateLeadStatus={updateLeadStatus}
-                        updateLeadSource={updateLeadSource}
                         handleCardClick={handleCardClick}
                         selectedLeads={selectedLeads}
                         setEdit={setEdit}
-                        options2={options2}
                       />
                       {edit === currentLead._id && (
                         <EditModal
-                          userData={currentLead}
+                          leadData={currentLead}
                           Reminders={Reminders}
                           Meeting={Meeting}
-                          meetingshowtogle={meetingshowtogle}
                           setMeetingId={setMeetingId}
                           setReminderId={setReminderId}
                           onClose2={(e) => {

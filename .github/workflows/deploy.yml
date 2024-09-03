@@ -53,8 +53,7 @@ jobs:
             echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
-            pkill -f 'npm run start' ||
-            pkill -f 'next server' ||
+            fuser -k 3000/tcp ||
             (npm run start > nextjs-app.log 2>&1 &) &&
             sleep 5 && tail -n 10 nextjs-app.log
           "

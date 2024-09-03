@@ -1,12 +1,11 @@
 import React from "react";
-import { formatDistanceToNow } from "date-fns";
 import LogEntry from "./LogEntry";
 
-const LogDisplay = ({ loading, logs, userData: leadData }) => {
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-96">
+const LogDisplay = ({ loading, logs, leadData }) => {
+  return (
+    <div className="container mx-auto space-y-4">
+      {loading ? (
+        <div className="bg-white rounded-lg shadow-md p-6">
           <div className="animate-pulse flex space-x-4">
             <div className="rounded-full bg-gray-200 h-12 w-12"></div>
             <div className="flex-1 space-y-4 py-1">
@@ -18,13 +17,7 @@ const LogDisplay = ({ loading, logs, userData: leadData }) => {
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (logs.length <= 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
+      ) : logs.length <= 0 ? (
         <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-96 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,15 +40,11 @@ const LogDisplay = ({ loading, logs, userData: leadData }) => {
             There are currently no log entries available.
           </p>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto p-4 space-y-4">
-      {logs.map((log, index) => (
-        <LogEntry key={index} log={log} leadData={leadData} index={index} />
-      ))}
+      ) : (
+        logs.map((log, index) => (
+          <LogEntry key={index} log={log} leadData={leadData} index={index} />
+        ))
+      )}
     </div>
   );
 };

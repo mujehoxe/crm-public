@@ -5,35 +5,8 @@ import { IoIosArrowDropright } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import { Descriptions, Select } from "antd";
+import { Select } from "antd";
 import axios from "axios";
-
-const ReadMore = ({ children, setEdit, id }) => {
-  const text = children;
-  const [isReadMore, setIsReadMore] = useState(true);
-
-  const toggleReadMore = () => {
-    setEdit(id);
-  };
-
-  return (
-    <p
-      className={`${
-        isReadMore
-          ? "bg-gradient-to-t from-gray-400  to-gray-900 inline-block text-transparent bg-clip-text"
-          : ""
-      }`}
-    >
-      {isReadMore ? text.slice(0, 60) : text}
-      <span
-        onClick={(e) => toggleReadMore(e)}
-        className={`read-or-hide cursor-pointer hover:text-slate-800 text-slate-400 `}
-      >
-        {isReadMore ? "...Read more" : "Show less"}
-      </span>
-    </p>
-  );
-};
 
 const LeadCard = ({
   options,
@@ -258,7 +231,7 @@ const LeadCard = ({
               e.stopPropagation();
               setEdit(currentLead._id);
             }}
-            className="  size-8 bg-gray-200 group-hover:bg-blue-300 cursor-pointer rounded-full flex justify-center items-center"
+            className="size-8 bg-gray-200 group-hover:bg-blue-300 cursor-pointer rounded-full flex justify-center items-center"
           >
             <IoIosInformationCircle />
           </div>
