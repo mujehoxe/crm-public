@@ -6,12 +6,9 @@ import { useRouter } from "next/navigation";
 import RootLayout from "@/app/components/layout";
 import SearchableSelect from "@/app/Leads/dropdown";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
-import { RxCross1 } from "react-icons/rx";
-import { ImCross } from "react-icons/im";
-import { LuPlus } from "react-icons/lu";
 import { ImPlus } from "react-icons/im";
 import {
   Accordion,

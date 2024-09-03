@@ -3,14 +3,13 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import RootLayout from "../components/layout";
 import PriceModal from "../components/priceModal";
-import TlModal from "../components/tlModal";
 import { NumericFormat } from "react-number-format";
 import "rsuite/dist/rsuite.min.css";
 import SearchableSelect from "@/app/Leads/dropdown";
 import moment from "moment/moment";
 import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
-import './table.css';
+import "./table.css";
 import { FaRegEdit } from "react-icons/fa";
 import { ImCheckmark } from "react-icons/im";
 import { RiCloseFill } from "react-icons/ri";
@@ -20,9 +19,9 @@ import { IoMdEye } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { TbDatabaseEdit } from "react-icons/tb";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdFileDownload } from "react-icons/md";
+
 function allDeals() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTlModalOpen, setisTlIsModalOpen] = useState(false);
@@ -238,21 +237,27 @@ function allDeals() {
         "N/A",
         buyerData?.Invoicenumber,
         buyerData?.agentComissionPercent,
-        (parseFloat(buyerData?.netcom) * buyerData?.agentComissionPercent / 100) ,
+        (parseFloat(buyerData?.netcom) * buyerData?.agentComissionPercent) /
+          100,
         buyerData?.atlComissionPercent,
-        (parseFloat(buyerData?.netcom) * buyerData?.atlComissionPercent / 100),
+        (parseFloat(buyerData?.netcom) * buyerData?.atlComissionPercent) / 100,
         buyerData?.tlComissionPercent,
-        (parseFloat(buyerData?.netcom) * buyerData?.tlComissionPercent / 100),
+        (parseFloat(buyerData?.netcom) * buyerData?.tlComissionPercent) / 100,
         buyerData?.smComissionPercent,
-        (parseFloat(buyerData?.netcom) * buyerData?.smComissionPercent / 100),
+        (parseFloat(buyerData?.netcom) * buyerData?.smComissionPercent) / 100,
         buyerData?.tAgentPercentComissionToAgent,
-        (parseFloat(buyerData?.netcom) * buyerData?.tAgentPercentComissionToAgent / 100),
+        (parseFloat(buyerData?.netcom) *
+          buyerData?.tAgentPercentComissionToAgent) /
+          100,
         buyerData?.bhPercentComission,
-        (parseFloat(buyerData?.netcom) * buyerData?.bhPercentComission / 100),
+        (parseFloat(buyerData?.netcom) * buyerData?.bhPercentComission) / 100,
         buyerData?.TbhPercentComissiontoAgent,
-        (parseFloat(buyerData?.netcom) * buyerData?.TbhPercentComissiontoAgent / 100),
+        (parseFloat(buyerData?.netcom) *
+          buyerData?.TbhPercentComissiontoAgent) /
+          100,
         buyerData?.comissiontoCompanyPercent,
-        (parseFloat(buyerData?.netcom) * buyerData?.comissiontoCompanyPercent / 100),
+        (parseFloat(buyerData?.netcom) * buyerData?.comissiontoCompanyPercent) /
+          100,
         buyerData?.additionalComments,
         buyerData?.comissionStatustoAgent == 1 ? "Paid" : "Not Paid",
         buyerData?.approved == 53
@@ -531,1711 +536,1848 @@ function allDeals() {
         <PriceModal userData={filteredData[userIndex]} onClose2={toggleModal} />
       )}
 
-      { 
-        myData ?  <div className="flex justify-end  w-full mt-20 !px-0">
-        <div className=" tablet:w-[calc(100%-100px)]  mobile:w-full h-full">
+      {myData ? (
+        <div className="flex justify-end  w-full mt-20 !px-0">
+          <div className=" tablet:w-[calc(100%-100px)]  mobile:w-full h-full">
             <div className=" w-full  px-4 py-4 h-full">
-              <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-blue-700 py-3 ">MIS</p>
-            {showEOI && (
-          <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
-            <IoMdClose
-              className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
-              onClick={() => setShowEOI(null)}
-            />
-            <embed
-              src={path + filteredData[eoiIndex].eoiimage?.split("kyc/").pop()}
-              type="application/pdf"
-              className="w-full h-full"
-            />
-          </div>
-        )}
+              <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-blue-700 py-3 ">
+                MIS
+              </p>
+              {showEOI && (
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                  <IoMdClose
+                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
+                    onClick={() => setShowEOI(null)}
+                  />
+                  <embed
+                    src={
+                      path +
+                      filteredData[eoiIndex].eoiimage?.split("kyc/").pop()
+                    }
+                    type="application/pdf"
+                    className="w-full h-full"
+                  />
+                </div>
+              )}
 
-        {showSPA && filteredData[eoiIndex].SPAmage && (
-          <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
-            <IoMdClose
-              className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
-              onClick={() => setShowSPA(null)}
-            />
-            <embed
-              src={path + filteredData[showSPAIndex].SPAmage?.split("kyc/").pop()}
-              type="application/pdf"
-              className="w-full h-full"
-            />
-          </div>
-        )}
+              {showSPA && filteredData[eoiIndex].SPAmage && (
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                  <IoMdClose
+                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
+                    onClick={() => setShowSPA(null)}
+                  />
+                  <embed
+                    src={
+                      path +
+                      filteredData[showSPAIndex].SPAmage?.split("kyc/").pop()
+                    }
+                    type="application/pdf"
+                    className="w-full h-full"
+                  />
+                </div>
+              )}
 
-        {showBooking && (
-          <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
-            <IoMdClose
-              className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
-              onClick={() => setShowBooking(null)}
-            />
-            <embed
-              src={
-                path + filteredData[bookingIndex]?.bookingmage?.split("kyc/").pop()
-              }
-              type="application/pdf"
-              className="w-full h-full"
-            />
-          </div>
-        )}
-        
-        
-        {passFront && (
-          <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
-            <IoMdClose
-              className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
-              onClick={() => setpassFront(null)}
-            />
-              { 
-              filteredData[passFrontIndex]?.passfront[0] == '/' ? <embed
-                src={path + filteredData[passFrontIndex]?.passfront?.split("kyc/").pop()}
-                type="application/pdf"
-              className="w-full h-full"
-            /> : <embed
-            src={filteredData[passFrontIndex]?.passfront}
-            type="application/pdf"
-            className="w-full h-full"
-          /> 
-              
-            }
-          </div>
-        )}
-        {passBack && (
-          <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
-            <IoMdClose
-              className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
-              onClick={() => setpassBack(null)}
-            />
-            { 
-              filteredData[passBackIndex]?.passback[0] == '/' ? <embed
-                src={path + filteredData[passBackIndex]?.passback?.split("kyc/").pop()}
-                type="application/pdf"
-              className="w-full h-full"
-            /> : <embed
-            src={filteredData[passBackIndex]?.passfront}
-            type="application/pdf"
-            className="w-full h-full"
-          /> 
-              
-            }
-          </div>
-        )}
-          <div className="flex  items-center gap-3 ">
-        <div className={`relative z-[95]`}>
-          <SearchableSelect
-            options={agentNames}
-            onChange={(value) => setAgenFilter(value.label)}
-            placeholder={"Agent Name"}
-            
-          ></SearchableSelect>
-        </div>
+              {showBooking && (
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                  <IoMdClose
+                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
+                    onClick={() => setShowBooking(null)}
+                  />
+                  <embed
+                    src={
+                      path +
+                      filteredData[bookingIndex]?.bookingmage
+                        ?.split("kyc/")
+                        .pop()
+                    }
+                    type="application/pdf"
+                    className="w-full h-full"
+                  />
+                </div>
+              )}
 
-        <div className={`relative z-[95]`}>
-          <SearchableSelect
-            options={[]}
-            onChange={(value) => setKycFilter(value.label)}
-            placeholder={"Select Team"}
-            
-          ></SearchableSelect>
-        </div>
-      </div>
-          <div className=" overflow-x-auto mt-3 h-[calc(100vh-12rem)]">
-            <table className="table-fixed  ">
-              <thead className="  text-gray-700 ">
-                <tr className="text-md sticky z-[90] top-0 !border-b border-slate-600 py-2">
-                    <th id='firstHeader' className={` !bg-[#D2E8F2] sticky left-0 z-[3]`}>
-                        <div className="grid items-center px-3 grid-cols-5 w-[650px] ">
-                          
-                          <p className='!mb-0 !mt-0'>Serial No.</p>
-                          <p className='!mb-0 !mt-0'>Agent Name</p>
-                          <p className='!mb-0 !mt-0'>Agent Phone Number</p>
-                          <p className='!mb-0 !mt-0'>Date of Lead Created</p>
-                          <p className='!mb-0 !mt-0'>Lead Source</p>
-
-                      </div>
-                    </th>                   
-                  <th
-                      onClick={() => setCollapsed2(!collapsed2)}
-                      
-                      className={`cursor-pointer  hover:!bg-blue-200 !px-1 !bg-[#D2E8F2] ${collapsed2 ? 'shadow-r-md !bg-blue-200': 'shadow-none !bg-[#D2E8F2]'}`}
-                  >
-                    <div className={`flex justify-start items-center gap-3`}>
-                      Buyer Full Name
-                      <MdKeyboardArrowRight
-                        className={`${collapsed2 ? "rotate-180" : "rotate-0"}`}
-                      />
-                    </div>
-                  </th>
-
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Phone Number</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Email Id</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Date of Birth</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className=" !px-1  !bg-[#9ED8F2]">Passport Number</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className=" !px-1  !bg-[#9ED8F2]">
-                      <div
-                        className={`flex !px-4 justify-between items-center`}
-                      >
-                        <p className={`!mb-0 !mt-0`}>Front</p>
-                        <p className={`!mb-0 !mt-0`}>Back</p>
-                      </div>
-                    </th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Passport Expiry</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Nationality</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">UAE Resident</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Emirates ID</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Emirates Expiry</th>
-                  ) : null}
-                  {collapsed2 ? (
-                    <th className="  !px-1 !bg-[#9ED8F2]">Address</th>
-                  ) : null}
-
-                  <th
-                    className="!px-1 !bg-[#ffbb7c] hover:!bg-[#cc9663] cursor-pointer flex justify-start items-center gap-3"
-                    onClick={() => setCollapsed(!collapsed)}
-                  >
-                    Seller Full Name{" "}
-                    <MdKeyboardArrowRight
-                      className={`${collapsed ? "rotate-180" : "rotate-0"}`}
+              {passFront && (
+                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
+                  <IoMdClose
+                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
+                    onClick={() => setpassFront(null)}
+                  />
+                  {filteredData[passFrontIndex]?.passfront[0] == "/" ? (
+                    <embed
+                      src={
+                        path +
+                        filteredData[passFrontIndex]?.passfront
+                          ?.split("kyc/")
+                          .pop()
+                      }
+                      type="application/pdf"
+                      className="w-full h-full"
                     />
-                  </th>
+                  ) : (
+                    <embed
+                      src={filteredData[passFrontIndex]?.passfront}
+                      type="application/pdf"
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
+              )}
+              {passBack && (
+                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
+                  <IoMdClose
+                    className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
+                    onClick={() => setpassBack(null)}
+                  />
+                  {filteredData[passBackIndex]?.passback[0] == "/" ? (
+                    <embed
+                      src={
+                        path +
+                        filteredData[passBackIndex]?.passback
+                          ?.split("kyc/")
+                          .pop()
+                      }
+                      type="application/pdf"
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    <embed
+                      src={filteredData[passBackIndex]?.passfront}
+                      type="application/pdf"
+                      className="w-full h-full"
+                    />
+                  )}
+                </div>
+              )}
+              <div className="flex  items-center gap-3 ">
+                <div className={`relative z-[95]`}>
+                  <SearchableSelect
+                    options={agentNames}
+                    onChange={(value) => setAgenFilter(value.label)}
+                    placeholder={"Agent Name"}
+                  ></SearchableSelect>
+                </div>
 
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Buyer Full Name</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Phone Number</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Email Id</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Date of Birth</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className=" !px-1  !bg-[#ffbb7c]">Passport Number</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Passport Expiry</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Nationality</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">UAE Resident</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Emirates ID</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Emirates Expiry</th>
-                  ) : null}
-                  {collapsed ? (
-                    <th className="  !px-1 !bg-[#ffbb7c]">Address</th>
-                  ) : null}
-
-                  <th className="  !px-1 !bg-[#D2E8F2]">EOI / Token Date</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Date of Closure</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Date of Booking</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    {" "}
-                    Expected Handover Date{" "}
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]"> Status of Deal </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    {" "}
-                    Direct/Indirect Buyer/Tenant{" "}
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    {" "}
-                    Direct/Indirect Seller/Owner{" "}
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]"> Remarks </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Property Type</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Developer</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">No. of Bed</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Size /BUA Sq/Ft</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Plot Area in Sq.FT</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Plot Number</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Deal Type</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Sale/Rent</th>
-
-                  <th className="  !px-1 !bg-[#D2E8F2]">Ready/Offplan</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Unit No.</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Mode</th>
-
-                  <th className="  !px-1 !bg-[#D2E8F2]">Unit Address</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Unit Price</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Comission</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Spot Cash</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    Gross Total Comission
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">VAT 5%</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    Total Commission Including VAT
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">
-                    Loyalty Bonus if Any
-                  </th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">Net/Total Comission</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]">MOU/Contract Signed</th>
-                  <th className="  !px-1 !bg-[#D2E8F2]  ">
-                    <div className="flex items-center justify-between px-3 gap-3">
-                      <p className="!m-0 !border-0">EOI Receipt</p>
-                      <p className="!m-0 !border-0">Booking Form</p>
-                      <p className="!m-0 !border-0">SPA Copy</p>
-                    </div>
-                  </th>
-                  <th className="   !bg-[#D2E8F2]">Invoice Number</th>
-
-                  <th className=" !px-1  !bg-[#D2E8F2]">Agent Commission %</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Agent (AED) Commission
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">ATL Commission %</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    ATL (AED) Commission
-                  </th>
-                  <th className="!px-1   !bg-[#D2E8F2]">TL Comission %</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">TL (AED) Comission</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">SM Comission %</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">SM (AED) Comission</th>
-
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Total Agent %age Commission to Total Agent
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Total Agent Commission to Total Agent
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">BH %age Commission</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">BH Commission</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Total Agents + BH %age Commission to total agent
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Total Commission to Agent + BH (AED)
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    %age Commission to Company
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Commission to Company (AED)
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Additional Comments</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    Commission Status to Agent
-                  </th>
-
-                  <th className=" !px-1  !bg-[#D2E8F2]">Sanction List</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">AML Remarks</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Contract End Date</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">No. of Cheques</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Security Deposits</th>
-
-                  <th className=" !px-1  !bg-[#D2E8F2]">TA</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Full Comission</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">1st Claim</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">2nd Claim</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">3rd Claim</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Comission Status</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Cancelled Price</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Dewa Premises</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Contract Number</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">Title Deed Number</th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">
-                    New Title Deed Number
-                  </th>
-                  <th className=" !px-1  !bg-[#D2E8F2]">External Agent</th>
-
-                  <th
-                  id='lastHeader'
-                    className=" !px-1 sticky right-0 text-white  !bg-red-500
-                  "
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {filteredData.map((row, index) => (
-                  <tr key={index} className="border-b   border-slate-400">
-                    <td id='rowHeader' className={` !bg-[#F1F5F7]  sticky left-0 z-[2] !mb-0`}>
-                      
-                      <div className="grid grid-cols-5 w-[650px] px-3 items-center">
-                          <p className="!mt-0 !mb-0">{index + 1}</p>
-                          <p className="!w-[100px] !mb-0">{row?.Userid?.username }</p>
-                          <p className="!w-[200px] !mb-0 text-nowrap  overflow-x-hidden">
-                        {row?.Userid?.Phone}
-                      </p>
-                      <p className="!w-[100px] text-wrap !mb-0">
-                        {row.Leadid?.timestamp}
-                      </p>
-                      <p className="!w-[100px] text-wrap !mb-0">
-                        {row.Leadid?.Source?.Source}
-                      </p>
-                          
-                      </div>
-                    </td>
-                   
-
-                    <td scope="row" className=" ">
-                      <input
-                        value={row?.buyername}
-                        disabled={row.edit === null || row.edit === false}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].buyername = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                      />
-                      {row.additionalBuyers.length > 0
-                        ? row.additionalBuyers.map((addBuyers, id) => {
-                            return (
-                              <div key={id} className={`mt-1`}>
-                                <input
-                                  disabled={
-                                    row.edit === null || row.edit === false
-                                  }
-                                  value={addBuyers?.buyername}
-                                  onChange={(e) => {
-                                    const newFilteredData = [...filteredData];
-                                    newFilteredData[index].additionalBuyers[
-                                      id
-                                    ].buyername = e.target.value;
-                                    setFilteredData(newFilteredData);
-                                  }}
-                                  className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                />
-                              </div>
-                            );
-                          })
-                        : null}
-                    </td>
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" ">
-                        <input
-                          value={row?.buyerContact}
-                          disabled={row.edit === null || row.edit === false}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].buyerContact =
-                              e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    value={addBuyers?.buyerContact}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].buyerContact = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className=" px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7] "
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                        <input
-                          value={row?.buyerEmail}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          disabled={row.edit === null || row.edit === false}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].buyerEmail = e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    value={addBuyers?.buyerEmail}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].buyerEmail = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1">
-                        <input
-                          value={row?.buyerdob}
-                          onKeyDown={handleKeyDown}
-                          onFocus={toggleInputType}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          disabled={row.edit === null || row.edit === false}
-                          max={new Date().toISOString().split("T")[0]}
-                          type="date"
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].buyerdob = e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    onKeyDown={handleKeyDown}
-                                    onFocus={toggleInputType}
-                                    value={addBuyers?.buyerdob}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                    max={new Date().toISOString().split("T")[0]}
-                                    type="date"
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].buyerdob = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-3">
-                        <input
-                          value={row?.buyerpassport}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].buyerpassport =
-                              e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                          disabled={row.edit === null || row.edit === false}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    value={addBuyers?.buyerpassport}
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].buyerpassport = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td
-                        scope="row"
-                        className="!px-3 "
+                <div className={`relative z-[95]`}>
+                  <SearchableSelect
+                    options={[]}
+                    onChange={(value) => setKycFilter(value.label)}
+                    placeholder={"Select Team"}
+                  ></SearchableSelect>
+                </div>
+              </div>
+              <div className=" overflow-x-auto mt-3 h-[calc(100vh-12rem)]">
+                <table className="table-fixed  ">
+                  <thead className="  text-gray-700 ">
+                    <tr className="text-md sticky z-[90] top-0 !border-b border-slate-600 py-2">
+                      <th
+                        id="firstHeader"
+                        className={` !bg-[#D2E8F2] sticky left-0 z-[3]`}
                       >
-                        <div className="flex flex-col items-center gap-2 justify-between">
-                          
-                          <div className="flex justify-between items-center gap-2 w-[140px]">
-                        <div className="flex w-full justify-around ">
-                          <p className="!m-0 !border-0">
-                            <FaCheck
-                              className={`cursor-pointer ${
-                                row.passfront.length < 5
-                                  ? "text-slate-300"
-                                  : "text-green-300"
-                              }`}
-                            />{" "}
-                          </p>
-                          <p className="!m-0 !border-0">
-                            <IoMdEye
-                              className="cursor-pointer"
-                              onClick={() => {
-                                showBuyerOnePassfront(index);
-                              }}
-                            />{" "}
-                          </p>
-                          <p
-                            className="!m-0 !border-0"
-                            onClick={() => {
-                              handleDownload(row.passfront, "file.pdf");
-                            }}
-                          >
-                            <IoMdDownload className="cursor-pointer" />{" "}
-                          </p>
+                        <div className="grid items-center px-3 grid-cols-5 w-[650px] ">
+                          <p className="!mb-0 !mt-0">Serial No.</p>
+                          <p className="!mb-0 !mt-0">Agent Name</p>
+                          <p className="!mb-0 !mt-0">Agent Phone Number</p>
+                          <p className="!mb-0 !mt-0">Date of Lead Created</p>
+                          <p className="!mb-0 !mt-0">Lead Source</p>
                         </div>
-                        <div className="flex w-full justify-around">
-                          <p className="!m-0 !border-0">
-                            <FaCheck
-                              className={`cursor-pointer ${
-                                row.passback.length < 5
-                                  ? "text-slate-300"
-                                  : "text-green-300"
-                              }`}
-                            />
-                          </p>
-                          <p className="!m-0 !border-0">
-                            <IoMdEye
-                              className="cursor-pointer"
-                              onClick={() => {
-                                showBuyerOnePassback(index);
-                              }}
-                            />{" "}
-                          </p>
-                          <p
-                            className="!m-0 !border-0"
-                            onClick={() => {
-                              handleDownload(row.passback, "file.pdf");
-                            }}
-                          >
-                            <IoMdDownload className="cursor-pointer" />{" "}
-                          </p>
+                      </th>
+                      <th
+                        onClick={() => setCollapsed2(!collapsed2)}
+                        className={`cursor-pointer  hover:!bg-blue-200 !px-1 !bg-[#D2E8F2] ${
+                          collapsed2
+                            ? "shadow-r-md !bg-blue-200"
+                            : "shadow-none !bg-[#D2E8F2]"
+                        }`}
+                      >
+                        <div
+                          className={`flex justify-start items-center gap-3`}
+                        >
+                          Buyer Full Name
+                          <MdKeyboardArrowRight
+                            className={`${
+                              collapsed2 ? "rotate-180" : "rotate-0"
+                            }`}
+                          />
                         </div>
+                      </th>
+
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Phone Number</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Email Id</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Date of Birth</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className=" !px-1  !bg-[#9ED8F2]">
+                          Passport Number
+                        </th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className=" !px-1  !bg-[#9ED8F2]">
+                          <div
+                            className={`flex !px-4 justify-between items-center`}
+                          >
+                            <p className={`!mb-0 !mt-0`}>Front</p>
+                            <p className={`!mb-0 !mt-0`}>Back</p>
                           </div>
+                        </th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">
+                          Passport Expiry
+                        </th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Nationality</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">UAE Resident</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Emirates ID</th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">
+                          Emirates Expiry
+                        </th>
+                      ) : null}
+                      {collapsed2 ? (
+                        <th className="  !px-1 !bg-[#9ED8F2]">Address</th>
+                      ) : null}
 
-                                                    
-                        </div>
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                        <input
-                          value={row?.passportexpiry}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          onKeyDown={handleKeyDown}
-                          onFocus={toggleInputType}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].passportexpiry =
-                              e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                          disabled={row.edit === null || row.edit === false}
-                          min={new Date().toISOString().split("T")[0]}
-                          type="date"
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    min={new Date().toISOString().split("T")[0]}
-                                    type="date"
-                                    value={addBuyers?.passportexpiry}
-                                    onKeyDown={handleKeyDown}
-                                    onFocus={toggleInputType}
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].passportexpiry = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                        <input
-                          value={row?.nationality}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].nationality = e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                          disabled={row.edit === null || row.edit === false}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    value={addBuyers?.nationality}
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].nationality = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                        <p
-                          
-                          className={`w-[100px] !mb-0`}
-                          
-                        >{row?.Resident}</p>
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <p
-                          
-                          className={`w-[100px] !mb-0`}
-                          
-                        >{addBuyers?.Resident}</p>
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                         
-                         <p
-                          
-                          className={`w-[100px] !mb-0`}
-                          
-                        >{row?.emiratesid ? row?.emiratesid : 'N/A' }</p>
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                   <p
-                          
-                                    className={`w-[100px] !mb-0`}>
-                                    {addBuyers?.emiratesid? addBuyers?.emiratesid : "N/A"}
-                                  </p>
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1 ">
-                            <input
-                          className={`px-1 !mb-0 disabled:bg-slate-200`}
-                          value={row?.emiratesExpiry ? row?.emiratesExpiry : "N/A"}
-                          type='date'
-                          disabled
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                              <p
-                          
-                                className={`w-[200px] !mb-0`}>
-                                {addBuyers?.emiratesExpiry ? addBuyers?.emiratesExpiry : "N/A"}
-                               </p>
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    {collapsed2 ? (
-                      <td scope="row" className=" !px-1">
-                        <input
-                          value={row?.address}
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].address = e.target.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                          disabled={row.edit === null || row.edit === false}
-                        />
-                        {row.additionalBuyers.length > 0
-                          ? row.additionalBuyers.map((addBuyers, id) => {
-                              return (
-                                <div key={id} className={`mt-1`}>
-                                  <input
-                                    value={addBuyers?.address}
-                                    onChange={(e) => {
-                                      const newFilteredData = [...filteredData];
-                                      newFilteredData[index].additionalBuyers[
-                                        id
-                                      ].address = e.target.value;
-                                      setFilteredData(newFilteredData);
-                                    }}
-                                    className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
-                                    disabled={
-                                      row.edit === null || row.edit === false
-                                    }
-                                  />
-                                </div>
-                              );
-                            })
-                          : null}
-                      </td>
-                    ) : null}
-
-                    <td scope="row" className="  z-[1] !px-1 "></td>
-
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-                    {collapsed ? (
-                      <td scope="row" className="  z-[1] !px-1 "></td>
-                    ) : null}
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.EOI}
-                        onKeyDown={handleKeyDown}
-                        onFocus={toggleInputType}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].EOI = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="date"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.Closure}
-                        onKeyDown={handleKeyDown}
-                        onFocus={toggleInputType}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Closure = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="date"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.Booking}
-                        onKeyDown={handleKeyDown}
-                        onFocus={toggleInputType}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Booking = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="date"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.Handover}
-                        onKeyDown={handleKeyDown}
-                        onFocus={toggleInputType}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Handover = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="date"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-                    <td scope="row" className=" ">
-                      <div className={ `w-[120px]`}>
-                      <SearchableSelect
-                        
-                        options={dealStatuses}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].dealStatus = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.dealStatus}
-                      />
-                      </div>
-                    </td>
-                    <td scope="row" className="   !px-1 ">
-                      <div className={`w-[150px]`}>
-                      <SearchableSelect
-                        options={directIndirectTenantOP}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].directIndirectTenant = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.directIndirectTenant}
-                      />
-                     </div>
-                    </td>
-                    <td scope="row" className="  !px-1 ">
-                      <div className="w-[150px]">
-                      <SearchableSelect
-                        options={directIndirectOwnerOP}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].directIndirectOwner = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.directIndirectOwner}
-                      />
-                      </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.remarks}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].remarks = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="text"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className="  !px-1 ">
-                      <div className="w-[150px]">
-                      <SearchableSelect
-                        options={propertyOptions}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Property = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.Property}
-                      />
-                     </div>
-                    </td>
-
-                    <td scope="row" className="  !px-1 ">
-                      <div
-                        className={
-                          row?.Developer === "other"
-                            ? "grid grid-cols-2 gap-x-4 w-[300px]"
-                            : "grid grid-cols-1 gap-x-4 w-[200px]"
-                        }
+                      <th
+                        className="!px-1 !bg-[#ffbb7c] hover:!bg-[#cc9663] cursor-pointer flex justify-start items-center gap-3"
+                        onClick={() => setCollapsed(!collapsed)}
                       >
-                        <SearchableSelect
-                          className={"z-[0]"}
-                          options={developerOptions}
-                          disabled={row.edit === null || row.edit === false}
-                          defaultValue={row.Developer}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].Developer = e.value;
-                            setFilteredData(newFilteredData);
-                          }}
+                        Seller Full Name{" "}
+                        <MdKeyboardArrowRight
+                          className={`${collapsed ? "rotate-180" : "rotate-0"}`}
                         />
-                        {row.Developer === "other" && (
+                      </th>
+
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">
+                          Buyer Full Name
+                        </th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Phone Number</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Email Id</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Date of Birth</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className=" !px-1  !bg-[#ffbb7c]">
+                          Passport Number
+                        </th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">
+                          Passport Expiry
+                        </th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Nationality</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">UAE Resident</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Emirates ID</th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">
+                          Emirates Expiry
+                        </th>
+                      ) : null}
+                      {collapsed ? (
+                        <th className="  !px-1 !bg-[#ffbb7c]">Address</th>
+                      ) : null}
+
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        EOI / Token Date
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Date of Closure</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Date of Booking</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        {" "}
+                        Expected Handover Date{" "}
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        {" "}
+                        Status of Deal{" "}
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        {" "}
+                        Direct/Indirect Buyer/Tenant{" "}
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        {" "}
+                        Direct/Indirect Seller/Owner{" "}
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]"> Remarks </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Property Type</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Developer</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">No. of Bed</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Size /BUA Sq/Ft</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        Plot Area in Sq.FT
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Plot Number</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Deal Type</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Sale/Rent</th>
+
+                      <th className="  !px-1 !bg-[#D2E8F2]">Ready/Offplan</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Unit No.</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Mode</th>
+
+                      <th className="  !px-1 !bg-[#D2E8F2]">Unit Address</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Unit Price</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Comission</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">Spot Cash</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        Gross Total Comission
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">VAT 5%</th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        Total Commission Including VAT
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        Loyalty Bonus if Any
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        Net/Total Comission
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]">
+                        MOU/Contract Signed
+                      </th>
+                      <th className="  !px-1 !bg-[#D2E8F2]  ">
+                        <div className="flex items-center justify-between px-3 gap-3">
+                          <p className="!m-0 !border-0">EOI Receipt</p>
+                          <p className="!m-0 !border-0">Booking Form</p>
+                          <p className="!m-0 !border-0">SPA Copy</p>
+                        </div>
+                      </th>
+                      <th className="   !bg-[#D2E8F2]">Invoice Number</th>
+
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Agent Commission %
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Agent (AED) Commission
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        ATL Commission %
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        ATL (AED) Commission
+                      </th>
+                      <th className="!px-1   !bg-[#D2E8F2]">TL Comission %</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        TL (AED) Comission
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">SM Comission %</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        SM (AED) Comission
+                      </th>
+
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Total Agent %age Commission to Total Agent
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Total Agent Commission to Total Agent
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        BH %age Commission
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">BH Commission</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Total Agents + BH %age Commission to total agent
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Total Commission to Agent + BH (AED)
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        %age Commission to Company
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Commission to Company (AED)
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Additional Comments
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Commission Status to Agent
+                      </th>
+
+                      <th className=" !px-1  !bg-[#D2E8F2]">Sanction List</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">AML Remarks</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Contract End Date
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">No. of Cheques</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Security Deposits
+                      </th>
+
+                      <th className=" !px-1  !bg-[#D2E8F2]">TA</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">Full Comission</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">1st Claim</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">2nd Claim</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">3rd Claim</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Comission Status
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">Cancelled Price</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">Dewa Premises</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">Contract Number</th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        Title Deed Number
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">
+                        New Title Deed Number
+                      </th>
+                      <th className=" !px-1  !bg-[#D2E8F2]">External Agent</th>
+
+                      <th
+                        id="lastHeader"
+                        className=" !px-1 sticky right-0 text-white  !bg-red-500
+                  "
+                      >
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="">
+                    {filteredData.map((row, index) => (
+                      <tr key={index} className="border-b   border-slate-400">
+                        <td
+                          id="rowHeader"
+                          className={` !bg-[#F1F5F7]  sticky left-0 z-[2] !mb-0`}
+                        >
+                          <div className="grid grid-cols-5 w-[650px] px-3 items-center">
+                            <p className="!mt-0 !mb-0">{index + 1}</p>
+                            <p className="!w-[100px] !mb-0">
+                              {row?.Userid?.username}
+                            </p>
+                            <p className="!w-[200px] !mb-0 text-nowrap  overflow-x-hidden">
+                              {row?.Userid?.Phone}
+                            </p>
+                            <p className="!w-[100px] text-wrap !mb-0">
+                              {row.Leadid?.timestamp}
+                            </p>
+                            <p className="!w-[100px] text-wrap !mb-0">
+                              {row.Leadid?.Source?.Source}
+                            </p>
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" ">
                           <input
+                            value={row?.buyername}
+                            disabled={row.edit === null || row.edit === false}
                             className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                            value={row.othrDeveloper}
                             onChange={(e) => {
                               const newFilteredData = [...filteredData];
-                              newFilteredData[index].othrDeveloper = e.value;
+                              newFilteredData[index].buyername = e.target.value;
                               setFilteredData(newFilteredData);
                             }}
-                            placeholder="Enter developer name"
+                          />
+                          {row.additionalBuyers.length > 0
+                            ? row.additionalBuyers.map((addBuyers, id) => {
+                                return (
+                                  <div key={id} className={`mt-1`}>
+                                    <input
+                                      disabled={
+                                        row.edit === null || row.edit === false
+                                      }
+                                      value={addBuyers?.buyername}
+                                      onChange={(e) => {
+                                        const newFilteredData = [
+                                          ...filteredData,
+                                        ];
+                                        newFilteredData[index].additionalBuyers[
+                                          id
+                                        ].buyername = e.target.value;
+                                        setFilteredData(newFilteredData);
+                                      }}
+                                      className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                    />
+                                  </div>
+                                );
+                              })
+                            : null}
+                        </td>
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" ">
+                            <input
+                              value={row?.buyerContact}
+                              disabled={row.edit === null || row.edit === false}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].buyerContact =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        value={addBuyers?.buyerContact}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].buyerContact =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className=" px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7] "
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <input
+                              value={row?.buyerEmail}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              disabled={row.edit === null || row.edit === false}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].buyerEmail =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        value={addBuyers?.buyerEmail}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].buyerEmail =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1">
+                            <input
+                              value={row?.buyerdob}
+                              onKeyDown={handleKeyDown}
+                              onFocus={toggleInputType}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              disabled={row.edit === null || row.edit === false}
+                              max={new Date().toISOString().split("T")[0]}
+                              type="date"
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].buyerdob =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        onKeyDown={handleKeyDown}
+                                        onFocus={toggleInputType}
+                                        value={addBuyers?.buyerdob}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                        max={
+                                          new Date().toISOString().split("T")[0]
+                                        }
+                                        type="date"
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].buyerdob =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-3">
+                            <input
+                              value={row?.buyerpassport}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].buyerpassport =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        value={addBuyers?.buyerpassport}
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].buyerpassport =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className="!px-3 ">
+                            <div className="flex flex-col items-center gap-2 justify-between">
+                              <div className="flex justify-between items-center gap-2 w-[140px]">
+                                <div className="flex w-full justify-around ">
+                                  <p className="!m-0 !border-0">
+                                    <FaCheck
+                                      className={`cursor-pointer ${
+                                        row.passfront.length < 5
+                                          ? "text-slate-300"
+                                          : "text-green-300"
+                                      }`}
+                                    />{" "}
+                                  </p>
+                                  <p className="!m-0 !border-0">
+                                    <IoMdEye
+                                      className="cursor-pointer"
+                                      onClick={() => {
+                                        showBuyerOnePassfront(index);
+                                      }}
+                                    />{" "}
+                                  </p>
+                                  <p
+                                    className="!m-0 !border-0"
+                                    onClick={() => {
+                                      handleDownload(row.passfront, "file.pdf");
+                                    }}
+                                  >
+                                    <IoMdDownload className="cursor-pointer" />{" "}
+                                  </p>
+                                </div>
+                                <div className="flex w-full justify-around">
+                                  <p className="!m-0 !border-0">
+                                    <FaCheck
+                                      className={`cursor-pointer ${
+                                        row.passback.length < 5
+                                          ? "text-slate-300"
+                                          : "text-green-300"
+                                      }`}
+                                    />
+                                  </p>
+                                  <p className="!m-0 !border-0">
+                                    <IoMdEye
+                                      className="cursor-pointer"
+                                      onClick={() => {
+                                        showBuyerOnePassback(index);
+                                      }}
+                                    />{" "}
+                                  </p>
+                                  <p
+                                    className="!m-0 !border-0"
+                                    onClick={() => {
+                                      handleDownload(row.passback, "file.pdf");
+                                    }}
+                                  >
+                                    <IoMdDownload className="cursor-pointer" />{" "}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <input
+                              value={row?.passportexpiry}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onKeyDown={handleKeyDown}
+                              onFocus={toggleInputType}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].passportexpiry =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              min={new Date().toISOString().split("T")[0]}
+                              type="date"
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        min={
+                                          new Date().toISOString().split("T")[0]
+                                        }
+                                        type="date"
+                                        value={addBuyers?.passportexpiry}
+                                        onKeyDown={handleKeyDown}
+                                        onFocus={toggleInputType}
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[
+                                            id
+                                          ].passportexpiry = e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <input
+                              value={row?.nationality}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].nationality =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        value={addBuyers?.nationality}
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].nationality =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <p className={`w-[100px] !mb-0`}>{row?.Resident}</p>
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <p className={`w-[100px] !mb-0`}>
+                                        {addBuyers?.Resident}
+                                      </p>
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <p className={`w-[100px] !mb-0`}>
+                              {row?.emiratesid ? row?.emiratesid : "N/A"}
+                            </p>
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <p className={`w-[100px] !mb-0`}>
+                                        {addBuyers?.emiratesid
+                                          ? addBuyers?.emiratesid
+                                          : "N/A"}
+                                      </p>
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1 ">
+                            <input
+                              className={`px-1 !mb-0 disabled:bg-slate-200`}
+                              value={
+                                row?.emiratesExpiry
+                                  ? row?.emiratesExpiry
+                                  : "N/A"
+                              }
+                              type="date"
+                              disabled
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <p className={`w-[200px] !mb-0`}>
+                                        {addBuyers?.emiratesExpiry
+                                          ? addBuyers?.emiratesExpiry
+                                          : "N/A"}
+                                      </p>
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        {collapsed2 ? (
+                          <td scope="row" className=" !px-1">
+                            <input
+                              value={row?.address}
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].address = e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                            {row.additionalBuyers.length > 0
+                              ? row.additionalBuyers.map((addBuyers, id) => {
+                                  return (
+                                    <div key={id} className={`mt-1`}>
+                                      <input
+                                        value={addBuyers?.address}
+                                        onChange={(e) => {
+                                          const newFilteredData = [
+                                            ...filteredData,
+                                          ];
+                                          newFilteredData[
+                                            index
+                                          ].additionalBuyers[id].address =
+                                            e.target.value;
+                                          setFilteredData(newFilteredData);
+                                        }}
+                                        className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
+                                        disabled={
+                                          row.edit === null ||
+                                          row.edit === false
+                                        }
+                                      />
+                                    </div>
+                                  );
+                                })
+                              : null}
+                          </td>
+                        ) : null}
+
+                        <td scope="row" className="  z-[1] !px-1 "></td>
+
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+                        {collapsed ? (
+                          <td scope="row" className="  z-[1] !px-1 "></td>
+                        ) : null}
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.EOI}
+                            onKeyDown={handleKeyDown}
+                            onFocus={toggleInputType}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].EOI = e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            type="date"
                             disabled={row.edit === null || row.edit === false}
                           />
-                        )}
-                      </div>
-                    </td>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[100px]">
-                      <NumericFormat
-                        value={row?.Bed}
-                        thousandSeparator=","
-                        className={`px-1 py-1 w-full border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Bed = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[130px]">
-                      <NumericFormat
-                        value={row?.BUA}
-                        thousandSeparator=","
-                        className={`px-1 py-1 border-1 w-full border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].BUA = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[140px]">
-                      <NumericFormat
-                        value={row?.PlotArea}
-                        thousandSeparator=","
-                        className={`px-1 w-full py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].PlotArea = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={
-                          row?.Property == "Apartment" ? "N/A" : row?.PlotNumber
-                        }
-                        className={`px-1 py-1 w-[100px] border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].PlotNumber = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={
-                          row.edit === null ||
-                          row.edit === false ||
-                          row.Property == "Apartment"
-                        }
-                      />
-                    </td>
-
-                    <td scope="row" className="   !px-2 ">
-                      <div className="w-[130px]">
-                      <SearchableSelect
-                        options={dealTypes}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].dealType = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.dealType}
-                      />
-                      </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[130px]">
-                      <SearchableSelect
-                        options={saleRents}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].saleRent = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        defaultValue={row.saleRent}
-                      />
-                      </div>
-                    </td>
-
-                    <td scope="row" className="  !px-1 ">
-                      <div className="w-[130px]">
-                      <SearchableSelect
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        disabled={row.edit === null || row.edit === false}
-                        options={readyStatus}
-                        defaultValue={row?.Ready}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Ready = e.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        placeholder="Ready / Offplan"
-                      />
-                      </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.Unitaddress}
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].address = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className="  !px-1 ">
-                      <div className="w-[140px]">
-                        <SearchableSelect
-                          className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                          disabled={row.edit === null || row.edit === false}
-                          options={modes}
-                          defaultValue={row?.mode}
-                          onChange={(e) => {
-                            const newFilteredData = [...filteredData];
-                            newFilteredData[index].mode = e.value;
-                            setFilteredData(newFilteredData);
-                          }}
-                          placeholder="Modes"
-                        />
-                     </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        value={row?.Unitaddress}
-                        className={`px-1 w-[150px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Unitaddress = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className={`flex justify-start !w-[200px] items-center gap-3`}>
-                        <p className="!mb-0 w-[150px] ">{ row?.Price
-                              ? parseFloat(row?.Price.replace(/,/g, ""))
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                              : "" }</p>
-
-                        <button
-                          className={`${
-                            row?.edit ? "text-slate-900" : "text-slate-500"
-                          }`}
-                          disabled={row.edit === null || row.edit === false}
-                          onClick={() => {
-                            toggleModal(index);
-                          }}
-                        >
-                          <TbDatabaseEdit className={`text-xl ${
-                            row?.edit ? "text-green-400" : "text-slate-500"
-                          }`}
-                          disabled={row.edit === null || row.edit === false} />
-                        </button>
-                      </div>
-                    </td>
-
-                    <td scope="row" className="  !px-1 ">
-                      <div className={`flex justify-center items-center`}>
-                        <p className="!mb-0 w-[100px]">{
-                            row?.ComissionType != "%"
-                              ? row?.Comission + " " + row?.ComissionType
-                              : row?.Comission + row?.ComissionType
-                          }</p>
-                      </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <p className="!mb-0 w-[200px]">
-                        {
-                          row?.SpotCash
-                            ? parseFloat(row?.SpotCash.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : "0.00"
-                        }</p>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <p className="!mb-0 w-[200px]">{
-                          row?.TotalComission
-                            ? parseFloat(row?.TotalComission.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : ""
-                        }</p>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <p className={ `!mb-0 w-[200px]`}>
-                      {
-                          row?.VAT
-                            ? parseFloat(row?.VAT.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : ""
-                        }
-                      </p>
-                    </td>
-
-                    <td scope="row" className=" !px-1  ">
-                      <p className="!mb-0 w-[200px]">
-                      {
-                          row?.ComissionVAT
-                            ? parseFloat(row?.ComissionVAT.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : ""
-                        }
-                      </p>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <p className={ `!mb-0 w-[200px]`}>{
-                          row?.loyaltyBonus
-                            ? parseFloat(row?.loyaltyBonus.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : "00"
-                        }</p>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <p className={ `!mb-0 w-[200px]`}>
-                      {
-                          row?.netcom
-                            ? parseFloat(row?.netcom.replace(/,/g, ""))
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : ""
-                        }
-                      </p>
-                    </td>
-
-                    <td scope="row" className=" !px-1 "></td>
-
-                    <td
-                      scope="row"
-                      className="   !px-3  z-[1]"
-                    >
-                      <div className="flex justify-between w-[300px] items-center gap-3">
-
-                      <div className="flex w-full justify-around gap-2">
-                        <p className="!m-0 !border-0">
-                          <FaCheck
-                            className={`cursor-pointer ${
-                              row.eoiimage.length < 5
-                                ? "text-slate-300"
-                                : "text-green-300"
-                            }`}
-                          />{" "}
-                        </p>
-                        <p className="!m-0 !border-0">
-                          <IoMdEye
-                            className="cursor-pointer"
-                            onClick={() => {
-                              showImageEOI(index);
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.Closure}
+                            onKeyDown={handleKeyDown}
+                            onFocus={toggleInputType}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].Closure = e.target.value;
+                              setFilteredData(newFilteredData);
                             }}
-                          />{" "}
-                        </p>
-                        <p
-                          className="!m-0 !border-0"
-                          onClick={() => {
-                            handleDownload(
-                              path + row.eoiimage.split("kyc/").pop(),
-                              "file.pdf"
-                            );
-                          }}
-                        >
-                          <IoMdDownload className="cursor-pointer" />{" "}
-                        </p>
-                      </div>
-                      <div className="flex w-full justify-around">
-                        <p className="!m-0 !border-0">
-                          <FaCheck
-                            className={`cursor-pointer ${
-                              row.bookingmage.length < 5
-                                ? "text-slate-300"
-                                : "text-green-300"
-                            }`}
+                            type="date"
+                            disabled={row.edit === null || row.edit === false}
                           />
-                        </p>
-                        <p className="!m-0 !border-0">
-                          <IoMdEye
-                            className="cursor-pointer"
-                            onClick={() => {
-                              showImageBooking(index);
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.Booking}
+                            onKeyDown={handleKeyDown}
+                            onFocus={toggleInputType}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].Booking = e.target.value;
+                              setFilteredData(newFilteredData);
                             }}
-                          />{" "}
-                        </p>
-                        <p
-                          className="!m-0 !border-0"
-                          onClick={() => {
-                            handleDownload(
-                              path + row.bookingmage.split("kyc/").pop(),
-                              "file.pdf"
-                            );
-                          }}
-                        >
-                          <IoMdDownload className="cursor-pointer" />{" "}
-                        </p>
-                      </div>
-                      <div className="flex w-full justify-around">
-                        {filteredData[index].SPAmage != null &&
-                        filteredData[index].SPAmage !=
-                          "https://crm-milestonehomes.com/public/kyc/undefined" ? (
-                          <div className="flex w-full justify-around">
-                            {" "}
-                            <p className="!m-0 !border-0">
-                              <FaCheck
-                                className={`cursor-pointer ${
-                                  row?.SPAmage?.length < 5
-                                    ? "text-slate-300"
-                                    : "text-green-300"
-                                }`}
-                              />
-                            </p>
-                            <p className="!m-0 !border-0">
-                              <IoMdEye
-                                className="cursor-pointer"
-                                onClick={() => {
-                                  showImageSPA(index);
+                            type="date"
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.Handover}
+                            onKeyDown={handleKeyDown}
+                            onFocus={toggleInputType}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].Handover = e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            type="date"
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+                        <td scope="row" className=" ">
+                          <div className={`w-[120px]`}>
+                            <SearchableSelect
+                              options={dealStatuses}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].dealStatus = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.dealStatus}
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className="   !px-1 ">
+                          <div className={`w-[150px]`}>
+                            <SearchableSelect
+                              options={directIndirectTenantOP}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].directIndirectTenant =
+                                  e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.directIndirectTenant}
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className="  !px-1 ">
+                          <div className="w-[150px]">
+                            <SearchableSelect
+                              options={directIndirectOwnerOP}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].directIndirectOwner =
+                                  e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.directIndirectOwner}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.remarks}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].remarks = e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            type="text"
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div className="w-[150px]">
+                            <SearchableSelect
+                              options={propertyOptions}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].Property = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.Property}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div
+                            className={
+                              row?.Developer === "other"
+                                ? "grid grid-cols-2 gap-x-4 w-[300px]"
+                                : "grid grid-cols-1 gap-x-4 w-[200px]"
+                            }
+                          >
+                            <SearchableSelect
+                              className={"z-[0]"}
+                              options={developerOptions}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.Developer}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].Developer = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                            />
+                            {row.Developer === "other" && (
+                              <input
+                                className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row.othrDeveloper}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  newFilteredData[index].othrDeveloper =
+                                    e.value;
+                                  setFilteredData(newFilteredData);
                                 }}
-                              />{" "}
+                                placeholder="Enter developer name"
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            )}
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[100px]">
+                            <NumericFormat
+                              value={row?.Bed}
+                              thousandSeparator=","
+                              className={`px-1 py-1 w-full border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].Bed = e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[130px]">
+                            <NumericFormat
+                              value={row?.BUA}
+                              thousandSeparator=","
+                              className={`px-1 py-1 border-1 w-full border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].BUA = e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[140px]">
+                            <NumericFormat
+                              value={row?.PlotArea}
+                              thousandSeparator=","
+                              className={`px-1 w-full py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].PlotArea =
+                                  e.target.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={
+                              row?.Property == "Apartment"
+                                ? "N/A"
+                                : row?.PlotNumber
+                            }
+                            className={`px-1 py-1 w-[100px] border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].PlotNumber =
+                                e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={
+                              row.edit === null ||
+                              row.edit === false ||
+                              row.Property == "Apartment"
+                            }
+                          />
+                        </td>
+
+                        <td scope="row" className="   !px-2 ">
+                          <div className="w-[130px]">
+                            <SearchableSelect
+                              options={dealTypes}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].dealType = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.dealType}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[130px]">
+                            <SearchableSelect
+                              options={saleRents}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].saleRent = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={row.edit === null || row.edit === false}
+                              defaultValue={row.saleRent}
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div className="w-[130px]">
+                            <SearchableSelect
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              disabled={row.edit === null || row.edit === false}
+                              options={readyStatus}
+                              defaultValue={row?.Ready}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].Ready = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              placeholder="Ready / Offplan"
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.Unitaddress}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].address = e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div className="w-[140px]">
+                            <SearchableSelect
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              disabled={row.edit === null || row.edit === false}
+                              options={modes}
+                              defaultValue={row?.mode}
+                              onChange={(e) => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].mode = e.value;
+                                setFilteredData(newFilteredData);
+                              }}
+                              placeholder="Modes"
+                            />
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            value={row?.Unitaddress}
+                            className={`px-1 w-[150px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].Unitaddress =
+                                e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <div
+                            className={`flex justify-start !w-[200px] items-center gap-3`}
+                          >
+                            <p className="!mb-0 w-[150px] ">
+                              {row?.Price
+                                ? parseFloat(row?.Price.replace(/,/g, ""))
+                                    .toFixed(2)
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                : ""}
                             </p>
-                            <p
-                              className="!m-0 !border-0"
+
+                            <button
+                              className={`${
+                                row?.edit ? "text-slate-900" : "text-slate-500"
+                              }`}
+                              disabled={row.edit === null || row.edit === false}
                               onClick={() => {
-                                handleDownload(
-                                  path + row.SPAmage.split("kyc/").pop(),
-                                  "file.pdf"
-                                );
+                                toggleModal(index);
                               }}
                             >
-                              <IoMdDownload className="cursor-pointer" />{" "}
+                              <TbDatabaseEdit
+                                className={`text-xl ${
+                                  row?.edit
+                                    ? "text-green-400"
+                                    : "text-slate-500"
+                                }`}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            </button>
+                          </div>
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div className={`flex justify-center items-center`}>
+                            <p className="!mb-0 w-[100px]">
+                              {row?.ComissionType != "%"
+                                ? row?.Comission + " " + row?.ComissionType
+                                : row?.Comission + row?.ComissionType}
                             </p>
                           </div>
-                        ) : (
-                          <IoMdClose className="text-xl text-red-500" />
-                        )}
-                      </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <p className="!mb-0 w-[200px]">
+                            {row?.SpotCash
+                              ? parseFloat(row?.SpotCash.replace(/,/g, ""))
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : "0.00"}
+                          </p>
+                        </td>
 
+                        <td scope="row" className=" !px-1 ">
+                          <p className="!mb-0 w-[200px]">
+                            {row?.TotalComission
+                              ? parseFloat(
+                                  row?.TotalComission.replace(/,/g, "")
+                                )
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : ""}
+                          </p>
+                        </td>
 
-                      </div>
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <p className={`!mb-0 w-[200px]`}>
+                            {row?.VAT
+                              ? parseFloat(row?.VAT.replace(/,/g, ""))
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : ""}
+                          </p>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 w-[230px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        disabled={row.edit === null || row.edit === false}
-                        value={row?.Invoicenumber}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].Invoicenumber = e.target.value;
-                          setFilteredData(newFilteredData);
-                        }}
-                      />
-                    </td>
+                        <td scope="row" className=" !px-1  ">
+                          <p className="!mb-0 w-[200px]">
+                            {row?.ComissionVAT
+                              ? parseFloat(row?.ComissionVAT.replace(/,/g, ""))
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : ""}
+                          </p>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <p className={`!mb-0 w-[200px]`}>
+                            {row?.loyaltyBonus
+                              ? parseFloat(row?.loyaltyBonus.replace(/,/g, ""))
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : "00"}
+                          </p>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <p className={`!mb-0 w-[200px]`}>
+                            {row?.netcom
+                              ? parseFloat(row?.netcom.replace(/,/g, ""))
+                                  .toFixed(2)
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              : ""}
+                          </p>
+                        </td>
 
-                    <td scope="row" className=" !px-1">
-                      <div className="w-[200px]">
-                    {
-                        row?.edit ? 
-                          <NumericFormat
-                        className={`px-1  py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.agentComissionPercent}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          const newAgentComissionPercent = Number(
-                            e.target.value
-                          );
+                        <td scope="row" className=" !px-1 "></td>
 
-                          const totalComission = parseFloat(
-                            row?.TotalComission
-                          );
-                          const loyaltyBonus = parseFloat(
-                            row?.loyaltyBonus || 0
-                          );
+                        <td scope="row" className="   !px-3  z-[1]">
+                          <div className="flex justify-between w-[300px] items-center gap-3">
+                            <div className="flex w-full justify-around gap-2">
+                              <p className="!m-0 !border-0">
+                                <FaCheck
+                                  className={`cursor-pointer ${
+                                    row.eoiimage.length < 5
+                                      ? "text-slate-300"
+                                      : "text-green-300"
+                                  }`}
+                                />{" "}
+                              </p>
+                              <p className="!m-0 !border-0">
+                                <IoMdEye
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    showImageEOI(index);
+                                  }}
+                                />{" "}
+                              </p>
+                              <p
+                                className="!m-0 !border-0"
+                                onClick={() => {
+                                  handleDownload(
+                                    path + row.eoiimage.split("kyc/").pop(),
+                                    "file.pdf"
+                                  );
+                                }}
+                              >
+                                <IoMdDownload className="cursor-pointer" />{" "}
+                              </p>
+                            </div>
+                            <div className="flex w-full justify-around">
+                              <p className="!m-0 !border-0">
+                                <FaCheck
+                                  className={`cursor-pointer ${
+                                    row.bookingmage.length < 5
+                                      ? "text-slate-300"
+                                      : "text-green-300"
+                                  }`}
+                                />
+                              </p>
+                              <p className="!m-0 !border-0">
+                                <IoMdEye
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    showImageBooking(index);
+                                  }}
+                                />{" "}
+                              </p>
+                              <p
+                                className="!m-0 !border-0"
+                                onClick={() => {
+                                  handleDownload(
+                                    path + row.bookingmage.split("kyc/").pop(),
+                                    "file.pdf"
+                                  );
+                                }}
+                              >
+                                <IoMdDownload className="cursor-pointer" />{" "}
+                              </p>
+                            </div>
+                            <div className="flex w-full justify-around">
+                              {filteredData[index].SPAmage != null &&
+                              filteredData[index].SPAmage !=
+                                "https://crm-milestonehomes.com/public/kyc/undefined" ? (
+                                <div className="flex w-full justify-around">
+                                  {" "}
+                                  <p className="!m-0 !border-0">
+                                    <FaCheck
+                                      className={`cursor-pointer ${
+                                        row?.SPAmage?.length < 5
+                                          ? "text-slate-300"
+                                          : "text-green-300"
+                                      }`}
+                                    />
+                                  </p>
+                                  <p className="!m-0 !border-0">
+                                    <IoMdEye
+                                      className="cursor-pointer"
+                                      onClick={() => {
+                                        showImageSPA(index);
+                                      }}
+                                    />{" "}
+                                  </p>
+                                  <p
+                                    className="!m-0 !border-0"
+                                    onClick={() => {
+                                      handleDownload(
+                                        path + row.SPAmage.split("kyc/").pop(),
+                                        "file.pdf"
+                                      );
+                                    }}
+                                  >
+                                    <IoMdDownload className="cursor-pointer" />{" "}
+                                  </p>
+                                </div>
+                              ) : (
+                                <IoMdClose className="text-xl text-red-500" />
+                              )}
+                            </div>
+                          </div>
+                        </td>
 
-                          let newAgentComissionAED = 0;
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 w-[230px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            disabled={row.edit === null || row.edit === false}
+                            value={row?.Invoicenumber}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index].Invoicenumber =
+                                e.target.value;
+                              setFilteredData(newFilteredData);
+                            }}
+                          />
+                        </td>
 
-                          if (row?.loyaltyBonus) {
-                            newAgentComissionAED =
-                              ((totalComission - loyaltyBonus) *
-                                newAgentComissionPercent) /
-                              100;
-                          } else {
-                            newAgentComissionAED =
-                              (totalComission * newAgentComissionPercent) / 100;
-                          }
+                        <td scope="row" className=" !px-1">
+                          <div className="w-[200px]">
+                            {row?.edit ? (
+                              <NumericFormat
+                                className={`px-1  py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row?.agentComissionPercent}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  const newAgentComissionPercent = Number(
+                                    e.target.value
+                                  );
 
-                          // Round to 2 decimal places
-                          newAgentComissionAED = parseFloat(
-                            newAgentComissionAED.toFixed(2)
-                          );
+                                  const totalComission = parseFloat(
+                                    row?.TotalComission
+                                  );
+                                  const loyaltyBonus = parseFloat(
+                                    row?.loyaltyBonus || 0
+                                  );
 
-                          newFilteredData[index] = {
-                            ...newFilteredData[index],
-                            agentComissionPercent: newAgentComissionPercent,
-                            agentComissionAED: newAgentComissionAED,
-                          };
+                                  let newAgentComissionAED = 0;
 
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      :
-                       <p className={`w-full !mb-0 !mt-0 `}>{ row?.agentComissionPercent ?  row?.agentComissionPercent + '%' : null }</p>
-                      
-                    }
-                     </div>
-                    </td>
+                                  if (row?.loyaltyBonus) {
+                                    newAgentComissionAED =
+                                      ((totalComission - loyaltyBonus) *
+                                        newAgentComissionPercent) /
+                                      100;
+                                  } else {
+                                    newAgentComissionAED =
+                                      (totalComission *
+                                        newAgentComissionPercent) /
+                                      100;
+                                  }
 
+                                  // Round to 2 decimal places
+                                  newAgentComissionAED = parseFloat(
+                                    newAgentComissionAED.toFixed(2)
+                                  );
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                         value={(
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    agentComissionPercent:
+                                      newAgentComissionPercent,
+                                    agentComissionAED: newAgentComissionAED,
+                                  };
+
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            ) : (
+                              <p className={`w-full !mb-0 !mt-0 `}>
+                                {row?.agentComissionPercent
+                                  ? row?.agentComissionPercent + "%"
+                                  : null}
+                              </p>
+                            )}
+                          </div>
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              value={(
                                 (parseFloat(row?.netcom) *
                                   parseFloat(row?.agentComissionPercent)) /
                                 100
                               ).toFixed(2)}
                               thousandSeparator=","
                               disabled
-                       
-                      />
-                     </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1">
-                      <div className="w-[200px]">
-                     {
-                         row?.edit ? 
-                          <NumericFormat
-                        className={`px-1  py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.atlComissionPercent}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          const newAgentComissionPercent = Number(
-                            e.target.value
-                          );
+                        <td scope="row" className=" !px-1">
+                          <div className="w-[200px]">
+                            {row?.edit ? (
+                              <NumericFormat
+                                className={`px-1  py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row?.atlComissionPercent}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  const newAgentComissionPercent = Number(
+                                    e.target.value
+                                  );
 
-                          const totalComission = parseFloat(
-                            row?.TotalComission
-                          );
-                          const loyaltyBonus = parseFloat(
-                            row?.loyaltyBonus || 0
-                          );
+                                  const totalComission = parseFloat(
+                                    row?.TotalComission
+                                  );
+                                  const loyaltyBonus = parseFloat(
+                                    row?.loyaltyBonus || 0
+                                  );
 
-                          let newAgentComissionAED = 0;
+                                  let newAgentComissionAED = 0;
 
-                          if (row?.loyaltyBonus) {
-                            newAgentComissionAED =
-                              ((totalComission - loyaltyBonus) *
-                                newAgentComissionPercent) /
-                              100;
-                          } else {
-                            newAgentComissionAED =
-                              (totalComission * newAgentComissionPercent) / 100;
-                          }
+                                  if (row?.loyaltyBonus) {
+                                    newAgentComissionAED =
+                                      ((totalComission - loyaltyBonus) *
+                                        newAgentComissionPercent) /
+                                      100;
+                                  } else {
+                                    newAgentComissionAED =
+                                      (totalComission *
+                                        newAgentComissionPercent) /
+                                      100;
+                                  }
 
-                          // Round to 2 decimal places
-                          newAgentComissionAED = parseFloat(
-                            newAgentComissionAED.toFixed(2)
-                          );
+                                  // Round to 2 decimal places
+                                  newAgentComissionAED = parseFloat(
+                                    newAgentComissionAED.toFixed(2)
+                                  );
 
-                          newFilteredData[index] = {
-                            ...newFilteredData[index],
-                            atlComissionPercent: newAgentComissionPercent,
-                            atlComissionAED: newAgentComissionAED,
-                          };
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    atlComissionPercent:
+                                      newAgentComissionPercent,
+                                    atlComissionAED: newAgentComissionAED,
+                                  };
 
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      :
-                       <p className={`w-full !mb-0 !mt-0 `}>{ row?.atlComissionPercent ?  row?.atlComissionPercent + '%' : null }</p>
-                     }
-                     </div>
-                    </td>
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            ) : (
+                              <p className={`w-full !mb-0 !mt-0 `}>
+                                {row?.atlComissionPercent
+                                  ? row?.atlComissionPercent + "%"
+                                  : null}
+                              </p>
+                            )}
+                          </div>
+                        </td>
 
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                         value={(
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              value={(
                                 (parseFloat(row?.netcom) *
                                   parseFloat(row?.atlComissionPercent)) /
                                 100
                               ).toFixed(2)}
                               thousandSeparator=","
                               disabled
-                            
-                      />
-                     </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-
-
-                    <td scope="row" className=" !px-1">
-                      <div className="w-[230px]">
-                        {
-                            row?.edit ? 
+                        <td scope="row" className=" !px-1">
+                          <div className="w-[230px]">
+                            {row?.edit ? (
                               <NumericFormat
-                       className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.tlComissionPercent}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          const newTlComissionPercent = Number(e.target.value);
+                                className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row?.tlComissionPercent}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  const newTlComissionPercent = Number(
+                                    e.target.value
+                                  );
 
-                          const totalComission = parseFloat(
-                            row?.TotalComission
-                          );
-                          const loyaltyBonus = parseFloat(
-                            row?.loyaltyBonus || 0
-                          );
+                                  const totalComission = parseFloat(
+                                    row?.TotalComission
+                                  );
+                                  const loyaltyBonus = parseFloat(
+                                    row?.loyaltyBonus || 0
+                                  );
 
-                          let newTlComissionAED = 0;
+                                  let newTlComissionAED = 0;
 
-                          if (row?.loyaltyBonus) {
-                            newTlComissionAED =
-                              ((totalComission - loyaltyBonus) *
-                                newTlComissionPercent) /
-                              100;
-                          } else {
-                            newTlComissionAED =
-                              (totalComission * newTlComissionPercent) / 100;
-                          }
+                                  if (row?.loyaltyBonus) {
+                                    newTlComissionAED =
+                                      ((totalComission - loyaltyBonus) *
+                                        newTlComissionPercent) /
+                                      100;
+                                  } else {
+                                    newTlComissionAED =
+                                      (totalComission * newTlComissionPercent) /
+                                      100;
+                                  }
 
-                          // Round to 2 decimal places
-                          newTlComissionAED = parseFloat(
-                            newTlComissionAED.toFixed(2)
-                          );
+                                  // Round to 2 decimal places
+                                  newTlComissionAED = parseFloat(
+                                    newTlComissionAED.toFixed(2)
+                                  );
 
-                          newFilteredData[index] = {
-                            ...newFilteredData[index],
-                            tlComissionPercent: newTlComissionPercent,
-                            tlComissionAED: newTlComissionAED,
-                          };
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    tlComissionPercent: newTlComissionPercent,
+                                    tlComissionAED: newTlComissionAED,
+                                  };
 
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      :
-                       <p className={`w-full !mb-0 !mt-0 `}>{ row?.tlComissionPercent ?  row?.tlComissionPercent + '%' : null }</p>
-                        }
-                     </div>
-                    </td>
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            ) : (
+                              <p className={`w-full !mb-0 !mt-0 `}>
+                                {row?.tlComissionPercent
+                                  ? row?.tlComissionPercent + "%"
+                                  : null}
+                              </p>
+                            )}
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[200px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                         value={(
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[200px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              value={(
                                 (parseFloat(row?.netcom) *
                                   parseFloat(row?.tlComissionPercent)) /
                                 100
                               ).toFixed(2)}
-                        thousandSeparator=","
-                        disabled
-                      />
-                     </div>
-                    </td>
-                    <td scope="row" className=" !px-1">
-                      <div className="w-[200px]">
-                     {
-                         row?.edit ? 
-                          <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.smComissionPercent}
-                        max="100"
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          const newSmComissionPercent = Number(e.target.value);
+                              thousandSeparator=","
+                              disabled
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1">
+                          <div className="w-[200px]">
+                            {row?.edit ? (
+                              <NumericFormat
+                                className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row?.smComissionPercent}
+                                max="100"
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  const newSmComissionPercent = Number(
+                                    e.target.value
+                                  );
 
-                          const totalComission = parseFloat(
-                            row?.TotalComission
-                          );
-                          const loyaltyBonus = parseFloat(
-                            row?.loyaltyBonus || 0
-                          );
+                                  const totalComission = parseFloat(
+                                    row?.TotalComission
+                                  );
+                                  const loyaltyBonus = parseFloat(
+                                    row?.loyaltyBonus || 0
+                                  );
 
-                          let newSmComissionAED = 0;
+                                  let newSmComissionAED = 0;
 
-                          if (row?.loyaltyBonus) {
-                            newSmComissionAED =
-                              ((totalComission - loyaltyBonus) *
-                                newSmComissionPercent) /
-                              100;
-                          } else {
-                            newSmComissionAED =
-                              (totalComission * newSmComissionPercent) / 100;
-                          }
+                                  if (row?.loyaltyBonus) {
+                                    newSmComissionAED =
+                                      ((totalComission - loyaltyBonus) *
+                                        newSmComissionPercent) /
+                                      100;
+                                  } else {
+                                    newSmComissionAED =
+                                      (totalComission * newSmComissionPercent) /
+                                      100;
+                                  }
 
-                          // Round to 2 decimal places
-                          newSmComissionAED = parseFloat(
-                            newSmComissionAED.toFixed(2)
-                          );
+                                  // Round to 2 decimal places
+                                  newSmComissionAED = parseFloat(
+                                    newSmComissionAED.toFixed(2)
+                                  );
 
-                          newFilteredData[index] = {
-                            ...newFilteredData[index],
-                            smComissionPercent: newSmComissionPercent,
-                            smComissionAED: newSmComissionAED,
-                          };
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    smComissionPercent: newSmComissionPercent,
+                                    smComissionAED: newSmComissionAED,
+                                  };
 
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      :
-                       <p className={`w-full !mb-0 !mt-0 `}>{ row?.smComissionPercent ?  row?.smComissionPercent + '%' : null }</p>
-                     }
-                     </div>
-                    </td>
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            ) : (
+                              <p className={`w-full !mb-0 !mt-0 `}>
+                                {row?.smComissionPercent
+                                  ? row?.smComissionPercent + "%"
+                                  : null}
+                              </p>
+                            )}
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[200px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        thousandSeparator=","
-                         value={(
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[200px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              thousandSeparator=","
+                              value={(
                                 (parseFloat(row?.netcom) *
                                   parseFloat(row?.smComissionPercent)) /
                                 100
                               ).toFixed(2)}
                               disabled
-                      />
-                     </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[200px]">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.tAgentPercentComissionToAgent}
-                        value={
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[200px]">
+                            <input
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              value={row?.tAgentPercentComissionToAgent}
+                              value={
                                 parseFloat(row?.agentComissionPercent) +
                                 parseFloat(row?.atlComissionPercent) +
                                 parseFloat(row?.tlComissionPercent) +
-                                parseFloat(row?.smComissionPercent) + '%'
+                                parseFloat(row?.smComissionPercent) +
+                                "%"
                               }
                               max="100"
                               disabled
-                      />
-                     </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                     <div className="w-[200px]">
-                     <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        thousandSeparator=","
-                         value={(
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[200px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              thousandSeparator=","
+                              value={(
                                 ((parseFloat(row?.agentComissionPercent) +
                                   parseFloat(row?.atlComissionPercent) +
                                   parseFloat(row?.tlComissionPercent) +
@@ -2244,87 +2386,95 @@ function allDeals() {
                                 100
                               ).toFixed(2)}
                               disabled
-                      />
-                     </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                        {
-                            row?.edit ? 
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            {row?.edit ? (
                               <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.bhPercentComission}
-                        max="100"
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            bhPercentComission: Number(e.target.value),
-                            bhComission: row?.loyaltyBonus
-                              ? parseFloat(
-                                  ((parseFloat(row?.TotalComission) -
-                                    parseFloat(row?.loyaltyBonus)) *
-                                    Number(e.target.value)) /
-                                    100
-                                )
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                              : (
-                                  (parseFloat(row?.TotalComission) *
-                                    Number(e.target.value)) /
-                                  100
-                                )
-                                  .toFixed(2)
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                      :
-                       <p className={`w-full !mb-0 !mt-0 `}>{ row?.bhPercentComission ?  row?.bhPercentComission + '%' : null }</p>
-                        }
-                   </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        thousandSeparator=","
-                         value={(
+                                className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                                value={row?.bhPercentComission}
+                                max="100"
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index], // Maintain other properties of the row
+                                    bhPercentComission: Number(e.target.value),
+                                    bhComission: row?.loyaltyBonus
+                                      ? parseFloat(
+                                          ((parseFloat(row?.TotalComission) -
+                                            parseFloat(row?.loyaltyBonus)) *
+                                            Number(e.target.value)) /
+                                            100
+                                        )
+                                          .toFixed(2)
+                                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                      : (
+                                          (parseFloat(row?.TotalComission) *
+                                            Number(e.target.value)) /
+                                          100
+                                        )
+                                          .toFixed(2)
+                                          .replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                          ),
+                                  };
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                            ) : (
+                              <p className={`w-full !mb-0 !mt-0 `}>
+                                {row?.bhPercentComission
+                                  ? row?.bhPercentComission + "%"
+                                  : null}
+                              </p>
+                            )}
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              thousandSeparator=","
+                              value={(
                                 (parseFloat(row?.netcom) *
                                   parseFloat(row?.bhPercentComission)) /
                                 100
                               ).toFixed(2)}
                               disabled
-                      />
-                    </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                    <div className="w-[230px]">
-                    <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        
-                        max="100"
-                        value={
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <input
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              max="100"
+                              value={
                                 parseFloat(row?.agentComissionPercent) +
                                 parseFloat(row?.atlComissionPercent) +
                                 parseFloat(row?.tlComissionPercent) +
                                 parseFloat(row?.smComissionPercent) +
-                                parseFloat(row?.bhPercentComission) + '%'
+                                parseFloat(row?.bhPercentComission) +
+                                "%"
                               }
-                        disabled
-                      />
-                    </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        thousandSeparator=","
-                        value={(
+                              disabled
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              thousandSeparator=","
+                              value={(
                                 ((parseFloat(row?.agentComissionPercent) +
                                   parseFloat(row?.atlComissionPercent) +
                                   parseFloat(row?.tlComissionPercent) +
@@ -2334,503 +2484,534 @@ function allDeals() {
                                 100
                               ).toFixed(2)}
                               disabled
-                      />
-                    </div>
-                    </td>
+                            />
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <div className="w-[230px]">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.comissiontoCompanyPercent}
-                        max="100"
-                         value={
-                                100 - (parseFloat(row?.agentComissionPercent) +
-                                parseFloat(row?.atlComissionPercent) +
-                                parseFloat(row?.tlComissionPercent) +
-                                parseFloat(row?.smComissionPercent) +
-                                parseFloat(row?.bhPercentComission)) +'%'
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <input
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              value={row?.comissiontoCompanyPercent}
+                              max="100"
+                              value={
+                                100 -
+                                (parseFloat(row?.agentComissionPercent) +
+                                  parseFloat(row?.atlComissionPercent) +
+                                  parseFloat(row?.tlComissionPercent) +
+                                  parseFloat(row?.smComissionPercent) +
+                                  parseFloat(row?.bhPercentComission)) +
+                                "%"
                               }
                               max="100"
-                             
                               disabled
-                      />
-                     </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                     <div className="w-[230px]">
-                     <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        thousandSeparator=","
-                        value={
-                                ((100 - (parseFloat(row?.agentComissionPercent) +
-                                parseFloat(row?.atlComissionPercent) +
-                                parseFloat(row?.tlComissionPercent) +
-                                parseFloat(row?.smComissionPercent) +
-                                parseFloat(row?.bhPercentComission))) * parseFloat(row?.netcom) / 100).toFixed(2)
-                              }
-                        disabled
-                      />
-                     </div>
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 w-[250px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.additionalComments}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            additionalComments: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className="flex flex-col gap-1 w-[250px]">
-                        <div className="flex items-center justify-start gap-1">
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="w-[230px]">
+                            <NumericFormat
+                              className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                              thousandSeparator=","
+                              value={(
+                                ((100 -
+                                  (parseFloat(row?.agentComissionPercent) +
+                                    parseFloat(row?.atlComissionPercent) +
+                                    parseFloat(row?.tlComissionPercent) +
+                                    parseFloat(row?.smComissionPercent) +
+                                    parseFloat(row?.bhPercentComission))) *
+                                  parseFloat(row?.netcom)) /
+                                100
+                              ).toFixed(2)}
+                              disabled
+                            />
+                          </div>
+                        </td>
+                        <td scope="row" className=" !px-1 ">
                           <input
-                            className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
-                            type="checkbox"
-                            checked={row?.comissionStatustoAgent == 1}
+                            className={`px-1 w-[250px] py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.additionalComments}
                             onChange={(e) => {
                               const newFilteredData = [...filteredData];
                               newFilteredData[index] = {
-                                ...newFilteredData[index],
-                                comissionStatustoAgent: e.target.checked
-                                  ? 1
-                                  : 0,
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                additionalComments: e.target.value,
                               };
                               setFilteredData(newFilteredData);
                             }}
                             disabled={row.edit === null || row.edit === false}
                           />
-                          <label className="!mb-0">Click if Comission Received</label>
-                        </div>
+                        </td>
 
-                        <div>
-                          {row?.comissionStatustoAgent == 1 ? (
-                            <p className="!mb-0 bg-white text-green-500 !mt-0 text-center px-3 py-2 rounded-full">
-                              Paid
-                            </p>
-                          ) : (
-                            <p className="!mb-0 !mt-0 text-red-500 px-3 bg-white py-2 text-center rounded-full">
-                              Not Paid
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="flex flex-col gap-1 w-[250px]">
+                            <div className="flex items-center justify-start gap-1">
+                              <input
+                                className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
+                                type="checkbox"
+                                checked={row?.comissionStatustoAgent == 1}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    comissionStatustoAgent: e.target.checked
+                                      ? 1
+                                      : 0,
+                                  };
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                              <label className="!mb-0">
+                                Click if Comission Received
+                              </label>
+                            </div>
 
-                    <td
-                      scope="row"
-                      className="  !px-1 "
-                    >
-                      <div className="w-[120px]">
-                      {(row?.KYCimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.KYCimage != null) &&
-                              (row?.UNimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.UNimage != null) &&
-                              (row?.Sanctionimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.Sanctionimage != null) &&
-                              (row?.Riskimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.Riskimage != null) ? (
-                                <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
-                                  Done
+                            <div>
+                              {row?.comissionStatustoAgent == 1 ? (
+                                <p className="!mb-0 bg-white text-green-500 !mt-0 text-center px-3 py-2 rounded-full">
+                                  Paid
                                 </p>
-                              ) : 
-                                row.approved == 53 ? <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
+                              ) : (
+                                <p className="!mb-0 !mt-0 text-red-500 px-3 bg-white py-2 text-center rounded-full">
+                                  Not Paid
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+
+                        <td scope="row" className="  !px-1 ">
+                          <div className="w-[120px]">
+                            {row?.KYCimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.KYCimage != null &&
+                            row?.UNimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.UNimage != null &&
+                            row?.Sanctionimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.Sanctionimage != null &&
+                            row?.Riskimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.Riskimage != null ? (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
+                                Done
+                              </p>
+                            ) : row.approved == 53 ? (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
                                 Approved by Superadmin
-                              </p> :  
-                                row.approved == 51 ? <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-red-400">
+                              </p>
+                            ) : row.approved == 51 ? (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-red-400">
                                 Rejected
-                              </p> : <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-blue-400">
+                              </p>
+                            ) : (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-blue-400">
                                 Awaiting
                               </p>
-                              
+                            )}
+                          </div>
+                        </td>
 
-                              }
-                     </div>
-                    </td>
-
-                    <td
-                      scope="row"
-                      className=" !px-1  "
-                    >
-                      <div className={`!w-[150px]`}>
-                    {(row?.KYCimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.KYCimage != null) &&
-                              (row?.UNimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.UNimage != null) &&
-                              (row?.Sanctionimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.Sanctionimage != null) &&
-                              (row?.Riskimage != "https://crm-milestonehomes.com/public/kyc/undefined" && row?.Riskimage != null) ? (
-                                <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-yellow-600">
-                                  Pending
-                                </p>
-                              ) : 
-                              row.approved == 53 ? <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
-                              Done
-                              </p> :  
-                                 <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-yellow-600">
+                        <td scope="row" className=" !px-1  ">
+                          <div className={`!w-[150px]`}>
+                            {row?.KYCimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.KYCimage != null &&
+                            row?.UNimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.UNimage != null &&
+                            row?.Sanctionimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.Sanctionimage != null &&
+                            row?.Riskimage !=
+                              "https://crm-milestonehomes.com/public/kyc/undefined" &&
+                            row?.Riskimage != null ? (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-yellow-600">
                                 Pending
-                              </p> 
+                              </p>
+                            ) : row.approved == 53 ? (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
+                                Done
+                              </p>
+                            ) : (
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-yellow-600">
+                                Pending
+                              </p>
+                            )}
+                          </div>
+                        </td>
 
-                              }
-                    </div>
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.contractEndDate}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            contractEndDate: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="date"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.cheques}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            cheques: e.target.value,
-                          };
-
-                          setFilteredData(newFilteredData);
-                        }}
-                        type="number"
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            securityDeposit: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        value={parseFloat(String(row?.securityDeposit).replace(/,/g, ""))
-                          .toFixed(2)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        thousandSeparator=","
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.TA}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            TA: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1">
-                      <input
-                        disabled
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={
-                          row?.loyaltyBonus
-                            ? parseFloat(
-                                parseFloat(row?.TotalComission) -
-                                  parseFloat(row?.loyaltyBonus)
-                              )
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            : parseFloat(row?.TotalComission)
-                                .toFixed(2)
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                      />
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={parseFloat(String(row?.claim1).replace(/,/g, ""))
-                          .toFixed(2)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        thousandSeparator=","
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            claim1: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={parseFloat(String(row?.claim2).replace(/,/g, ""))
-                          .toFixed(2)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            claim2: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        thousandSeparator=","
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={parseFloat(String(row?.claim3).replace(/,/g, ""))
-                          .toFixed(2)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            claim3: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        thousandSeparator=","
-                      />
-                    </td>
-
-                    <td scope="row" className=" !px-1 ">
-                      <div className="flex flex-col w-[230px] gap-1">
-                        <div className="flex items-center justify-start gap-1">
+                        <td scope="row" className=" !px-1 ">
                           <input
-                            className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
-                            type="checkbox"
-                            checked={row?.fullComission == 1}
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.contractEndDate}
                             onChange={(e) => {
                               const newFilteredData = [...filteredData];
                               newFilteredData[index] = {
-                                ...newFilteredData[index],
-                                fullComission: e.target.checked ? 1 : 0,
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                contractEndDate: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            type="date"
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.cheques}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                cheques: e.target.value,
+                              };
+
+                              setFilteredData(newFilteredData);
+                            }}
+                            type="number"
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <NumericFormat
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                securityDeposit: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                            value={parseFloat(
+                              String(row?.securityDeposit).replace(/,/g, "")
+                            )
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            thousandSeparator=","
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.TA}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                TA: e.target.value,
                               };
                               setFilteredData(newFilteredData);
                             }}
                             disabled={row.edit === null || row.edit === false}
                           />
-                          <label className="!mb-0">Click if Comission Received</label>
-                        </div>
+                        </td>
 
-                        <div>
-                          {row?.fullComission == 1 ? (
-                            <p className="!mb-0 bg-white text-green-500 !mt-0 text-center px-3 py-2 rounded-full">
-                              Completed
-                            </p>
-                          ) : (
-                            <p className="!mb-0 !mt-0 text-red-500 px-3 bg-white py-2 text-center rounded-full">
-                              Not Complete
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </td>
+                        <td scope="row" className=" !px-1">
+                          <input
+                            disabled
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={
+                              row?.loyaltyBonus
+                                ? parseFloat(
+                                    parseFloat(row?.TotalComission) -
+                                      parseFloat(row?.loyaltyBonus)
+                                  )
+                                    .toFixed(2)
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                : parseFloat(row?.TotalComission)
+                                    .toFixed(2)
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                          />
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <NumericFormat
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={parseFloat(
+                              String(row?.claim1).replace(/,/g, "")
+                            )
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            thousandSeparator=","
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                claim1: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <NumericFormat
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={parseFloat(
-                          String(row?.cancelledPrice).replace(/,/g, "")
-                        )
-                          .toFixed(2)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            cancelledPrice: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                        thousandSeparator=","
-                      />
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <NumericFormat
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={parseFloat(
+                              String(row?.claim2).replace(/,/g, "")
+                            )
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                claim2: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                            thousandSeparator=","
+                          />
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.dewaPremises}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            dewaPremises: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <NumericFormat
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={parseFloat(
+                              String(row?.claim3).replace(/,/g, "")
+                            )
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                claim3: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                            thousandSeparator=","
+                          />
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.contractNumber}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            contractNumber: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.titleNumber}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            titleNumber: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <div className="flex flex-col w-[230px] gap-1">
+                            <div className="flex items-center justify-start gap-1">
+                              <input
+                                className="px-1 py-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
+                                type="checkbox"
+                                checked={row?.fullComission == 1}
+                                onChange={(e) => {
+                                  const newFilteredData = [...filteredData];
+                                  newFilteredData[index] = {
+                                    ...newFilteredData[index],
+                                    fullComission: e.target.checked ? 1 : 0,
+                                  };
+                                  setFilteredData(newFilteredData);
+                                }}
+                                disabled={
+                                  row.edit === null || row.edit === false
+                                }
+                              />
+                              <label className="!mb-0">
+                                Click if Comission Received
+                              </label>
+                            </div>
 
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.newTitleDeedNumber}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            newTitleDeedNumber: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
+                            <div>
+                              {row?.fullComission == 1 ? (
+                                <p className="!mb-0 bg-white text-green-500 !mt-0 text-center px-3 py-2 rounded-full">
+                                  Completed
+                                </p>
+                              ) : (
+                                <p className="!mb-0 !mt-0 text-red-500 px-3 bg-white py-2 text-center rounded-full">
+                                  Not Complete
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </td>
 
-                    <td scope="row" className=" !px-1 ">
-                      <input
-                        className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-                        value={row?.agentname}
-                        onChange={(e) => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index] = {
-                            ...newFilteredData[index], // Maintain other properties of the row
-                            agentname: e.target.value,
-                          };
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={row.edit === null || row.edit === false}
-                      />
-                    </td>
+                        <td scope="row" className=" !px-1 ">
+                          <NumericFormat
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={parseFloat(
+                              String(row?.cancelledPrice).replace(/,/g, "")
+                            )
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                cancelledPrice: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                            thousandSeparator=","
+                          />
+                        </td>
 
-                    <td
-                        id='lastRow'
-                      row={"row"}
-                      className="sticky right-0 z-[9] !bg-[#F1F5F7] px-1"
-                    >
-                      <div className={ `flex item-center justify-around `}>
-                      <button
-                        className="text-lg cursor-pointer inline-block !mr-2"
-                        onClick={() => {
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].edit = true;
-                          setFilteredData(newFilteredData);
-                        }}
-                      >
-                        <FaRegEdit />
-                      </button>
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.dewaPremises}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                dewaPremises: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
 
-                      <button
-                        className={`text-lg !inline-block   ${
-                          row.edit == null ||
-                          row.edit == false ||
-                          row.buyername.length < 1 ||
-                          row.buyerContact.length < 1 ||
-                          row.buyerdob.length < 1 ||
-                          row.buyerpassport.length < 1 ||
-                          row.passportexpiry.length < 1 ||
-                          row.nationality.length < 1 ||
-                          row.address.length < 1 ||
-                          row.Closure.length < 1 ||
-                          row.Booking.length < 1
-                            ? "text-slate-300"
-                            : "text-green-300"
-                        } `}
-                        onClick={() => {
-                          submit(row, row._id);
-                          const newFilteredData = [...filteredData];
-                          newFilteredData[index].edit = false;
-                          setFilteredData(newFilteredData);
-                        }}
-                        disabled={
-                          row.edit === null ||
-                          row.edit === false ||
-                          row.buyername.length < 1 ||
-                          row.buyerContact.length < 1 ||
-                          row.buyerdob.length < 1 ||
-                          row.buyerpassport.length < 1 ||
-                          row.passportexpiry.length < 1 ||
-                          row.nationality.length < 1 ||
-                          row.address.length < 1 ||
-                          row.Closure.length < 1 ||
-                          row.Booking.length < 1
-                        }
-                      >
-                        <ImCheckmark />
-                      </button>
-                      <button
-                        className="text-lg cursor-pointer inline-block !mr-2"
-                        onClick={() => {
-                          exportFile(index);
-                        }}
-                      >
-                        <MdFileDownload />
-                      </button>
-                  </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.contractNumber}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                contractNumber: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.titleNumber}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                titleNumber: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
 
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.newTitleDeedNumber}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                newTitleDeedNumber: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td scope="row" className=" !px-1 ">
+                          <input
+                            className={`px-1 py-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
+                            value={row?.agentname}
+                            onChange={(e) => {
+                              const newFilteredData = [...filteredData];
+                              newFilteredData[index] = {
+                                ...newFilteredData[index], // Maintain other properties of the row
+                                agentname: e.target.value,
+                              };
+                              setFilteredData(newFilteredData);
+                            }}
+                            disabled={row.edit === null || row.edit === false}
+                          />
+                        </td>
+
+                        <td
+                          id="lastRow"
+                          row={"row"}
+                          className="sticky right-0 z-[9] !bg-[#F1F5F7] px-1"
+                        >
+                          <div className={`flex item-center justify-around `}>
+                            <button
+                              className="text-lg cursor-pointer inline-block !mr-2"
+                              onClick={() => {
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].edit = true;
+                                setFilteredData(newFilteredData);
+                              }}
+                            >
+                              <FaRegEdit />
+                            </button>
+
+                            <button
+                              className={`text-lg !inline-block   ${
+                                row.edit == null ||
+                                row.edit == false ||
+                                row.buyername.length < 1 ||
+                                row.buyerContact.length < 1 ||
+                                row.buyerdob.length < 1 ||
+                                row.buyerpassport.length < 1 ||
+                                row.passportexpiry.length < 1 ||
+                                row.nationality.length < 1 ||
+                                row.address.length < 1 ||
+                                row.Closure.length < 1 ||
+                                row.Booking.length < 1
+                                  ? "text-slate-300"
+                                  : "text-green-300"
+                              } `}
+                              onClick={() => {
+                                submit(row, row._id);
+                                const newFilteredData = [...filteredData];
+                                newFilteredData[index].edit = false;
+                                setFilteredData(newFilteredData);
+                              }}
+                              disabled={
+                                row.edit === null ||
+                                row.edit === false ||
+                                row.buyername.length < 1 ||
+                                row.buyerContact.length < 1 ||
+                                row.buyerdob.length < 1 ||
+                                row.buyerpassport.length < 1 ||
+                                row.passportexpiry.length < 1 ||
+                                row.nationality.length < 1 ||
+                                row.address.length < 1 ||
+                                row.Closure.length < 1 ||
+                                row.Booking.length < 1
+                              }
+                            >
+                              <ImCheckmark />
+                            </button>
+                            <button
+                              className="text-lg cursor-pointer inline-block !mr-2"
+                              onClick={() => {
+                                exportFile(index);
+                              }}
+                            >
+                              <MdFileDownload />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
-      </div> : 'Loading'
-      }
-      <ToastContainer />
+      ) : (
+        "Loading"
+      )}
     </RootLayout>
   );
 }

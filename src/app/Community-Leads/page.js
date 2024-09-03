@@ -16,7 +16,7 @@ import { FaPlus } from "react-icons/fa";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import { RiUploadCloud2Fill } from "react-icons/ri";
 import { SiGooglesheets } from "react-icons/si";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "rsuite/dist/rsuite.min.css";
 import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
@@ -174,16 +174,15 @@ function Cold() {
   };
 
   const nextPage = () => {
-    const nextPageNumber = currentPage + 1;
-    if (nextPageNumber <= Math.ceil(Leadss.length / leadsPerPage) + 1) {
-      changePage(nextPageNumber);
+    const totalPages = Math.ceil(totalLeads / leadsPerPage);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
-    const prevPageNumber = currentPage - 1;
-    if (prevPageNumber >= 1) {
-      changePage(prevPageNumber);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -571,7 +570,7 @@ function Cold() {
 
   return (
     <RootLayout>
-      <div className="  flex  justify-end  w-full mt-20   h-screen !px-0">
+      <div className="flex justify-end  w-full mt-20   h-screen !px-0">
         <div className=" tablet:w-[calc(100%-100px)] flex flex-col ">
           {isModalOpen2 && (
             <BulkModal
@@ -765,12 +764,12 @@ function Cold() {
               </div>
             </div>
 
-            <div className="mt-10 ">
+            <div className="mt-10">
               <div
                 className="dataTables_paginate paging_simple_numbers"
                 id="datatable_paginate"
               >
-                <ul className="pagination pagination-rounded">
+                <ul className="pagination pagination-rounded flex flex-row justify-center">
                   {totalLeads != 0 && (
                     <>
                       <li
@@ -779,20 +778,30 @@ function Cold() {
                         }`}
                         id="datatable_previous"
                       >
-                        <a
-                          href="#"
-                          aria-controls="datatable"
-                          aria-disabled={currentPage === 1}
-                          role="link"
-                          data-dt-idx="previous"
-                          tabIndex={0}
-                          className="page-link"
-                          onClick={prevPage}
-                        >
+                        <button onClick={prevPage} className="page-link">
                           <i className="fa fa-chevron-left" />
-                        </a>
+                        </button>
                       </li>
-                      <li className="p-2 rounded-full">{currentPage}</li>
+                      <div className="flex flex-row px-3 gap-1">
+                        {Array.from(
+                          { length: Math.ceil(totalLeads / leadsPerPage) },
+                          (_, i) => (
+                            <li
+                              key={i}
+                              className={`paginate_button page-item ${
+                                currentPage === i + 1 ? "active" : ""
+                              }`}
+                            >
+                              <button
+                                onClick={() => setCurrentPage(i + 1)}
+                                className="page-link"
+                              >
+                                {i + 1}
+                              </button>
+                            </li>
+                          )
+                        )}
+                      </div>
                       <li
                         className={`paginate_button page-item next ${
                           currentPage === Math.ceil(totalLeads / leadsPerPage)
