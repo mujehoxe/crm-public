@@ -46,14 +46,17 @@ jobs:
             fi
           "
 
-      - name: Setup and run application
+      - name: Deploy and run with PM2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd ~/nextjs-app &&
             echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
-            (fuser -k 3000/tcp && sleep 5) ||
-            (npm run start > nextjs-app.log 2>&1 &) &&
-            sleep 5 && tail -n 10 nextjs-app.log
+            npm install -g pm2 &&
+            pm2 delete nextjs-app || true &&
+            pm2 start npm --name 'nextjs-app' -- start &&
+            pm2 save &&
+            sleep 5 &&
+            pm2 list | grep -q 'nextjs-app.*online' && echo 'App started successfully' || (pm2 logs nextjs-app --lines 50 && exit 1)
           "
