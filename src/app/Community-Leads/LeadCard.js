@@ -96,7 +96,7 @@ const LeadCard = ({
 
   return (
     <div
-      className={`rounded-md h-56 relative cursor-pointer px-3 border-2 bg-white group py-3 transition-all duration-300  ${
+      className={`rounded-md min-h-56 relative cursor-pointer px-3 border-2 bg-white group py-3 transition-all duration-300  ${
         selectedLeads.includes(currentLead)
           ? "border-blue-400"
           : "hover:!bg-blue-50"
@@ -282,7 +282,7 @@ const LeadCard = ({
         </p>
       </div>
 
-      <div className="mt-2 flex flex-row justify-between items-start">
+      <div className="mt-2 flex flex-row justify-between items-start rounded-lg bg-gray-100 py-2 pl-1">
         <div
           contentEditable={isDescriptionInput}
           onBlur={({ target: { innerText } }) =>

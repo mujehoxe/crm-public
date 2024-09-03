@@ -25,6 +25,8 @@ import BulkModal from "./Bulk/bulk";
 import LeadCard from "./LeadCard";
 import EditModal from "./EditModal/EditModal";
 import MeetingModal from "./EditModal/MeetingModal";
+import Loader from "../components/Loader";
+import InlineLoader from "./InlineLoader";
 
 const { RangePicker } = DatePicker;
 
@@ -50,12 +52,12 @@ function Cold() {
   const [selectedValues4, setSelectedValues4] = useState([]);
   const [date, setDate] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const [sourceOptions, setSourceOptions] = useState([]);
   const [SourceCount, setSourceCount] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
   const [StatusCount, setStatusCount] = useState([]);
-
-  const [Meeting, setMeetings] = useState([]);
 
   const userdata = TokenDecoder();
   const userid = userdata ? userdata.id : null;
@@ -65,7 +67,8 @@ function Cold() {
     setCurrentPage(1);
   };
 
-  const fetchLead = async (pageNumber = 1) => {
+  const fetchLead = async () => {
+    setLoading(true);
     try {
       const url = getBaseURL();
       const params = getQueryParams();
@@ -76,6 +79,7 @@ function Cold() {
     } catch (error) {
       console.error("Error fetching leads:", error);
     }
+    setLoading(false);
   };
 
   const getBaseURL = () => {
@@ -712,9 +716,13 @@ function Cold() {
               Showing {leadsPerPage} cards of {totalLeads}{" "}
             </p>
 
-            <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
-              {renderLeadGrid}
-            </div>
+            {loading ? (
+              <InlineLoader className="flex w-full text-center text-blue-900 justify-center rounded-2xl bg-[#00f] bg-opacity-10 items-cente h-56" />
+            ) : (
+              <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+                {renderLeadGrid}
+              </div>
+            )}
 
             <div ref={containerRef} className="fixed bottom-5 right-6 z-10">
               <div className={`relative rounded-full cursor-pointer`}>
