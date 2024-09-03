@@ -7,7 +7,13 @@ import moment from "moment/moment";
 import Meetings from "./Meetings";
 import LogDisplay from "./LogDisplay";
 
-const EditModal = ({ leadData, onClose2, setMeetingId, setReminderId }) => {
+const EditModal = ({
+  leadData,
+  meetingModalOpen,
+  setMeetingModalOpen,
+  setReminderId,
+  onClose,
+}) => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tabId, e) => {
@@ -46,7 +52,7 @@ const EditModal = ({ leadData, onClose2, setMeetingId, setReminderId }) => {
           </p>
           <p
             className="text-4xl hover:text-red-500 !mt-0 !mb-0 cursor-pointer "
-            onClick={onClose2}
+            onClick={onClose}
           >
             <MdOutlineClose />
           </p>
@@ -142,7 +148,8 @@ const EditModal = ({ leadData, onClose2, setMeetingId, setReminderId }) => {
               )}
               {activeTab === "tab3" && (
                 <Meetings
-                  setMeetingId={setMeetingId}
+                  meetingModalOpen={meetingModalOpen}
+                  setMeetingModalOpen={setMeetingModalOpen}
                   leadData={leadData}
                 ></Meetings>
               )}

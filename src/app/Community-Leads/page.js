@@ -481,7 +481,7 @@ function Cold() {
     };
   }, []);
 
-  const [meetingId, setMeetingId] = useState();
+  const [meetingModalOpen, setMeetingModalOpen] = useState(false);
   const [reminderId, setReminderId] = useState();
 
   return (
@@ -647,15 +647,16 @@ function Cold() {
                         {edit === currentLead._id && (
                           <EditModal
                             leadData={currentLead}
-                            onClose2={(e) => toggleModal(e)}
-                            setMeetingId={setMeetingId}
+                            meetingModalOpen={meetingModalOpen}
+                            setMeetingModalOpen={setMeetingModalOpen}
                             setReminderId={setReminderId}
+                            onClose={(e) => toggleModal(e)}
                           />
                         )}
-                        {meetingId === currentLead._id && (
+                        {meetingModalOpen && (
                           <MeetingModal
                             onClose={() => {
-                              setMeetingId(null);
+                              setMeetingModalOpen(false);
                             }}
                             lead={currentLead._id}
                           />
@@ -692,21 +693,20 @@ function Cold() {
                       {edit === currentLead._id && (
                         <EditModal
                           leadData={currentLead}
-                          Reminders={Reminders}
-                          Meeting={Meeting}
-                          setMeetingId={setMeetingId}
+                          meetingModalOpen={meetingModalOpen}
+                          setMeetingModalOpen={setMeetingModalOpen}
                           setReminderId={setReminderId}
-                          onClose2={(e) => {
+                          onClose={(e) => {
                             toggleModal(e);
                             setEdit(null);
                           }}
                         />
                       )}
 
-                      {meetingId && meetingId === currentLead._id && (
+                      {meetingModalOpen && (
                         <MeetingModal
                           onClose={() => {
-                            setMeetingId(null);
+                            setMeetingModalOpen(false);
                           }}
                           lead={currentLead._id}
                         />

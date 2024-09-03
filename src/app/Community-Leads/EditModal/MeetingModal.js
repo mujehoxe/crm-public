@@ -35,7 +35,7 @@ const MeetingModal = ({ onClose, lead }) => {
     { value: "Meeting Cancelled", label: "Meeting Cancelled" },
   ];
 
-  const [options4, setOptions4] = useState([]);
+  const [followersOptions, setFollowersOptions] = useState([]);
 
   const typeOptions = [
     { value: "Primary", label: "Primary" },
@@ -52,7 +52,7 @@ const MeetingModal = ({ onClose, lead }) => {
       value: user._id,
       label: user.username,
     }));
-    setOptions4(newOptions);
+    setFollowersOptions(newOptions);
   }, [users]);
 
   const [meeting, setMeeting] = useState({
@@ -82,18 +82,16 @@ const MeetingModal = ({ onClose, lead }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.post("/api/Meeting/add", meeting);
+      const res = await axios.post("/api/Meeting/add", meeting);
+      onClose();
+      toast.success("Meeting Added successful");
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     } finally {
-      toast.success("Meeting Added successful");
-      setTimeout(() => {
-        onClose();
-      }, 2000);
-      onClose();
-      //   setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -103,7 +101,7 @@ const MeetingModal = ({ onClose, lead }) => {
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        "Add Meeting"
+        <h4>Add Meeting</h4>
         <h5>{loading && "Processing"}</h5>
         <div className="card-body mt-4">
           <div>
@@ -219,7 +217,7 @@ const MeetingModal = ({ onClose, lead }) => {
 
           <div className="mb-4 text-left">
             <SearchableSelect
-              options={options4}
+              options={followersOptions}
               onChange={(selectedOption) =>
                 handleSelectChange("Followers", selectedOption)
               }
@@ -249,7 +247,7 @@ const MeetingModal = ({ onClose, lead }) => {
             <button
               className="btn btn-primary w-100 disabled:bg-gray-400"
               onClick={onSubmit}
-              disabled={true}
+              disabled={loading}
             >
               Submit
             </button>

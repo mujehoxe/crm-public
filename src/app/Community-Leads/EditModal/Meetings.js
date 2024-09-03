@@ -1,7 +1,7 @@
 import React from "react";
 import Meeting from "./Meeting";
 
-const Meetings = ({ setMeetingId, leadData }) => {
+const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -26,8 +26,8 @@ const Meetings = ({ setMeetingId, leadData }) => {
       }
     };
 
-    fetchMeetings();
-  }, [leadData]);
+    !meetingModalOpen && fetchMeetings();
+  }, [meetingModalOpen]);
 
   return (
     <section className="w-full">
@@ -73,7 +73,7 @@ const Meetings = ({ setMeetingId, leadData }) => {
 
       <div className="flex justify-end">
         <button
-          onClick={() => setMeetingId(leadData._id)}
+          onClick={() => setMeetingModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         >
           <i className="fa fa-plus" /> Add Meeting
