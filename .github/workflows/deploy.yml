@@ -54,6 +54,6 @@ jobs:
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
             npm ci --omit=dev &&
             pkill -f 'node.*next' || true &&
-            (nohup npm run start > nextjs-app.log 2>&1 &) &&
-            sleep 5 && tail -n 10 nextjs-app.log && tail -n 10 nohup.out
+            (npm run start > nextjs-app.log 2>&1 &) &&
+            sleep 5 && tail -n 10 nextjs-app.log
           "
