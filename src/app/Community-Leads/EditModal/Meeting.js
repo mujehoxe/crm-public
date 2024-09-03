@@ -7,7 +7,7 @@ const priorityMap = {
   Urgent: { bg: "bg-red-100", text: "text-red-800" },
 };
 
-function Meeting({ meeting }) {
+function Meeting({ meeting, onDelete, isLoading }) {
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
@@ -20,33 +20,51 @@ function Meeting({ meeting }) {
           <h3 className="font-semibold text-lg text-gray-800">
             {meeting.Subject}
           </h3>
-          <span
-            className={`text-xs px-2 py-1 rounded-full ${
-              priorityMap[meeting.Priority]?.bg || "bg-gray-100"
-            } ${priorityMap[meeting.Priority]?.text || "text-gray-700"}`}
-          >
-            <i
-              className={`fa fa-circle mr-2 ${
-                priorityMap[meeting.Priority]?.text || "text-gray-700"
-              } mr-1`}
-            />{" "}
-            {meeting.Priority}
-          </span>
+          <div>
+            <span
+              className={`text-xs px-2 py-1 rounded-full ${
+                priorityMap[meeting.Priority]?.bg || "bg-gray-100"
+              } ${priorityMap[meeting.Priority]?.text || "text-gray-700"}`}
+            >
+              <i
+                className={`fa fa-circle mr-2 ${
+                  priorityMap[meeting.Priority]?.text || "text-gray-700"
+                } mr-1`}
+              />{" "}
+              {meeting.Priority}
+            </span>
+            <button
+              onClick={onDelete}
+              disabled={isLoading}
+              className="text-xs bg-red-200 text-red-800 p-1 w-6 h-6 rounded-full ml-2"
+            >
+              <i className="fa fa-trash" />
+            </button>
+          </div>
         </div>
         <p className="text-sm text-gray-600">
           Status: <span className="font-medium">{meeting.Status}</span>
         </p>
-      </header>
-
-      <div className="p-4 space-y-3">
         <div className="flex items-center text-sm text-gray-600">
-          <i className="fa fa-user mr-2" />
           <span>
             Added by:{" "}
             <span className="font-medium">{meeting.addedby.username}</span>
           </span>
+          <div className="size-6 ml-1 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
+            {meeting?.addedby.Avatar ? (
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
+                  meeting?.addedby.Avatar
+                }`}
+              />
+            ) : (
+              <FaRegUserCircle />
+            )}
+          </div>{" "}
         </div>
+      </header>
 
+      <div className="p-4 space-y-3">
         <div className="flex items-center text-sm text-gray-600">
           <i className="fa fa-calendar mr-2" />
           <span>{formatDate(meeting.MeetingDate)}</span>
@@ -55,42 +73,48 @@ function Meeting({ meeting }) {
         {meeting.MeetingType &&
           (meeting.Developer || meeting.directoragnet) && (
             <div className="flex text-sm text-gray-600 rounded-lg p-3 bg-gray-50">
-              <i className="fa fa-user mt-1 mr-2" />
               {meeting.MeetingType === "Secondary" ? (
-                meeting.directoragnet == "Agent" ? (
-                  <div className="flex flex-col">
-                    <span className="">Agent</span>
-                    <span>
-                      Name:{" "}
-                      <span className="font-medium">{meeting.agentName}</span>
-                    </span>
-                    <span>
-                      Phone:{" "}
-                      <span className="font-medium">{meeting.agentPhone}</span>
-                    </span>
-                    <span>
-                      Company:{" "}
-                      <span className="font-medium">
-                        {meeting.agentCompany}
+                <>
+                  <i className="fa fa-user mt-1 mr-2" />
+                  {meeting.directoragnet == "Agent" ? (
+                    <div className="flex flex-col">
+                      <span className="">Agent</span>
+                      <span>
+                        Name:{" "}
+                        <span className="font-medium">{meeting.agentName}</span>
                       </span>
-                    </span>
-                  </div>
-                ) : (
-                  <span>Direct / No Agent</span>
-                )
+                      <span>
+                        Phone:{" "}
+                        <span className="font-medium">
+                          {meeting.agentPhone}
+                        </span>
+                      </span>
+                      <span>
+                        Company:{" "}
+                        <span className="font-medium">
+                          {meeting.agentCompany}
+                        </span>
+                      </span>
+                    </div>
+                  ) : (
+                    <span>Direct / No Agent</span>
+                  )}
+                </>
               ) : (
-                <div>
+                <div className="flex flex-col text-sm gap-1 text-gray-600">
                   {meeting.Developer && (
                     <span>
+                      <i className="fa fa-user mr-2" />
                       Developer:{" "}
                       <span className="font-medium">{meeting.Developer}</span>
                     </span>
                   )}
                   {meeting.Location && (
-                    <div className="flex items-center text-sm text-gray-600">
+                    <span>
                       <i className="fa fa-map-marker-alt mr-2" />
-                      <span>{meeting.Location}</span>
-                    </div>
+                      Location:{" "}
+                      <span className="font-medium">{meeting.Location}</span>
+                    </span>
                   )}
                 </div>
               )}

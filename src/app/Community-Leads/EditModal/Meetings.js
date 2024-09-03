@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Meeting from "./Meeting";
 
 const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchMeetings = async () => {
       if (!leadData || !leadData._id) return;
 
@@ -27,10 +27,30 @@ const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
     };
 
     !meetingModalOpen && fetchMeetings();
+    console.log(leadData);
   }, [meetingModalOpen]);
 
+  const handleDeleteMeeting = async (meetingId) => {
+    setIsLoading(true);
+    try {
+      await fetch(`/api/Meeting/delete/${meetingId}`, { method: "DELETE" });
+      setMeetings(meetings.filter((m) => m._id !== meetingId));
+    } catch (error) {
+      console.error("Error deleting meeting:", error);
+    }
+    setIsLoading(false);
+  };
+
   return (
-    <section className="w-full">
+    <section className="w-full flex flex-col gap-4">
+      <div className="flex justify-center">
+        <button
+          onClick={() => setMeetingModalOpen(true)}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        >
+          <i className="fa fa-plus" /> Add Meeting
+        </button>
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <svg
@@ -56,29 +76,24 @@ const Meetings = ({ meetingModalOpen, setMeetingModalOpen, leadData }) => {
           Loading meetings...
         </div>
       ) : (
-        <>
+        <div>
           {!meetings.length ? (
             <p className="text-center text-gray-500">No meetings found.</p>
           ) : (
-            <ul className="space-y-4 list-none pl-[0.1px]">
+            <ul className="space-y-2 list-none pl-[0.1px]">
               {meetings.map((meeting, index) => (
-                <li key={index} className=" rounded-lg">
-                  <Meeting meeting={meeting} />
+                <li key={index} className="rounded-lg">
+                  <Meeting
+                    meeting={meeting}
+                    onDelete={() => handleDeleteMeeting(meeting._id)}
+                    isLoading={isLoading}
+                  />
                 </li>
               ))}
             </ul>
           )}
-        </>
+        </div>
       )}
-
-      <div className="flex justify-end">
-        <button
-          onClick={() => setMeetingModalOpen(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-        >
-          <i className="fa fa-plus" /> Add Meeting
-        </button>
-      </div>
     </section>
   );
 };

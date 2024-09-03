@@ -5,7 +5,7 @@ import SearchableSelect from "@/app/Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
 import { toast } from "react-toastify";
 
-const MeetingModal = ({ onClose, lead }) => {
+const MeetingModal = ({ onClose, leadId }) => {
   const [users, setUsers] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const MeetingModal = ({ onClose, lead }) => {
     Subject: "",
     MeetingDate: "",
     Priority: "",
-    Lead: lead,
+    Lead: leadId,
     Assignees: "",
     Followers: "",
     Status: "",

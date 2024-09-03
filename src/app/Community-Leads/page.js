@@ -5,7 +5,13 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import { RiUploadCloud2Fill } from "react-icons/ri";
@@ -482,7 +488,86 @@ function Cold() {
   }, []);
 
   const [meetingModalOpen, setMeetingModalOpen] = useState(false);
-  const [reminderId, setReminderId] = useState();
+  const [reminderModalOpen, setReminderModalOpen] = useState(false);
+
+  const renderLeadCards = useCallback(
+    (leads) =>
+      leads.map((currentLead) => (
+        <React.Fragment key={currentLead._id}>
+          <LeadCard
+            statusOptions={statusOptions}
+            sourceOptions={sourceOptions}
+            currentLead={currentLead}
+            currentLeads={currentLeads}
+            setCurrentLeads={setCurrentLeads}
+            handleCardClick={handleCardClick}
+            selectedLeads={selectedLeads}
+            setEdit={setEdit}
+          />
+          {renderModals(currentLead)}
+        </React.Fragment>
+      )),
+    [
+      statusOptions,
+      sourceOptions,
+      currentLeads,
+      setCurrentLeads,
+      handleCardClick,
+      selectedLeads,
+      setEdit,
+    ]
+  );
+
+  const renderModals = useCallback(
+    (lead) => {
+      return (
+        <>
+          {edit === lead._id && (
+            <EditModal
+              leadData={lead}
+              meetingModalOpen={meetingModalOpen}
+              setMeetingModalOpen={setMeetingModalOpen}
+              setReminderId={setReminderModalOpen}
+              onClose={(e) => toggleModal(e)}
+            />
+          )}
+          {meetingModalOpen && (
+            <MeetingModal
+              onClose={() => setMeetingModalOpen(false)}
+              leadId={lead._id}
+            />
+          )}
+          {reminderModalOpen === lead._id && (
+            <ReminderModal
+              onClose={() => setReminderModalOpen(false)}
+              lead={lead._id}
+            />
+          )}
+        </>
+      );
+    },
+    [
+      edit,
+      meetingModalOpen,
+      setMeetingModalOpen,
+      reminderModalOpen,
+      setReminderModalOpen,
+      toggleModal,
+    ]
+  );
+
+  const renderLeadGrid = useMemo(() => {
+    if (searchTerm) {
+      return Leadss.length > 0 ? (
+        renderLeadCards(Leadss)
+      ) : (
+        <p>No leads found for the given search term.</p>
+      );
+    } else if (Array.isArray(Leadss)) {
+      return renderLeadCards(Leadss);
+    }
+    return null;
+  }, [searchTerm, Leadss, renderLeadCards]);
 
   return (
     <RootLayout>
@@ -628,105 +713,8 @@ function Cold() {
               Showing {leadsPerPage} cards of {totalLeads}{" "}
             </p>
 
-            <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3  desktop:grid-cols-3">
-              {searchTerm ? (
-                Leadss.length > 0 ? (
-                  Leadss.map((currentLead) => {
-                    return (
-                      <>
-                        <LeadCard
-                          statusOptions={statusOptions}
-                          sourceOptions={sourceOptions}
-                          currentLead={currentLead}
-                          currentLeads={currentLeads}
-                          setCurrentLeads={setCurrentLeads}
-                          handleCardClick={handleCardClick}
-                          selectedLeads={selectedLeads}
-                          setEdit={setEdit}
-                        />
-                        {edit === currentLead._id && (
-                          <EditModal
-                            leadData={currentLead}
-                            meetingModalOpen={meetingModalOpen}
-                            setMeetingModalOpen={setMeetingModalOpen}
-                            setReminderId={setReminderId}
-                            onClose={(e) => toggleModal(e)}
-                          />
-                        )}
-                        {meetingModalOpen && (
-                          <MeetingModal
-                            onClose={() => {
-                              setMeetingModalOpen(false);
-                            }}
-                            lead={currentLead._id}
-                          />
-                        )}
-                        {reminderId === currentLead._id && (
-                          <ReminderModal
-                            onClose={() => {
-                              setremindershow(false);
-                              setReminderId(null);
-                            }}
-                            lead={currentLead._id}
-                          />
-                        )}
-                      </>
-                    );
-                  })
-                ) : (
-                  <p>No leads found for the given search term.</p>
-                )
-              ) : Array.isArray(Leadss) ? (
-                Leadss.map((currentLead) => {
-                  return (
-                    <>
-                      <LeadCard
-                        statusOptions={statusOptions}
-                        sourceOptions={sourceOptions}
-                        currentLead={currentLead}
-                        currentLeads={currentLeads}
-                        setCurrentLeads={setCurrentLeads}
-                        handleCardClick={handleCardClick}
-                        selectedLeads={selectedLeads}
-                        setEdit={setEdit}
-                      />
-                      {edit === currentLead._id && (
-                        <EditModal
-                          leadData={currentLead}
-                          meetingModalOpen={meetingModalOpen}
-                          setMeetingModalOpen={setMeetingModalOpen}
-                          setReminderId={setReminderId}
-                          onClose={(e) => {
-                            toggleModal(e);
-                            setEdit(null);
-                          }}
-                        />
-                      )}
-
-                      {meetingModalOpen && (
-                        <MeetingModal
-                          onClose={() => {
-                            setMeetingModalOpen(false);
-                          }}
-                          lead={currentLead._id}
-                        />
-                      )}
-
-                      {reminderId === currentLead._id && (
-                        <ReminderModal
-                          onClose={() => {
-                            setremindershow(false);
-                            setReminderId(null);
-                          }}
-                          lead={currentLead._id}
-                        />
-                      )}
-                    </>
-                  );
-                })
-              ) : (
-                []
-              )}
+            <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+              {renderLeadGrid}
             </div>
 
             <div ref={containerRef} className="fixed bottom-5 right-6 z-10">
@@ -737,7 +725,7 @@ function Cold() {
                   onClick={() => {
                     setBtnShow(!btnShow);
                   }}
-                  className={`size-12 cursor-pointer  text-2xl font-bold flex items-center justify-center   bg-black text-slate-100 cursor-pointer    rounded-full  `}
+                  className={`size-12 text-2xl font-bold flex items-center justify-center bg-black text-slate-100 cursor-pointer rounded-full`}
                 >
                   <FaPlus />
                 </motion.div>
