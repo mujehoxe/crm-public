@@ -55,5 +55,6 @@ jobs:
             npm ci --omit=dev &&
             pkill -f 'node.*next' || true &&
             (nohup npm run start &) &&
-            cat nohup.out
+            (nohup npm run start > nextjs-app.log 2>&1 &) &&
+            sleep 5 && tail -n 10 nextjs-app.log && tail -n 10 nohup.out
           "
