@@ -20,7 +20,6 @@
     "@fullcalendar/react": "^6.1.15",
     "@hello-pangea/dnd": "^16.6.0",
     "@mantine/core": "^7.11.2",
-    "@mui/material": "^5.16.6",
     "@nextui-org/react": "^2.4.6",
     "@react-pdf/renderer": "^3.4.4",
     "@types/chart.js": "^2.9.41",
@@ -92,7 +91,6 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@tailwindcss/line-clamp": "^0.4.4",
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
   }
