@@ -7,7 +7,7 @@ const priorityMap = {
   Urgent: { bg: "bg-red-100", text: "text-red-800" },
 };
 
-function Meeting({ meeting, onDelete, isLoading }) {
+function MeetingCard({ meeting, onDelete, isLoading }) {
   const formatDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
@@ -137,4 +137,4 @@ function Meeting({ meeting, onDelete, isLoading }) {
   );
 }
 
-export default Meeting;
+export default MeetingCard;
