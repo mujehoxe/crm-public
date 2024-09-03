@@ -5,8 +5,6 @@ import SearchableSelect from "../Leads/dropdown";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { useDropzone } from "react-dropzone";
-import DocumentModal from "./doument";
 import { NumericFormat } from "react-number-format";
 
 const priceModal = ({ userData, onClose2 }) => {
@@ -14,7 +12,7 @@ const priceModal = ({ userData, onClose2 }) => {
   const [savedUser, setSavedUser] = useState(null);
   const [parentStaff, setParentStaff] = useState([]);
   const [userid, setuserid] = useState(null);
-  
+
   const toggleDocumentModal = () => {
     setIsDocumentModalOpen(!isDocumentModalOpen);
   };
@@ -57,7 +55,6 @@ const priceModal = ({ userData, onClose2 }) => {
     netcom: userData.netcom,
     SpotCash: userData.SpotCash,
   });
-  console.log(priceChangeData)
 
   useEffect(() => {
     // Ensure the Price and Comission values are strings and not undefined
@@ -108,7 +105,6 @@ const priceModal = ({ userData, onClose2 }) => {
     priceChangeData.ComissionType,
     priceChangeData.Price,
   ]);
-  
 
   useEffect(() => {
     const vat = (priceChangeData.TotalComission * 5) / 100;
@@ -121,7 +117,7 @@ const priceModal = ({ userData, onClose2 }) => {
 
   useEffect(() => {
     const tic = Number(priceChangeData.VAT + priceChangeData.TotalComission);
-        const bonus = priceChangeData?.loyaltyBonus?.replace(/,/g, "");
+    const bonus = priceChangeData?.loyaltyBonus?.replace(/,/g, "");
     setPriceChangeData((prevState) => ({
       ...prevState,
       ComissionVAT: tic,
@@ -146,7 +142,7 @@ const priceModal = ({ userData, onClose2 }) => {
       const response = await axios.put(`/api/invoice/table/${userData._id} `, {
         data: { ...userData, ...priceChangeData },
       });
-      window.location.reload()
+      window.location.reload();
       setIsSubmit(false);
     } catch (error) {
       console.log(error);
@@ -158,7 +154,7 @@ const priceModal = ({ userData, onClose2 }) => {
       {showModal && (
         <div className={styles.modalBackdrop}>
           <div className={styles.modalContent}>
-          <ToastContainer />
+            <ToastContainer className="z-50" />
             <span className={styles.closeButton} onClick={onClose2}>
               &times;
             </span>
@@ -240,7 +236,9 @@ const priceModal = ({ userData, onClose2 }) => {
                                 Comission: newComission,
                               });
                             } else {
-                              toast.error('Comission must be a number between 0 and 100');
+                              toast.error(
+                                "Comission must be a number between 0 and 100"
+                              );
                               setPriceChangeData({
                                 ...priceChangeData,
                                 Comission: 0,
@@ -301,16 +299,18 @@ const priceModal = ({ userData, onClose2 }) => {
                     <NumericFormat
                       className="form-control"
                       placeholder="Gross Total Comission"
-                      disabled                      
-                      
-                        value={
-                    priceChangeData.TotalComission === 0
-                      ? "Net Commission"
-                      : priceChangeData.TotalComission.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                  }
+                      disabled
+                      value={
+                        priceChangeData.TotalComission === 0
+                          ? "Net Commission"
+                          : priceChangeData.TotalComission.toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )
+                      }
                       allowLeadingZeros
                       thousandSeparator=","
                     />
@@ -320,14 +320,14 @@ const priceModal = ({ userData, onClose2 }) => {
                     <NumericFormat
                       className="form-control"
                       placeholder="VAT"
-                       value={
-                    priceChangeData.VAT === 0
-                      ? "Net Commission"
-                      : priceChangeData.VAT.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                  }
+                      value={
+                        priceChangeData.VAT === 0
+                          ? "Net Commission"
+                          : priceChangeData.VAT.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                      }
                       disabled
                       allowLeadingZeros
                       thousandSeparator=","
@@ -337,15 +337,18 @@ const priceModal = ({ userData, onClose2 }) => {
                     <label className="!mb-0">Comission inclding VAT</label>
                     <NumericFormat
                       className="form-control"
-                      placeholder="Total Comission"                      
+                      placeholder="Total Comission"
                       value={
-                    priceChangeData.ComissionVAT === 0
-                      ? "Net Commission"
-                      : priceChangeData.ComissionVAT.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                  }
+                        priceChangeData.ComissionVAT === 0
+                          ? "Net Commission"
+                          : priceChangeData.ComissionVAT.toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )
+                      }
                       disabled
                       allowLeadingZeros
                       thousandSeparator=","
@@ -387,13 +390,13 @@ const priceModal = ({ userData, onClose2 }) => {
                       placeholder="Net Comission"
                       disabled
                       value={
-                    priceChangeData.netcom === 0
-                      ? "Net Commission"
-                      : priceChangeData.netcom.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                  }
+                        priceChangeData.netcom === 0
+                          ? "Net Commission"
+                          : priceChangeData.netcom.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                      }
                       allowLeadingZeros
                       thousandSeparator=","
                     />
