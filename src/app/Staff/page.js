@@ -187,9 +187,10 @@ function Staff() {
                         )}
                       </td>
                       <td>
-                        <i className="fas fa-cloud-upload-alt f-24">
-                          onClick={(e) => toggleDocumentModal(e, user._id)}>
-                        </i>
+                        <i
+                          className="fas fa-cloud-upload-alt f-24"
+                          onClick={(e) => toggleDocumentModal(e, user._id)}
+                        ></i>
                       </td>
 
                       <td>
