@@ -53,9 +53,7 @@ function Cold() {
   const [loading, setLoading] = useState(false);
 
   const [sourceOptions, setSourceOptions] = useState([]);
-  const [SourceCount, setSourceCount] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
-  const [StatusCount, setStatusCount] = useState([]);
 
   const userdata = TokenDecoder();
   const userid = userdata ? userdata.id : null;
@@ -219,7 +217,11 @@ function Cold() {
       try {
         let url = `/api/Status/get`;
         const response = await axios.get(url);
-        setStatusCount(response.data.data);
+        const newStatusOptions = response.data.data.map((status) => ({
+          value: status._id,
+          label: status.Status,
+        }));
+        setStatusOptions(newStatusOptions);
       } catch (error) {
         console.error("Error fetching status:", error);
       }
@@ -229,26 +231,14 @@ function Cold() {
   }, []);
 
   useEffect(() => {
-    const newSourceOptions = SourceCount.map((SourceCount) => ({
-      value: SourceCount._id,
-      label: SourceCount.Source,
-    }));
-    setSourceOptions(newSourceOptions);
-  }, [SourceCount]);
-
-  useEffect(() => {
-    const newStatusOptions = StatusCount.map((StatusCount) => ({
-      value: StatusCount._id,
-      label: StatusCount.Status,
-    }));
-    setStatusOptions(newStatusOptions);
-  }, [StatusCount]);
-
-  useEffect(() => {
     const fetchSource = async () => {
       try {
         const response = await axios.get(`/api/Source/get`);
-        setSourceCount(response.data.data);
+        const newSourceOptions = response.data.data.map((source) => ({
+          value: source._id,
+          label: source.Source,
+        }));
+        setSourceOptions(newSourceOptions);
       } catch (error) {
         console.error("Error fetching Source:", error);
       }

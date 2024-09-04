@@ -11,14 +11,14 @@ import { toast } from "react-toastify";
 import InlineLoader from "./InlineLoader";
 
 const LeadCard = ({
-  options,
   currentLead,
   currentLeads,
   setCurrentLeads,
   handleCardClick,
   selectedLeads,
   setEdit,
-  options2,
+  statusOptions,
+  sourceOptions,
 }) => {
   const divRef = useRef(null);
 
@@ -128,7 +128,8 @@ const LeadCard = ({
               setUpdateBody({ ...updateBody, LeadStatus: selectedOption });
               setIsUpdateDescriptionInput(true);
             }}
-            options={options}
+            options={statusOptions}
+            option
             placeholder={"Users"}
             defaultValue={
               currentLead.LeadStatus ? currentLead.LeadStatus?.Status : null
@@ -144,7 +145,7 @@ const LeadCard = ({
                 setUpdateBody({ ...updateBody, Source: selectedOption });
                 setIsUpdateDescriptionInput(true);
               }}
-              options={options2}
+              options={sourceOptions}
               placeholder={"Users"}
               defaultValue={
                 currentLead.Source ? currentLead.Source?.Source : null
