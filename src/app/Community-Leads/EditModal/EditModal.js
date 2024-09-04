@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { MdOutlineClose } from "react-icons/md";
 import Meetings from "./Meetings/Meetings";
-import LogDisplay from "./LogDisplay";
+import ActivityLogs from "./ActivityLogs/ActivityLogs";
 import Reminders from "./Reminders/Reminders";
 
 const EditModal = ({
@@ -97,7 +97,7 @@ const EditModal = ({
                   leadData={leadData}
                 ></Meetings>
               )}
-              {activeTab === "tab4" && <LogDisplay leadData={leadData} />}
+              {activeTab === "tab4" && <ActivityLogs leadData={leadData} />}
             </div>
           </div>
         </div>

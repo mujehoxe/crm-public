@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LogEntry from "./LogEntry";
 import axios from "axios";
 
-const LogDisplay = ({ leadData }) => {
+const ActivityLogs = ({ leadData }) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState([]);
 
@@ -70,4 +70,4 @@ const LogDisplay = ({ leadData }) => {
   );
 };
 
-export default LogDisplay;
+export default ActivityLogs;
