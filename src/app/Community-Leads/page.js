@@ -114,7 +114,7 @@ function Cold() {
   const [bulkOperationMade, setBulkOperationMade] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const fetchLeads = async () => {
       setLoading(true);
       try {
         const url = getBaseURL();
@@ -124,15 +124,13 @@ function Cold() {
         setLeadss(filteredLeads);
         setTotalLeads(response.data.totalLeads);
       } catch (error) {
-        if (error.message === "Invalid user role") {
-          console.log("Invalid user role");
-          return;
-        }
         console.error("Error fetching leads:", error);
-        toast.error("Error fetching leads:", error.response);
+        toast.error("Error fetching leads:", error.message);
       }
       setLoading(false);
-    })(currentPage);
+    };
+
+    userrole && fetchLeads(currentPage);
   }, [
     userrole,
     userid,
@@ -307,13 +305,12 @@ function Cold() {
     } else if (selectedLeads.length > 1) {
       toast.error("You have selected more than 1 Lead");
     } else {
-      // Handle the case where no lead is selected
       toast.error("You Haven't Selected Any Lead");
     }
   };
 
   useEffect(() => {
-    if (userrole !== null) {
+    if (userrole) {
       const fetchUsers = async () => {
         try {
           const response = await axios.get("/api/staff/get");
