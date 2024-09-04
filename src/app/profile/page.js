@@ -37,7 +37,6 @@ function ProfilePage() {
   const [tsales, settsales] = useState(0);
   const [tLeads, settLeads] = useState(0);
   const [tfollow, settfollow] = useState(0);
-  const [tmeeting, settmeeting] = useState(0);
   const [tintrested, settintrested] = useState(0);
   const [monthlyRevenue, setMonthlyRevenue] = useState({});
   const [topdeveloper, setTopDevelopers] = useState([]);
