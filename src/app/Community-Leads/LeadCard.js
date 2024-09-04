@@ -7,6 +7,8 @@ import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import { Select } from "antd";
 import axios from "axios";
+import { toast } from "react-toastify";
+import InlineLoader from "./InlineLoader";
 
 const LeadCard = ({
   options,
@@ -61,26 +63,33 @@ const LeadCard = ({
     currentLead,
   });
 
+  const [loading, setLoading] = useState(false);
   const [isTagInput, setIsTagInput] = useState(false);
   const [isMarketingTagInput, setIsMarketingTagInput] = useState(false);
   const [isDescriptionInput, setIsDescriptionInput] = useState(false);
   const [isUpdateDescriptionInput, setIsUpdateDescriptionInput] =
     useState(false);
 
-  async function handleTagSubmit() {
-    const response = await axios.patch(
-      "/api/Lead/update/" + currentLead._id,
-      updateBody
-    );
-
-    response.status === 200 &&
-      (setIsUpdateDescriptionInput(false) ||
-        setUpdateBody({ ...updateBody, updateDescription: "" }) ||
-        setCurrentLeads(
-          currentLeads.map((lead) => {
-            lead._id == currentLead._id ? response.data.data : lead;
-          })
-        ));
+  async function handleUpdateSubmit() {
+    setLoading(true);
+    try {
+      const response = await axios.patch(
+        "/api/Lead/update/" + currentLead._id,
+        updateBody
+      );
+      response.status === 200 &&
+        (setIsUpdateDescriptionInput(false) ||
+          setUpdateBody({ ...updateBody, updateDescription: "" }) ||
+          setCurrentLeads(
+            currentLeads.map((lead) => {
+              lead._id == currentLead._id ? response.data.data : lead;
+            })
+          ));
+    } catch (e) {
+      console.log(e);
+      toast("An Error occured while updating the lead: " + e.message);
+    }
+    setLoading(false);
   }
 
   function tagChange({ target: { innerText } }, field) {
@@ -284,7 +293,7 @@ const LeadCard = ({
 
       <div className="mt-2 flex flex-row justify-between items-start rounded-lg bg-gray-100 py-2 pl-1">
         <div
-          contentEditable={isDescriptionInput}
+          contentEditable={isDescriptionInput && !loading}
           onBlur={({ target: { innerText } }) =>
             setIsDescriptionInput(false) ||
             (innerText != "No Description" &&
@@ -316,6 +325,7 @@ const LeadCard = ({
           <input
             placeholder="Describe your changes"
             autoFocus={true}
+            disabled={loading}
             className="absloute css-19bb58m css-1jqq78o-placeholder border-2 rounded-sm border-blue-300 p-1 inline w-min text-xs text-gray-500"
             style={{
               color: "inherit",
@@ -331,10 +341,14 @@ const LeadCard = ({
               })
             }
           ></input>
-          <i
-            onClick={handleTagSubmit}
-            className="fa fa-check text-green-400 text-xs text-center m-0 p-0 align-baseline"
-          ></i>
+          {loading ? (
+            <InlineLoader disableText={true} />
+          ) : (
+            <i
+              onClick={handleUpdateSubmit}
+              className="fa fa-check text-green-400 text-xs text-center m-0 p-0 align-baseline"
+            ></i>
+          )}
         </div>
       )}
     </div>
