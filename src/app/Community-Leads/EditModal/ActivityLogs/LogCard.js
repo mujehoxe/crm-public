@@ -1,5 +1,6 @@
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const LogEntry = ({ log, leadData, index }) => {
   const renderLogContent = () => {
@@ -68,34 +69,40 @@ const LogEntry = ({ log, leadData, index }) => {
   };
 
   return (
-    <div key={index} className="border-b w-full border-gray-200 pb-4 mb-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-          {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
-        </span>
-      </div>
-      <div className="flex flex-row items-center gap-2 align-middle h-10">
-        <div className="relative w-10 h-10 flex items-center justify-center">
-          <img
-            className="rounded-full border-0 p-1 border-white bg-transparent object-cover w-full top-0 right-0 h-full z-10"
-            src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
-              log.Userid?.Avatar
-            }`}
-            alt=""
-          />
-          <i className="absolute w-full h-full text-center align-middle pt-[6px] text-gray-500 fa fa-user z-0"></i>
+    <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mb-4">
+      <header className="p-4 border-b border-gray-200">
+        <div className="flex justify-between items-center mb-2">
+          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+            {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
+          </span>
         </div>
-        <div className="text-gray-700 align-middle my-auto">
-          <span className="font-semibold">{log.Userid?.username}</span>{" "}
-          {renderLogContent()}
-          {log.description && (
-            <p className="text-sm line-clamp-2">
-              <b>Description:</b> {log.description}
-            </p>
-          )}
+        <div className="flex items-center text-sm text-gray-600">
+          <div className="  size-8 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
+            {currentLead?.Assigned?.Avatar ? (
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
+                  currentLead?.Assigned.Avatar
+                }`}
+              />
+            ) : (
+              <FaRegUserCircle />
+            )}
+          </div>
+          <div>
+            <span className="font-semibold">{log.Userid?.username}</span>{" "}
+            {renderLogContent()}
+          </div>
         </div>
-      </div>
-    </div>
+      </header>
+
+      {log.description && (
+        <div className="p-4">
+          <p className="text-sm text-gray-700">
+            <b>Description:</b> {log.description}
+          </p>
+        </div>
+      )}
+    </article>
   );
 };
 

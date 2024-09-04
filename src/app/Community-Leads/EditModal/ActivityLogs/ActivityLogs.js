@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import LogEntry from "./LogEntry";
+import LogEntry from "./LogCard";
 import axios from "axios";
 
 const ActivityLogs = ({ leadData }) => {
