@@ -63,21 +63,6 @@ function Cold() {
     setCurrentPage(1);
   };
 
-  const fetchLead = async () => {
-    setLoading(true);
-    try {
-      const url = getBaseURL();
-      const params = getQueryParams();
-      const response = await axios.get(`${url}?${params}`);
-      const filteredLeads = filterLeads(response.data.data);
-      setLeadss(filteredLeads);
-      setTotalLeads(response.data.totalLeads);
-    } catch (error) {
-      console.error("Error fetching leads:", error);
-    }
-    setLoading(false);
-  };
-
   const getBaseURL = () => {
     switch (userrole) {
       case "Admin":
@@ -128,7 +113,21 @@ function Cold() {
   const [bulkOperationMade, setBulkOperationMade] = useState(false);
 
   useEffect(() => {
-    fetchLead(currentPage);
+    (async () => {
+      setLoading(true);
+      try {
+        const url = getBaseURL();
+        const params = getQueryParams();
+        const response = await axios.get(`${url}?${params}`);
+        const filteredLeads = filterLeads(response.data.data);
+        setLeadss(filteredLeads);
+        setTotalLeads(response.data.totalLeads);
+      } catch (error) {
+        console.error("Error fetching leads:", error);
+        toast.error("Error fetching leads:", error.response);
+      }
+      setLoading(false);
+    })(currentPage);
   }, [
     userrole,
     userid,
@@ -680,7 +679,7 @@ function Cold() {
             </div>
 
             {loading ? (
-              <InlineLoader className="flex w-full text-center text-blue-900 justify-center rounded-2xl bg-[#00f] bg-opacity-10 items-cente h-56" />
+              <InlineLoader className="flex w-full mt-10 text-center text-blue-900 justify-center rounded-2xl bg-[#00f] bg-opacity-10 items-cente h-56" />
             ) : (
               <>
                 <p className="font-Satoshi tablet:text-md mobile:text-sm mt-3 text-black font-bold">
