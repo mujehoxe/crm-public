@@ -244,24 +244,6 @@ function Cold() {
     setStatusOptions(newStatusOptions);
   }, [StatusCount]);
 
-  const [reminders, setReminders] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (leadid) {
-          const response = await axios.get(`/api/Reminder/get/${leadid}`);
-          setReminders(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching meetings:", error);
-      }
-    };
-    if (leadid) {
-      fetchData();
-    }
-  }, []);
-
   useEffect(() => {
     const fetchSource = async () => {
       try {
