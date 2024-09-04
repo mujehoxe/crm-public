@@ -36,7 +36,7 @@ File: Main Css File
   font-weight: 700;
   font-display: swap;
   src: url("../fonts/inter-bold.woff2?v=3.13") format("woff2"),
-    url("../fonts/iter-bold.woff?v=3.13") format("woff");
+    url("../fonts/inter-bold.woff?v=3.13") format("woff");
 }
 #page-topbar {
   position: fixed;
@@ -4992,40 +4992,44 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 .h-logout {
   position: relative; /* Ensure the tooltip is positioned relative to the parent */
 }
 
 .h-logout:hover::after {
-    content: "Logout";
-    position: absolute;
-    top: -10px;
-    right: -70px;
-    font-family: "Inter", sans-serif;
-    background-color: #333;
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 3px;
-    white-space: nowrap;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s;
+  content: "Logout";
+  position: absolute;
+  top: -10px;
+  right: -70px;
+  font-family: "Inter", sans-serif;
+  background-color: #333;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .h-logout:hover::after {
   opacity: 1;
 }
-.react-datetime-picker__wrapper{
-    border:none !important;
+.react-datetime-picker__wrapper {
+  border: none !important;
 }
 
 input:disabled {
   background-color: rgb(237, 237, 237, 1) !important;
   color: black; /* Optional: to make text readable on grey background */
 }
-.rmsc.multi-select{
-    width:200px !important;
+.rmsc.multi-select {
+  width: 200px !important;
 }
