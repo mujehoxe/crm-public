@@ -33,15 +33,15 @@ function Cold() {
   const [Leadss, setLeadss] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [leadsPerPage, setleadsPerPage] = useState(6);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [selectedLeads, setSelectedLeads] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedTag, setSelectedTag] = useState([]);
   const [TagsCount, setTagsCount] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
-  const [selecteduser, setselecteduser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
   const [totalLeads, setTotalLeads] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
@@ -183,11 +183,11 @@ function Cold() {
     }
   };
 
-  const openexcelmodal = () => {
-    setIsModalOpen(!isModalOpen);
+  const openExcelModal = () => {
+    setIsExcelModalOpen(!isExcelModalOpen);
   };
   const openbulkModal = () => {
-    setIsModalOpen2(!isModalOpen2);
+    setIsBulkModalOpen(!isBulkModalOpen);
   };
 
   const handleCardClick = (cardLead, e) => {
@@ -408,27 +408,29 @@ function Cold() {
   }, [userrole]);
 
   const handleUserChange = (selected) => {
-    setselecteduser(selected, "users");
+    setSelectedUser(selected, "users");
     const selectedValues = selected.map((user) => user);
     setSelectedValues(selectedValues);
   };
 
-  const handlestatusChange = (selected) => {
+  const handleStatusChange = (selected) => {
     setSelectedStatus(selected);
     const selectedValues2 = selected.map((status) => status);
     setSelectedValues2(selectedValues2);
   };
 
-  const handlesourceChange = (selected) => {
+  const handleSourceChange = (selected) => {
     setsource(selected);
     const selectedValues3 = selected.map((source) => source);
     setSelectedValues3(selectedValues3);
   };
-  const handletagchage = (selected) => {
+
+  const handleTagChange = (selected) => {
     setSelectedTag(selected);
     const selectedValues4 = selected.map((tags) => tags);
     setSelectedValues4(selectedValues4);
   };
+
   const handleDateChange = (date, datestring) => {
     if (date) {
       setDate([date[0].$d, date[1].$d]);
@@ -544,18 +546,18 @@ function Cold() {
     <RootLayout>
       <div className="flex justify-end  w-full mt-20   h-screen !px-0">
         <div className=" tablet:w-[calc(100%-100px)] flex flex-col ">
-          {isModalOpen2 && (
+          {isBulkModalOpen && (
             <BulkModal
               onClose={openbulkModal}
               selectedLeads={selectedLeads}
               setBulkOperationMade={setBulkOperationMade}
             />
           )}
-          {isModalOpen && (
-            <Excelmodal onClose={openexcelmodal} onParse={handleParse} />
+          {isExcelModalOpen && (
+            <Excelmodal onClose={openExcelModal} onParse={handleParse} />
           )}
-          {isModalOpen && (
-            <Excelmodal onClose={openexcelmodal} onParse={handleParse} />
+          {isExcelModalOpen && (
+            <Excelmodal onClose={openExcelModal} onParse={handleParse} />
           )}
           <div className="w-full px-4 py-4 ">
             <p className="font-Satoshi tablet:text-lg !mb-0 mobile:text-lg text-black font-bold">
@@ -579,7 +581,7 @@ function Cold() {
                     mode="multiple"
                     allowClear
                     style={{ width: "100%", height: "100%" }}
-                    defaultValue={selecteduser}
+                    defaultValue={selectedUser}
                     onChange={handleUserChange}
                     options={users}
                     maxTagCount="responsive"
@@ -593,7 +595,7 @@ function Cold() {
                     allowClear
                     style={{ width: "100%", height: "100%" }}
                     defaultValue={selectedStatus}
-                    onChange={handlestatusChange}
+                    onChange={handleStatusChange}
                     options={statusOptions}
                     placeholder={"Status"}
                     maxTagCount="responsive"
@@ -605,7 +607,7 @@ function Cold() {
                     mode="multiple"
                     style={{ width: "100%", height: "100%" }}
                     allowClear
-                    onChange={handlesourceChange}
+                    onChange={handleSourceChange}
                     options={sourceOptions}
                     placeholder={"Source"}
                     maxTagCount="responsive"
@@ -617,7 +619,7 @@ function Cold() {
                     allowClear
                     style={{ width: "100%", height: "100%" }}
                     defaultValue={selectedTag}
-                    onChange={handletagchage}
+                    onChange={handleTagChange}
                     options={tagOptions}
                     placeholder={"Tags"}
                     maxTagCount="responsive"
@@ -706,7 +708,7 @@ function Cold() {
                   <FaPlus />
                 </motion.div>
                 <motion.div
-                  onClick={openexcelmodal}
+                  onClick={openExcelModal}
                   animate={{ bottom: btnShow ? "120%" : 0 }}
                   transition={{ duration: 0.4, type: "spring", delay: 0.2 }}
                   className={`size-12 cursor-pointer bg-sky-300  text-2xl -z-[99] flex items-center justify-center rounded-full absolute  `}
