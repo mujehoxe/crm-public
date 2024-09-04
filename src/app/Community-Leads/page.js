@@ -16,7 +16,7 @@ import { FaPlus } from "react-icons/fa";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import { RiUploadCloud2Fill } from "react-icons/ri";
 import { SiGooglesheets } from "react-icons/si";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "rsuite/dist/rsuite.min.css";
 import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
@@ -25,7 +25,6 @@ import BulkModal from "./Bulk/bulk";
 import LeadCard from "./LeadCard";
 import EditModal from "./EditModal/EditModal";
 import MeetingModal from "./EditModal/MeetingModal";
-import Loader from "../components/Loader";
 import InlineLoader from "./InlineLoader";
 
 const { RangePicker } = DatePicker;
@@ -172,11 +171,6 @@ function Cold() {
     Leadss.slice(indexOfFirstLead, indexOfLastLead)
   );
 
-  const changePage = async (pageNumber) => {
-    setCurrentPage(pageNumber);
-    await fetchLead(pageNumber);
-  };
-
   const nextPage = () => {
     const totalPages = Math.ceil(totalLeads / leadsPerPage);
     if (currentPage < totalPages) {
@@ -251,7 +245,8 @@ function Cold() {
     setStatusOptions(newStatusOptions);
   }, [StatusCount]);
 
-  const [Reminders, setReminders] = useState([]);
+  const [reminders, setReminders] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -491,7 +486,7 @@ function Cold() {
   }, []);
 
   const [meetingModalOpenForLead, setMeetingModalOpenForLead] = useState(0);
-  const [reminderModalOpen, setReminderModalOpen] = useState(false);
+  const [reminderModalOpenForLead, setReminderModalOpenForLead] = useState(0);
 
   const renderLeadCards = useCallback(
     (leads) =>
@@ -530,7 +525,8 @@ function Cold() {
               leadData={lead}
               meetingModalOpenForLead={meetingModalOpenForLead}
               setMeetingModalOpenForLead={setMeetingModalOpenForLead}
-              setReminderId={setReminderModalOpen}
+              reminderModalOpenForLead={reminderModalOpenForLead}
+              setReminderModalOpenForLead={setReminderModalOpenForLead}
               onClose={(e) => toggleModal(e)}
             />
           )}
@@ -540,9 +536,9 @@ function Cold() {
               leadId={lead._id}
             />
           )}
-          {reminderModalOpen === lead._id && (
+          {reminderModalOpenForLead === lead._id && (
             <ReminderModal
-              onClose={() => setReminderModalOpen(false)}
+              onClose={() => setReminderModalOpenForLead(false)}
               lead={lead._id}
             />
           )}
@@ -553,8 +549,8 @@ function Cold() {
       edit,
       meetingModalOpenForLead,
       setMeetingModalOpenForLead,
-      reminderModalOpen,
-      setReminderModalOpen,
+      reminderModalOpenForLead,
+      setReminderModalOpenForLead,
       toggleModal,
     ]
   );

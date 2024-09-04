@@ -3,15 +3,16 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { MdOutlineClose } from "react-icons/md";
-import moment from "moment/moment";
 import Meetings from "./Meetings";
 import LogDisplay from "./LogDisplay";
+import Reminders from "./Reminders";
 
 const EditModal = ({
   leadData,
   meetingModalOpenForLead,
   setMeetingModalOpenForLead,
-  setReminderId,
+  reminderModalOpenForLead,
+  setReminderModalOpenForLead,
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -20,23 +21,6 @@ const EditModal = ({
     setActiveTab(tabId);
     e.stopPropagation();
   };
-
-  const [Reminders, setReminders] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (leadData._id) {
-          const response = await axios.get(`/api/Reminder/get/${leadData._id}`);
-          setReminders(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching reminder:", error);
-      }
-    };
-    if (leadData._id) {
-      fetchData();
-    }
-  }, [leadData._id]);
 
   return (
     <div
@@ -101,50 +85,11 @@ const EditModal = ({
                   <div> No Description </div>
                 ))}
               {activeTab === "tab2" && (
-                <div className="flex flex-col justify-center gap-2 items-center">
-                  <div className="w-full flex items-center gap-2">
-                    <p className="text-lg font-[500] !mb-0 !mt-0">
-                      Total Reminders{" "}
-                    </p>{" "}
-                    <div className="text-lg  !mb-0 !mt-0">
-                      {Reminders.length}
-                    </div>
-                  </div>
-                  {Reminders.length <= 0 ? (
-                    <div className="">
-                      <p className="text-2xl">No Reminder to show</p>
-                    </div>
-                  ) : (
-                    <div className={`w-full flex flex-col gap-2`}>
-                      {Reminders.map((reminder, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={`w-full bg-slate-50 rounded-md py-2 px-1`}
-                          >
-                            <div className="w-full justify-between flex gap-2 items-center">
-                              <p className="!mb-0 !mt-0 font-Satoshi font-[500] text-black text-lg">
-                                {reminder.Assignees.username}
-                              </p>
-                              <p className="!mb-0 !mt-0 mr-2">
-                                {moment(reminder.DateTime).format("DD/MM/YYYY")}
-                              </p>
-                            </div>
-                            <p className="!mb-0 !mt-0">{reminder.Comment}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                  <button
-                    onClick={() => {
-                      setReminderId(leadData._id._id);
-                    }}
-                    className=" font-Satoshi text-lg !border-0 bg-gray-100 hover:!bg-gray-200 rounded-lg px-3 py-2 font-[400]"
-                  >
-                    Add Reminder
-                  </button>
-                </div>
+                <Reminders
+                  reminderModalOpenForLead={reminderModalOpenForLead}
+                  setReminderModalOpenForLead={setReminderModalOpenForLead}
+                  leadData={leadData}
+                />
               )}
               {activeTab === "tab3" && (
                 <Meetings

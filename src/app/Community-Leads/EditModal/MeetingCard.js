@@ -1,4 +1,5 @@
 import React from "react";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const priorityMap = {
   Low: { bg: "bg-yellow-100", text: "text-yellow-800" },
