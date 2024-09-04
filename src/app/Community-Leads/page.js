@@ -32,12 +32,11 @@ const { RangePicker } = DatePicker;
 function Cold() {
   const [Leadss, setLeadss] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [leadsPerPage, setleadsPerPage] = useState(3);
+  const [leadsPerPage, setleadsPerPage] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [selectedLeads, setSelectedLeads] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [leadid, setLeadId] = useState("");
   const [selectedTag, setSelectedTag] = useState([]);
   const [TagsCount, setTagsCount] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -708,16 +707,17 @@ function Cold() {
               )}
             </div>
 
-            <p className="font-Satoshi tablet:text-md mobile:text-sm mt-3 text-black font-bold">
-              Showing {leadsPerPage} cards of {totalLeads}{" "}
-            </p>
-
             {loading ? (
               <InlineLoader className="flex w-full text-center text-blue-900 justify-center rounded-2xl bg-[#00f] bg-opacity-10 items-cente h-56" />
             ) : (
-              <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
-                {renderLeadGrid}
-              </div>
+              <>
+                <p className="font-Satoshi tablet:text-md mobile:text-sm mt-3 text-black font-bold">
+                  Showing {leadsPerPage} cards of {totalLeads}{" "}
+                </p>
+                <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+                  {renderLeadGrid}
+                </div>
+              </>
             )}
 
             <div ref={containerRef} className="fixed bottom-5 right-6 z-10">
