@@ -127,9 +127,9 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
         <div className="flex justify-between items-center text-xs text-gray-500">
           <span>Meeting Type: {meeting.MeetingType}</span>
           {meeting.Comment && (
-            <div className="flex items-center">
+            <div className="flex items-center text-indigo-500">
               <i className="fas fa-comment mr-2" />
-              <span>{meeting.Comment}</span>
+              <span>{reminder.Comment}</span>
             </div>
           )}
         </div>
