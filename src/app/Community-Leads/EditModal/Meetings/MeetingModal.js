@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "../../Modal.module.css";
+import styles from "../../../Modal.module.css";
 import axios from "axios";
 import SearchableSelect from "@/app/Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";

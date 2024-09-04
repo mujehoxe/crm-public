@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { MdOutlineClose } from "react-icons/md";
-import Meetings from "./Meetings";
+import Meetings from "./Meetings/Meetings";
 import LogDisplay from "./LogDisplay";
-import Reminders from "./Reminders";
+import Reminders from "./Reminders/Reminders";
 
 const EditModal = ({
   leadData,

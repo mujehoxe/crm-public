@@ -129,7 +129,7 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
           {meeting.Comment && (
             <div className="flex items-center text-indigo-500">
               <i className="fas fa-comment mr-2" />
-              <span>{reminder.Comment}</span>
+              <span>{meeting.Comment}</span>
             </div>
           )}
         </div>

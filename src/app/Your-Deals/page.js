@@ -542,7 +542,6 @@ function Invoice() {
       </div>
 
       <Modal
-        isOpen={isModalOpen}
         onRequestClose={closeModal}
         className={styles.modalBackdrop}
         overlayClassName={styles.modalOverlay}

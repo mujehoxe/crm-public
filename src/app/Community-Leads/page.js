@@ -20,11 +20,11 @@ import { toast } from "react-toastify";
 import "rsuite/dist/rsuite.min.css";
 import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
-import ReminderModal from "../components/ReminderModal";
+import ReminderModal from "./EditModal/Reminders/ReminderModal";
 import BulkModal from "./Bulk/bulk";
 import LeadCard from "./LeadCard";
 import EditModal from "./EditModal/EditModal";
-import MeetingModal from "./EditModal/MeetingModal";
+import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import InlineLoader from "./InlineLoader";
 
 const { RangePicker } = DatePicker;
@@ -58,6 +58,7 @@ function Cold() {
   const userdata = TokenDecoder();
   const userid = userdata ? userdata.id : null;
   const userrole = userdata ? userdata.role : null;
+
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
@@ -123,6 +124,10 @@ function Cold() {
         setLeadss(filteredLeads);
         setTotalLeads(response.data.totalLeads);
       } catch (error) {
+        if (error.message === "Invalid user role") {
+          console.log("Invalid user role");
+          return;
+        }
         console.error("Error fetching leads:", error);
         toast.error("Error fetching leads:", error.response);
       }

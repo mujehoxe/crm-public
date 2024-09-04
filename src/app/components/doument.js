@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useDropzone } from "react-dropzone";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const DocumentModal = ({ isOpen, onClose, savedUser }) => {
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);

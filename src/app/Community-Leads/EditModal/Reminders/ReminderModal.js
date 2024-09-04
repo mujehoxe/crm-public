@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styles from "../Modal.module.css";
+import styles from "../../../Modal.module.css";
 import axios from "axios";
-import SearchableSelect from "../Leads/dropdown";
+import SearchableSelect from "../../../Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
 import { toast } from "react-toastify";
-import InlineLoader from "../Community-Leads/InlineLoader";
+import InlineLoader from "../../InlineLoader";
 
 const ReminderModal = ({ onClose, lead }) => {
   const [users, setUsers] = useState([]);

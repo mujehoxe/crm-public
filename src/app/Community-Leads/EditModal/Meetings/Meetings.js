@@ -1,46 +1,46 @@
 import React, { useEffect } from "react";
-import ReminderCard from "./ReminderCard";
-import InlineLoader from "../InlineLoader";
+import MeetingCard from "./MeetingCard";
+import InlineLoader from "../../InlineLoader";
 
-const Reminders = ({
-  reminderModalOpenForLead,
-  setReminderModalOpenForLead,
+const Meetings = ({
+  meetingModalOpenForLead,
+  setMeetingModalOpenForLead,
   leadData,
 }) => {
-  const [reminders, setReminders] = React.useState([]);
+  const [meetings, setMeetings] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
-    const fetchReminders = async () => {
+    const fetchMeetings = async () => {
       if (!leadData || !leadData._id) return;
 
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/Reminder/get/${leadData._id}`);
+        const res = await fetch(`/api/Meeting/get/${leadData._id}`);
         const data = await res.json();
 
         if (data && Array.isArray(data.data)) {
-          setReminders(data.data);
+          setMeetings(data.data);
         } else {
           console.error("No valid data returned");
         }
       } catch (error) {
-        console.error("Error fetching reminders:", error);
+        console.error("Error fetching meetings:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    !reminderModalOpenForLead && fetchReminders();
-  }, [reminderModalOpenForLead]);
+    !meetingModalOpenForLead && fetchMeetings();
+  }, [meetingModalOpenForLead]);
 
-  const handleDeleteReminder = async (reminderId) => {
+  const handleDeleteMeeting = async (meetingId) => {
     setIsLoading(true);
     try {
-      await fetch(`/api/Reminder/delete/${reminderId}`, { method: "DELETE" });
-      setReminders(reminders.filter((m) => m._id !== reminderId));
+      await fetch(`/api/Meeting/delete/${meetingId}`, { method: "DELETE" });
+      setMeetings(meetings.filter((m) => m._id !== meetingId));
     } catch (error) {
-      console.error("Error deleting reminder:", error);
+      console.error("Error deleting meeting:", error);
     }
     setIsLoading(false);
   };
@@ -49,25 +49,25 @@ const Reminders = ({
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => setReminderModalOpenForLead(leadData._id)}
+          onClick={() => setMeetingModalOpenForLead(leadData._id)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         >
-          <i className="fa fa-plus" /> Add Reminder
+          <i className="fa fa-plus" /> Add Meeting
         </button>
       </div>
       {isLoading ? (
         <InlineLoader className="text-blue-900" />
       ) : (
         <div>
-          {!reminders.length ? (
-            <p className="text-center text-gray-500">No reminders found.</p>
+          {!meetings.length ? (
+            <p className="text-center text-gray-500">No meetings found.</p>
           ) : (
             <ul className="space-y-2 list-none pl-[0.1px]">
-              {reminders.map((reminder, index) => (
+              {meetings.map((meeting, index) => (
                 <li key={index} className="rounded-lg">
-                  <ReminderCard
-                    reminder={reminder}
-                    onDelete={() => handleDeleteReminder(reminder._id)}
+                  <MeetingCard
+                    meeting={meeting}
+                    onDelete={() => handleDeleteMeeting(meeting._id)}
                     isLoading={isLoading}
                   />
                 </li>
@@ -80,4 +80,4 @@ const Reminders = ({
   );
 };
 
-export default Reminders;
+export default Meetings;
