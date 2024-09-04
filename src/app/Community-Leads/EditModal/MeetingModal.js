@@ -84,12 +84,17 @@ const MeetingModal = ({ onClose, leadId }) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("/api/Meeting/add", meeting);
+      const res = await axios.post("/api/Meeting/add", Reminder);
       onClose();
-      toast.success("Meeting Added successful");
+      toast.success("Meeting Added successfully");
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error("Error adding meeting:", error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data.error || error.message;
+        toast.error(`Failed to add meeting: ${errorMessage}`);
+      } else {
+        toast.error("An unexpected error occurred while adding the meeting.");
+      }
     } finally {
       setLoading(false);
     }
@@ -102,7 +107,7 @@ const MeetingModal = ({ onClose, leadId }) => {
           &times;
         </span>
         <h4>Add Meeting</h4>
-        <h5>{loading && "Processing"}</h5>
+        <h5>{loading && <InlineLoader />}</h5>
         <div className="card-body mt-4">
           <div>
             <div className="mb-4 text-left">

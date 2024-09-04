@@ -21,7 +21,7 @@ function InlineLoader({ className, disableText }) {
           d="M4 12a8 8 0 018-8V0C5.373 0 4 5.373 4 12zm19.53 1.56L18 16.17V4h-.53a3 3 0 110 6z"
         ></path>
       </svg>
-      {!disableText && <span className="ml-2">"Loading..."</span>}
+      {!disableText && <span className="ml-2">Loading...</span>}
     </div>
   );
 }

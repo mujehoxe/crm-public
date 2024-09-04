@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import "rsuite/dist/rsuite.min.css";
 import Excelmodal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
-import ReminderModal from "../components/Remindermodal";
+import ReminderModal from "../components/ReminderModal";
 import BulkModal from "./Bulk/bulk";
 import LeadCard from "./LeadCard";
 import EditModal from "./EditModal/EditModal";

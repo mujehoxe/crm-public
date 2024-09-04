@@ -4,10 +4,15 @@ import axios from "axios";
 import SearchableSelect from "../Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
 import { toast } from "react-toastify";
+import InlineLoader from "../Community-Leads/InlineLoader";
 
 const ReminderModal = ({ onClose, lead }) => {
   const [users, setUsers] = useState([]);
-  const [options4, setOptions4] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const [assigneesOptions, setAssigneesOptions] = useState([]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -17,15 +22,15 @@ const ReminderModal = ({ onClose, lead }) => {
         console.error("Error fetching users:", error);
       }
     };
-
     fetchUsers();
   }, []);
+
   useEffect(() => {
     const newOptions = users.map((user) => ({
       value: user._id,
       label: user.username,
     }));
-    setOptions4(newOptions);
+    setAssigneesOptions(newOptions);
   }, [users]);
 
   const [Reminder, setReminder] = React.useState({
@@ -44,23 +49,23 @@ const ReminderModal = ({ onClose, lead }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.post("/api/Reminder/add", Reminder);
-      console.log("Reminder add success", response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      toast.success("Reminder Added successful");
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      const res = await axios.post("/api/Reminder/add", Reminder);
       onClose();
+      toast.success("Reminder Added successfully");
+    } catch (error) {
+      console.error("Error adding reminder:", error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data.error || error.message;
+        toast.error(`Failed to add reminder: ${errorMessage}`);
+      } else {
+        toast.error("An unexpected error occurred while adding the reminder.");
+      }
+    } finally {
       setLoading(false);
     }
   };
-
-  const [loading, setLoading] = React.useState(false);
 
   return (
     <div className={styles.modalBackdrop}>
@@ -68,7 +73,8 @@ const ReminderModal = ({ onClose, lead }) => {
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <h4>{loading ? "processing" : "Add Reminder"}</h4>
+        <h4>Add Reminder</h4>
+        <h5>{loading && <InlineLoader />}</h5>
         <div className="card-body mt-4">
           <div className="mb-4 text-left">
             <input
@@ -83,7 +89,7 @@ const ReminderModal = ({ onClose, lead }) => {
 
           <div className="mb-4 text-left">
             <SearchableSelect
-              options={options4}
+              options={assigneesOptions}
               onChange={(selectedOption) =>
                 handleSelectChange("Assignees", selectedOption)
               }
