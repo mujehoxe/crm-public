@@ -30,16 +30,11 @@ function Invoice() {
 function SuspenceWrapped() {
   const [toastShown, setToastShown] = useState(false);
   const router = useRouter();
-  const [isDateInput, setIsDateInput] = useState(false);
   const [formCounter, setFormCounter] = useState(1);
   const [radioBtnStatus, setRadioBtnStatus] = useState("");
   const [buyerImages, setBuyerImages] = useState([[]]); // Nested array to hold images for each buyer
   const [Oherimage, setOtherImage] = useState([[]]); // Nested array to hold images for each buyer
   const [buyerImages1, setBuyerImages1] = useState([[]]); // Nested array to hold images for each buyer
-  console.log(Oherimage);
-  const toggleInputType = () => {
-    setIsDateInput((prevIsDateInput) => !prevIsDateInput);
-  };
 
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -67,7 +62,6 @@ function SuspenceWrapped() {
   const searchParams = useSearchParams();
 
   const leadId = searchParams.get("leadId");
-  const [lead, setLead] = useState(null);
 
   useEffect(() => {
     const fetchLead = async () => {
@@ -75,7 +69,6 @@ function SuspenceWrapped() {
         const response = await axios.get(`/api/Lead/${leadId}`);
         const leadData = response.data.data;
 
-        setLead(response.data.data);
         setBuyerOneData((prevbuyerOneData) => ({
           ...prevbuyerOneData,
           buyername: leadData.Name,
@@ -396,7 +389,6 @@ function SuspenceWrapped() {
       ];
       toast.error(errorMessages.join("\n"));
     } else {
-      // Add new empty buyer
       setTempAddedBuyerData((curr) => [
         ...curr,
         {
@@ -420,7 +412,7 @@ function SuspenceWrapped() {
     console.log(tempAddedBuyerData.length);
     setTempAddedBuyerData((curr) => {
       const newData = [...curr];
-      newData.pop(); // Remove the last item
+      newData.pop();
       return newData;
     });
   };
@@ -462,6 +454,7 @@ function SuspenceWrapped() {
         imageErrors.push("Emirates ID required");
       }
     }
+
     if (emptyFields.length > 0 || imageErrors.length > 0) {
       const emptyFieldNames = emptyFields.map((field) =>
         field.replace(/([A-Z])/g, " $1").toLowerCase()
@@ -560,11 +553,6 @@ function SuspenceWrapped() {
     });
   };
 
-  const nextHandler = () => {
-    setFormCounter((prev) => (prev < 4 ? prev + 1 : prev));
-    setBuyerOneData([buyerOneData, ...tempAddedBuyerData]);
-  };
-
   const propertyOptions = [
     { value: "Apartment", label: "Apartment" },
     { value: "Town House", label: "Town House" },
@@ -651,9 +639,11 @@ function SuspenceWrapped() {
     const emptyFields = mandatoryFields.filter((field) => !buyerOneData[field]);
 
     const imageErrors = [];
+
     if (!Oherimage[0] || !Oherimage[0][0]) {
       imageErrors.push("Eoi Receipt required");
     }
+
     if (!Oherimage[1] || !Oherimage[1]) {
       imageErrors.push("Booking form required");
     }
@@ -736,17 +726,19 @@ function SuspenceWrapped() {
       }
     }
   };
+
   const handleKeyDown = (event) => {
     event.preventDefault();
   };
+
   return (
     <RootLayout>
-      <div className="w-full mt-24">
+      <div className="w-full mt-16">
         <div className="w-full">
           <div className="w-full flex justify-center  items-center">
-            <div className=" w-full flex flex-col justify-center items-center">
-              <div className="bg-blue w-full ">
-                <h4 className="text-white mb-0 text-center">Deal Type</h4>
+            <div className="w-full flex flex-col justify-center items-center">
+              <div className="bg-blue w-full">
+                <h4 className="text-white text-center">Deal Type</h4>
               </div>
               {formCounter === 1 && (
                 <div className="flex flex-col  w-full max-w-[85%] gap-4 h-[65svh] mt-[3em]">

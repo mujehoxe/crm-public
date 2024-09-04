@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import MeetingCard from "./MeetingCard";
 import InlineLoader from "../../InlineLoader";
 
-const Meetings = ({
-  meetingModalOpenForLead,
-  setMeetingModalOpenForLead,
-  leadData,
-}) => {
+const Meetings = ({ modalStates, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -31,8 +27,8 @@ const Meetings = ({
       }
     };
 
-    !meetingModalOpenForLead && fetchMeetings();
-  }, [meetingModalOpenForLead]);
+    !modalStates.meetingOpenForLead && fetchMeetings();
+  }, [modalStates.meetingOpenForLead]);
 
   const handleDeleteMeeting = async (meetingId) => {
     setIsLoading(true);
@@ -49,7 +45,7 @@ const Meetings = ({
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => setMeetingModalOpenForLead(leadData._id)}
+          onClick={() => modalStates.setMeetingOpenForLead(leadData._id)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         >
           <i className="fa fa-plus" /> Add Meeting

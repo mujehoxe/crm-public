@@ -27,45 +27,64 @@ import EditModal from "./EditModal/EditModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import InlineLoader from "./InlineLoader";
 
-const { RangePicker } = DatePicker;
-
 function Cold() {
-  const [Leadss, setLeadss] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [leadsPerPage, setleadsPerPage] = useState(6);
-  const [isExcelModalOpen, setIsExcelModalOpen] = useState(false);
-  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
-  const [selectedLeads, setSelectedLeads] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedTag, setSelectedTag] = useState([]);
   const [TagsCount, setTagsCount] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState([]);
-  const [totalLeads, setTotalLeads] = useState(0);
-  const [selectedStatus, setSelectedStatus] = useState([]);
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectedValues2, setSelectedValues2] = useState([]);
   const [selectedValues3, setSelectedValues3] = useState([]);
   const [selectedValues4, setSelectedValues4] = useState([]);
-  const [date, setDate] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  const [leadsData, setLeadsData] = useState({
+    leads: [],
+    selectedLeads: [],
+    currentPage: 1,
+    leadsPerPage: 6,
+    totalLeads: 0,
+    loading: false,
+  });
+
+  const getTotalPages = useCallback(
+    () => Math.ceil(leadsData.totalLeads / leadsData.leadsPerPage),
+    [leadsData.totalLeads, leadsData.leadsPerPage]
+  );
+
+  const [modalStates, setModalStates] = useState({
+    isExcelModalOpen: false,
+    isBulkModalOpen: false,
+    meetingOpenForLead: 0,
+    reminderOpenForLead: 0,
+    setMeetingOpenForLead: (id) => {
+      setModalStates({ ...modalStates, meetingOpenForLead: id });
+    },
+    setReminderOpenForLead: (id) => {
+      setModalStates({ ...modalStates, reminderOpenForLead: id });
+    },
+  });
+
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    selectedUser: [],
+    selectedStatus: [],
+    selectedSource: [],
+    selectedTag: [],
+    date: [],
+  });
 
   const [sourceOptions, setSourceOptions] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
 
-  const userdata = TokenDecoder();
-  const userid = userdata ? userdata.id : null;
-  const userrole = userdata ? userdata.role : null;
+  const userData = TokenDecoder();
+  const userid = userData ? userData.id : null;
+  const userRole = userData ? userData.role : null;
 
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-    setCurrentPage(1);
+  const handleSearchTermChange = ({ target: { value } }) => {
+    setFilters({ ...filters, searchTerm: value });
+    setLeadsData({ ...leadsData, currentPage: 1 });
   };
 
   const getBaseURL = () => {
-    switch (userrole) {
+    switch (userRole) {
       case "Admin":
       case "superAdmin":
         return `/api/Lead/get`;
@@ -86,63 +105,57 @@ function Cold() {
 
   const getQueryParams = () => {
     const params = new URLSearchParams();
-    params.append("page", currentPage);
-    params.append("limit", leadsPerPage);
+    params.append("page", leadsData.currentPage);
+    params.append("limit", leadsData.leadsPerPage);
 
-    if (searchTerm) params.append("searchterm", searchTerm);
-    if (selectedValues.length > 0)
+    filters.date && params.append("date", filters.date);
+    filters.searchTerm && params.append("searchterm", filters.searchTerm);
+    selectedValues.length > 0 &&
       params.append("selectedValues", selectedValues);
-    if (selectedValues2.length > 0)
+    selectedValues2.length > 0 &&
       params.append("selectedValues2", selectedValues2);
-    if (selectedValues3.length > 0)
+    selectedValues3.length > 0 &&
       params.append("selectedValues3", selectedValues3);
-    if (selectedValues4.length > 0)
-      params.append("selectedTag", selectedValues4);
-    if (date) params.append("date", date);
+    selectedValues4.length > 0 && params.append("selectedTag", selectedValues4);
 
     return params.toString();
   };
 
-  const filterLeads = (leads) => {
-    return leads.filter(
-      (lead) =>
-        lead.Phone.toString() === searchTerm ||
-        lead.Name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  };
-
   const [bulkOperationMade, setBulkOperationMade] = useState(false);
 
-  useEffect(() => {
-    const fetchLeads = async () => {
-      setLoading(true);
-      try {
-        const url = getBaseURL();
-        const params = getQueryParams();
-        const response = await axios.get(`${url}?${params}`);
-        const filteredLeads = filterLeads(response.data.data);
-        setLeadss(filteredLeads);
-        setTotalLeads(response.data.totalLeads);
-      } catch (error) {
-        console.error("Error fetching leads:", error);
-        toast.error("Error fetching leads:", error.message);
-      }
-      setLoading(false);
-    };
+  const fetchLeads = async () => {
+    setLeadsData({ ...leadsData, loading: true });
+    try {
+      const url = getBaseURL();
+      const params = getQueryParams();
+      const response = await axios.get(`${url}?${params}`);
 
-    userrole && fetchLeads(currentPage);
+      setLeadsData({
+        ...leadsData,
+        leads: response.data.data,
+        totalLeads: response.data.totalLeads,
+        loading: false,
+      });
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+      toast.error("Error fetching leads:", error.message);
+      setLeadsData({ ...leadsData, loading: false });
+    }
+  };
+
+  useEffect(() => {
+    userRole && fetchLeads(leadsData.currentPage);
   }, [
-    userrole,
+    userRole,
     userid,
-    selectedTag,
     selectedValues,
     selectedValues2,
     selectedValues3,
-    date,
-    selectedTag,
-    leadsPerPage,
-    currentPage,
-    searchTerm,
+    leadsData.leadsPerPage,
+    leadsData.currentPage,
+    filters.selectedTag,
+    filters.date,
+    filters.searchTerm,
     bulkOperationMade,
   ]);
 
@@ -164,50 +177,54 @@ function Cold() {
     }
   };
 
-  const indexOfLastLead = currentPage * leadsPerPage;
-  const indexOfFirstLead = indexOfLastLead - leadsPerPage;
-  const [currentLeads, setCurrentLeads] = useState(
-    Leadss.slice(indexOfFirstLead, indexOfLastLead)
-  );
-
   const nextPage = () => {
-    const totalPages = Math.ceil(totalLeads / leadsPerPage);
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    const totalPages = getTotalPages();
+    if (leadsData.currentPage < totalPages)
+      setLeadsData({ ...leadsData, currentPage: leadsData.currentPage + 1 });
   };
 
   const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+    if (leadsData.currentPage > 1)
+      setLeadsData({ ...leadsData, currentPage: leadsData.currentPage - 1 });
   };
 
   const openExcelModal = () => {
-    setIsExcelModalOpen(!isExcelModalOpen);
+    setModalStates({
+      ...modalStates,
+      isExcelModalOpen: !modalStates.isExcelModalOpen,
+    });
   };
+
   const openbulkModal = () => {
-    setIsBulkModalOpen(!isBulkModalOpen);
+    setModalStates({
+      ...modalStates,
+      isBulkModalOpen: !modalStates.isBulkModalOpen,
+    });
   };
 
   const handleCardClick = (cardLead, e) => {
     e.stopPropagation();
-    if (selectedLeads.includes(cardLead)) {
-      setSelectedLeads(
-        selectedLeads.filter((lead) => lead._id !== cardLead._id)
-      );
+    if (leadsData.selectedLeads.includes(cardLead)) {
+      setLeadsData({
+        ...leadsData,
+        selectedLeads: leadsData.selectedLeads.filter(
+          (lead) => lead._id !== cardLead._id
+        ),
+      });
     } else {
-      setSelectedLeads([...selectedLeads, cardLead]);
+      setLeadsData({
+        ...leadsData,
+        selectedLeads: [...leadsData.selectedLeads, cardLead],
+      });
     }
   };
 
   const handleSelectAll = () => {
-    if (selectedLeads.length === currentLeads.length) {
-      setSelectedLeads([]);
+    if (leadsData.selectedLeads.length === leadsData.leads.length) {
+      setLeadsData({ ...leadsData, selectedLeads: [] });
     } else {
-      setSelectedLeads(currentLeads);
+      setLeadsData({ ...leadsData, selectedLeads: leadsData.leads });
     }
-    setSelectAll(!selectAll);
   };
 
   function disabledDate(current) {
@@ -273,20 +290,15 @@ function Cold() {
   }));
 
   const countOptions = [
-    { value: "100", label: "100" },
-    { value: "200", label: "200" },
-    { value: "1000 ", label: "1000" },
+    { value: "6", label: "6" },
+    { value: "12", label: "12" },
+    { value: "30 ", label: "30" },
   ];
-
-  const leadcountf = (value) => {
-    setCurrentPage(1);
-    setleadsPerPage(parseInt(value, 10));
-  };
 
   const deleteSelectedLeads = async () => {
     try {
       await axios.delete(`/api/Lead/delete`, {
-        data: { leadIds: selectedLeads.map((lead) => lead._id) },
+        data: { leadIds: leadsData.selectedLeads.map((lead) => lead._id) },
       });
       window.location.reload();
     } catch (error) {
@@ -294,15 +306,17 @@ function Cold() {
     }
   };
 
-  const handleSubmission = () => {
-    if (selectedLeads.length === 1) {
-      const leadId = selectedLeads[0] ? selectedLeads[0]._id.toString() : null;
+  const handleDealSubmission = () => {
+    if (leadsData.selectedLeads.length === 1) {
+      const leadId = leadsData.selectedLeads[0]
+        ? leadsData.selectedLeads[0]._id.toString()
+        : null;
       if (leadId) {
         window.location.href = `/Your-Deals/create?leadId=${leadId}`;
       } else {
         console.error("Lead ID is null.");
       }
-    } else if (selectedLeads.length > 1) {
+    } else if (leadsData.selectedLeads.length > 1) {
       toast.error("You have selected more than 1 Lead");
     } else {
       toast.error("You Haven't Selected Any Lead");
@@ -310,13 +324,13 @@ function Cold() {
   };
 
   useEffect(() => {
-    if (userrole) {
+    if (userRole) {
       const fetchUsers = async () => {
         try {
           const response = await axios.get("/api/staff/get");
 
           let filteredUsers = response.data.data;
-          if (userrole == "BussinessHead") {
+          if (userRole == "BussinessHead") {
             const PNLUsers = response.data.data.filter(
               (user) => user.Role === "PNL" && user.PrentStaff === userid
             );
@@ -333,7 +347,7 @@ function Cold() {
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
             filteredUsers = [...PNLUsers, ...tlUsers, ...atlUsers, ...fosUsers];
-          } else if (userrole == "TL") {
+          } else if (userRole == "TL") {
             const atlUsers = response.data.data.filter(
               (user) => user.Role === "ATL" && user.PrentStaff === userid
             );
@@ -342,7 +356,7 @@ function Cold() {
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
             filteredUsers = [...atlUsers, ...fosUsers];
-          } else if (userrole == "PNL") {
+          } else if (userRole == "PNL") {
             const tlUsers = response.data.data.filter(
               (user) => user.Role === "TL" && user.PrentStaff === userid
             );
@@ -355,17 +369,17 @@ function Cold() {
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
             filteredUsers = [...tlUsers, ...atlUsers, ...fosUsers];
-          } else if (userrole == "ATL") {
+          } else if (userRole == "ATL") {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && user.PrentStaff === userid
             );
             filteredUsers = [...fosUsers];
-          } else if (userrole == "FOS") {
+          } else if (userRole == "FOS") {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && user._id === userid
             );
             filteredUsers = [...fosUsers];
-          } else if (userrole == "Admin") {
+          } else if (userRole == "Admin") {
             filteredUsers = response.data.data;
           }
           filteredUsers = filteredUsers.filter(
@@ -405,37 +419,37 @@ function Cold() {
 
       fetchUsers();
     }
-  }, [userrole]);
+  }, [userRole]);
 
   const handleUserChange = (selected) => {
-    setSelectedUser(selected, "users");
+    setFilters({ ...filters, selectedUser: selected });
     const selectedValues = selected.map((user) => user);
     setSelectedValues(selectedValues);
   };
 
   const handleStatusChange = (selected) => {
-    setSelectedStatus(selected);
+    setFilters({ ...filters, selectedStatus: selected });
     const selectedValues2 = selected.map((status) => status);
     setSelectedValues2(selectedValues2);
   };
 
   const handleSourceChange = (selected) => {
-    setsource(selected);
+    setFilters({ ...filters, selectedSource: selected });
     const selectedValues3 = selected.map((source) => source);
     setSelectedValues3(selectedValues3);
   };
 
   const handleTagChange = (selected) => {
-    setSelectedTag(selected);
+    setFilters({ ...filters, selectedTag: selected });
     const selectedValues4 = selected.map((tags) => tags);
     setSelectedValues4(selectedValues4);
   };
 
   const handleDateChange = (date, datestring) => {
     if (date) {
-      setDate([date[0].$d, date[1].$d]);
+      setFilters({ ...filters, date: [date[0].$d, date[1].$d] });
     } else {
-      setDate(null);
+      setFilters({ ...filters, date: null });
     }
   };
 
@@ -459,35 +473,25 @@ function Cold() {
     };
   }, []);
 
-  const [meetingModalOpenForLead, setMeetingModalOpenForLead] = useState(0);
-  const [reminderModalOpenForLead, setReminderModalOpenForLead] = useState(0);
-
   const renderLeadCards = useCallback(
     (leads) =>
-      leads.map((currentLead) => (
-        <React.Fragment key={currentLead._id}>
+      leads.map((lead) => (
+        <React.Fragment key={lead._id}>
           <LeadCard
+            lead={lead}
+            setCurrentPageLeads={(leads) =>
+              setLeadsData({ ...leadsData, leads })
+            }
             statusOptions={statusOptions}
             sourceOptions={sourceOptions}
-            currentLead={currentLead}
-            currentLeads={currentLeads}
-            setCurrentLeads={setCurrentLeads}
             handleCardClick={handleCardClick}
-            selectedLeads={selectedLeads}
+            selectedLeads={leadsData.selectedLeads}
             setEdit={setEdit}
           />
-          {renderModals(currentLead)}
+          {renderModals(lead)}
         </React.Fragment>
       )),
-    [
-      statusOptions,
-      sourceOptions,
-      currentLeads,
-      setCurrentLeads,
-      handleCardClick,
-      selectedLeads,
-      setEdit,
-    ]
+    [statusOptions, sourceOptions, leadsData.leads, leadsData.selectedLeads]
   );
 
   const renderModals = useCallback(
@@ -497,22 +501,19 @@ function Cold() {
           {edit === lead._id && (
             <EditModal
               leadData={lead}
-              meetingModalOpenForLead={meetingModalOpenForLead}
-              setMeetingModalOpenForLead={setMeetingModalOpenForLead}
-              reminderModalOpenForLead={reminderModalOpenForLead}
-              setReminderModalOpenForLead={setReminderModalOpenForLead}
+              modalStates={modalStates}
               onClose={(e) => toggleModal(e)}
             />
           )}
-          {meetingModalOpenForLead === lead._id && (
+          {modalStates.meetingOpenForLead === lead._id && (
             <MeetingModal
-              onClose={() => setMeetingModalOpenForLead(0)}
+              onClose={() => modalStates.setMeetingOpenForLead(0)}
               leadId={lead._id}
             />
           )}
-          {reminderModalOpenForLead === lead._id && (
+          {modalStates.reminderOpenForLead === lead._id && (
             <ReminderModal
-              onClose={() => setReminderModalOpenForLead(false)}
+              onClose={() => modalStates.setReminderOpenForLead(0)}
               lead={lead._id}
             />
           )}
@@ -521,42 +522,39 @@ function Cold() {
     },
     [
       edit,
-      meetingModalOpenForLead,
-      setMeetingModalOpenForLead,
-      reminderModalOpenForLead,
-      setReminderModalOpenForLead,
+      modalStates.meetingOpenForLead,
+      modalStates.setMeetingOpenForLead,
+      modalStates.reminderOpenForLead,
+      modalStates.setReminderOpenForLead,
       toggleModal,
     ]
   );
 
   const renderLeadGrid = useMemo(() => {
-    if (searchTerm) {
-      return Leadss.length > 0 ? (
-        renderLeadCards(Leadss)
+    if (filters.searchTerm) {
+      return leadsData.leads.length > 0 ? (
+        renderLeadCards(leadsData.leads)
       ) : (
         <p>No leads found for the given search term.</p>
       );
-    } else if (Array.isArray(Leadss)) {
-      return renderLeadCards(Leadss);
+    } else if (Array.isArray(leadsData.leads)) {
+      return renderLeadCards(leadsData.leads);
     }
     return null;
-  }, [searchTerm, Leadss, renderLeadCards]);
+  }, [filters.searchTerm, leadsData.leads, renderLeadCards]);
 
   return (
     <RootLayout>
       <div className="flex justify-end  w-full mt-20   h-screen !px-0">
         <div className=" tablet:w-[calc(100%-100px)] flex flex-col ">
-          {isBulkModalOpen && (
+          {modalStates.isBulkModalOpen && (
             <BulkModal
               onClose={openbulkModal}
-              selectedLeads={selectedLeads}
+              selectedLeads={leadsData.selectedLeads}
               setBulkOperationMade={setBulkOperationMade}
             />
           )}
-          {isExcelModalOpen && (
-            <Excelmodal onClose={openExcelModal} onParse={handleParse} />
-          )}
-          {isExcelModalOpen && (
+          {modalStates.isExcelModalOpen && (
             <Excelmodal onClose={openExcelModal} onParse={handleParse} />
           )}
           <div className="w-full px-4 py-4 ">
@@ -567,7 +565,7 @@ function Cold() {
             <div className="w-full tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
               <div className="tablet:col-span-4 mobile:col-span-1 grid tablet:grid-cols-6 mobile:grid-cols-3 items-center h-full mobile:order-last mobile:mt-3 tablet:mt-0 tablet:order-1 gap-x-1">
                 <div className="w-full h-full cursor-pointer">
-                  <RangePicker
+                  <DatePicker.RangePicker
                     format={"DD-MM-YYYY"}
                     style={{ width: "100%", height: "100%" }}
                     onChange={handleDateChange}
@@ -581,7 +579,7 @@ function Cold() {
                     mode="multiple"
                     allowClear
                     style={{ width: "100%", height: "100%" }}
-                    defaultValue={selectedUser}
+                    defaultValue={filters.selectedUser}
                     onChange={handleUserChange}
                     options={users}
                     maxTagCount="responsive"
@@ -594,7 +592,7 @@ function Cold() {
                     mode="multiple"
                     allowClear
                     style={{ width: "100%", height: "100%" }}
-                    defaultValue={selectedStatus}
+                    defaultValue={filters.selectedStatus}
                     onChange={handleStatusChange}
                     options={statusOptions}
                     placeholder={"Status"}
@@ -605,8 +603,9 @@ function Cold() {
                 <div className="w-full h-full cursor-pointer">
                   <Select
                     mode="multiple"
-                    style={{ width: "100%", height: "100%" }}
                     allowClear
+                    style={{ width: "100%", height: "100%" }}
+                    defaultValue={filters.selectedStatus}
                     onChange={handleSourceChange}
                     options={sourceOptions}
                     placeholder={"Source"}
@@ -618,7 +617,7 @@ function Cold() {
                     mode="multiple"
                     allowClear
                     style={{ width: "100%", height: "100%" }}
-                    defaultValue={selectedTag}
+                    defaultValue={filters.selectedTag}
                     onChange={handleTagChange}
                     options={tagOptions}
                     placeholder={"Tags"}
@@ -630,10 +629,14 @@ function Cold() {
                     mode="single"
                     style={{ width: "100%", height: "100%" }}
                     allowClear
-                    defaultValue={selectedTag}
-                    onChange={(selectedOption) =>
-                      leadcountf(selectedOption.value)
-                    }
+                    defaultValue={filters.selectedTag}
+                    onChange={(selected) => {
+                      setLeadsData({
+                        ...leadsData,
+                        leadsPerPage: parseInt(selected, 10),
+                        currentPage: 1,
+                      });
+                    }}
                     options={countOptions}
                     placeholder={"Count"}
                   />
@@ -642,13 +645,13 @@ function Cold() {
               <input
                 className="rounded-md tablet:col-span-2 !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1"
                 placeholder="Search Leads.."
-                value={searchTerm}
+                value={filters.searchTerm}
                 onChange={handleSearchTermChange}
               />
             </div>
             <div className="flex items-center tablet:w-2/5 mobile:w-full gap-2 mt-3">
               <button
-                onClick={handleSubmission}
+                onClick={handleDealSubmission}
                 className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
               >
                 Submit Deal
@@ -659,18 +662,18 @@ function Cold() {
               >
                 Mapping
               </button>
-              {selectedLeads.length > 0 && (
+              {
                 <button
                   onClick={handleSelectAll}
                   className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
                 >
                   Select All
                 </button>
-              )}
+              }
 
-              {userrole !== "FOS" && (
+              {userRole !== "FOS" && (
                 <>
-                  {selectedLeads.length > 0 && (
+                  {leadsData.selectedLeads.length > 0 && (
                     <button
                       onClick={deleteSelectedLeads}
                       className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
@@ -682,17 +685,21 @@ function Cold() {
               )}
             </div>
 
-            {loading ? (
+            {leadsData.loading ? (
               <InlineLoader className="flex w-full mt-10 text-center text-blue-900 justify-center rounded-2xl bg-[#00f] bg-opacity-10 items-cente h-56" />
             ) : (
-              <>
-                <p className="font-Satoshi tablet:text-md mobile:text-sm mt-3 text-black font-bold">
-                  Showing {leadsPerPage} cards of {totalLeads}{" "}
-                </p>
-                <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
-                  {renderLeadGrid}
-                </div>
-              </>
+              getTotalPages() > 0 && (
+                <>
+                  <p className="font-Satoshi tablet:text-md mobile:text-sm mt-3 text-black font-bold">
+                    Showing{" "}
+                    {Math.min(leadsData.leadsPerPage, leadsData.totalLeads)}{" "}
+                    leads of {leadsData.totalLeads} total{" "}
+                  </p>
+                  <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
+                    {renderLeadGrid}
+                  </div>
+                </>
+              )
             )}
 
             <div ref={containerRef} className="fixed bottom-5 right-6 z-10">
@@ -749,11 +756,11 @@ function Cold() {
                 id="datatable_paginate"
               >
                 <ul className="pagination pagination-rounded flex flex-row justify-center">
-                  {totalLeads != 0 && (
+                  {!leadsData.loading && getTotalPages() > 0 && (
                     <>
                       <li
                         className={`paginate_button page-item previous ${
-                          currentPage === 1 ? "disabled" : ""
+                          leadsData.currentPage === 1 ? "disabled" : ""
                         }`}
                         id="datatable_previous"
                       >
@@ -762,28 +769,30 @@ function Cold() {
                         </button>
                       </li>
                       <div className="flex flex-row px-3 gap-1">
-                        {Array.from(
-                          { length: Math.ceil(totalLeads / leadsPerPage) },
-                          (_, i) => (
-                            <li
-                              key={i}
-                              className={`paginate_button page-item ${
-                                currentPage === i + 1 ? "active" : ""
-                              }`}
+                        {Array.from({ length: getTotalPages() }, (_, i) => (
+                          <li
+                            key={i}
+                            className={`paginate_button page-item ${
+                              leadsData.currentPage === i + 1 ? "active" : ""
+                            }`}
+                          >
+                            <button
+                              onClick={() =>
+                                setLeadsData({
+                                  ...leadsData,
+                                  currentPage: i + 1,
+                                })
+                              }
+                              className="page-link"
                             >
-                              <button
-                                onClick={() => setCurrentPage(i + 1)}
-                                className="page-link"
-                              >
-                                {i + 1}
-                              </button>
-                            </li>
-                          )
-                        )}
+                              {i + 1}
+                            </button>
+                          </li>
+                        ))}
                       </div>
                       <li
                         className={`paginate_button page-item next ${
-                          currentPage === Math.ceil(totalLeads / leadsPerPage)
+                          leadsData.currentPage === getTotalPages()
                             ? "disabled"
                             : ""
                         }`}

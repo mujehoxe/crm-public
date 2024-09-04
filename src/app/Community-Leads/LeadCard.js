@@ -11,9 +11,8 @@ import { toast } from "react-toastify";
 import InlineLoader from "./InlineLoader";
 
 const LeadCard = ({
-  currentLead,
-  currentLeads,
-  setCurrentLeads,
+  lead,
+  setCurrentPageLeads,
   handleCardClick,
   selectedLeads,
   setEdit,
@@ -54,13 +53,13 @@ const LeadCard = ({
   };
 
   const [updateBody, setUpdateBody] = useState({
-    Source: currentLead.Source,
-    LeadStatus: currentLead.LeadStatus,
-    Description: currentLead.Description,
-    tags: currentLead.tags,
-    MarketingTags: currentLead.MarketingTags,
+    Source: lead.Source,
+    LeadStatus: lead.LeadStatus,
+    Description: lead.Description,
+    tags: lead.tags,
+    MarketingTags: lead.MarketingTags,
     updateDescription: "",
-    currentLead,
+    currentLead: lead,
   });
 
   const [loading, setLoading] = useState(false);
@@ -74,15 +73,15 @@ const LeadCard = ({
     setLoading(true);
     try {
       const response = await axios.patch(
-        "/api/Lead/update/" + currentLead._id,
+        "/api/Lead/update/" + lead._id,
         updateBody
       );
       response.status === 200 &&
         (setIsUpdateDescriptionInput(false) ||
           setUpdateBody({ ...updateBody, updateDescription: "" }) ||
-          setCurrentLeads(
-            currentLeads.map((lead) => {
-              lead._id == currentLead._id ? response.data.data : lead;
+          setCurrentPageLeads((prev) =>
+            prev.map((lead) => {
+              lead._id == lead._id ? response.data.data : lead;
             })
           ));
     } catch (e) {
@@ -96,7 +95,7 @@ const LeadCard = ({
     if (
       innerText != "" &&
       innerText != "No Tag" &&
-      innerText != currentLead?.marketingtags?.Tag
+      innerText != lead?.marketingtags?.Tag
     ) {
       setUpdateBody({ ...updateBody, [field]: innerText });
       setIsUpdateDescriptionInput(true);
@@ -106,14 +105,12 @@ const LeadCard = ({
   return (
     <div
       className={`rounded-md min-h-56 relative cursor-pointer px-3 border-2 bg-white group py-3 transition-all duration-300  ${
-        selectedLeads.includes(currentLead)
-          ? "border-blue-400"
-          : "hover:!bg-blue-50"
+        selectedLeads.includes(lead) ? "border-blue-400" : "hover:!bg-blue-50"
       }  `}
       ref={divRef}
-      onClick={(e) => handleCardClick(currentLead, e)}
+      onClick={(e) => handleCardClick(lead, e)}
     >
-      {selectedLeads.includes(currentLead) && (
+      {selectedLeads.includes(lead) && (
         <div className="absolute -top-2 -left-2 text-xl">
           <RiCheckboxCircleFill className="text-blue-600" />
         </div>
@@ -131,9 +128,7 @@ const LeadCard = ({
             options={statusOptions}
             option
             placeholder={"Users"}
-            defaultValue={
-              currentLead.LeadStatus ? currentLead.LeadStatus?.Status : null
-            }
+            defaultValue={lead.LeadStatus ? lead.LeadStatus?.Status : null}
           />
 
           {!showContact && (
@@ -147,9 +142,7 @@ const LeadCard = ({
               }}
               options={sourceOptions}
               placeholder={"Users"}
-              defaultValue={
-                currentLead.Source ? currentLead.Source?.Source : null
-              }
+              defaultValue={lead.Source ? lead.Source?.Source : null}
             />
           )}
         </div>
@@ -169,17 +162,17 @@ const LeadCard = ({
                     variants={listItem}
                     className="bg-blue-400 size-7 cursor-pointer flex justify-center items-center rounded-full"
                   >
-                    <a href={`tel:${currentLead.Phone}`}>
+                    <a href={`tel:${lead.Phone}`}>
                       <FaPhone className="text-sm" />
                     </a>
                   </motion.div>
-                  {currentLead.AltPhone && (
+                  {lead.AltPhone && (
                     <motion.div
                       animate={{ x: 0 }}
                       variants={listItem}
                       className="bg-red-400 text-white size-7 cursor-pointer flex justify-center items-center rounded-full"
                     >
-                      <a href={`tel:${currentLead.AltPhone}`}>
+                      <a href={`tel:${lead.AltPhone}`}>
                         <FaPhone className="text-sm" />
                       </a>
                     </motion.div>
@@ -192,7 +185,7 @@ const LeadCard = ({
                     <a
                       target="_blank"
                       href={`https://wa.me/${encodeURIComponent(
-                        currentLead.Phone
+                        lead.Phone
                       )}?text=${encodeURIComponent(
                         "Your custom message here"
                       )}`}
@@ -201,7 +194,7 @@ const LeadCard = ({
                     </a>
                   </motion.div>
 
-                  {currentLead.AltPhone && (
+                  {lead.AltPhone && (
                     <motion.div
                       animate={{ x: 0 }}
                       variants={listItem}
@@ -210,7 +203,7 @@ const LeadCard = ({
                       <a
                         target="_blank"
                         href={`https://wa.me/${encodeURIComponent(
-                          currentLead.AltPhone
+                          lead.AltPhone
                         )}?text=${encodeURIComponent(
                           "Your custom message here"
                         )}`}
@@ -239,17 +232,17 @@ const LeadCard = ({
           <div
             onClick={(e) => {
               e.stopPropagation();
-              setEdit(currentLead._id);
+              setEdit(lead._id);
             }}
             className="size-8 bg-gray-200 group-hover:bg-blue-300 cursor-pointer rounded-full flex justify-center items-center"
           >
             <IoIosInformationCircle />
           </div>
           <div className="  size-8 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
-            {currentLead?.Assigned?.Avatar ? (
+            {lead?.Assigned?.Avatar ? (
               <img
                 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
-                  currentLead?.Assigned.Avatar
+                  lead?.Assigned.Avatar
                 }`}
               />
             ) : (
@@ -258,7 +251,7 @@ const LeadCard = ({
           </div>
         </div>
       </div>
-      <p className="text-lg font-Satoshi font-[700] mt-1">{currentLead.Name}</p>
+      <p className="text-lg font-Satoshi font-[700] mt-1">{lead.Name}</p>
 
       <div className="flex justify-start items-center gap-1 text-sm w-full ">
         <p className="!mb-0 !mt-0 col-span-1 text-[12px">Marketing Tag:</p>
@@ -271,9 +264,7 @@ const LeadCard = ({
           contentEditable={isMarketingTagInput}
           className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
-          {currentLead?.marketingtags?.Tag
-            ? currentLead?.marketingtags?.Tag
-            : "No Tag"}
+          {lead?.marketingtags?.Tag ? lead?.marketingtags?.Tag : "No Tag"}
         </p>
       </div>
 
@@ -288,7 +279,7 @@ const LeadCard = ({
           contentEditable={isTagInput}
           className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
-          {currentLead?.tags?.Tag ? currentLead?.tags?.Tag : "No Tag"}
+          {lead?.tags?.Tag ? lead?.tags?.Tag : "No Tag"}
         </p>
       </div>
 
@@ -306,8 +297,8 @@ const LeadCard = ({
             isDescriptionInput && "border-2 border-blue-400 rounded-sm"
           }`}
         >
-          {currentLead.Description && currentLead.Description != ""
-            ? currentLead.Description
+          {lead.Description && lead.Description != ""
+            ? lead.Description
             : "No Description"}
         </div>
         {!isDescriptionInput && (

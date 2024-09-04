@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import ReminderCard from "./ReminderCard";
 import InlineLoader from "../../InlineLoader";
 
-const Reminders = ({
-  reminderModalOpenForLead,
-  setReminderModalOpenForLead,
-  leadData,
-}) => {
+const Reminders = ({ modalStates, leadData }) => {
   const [reminders, setReminders] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -31,8 +27,8 @@ const Reminders = ({
       }
     };
 
-    !reminderModalOpenForLead && fetchReminders();
-  }, [reminderModalOpenForLead]);
+    !modalStates.reminderOpenForLead && fetchReminders();
+  }, [modalStates.reminderOpenForLead]);
 
   const handleDeleteReminder = async (reminderId) => {
     setIsLoading(true);
@@ -49,7 +45,7 @@ const Reminders = ({
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => setReminderModalOpenForLead(leadData._id)}
+          onClick={() => modalStates.setReminderOpenForLead(leadData._id)}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         >
           <i className="fa fa-plus" /> Add Reminder

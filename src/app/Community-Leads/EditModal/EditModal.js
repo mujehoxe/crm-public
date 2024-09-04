@@ -6,14 +6,7 @@ import Meetings from "./Meetings/Meetings";
 import ActivityLogs from "./ActivityLogs/ActivityLogs";
 import Reminders from "./Reminders/Reminders";
 
-const EditModal = ({
-  leadData,
-  meetingModalOpenForLead,
-  setMeetingModalOpenForLead,
-  reminderModalOpenForLead,
-  setReminderModalOpenForLead,
-  onClose,
-}) => {
+const EditModal = ({ leadData, modalStates, onClose }) => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tabId, e) => {
@@ -84,18 +77,10 @@ const EditModal = ({
                   <div> No Description </div>
                 ))}
               {activeTab === "tab2" && (
-                <Reminders
-                  reminderModalOpenForLead={reminderModalOpenForLead}
-                  setReminderModalOpenForLead={setReminderModalOpenForLead}
-                  leadData={leadData}
-                />
+                <Reminders modalStates={modalStates} leadData={leadData} />
               )}
               {activeTab === "tab3" && (
-                <Meetings
-                  meetingModalOpenForLead={meetingModalOpenForLead}
-                  setMeetingModalOpenForLead={setMeetingModalOpenForLead}
-                  leadData={leadData}
-                ></Meetings>
+                <Meetings modalStates={modalStates} leadData={leadData} />
               )}
               {activeTab === "tab4" && <ActivityLogs leadData={leadData} />}
             </div>
