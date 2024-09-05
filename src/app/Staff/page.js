@@ -7,7 +7,6 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import DocumentModal from "../components/doument";
 import RootLayout from "../components/layout";
 import Modal from "../components/modal";
-import dynamic from "next/dynamic";
 import Script from "next/script";
 
 function Staff() {
@@ -223,7 +222,7 @@ function Staff() {
             </div>
 
             <div
-              className="px-4 py-4"
+              className="p-4"
               id="datatable_info"
               role="status"
               aria-live="polite"

@@ -1,4 +1,3 @@
-// RootLayout.js
 "use client";
 import React, { useState, useRef } from "react";
 import Cssfile from "./Cssfile";
@@ -6,13 +5,13 @@ import Jsfile from "./Scripts";
 import Topbar from "./topbar";
 import Sidebar from "./sidebar";
 import TokenDecoder from "./Cookies";
-import LogoutInactiveUser from "./LogoutInactiveUser";
 import "../page.module.css";
 import Rightbar from "./Rightbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { usePathname } from "next/navigation";
 import Loader from "./Loader"; // Import the Loader component
+
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const [sidePanelStat, setSidePanelStat] = useState(false);
@@ -27,7 +26,7 @@ export default function RootLayout({ children }) {
 
   return (
     <>
-      {loading && <Loader />} {/* Conditionally render the loader */}
+      {loading && <Loader />}
       <div
         style={{
           visibility: loading ? "hidden" : "visible",
@@ -37,7 +36,7 @@ export default function RootLayout({ children }) {
         <Cssfile />
         <div data-sidebar="dark">
           <div id="layout-wrapper">
-            <div className="relative ">
+            <div className="relative">
               <div className="">
                 <Topbar
                   sidePanelStat={sidePanelStat}
@@ -59,7 +58,7 @@ export default function RootLayout({ children }) {
             </div>
 
             <div className={``}>
-              <div className={``}>
+              <div className={`bg-slate-50`}>
                 <ToastContainer />
                 {children}
               </div>
