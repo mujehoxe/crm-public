@@ -1,18 +1,22 @@
 "use client";
 import axios from "axios";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import DocumentModal from "../components/doument";
 import RootLayout from "../components/layout";
 import Modal from "../components/modal";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 
 function Staff() {
-  const BootstrapScript = dynamic(() => import("../../../bootstrap"), {
-    ssr: false,
-  });
+  useEffect(() => {
+    // If you need to run any Bootstrap-related JavaScript
+    if (typeof window !== "undefined") {
+      require("bootstrap");
+    }
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -96,7 +100,10 @@ function Staff() {
   };
   return (
     <>
-      <BootstrapScript />
+      <Script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        strategy="afterInteractive"
+      />
 
       <RootLayout>
         {isModalOpen && (
