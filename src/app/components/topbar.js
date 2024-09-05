@@ -74,40 +74,25 @@ const Topbar = ({ sidePanelStat, setSidePanelStat, userData, buttonRef }) => {
   };
 
   return (
-    <header className="!w-full !h-16 py-1 z-[99] !bg-[#ffffff] flex justify-center shadow-md fixed top-0">
+    <header className="!w-full !h-16 py-1 z-[100] !bg-[#ffffff] flex justify-center shadow-md fixed top-0">
       <div className=" w-[98%] h-full  flex justify-between items-center px-2">
-        <div className="tablet:w-1/5">
-          <motion.button
-            animate={sidePanelStat ? "open" : "close"}
-            ref={buttonRef}
-            className="ham flex flex-col items-center transition-all duration-300  hover:bg-slate-300/70 gap-2 justify-center cursor-pointer  py-2 px-4 rounded-md size-10"
-            onClick={() => {
-              setSidePanelStat(!sidePanelStat);
-            }}
-          >
-            <motion.span
-              className="w-8 h-1 bg-black origin-center"
-              variants={{
-                open: { rotate: "45deg", y: 11 },
-                close: { rotate: "0deg", y: 0 },
-              }}
+        {sidePanelStat ? (
+          <div className="p-2">
+            <img
+              src="/login-logo.png"
+              className="w-20 m-auto object-center"
+              alt="Logo"
             />
-            <motion.span
-              className="w-8 h-1 bg-black"
-              variants={{ open: { opacity: 0 }, close: { opacity: 1, x: 0 } }}
+          </div>
+        ) : (
+          <div className="p-2">
+            <img
+              src="/login-logo.png"
+              className="w-20 m-auto object-center"
+              alt="Logo"
             />
-            <motion.span
-              className="w-8 h-1 bg-black origin-center"
-              variants={{
-                open: { rotate: "-45deg", y: -10 },
-                close: { rotate: "0deg", y: 0 },
-              }}
-            />
-          </motion.button>
-        </div>
-
-        <Image src={"/login-logo.png"} height={70} width={110} />
-
+          </div>
+        )}
         <div className="flex items-center justify-end gap-3 w-1/5 ">
           <Link href={"/profile"} className="flex items-center gap-2 group">
             <p className="text-black !mb-0 mobile:hidden ipad:block  font-Satoshi font-[500]">

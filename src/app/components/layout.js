@@ -48,11 +48,9 @@ export default function RootLayout({ children }) {
               <div>
                 <Sidebar
                   sidePanelStat={sidePanelStat}
-                  buttonRef={buttonRef}
                   setSidePanelStat={setSidePanelStat}
-                  avtaar={avtaar}
-                  userrole={userrole}
-                  userdata={userData}
+                  buttonRef={buttonRef}
+                  userData={userData}
                 />
               </div>
             </div>
