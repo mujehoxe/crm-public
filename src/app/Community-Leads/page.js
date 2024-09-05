@@ -526,7 +526,6 @@ function Cold() {
           <MeetingModal
             onClose={() => {
               modalStates.setMeetingOpenForLead(0);
-              setActiveModalLead(null);
             }}
             leadId={activeModalLead._id}
           />
@@ -535,7 +534,6 @@ function Cold() {
           <ReminderModal
             onClose={() => {
               modalStates.setReminderOpenForLead(0);
-              setActiveModalLead(null);
             }}
             lead={activeModalLead._id}
           />
