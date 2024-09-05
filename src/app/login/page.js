@@ -1,132 +1,131 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
-import styles from "../signup/style.css";
-import RootLayout from "../layout";
-import { MdOutlineAlternateEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa";
+import InlineLoader from "../Community-Leads/InlineLoader";
 
-function LoginPage() {
+export default function LoginPage() {
   const router = useRouter();
-  const [user, setUser] = React.useState({
-    email: "",
-    password: "",
-  });
-  const [loading, setLoading] = React.useState(false);
-  const [loginStatus, setLoginStatus] = useState();
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onLogin = async (event) => {
     event.preventDefault();
-    setIsLoggingIn(true);
+    setLoading(true);
+    setError("");
     try {
-      setLoading(true);
-      const response = await axios.post("/api/users/login", user);
-      console.log("login success", response.data);
-      setLoginStatus(response.data);
-      console.log(response.data);
+      await axios.post("/api/users/login", user);
       router.push("/profile");
     } catch (error) {
-      console.log(error);
-      setLoginStatus(error.response.data);
-    } finally {
+      console.error(error);
+      setError(
+        error.response?.data?.error || "An error occurred. Please try again."
+      );
       setLoading(false);
-      setIsLoggingIn(false);
     }
   };
 
   return (
-    <RootLayout>
-      <div className="h-screen w-full">
-        <div className=" w-full flex flex-col justify-between items-start h-full bg-gradient-to-br from-[#85D6FF] via-[#0584FF] to-[#002F85]">
-          <div className="w-full flex justify-start">
-            <img
-              src={"/login-logo.png"}
-              className="!ml-10 !mt-7 lg:w-[150px] mobile:w-[100px]"
-            />
+    <div className="min-h-screen flex">
+      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div className="mx-auto w-full max-w-sm lg:w-96">
+          <div>
+            <img className="h-12 w-auto" src="/login-logo.png" alt="Logo" />
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+              Sign in to your account
+            </h2>
           </div>
 
-          <form className="flex  flex-col min-w-[360px] px-7 justify-center h-[435px]   gap-4 !bg-gray-50/80">
-            <p
-              className={` ${
-                loading ? "text-xl" : "text-xl"
-              } tracking-tighter font-Satoshi font-[900]  !w-full !text-center`}
-            >
-              {loading ? "Your Sales Journey Begin Here" : "Welcome Back"}
-            </p>
-
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col gap-1">
-                <label className="!text-[1.2rem]  !font-Satoshi !font-semibold">
-                  Email
+          <div className="mt-8">
+            <form className="mt-6 space-y-6" onSubmit={onLogin}>
+              <div className="space-y-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email address
                 </label>
-                <div className="relative">
+                <div className="mt-1 relative rounded-md shadow-sm">
                   <input
+                    id="email"
+                    name="email"
                     type="email"
+                    autoComplete="email"
+                    required
+                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Email address"
                     value={user.email}
-                    onChange={(e) => {
-                      setUser({ ...user, email: e.target.value });
-                    }}
-                    className="w-full !border !border-gray-700 !bg-transparent  focus:outline-none h-12 !pl-8 !rounded-lg hover:shadow-md transition-all placeholder:text-slate-600 placeholder:font-semibold duration-300 focus:shadow-md !text-[1rem]"
-                    placeholder="Enter your email"
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                   />
-                  <MdOutlineAlternateEmail className="absolute text-xl left-2 top-[50%] translate-y-[-50%]" />
                 </div>
-                <p className="h-5 text-red-500">
-                  {loginStatus?.error?.includes("User")
-                    ? "Email not found"
-                    : ""}
-                </p>
               </div>
-              <div className="flex flex-col gap-1">
-                <label className="!text-[1.2rem] !font-Satoshi !font-semibold">
+
+              <div className="space-y-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
-                <div className="relative">
+                <div className="mt-1 relative rounded-md shadow-sm">
                   <input
-                    type="password"
                     id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Password"
                     value={user.password}
-                    onChange={(e) => {
-                      setUser({ ...user, password: e.target.value });
-                    }}
-                    className="w-full !bg-transparent  !border !border-gray-700 focus:outline-none h-12 !pl-8 !rounded-lg hover:shadow-md transition-all duration-300 focus:shadow-md placeholder:text-slate-600 placeholder:font-semibold !text-[1rem]"
-                    placeholder="Enter your password"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                   />
-
-                  <FaLock className="absolute text-xl left-2 top-[50%] translate-y-[-50%]" />
                 </div>
-                <p className="h-5 text-red-500">
-                  {loginStatus?.error?.includes("password")
-                    ? "Incorrect Password"
-                    : ""}
-                </p>
               </div>
-            </div>
-            <div className="w-full ">
-              <button
-                onClick={onLogin}
-                type="submit"
-                className="disabled:!bg-gray-800 disabled:text-gray-500 !mt-0 !border-0 disabled:font-semibold w-full font-medium bg-black text-slate-50 !rounded-lg py-2 text-xl font-Satoshi hover:!bg-gray-900"
-              >
-                {isLoggingIn ? (
-                  <p className="!mb-0">Logging in...</p>
-                ) : (
-                  <p className="!mb-0">Log in</p>
-                )}
-              </button>
-            </div>
-          </form>
 
-          <div className="w-full flex justify-start w-[150px] h-[35px]"> </div>
+              {error && (
+                <div className="rounded-md bg-red-50 p-4">
+                  <div className="flex">
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {error}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <div className="flex flex-row gap-4">
+                      <span>Signing in</span>{" "}
+                      <InlineLoader disableText={true} />
+                    </div>
+                  ) : (
+                    <span>Sign in</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </RootLayout>
+      <div className="hidden lg:block relative w-0 flex-1">
+        <img
+          className="absolute inset-0 h-full w-full object-cover"
+          src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+          alt=""
+        />
+      </div>
+    </div>
   );
 }
-
-export default LoginPage;
