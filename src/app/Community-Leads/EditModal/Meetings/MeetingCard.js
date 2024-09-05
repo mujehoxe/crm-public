@@ -123,17 +123,19 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
           )}
       </div>
 
-      <footer className="bg-gray-100 px-4 py-3">
-        <div className="flex justify-between items-center text-xs text-gray-500">
-          <span>Meeting Type: {meeting.MeetingType}</span>
-          {meeting.Comment && (
-            <div className="flex items-center text-indigo-500">
-              <i className="fas fa-comment mr-2" />
-              <span>{meeting.Comment}</span>
-            </div>
-          )}
-        </div>
-      </footer>
+      {meeting.MeetingType && meeting.Comment && (
+        <footer className="bg-gray-100 px-4 py-3">
+          <div className="flex justify-between items-center text-xs text-gray-500">
+            <span>Meeting Type: {meeting.MeetingType}</span>
+            {meeting.Comment && (
+              <div className="flex items-center text-indigo-500">
+                <i className="fas fa-comment mr-2" />
+                <span>{meeting.Comment}</span>
+              </div>
+            )}
+          </div>
+        </footer>
+      )}
     </article>
   );
 }

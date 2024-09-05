@@ -2,14 +2,14 @@ import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { FaRegUserCircle } from "react-icons/fa";
 
-const LogEntry = ({ log, leadData, index }) => {
+const LogEntry = ({ log, leadData: lead }) => {
   const renderLogContent = () => {
     switch (true) {
       case log.action.includes("Lead status updated") ||
         log.action.includes("Lead Field"):
         return (
           <>
-            changed <span className="font-semibold">{leadData.Name}'s</span>{" "}
+            changed <span className="font-semibold">{lead.Name}'s</span>{" "}
             {!log.action.includes("Lead status")
               ? log.action.split(" ")[2]
               : "Lead Status"}{" "}
@@ -27,35 +27,34 @@ const LogEntry = ({ log, leadData, index }) => {
           <>
             added tag(s):{" "}
             <span className="font-semibold">{log.tags.join(", ")}</span> to{" "}
-            <span className="font-semibold">{leadData.Name}'s</span> lead
+            <span className="font-semibold">{lead.Name}'s</span> lead
           </>
         );
       case log.action.includes("Status added"):
         return (
           <>
             added status: <span className="font-semibold">{log.status}</span> to{" "}
-            <span className="font-semibold">{leadData.Name}'s</span> lead
+            <span className="font-semibold">{lead.Name}'s</span> lead
           </>
         );
       case log.action.includes("Lead added"):
         return (
           <>
-            added a new lead{" "}
-            <span className="font-semibold">{leadData.Name}</span>
+            added a new lead <span className="font-semibold">{lead.Name}</span>
           </>
         );
       case log.action.includes("Order added"):
         return (
           <>
             added a new order for{" "}
-            <span className="font-semibold">{leadData.Name}</span>
+            <span className="font-semibold">{lead.Name}</span>
           </>
         );
       case log.action.includes("Whatsapp Template"):
         return (
           <>
             sent a WhatsApp template to{" "}
-            <span className="font-semibold">{leadData.Name}</span>
+            <span className="font-semibold">{lead.Name}</span>
           </>
         );
       default:
@@ -78,10 +77,10 @@ const LogEntry = ({ log, leadData, index }) => {
         </div>
         <div className="flex items-center text-sm text-gray-600">
           <div className="  size-8 bg-gray-200 group-hover:bg-blue-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
-            {currentLead?.Assigned?.Avatar ? (
+            {lead?.Assigned?.Avatar ? (
               <img
                 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
-                  currentLead?.Assigned.Avatar
+                  lead?.Assigned.Avatar
                 }`}
               />
             ) : (
@@ -96,11 +95,11 @@ const LogEntry = ({ log, leadData, index }) => {
       </header>
 
       {log.description && (
-        <div className="p-4">
-          <p className="text-sm text-gray-700">
-            <b>Description:</b> {log.description}
-          </p>
-        </div>
+        <footer className="bg-gray-100 px-4 py-3 text-xs text-indigo-500">
+          <i className="fas fa-comment mr-2" />
+          <span className="font-bold">Description:</span>{" "}
+          <span>{log.description}</span>
+        </footer>
       )}
     </article>
   );

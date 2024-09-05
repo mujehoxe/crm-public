@@ -15,7 +15,7 @@ const LeadCard = ({
   setCurrentPageLeads,
   handleCardClick,
   selectedLeads,
-  setEdit,
+  onEditClick,
   statusOptions,
   sourceOptions,
 }) => {
@@ -35,6 +35,11 @@ const LeadCard = ({
     };
   }, []);
 
+  const handleEditButtonClick = (e) => {
+    e.stopPropagation();
+    onEditClick(lead);
+  };
+
   const [showContact, setShowContact] = useState(false);
   const container = {
     hidden: { opacity: 0 },
@@ -53,13 +58,13 @@ const LeadCard = ({
   };
 
   const [updateBody, setUpdateBody] = useState({
+    lead,
     Source: lead.Source,
     LeadStatus: lead.LeadStatus,
     Description: lead.Description,
     tags: lead.tags,
     MarketingTags: lead.MarketingTags,
     updateDescription: "",
-    currentLead: lead,
   });
 
   const [loading, setLoading] = useState(false);
@@ -230,10 +235,7 @@ const LeadCard = ({
             </div>
           </div>
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setEdit(lead._id);
-            }}
+            onClick={handleEditButtonClick}
             className="size-8 bg-gray-200 group-hover:bg-blue-300 cursor-pointer rounded-full flex justify-center items-center"
           >
             <IoIosInformationCircle />

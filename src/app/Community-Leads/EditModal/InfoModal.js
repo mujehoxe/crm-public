@@ -6,7 +6,7 @@ import Meetings from "./Meetings/Meetings";
 import ActivityLogs from "./ActivityLogs/ActivityLogs";
 import Reminders from "./Reminders/Reminders";
 
-const EditModal = ({ leadData, modalStates, onClose }) => {
+const InfoModal = ({ leadData, modalStates, onClose }) => {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const handleTabClick = (tabId, e) => {
@@ -91,4 +91,4 @@ const EditModal = ({ leadData, modalStates, onClose }) => {
   );
 };
 
-export default EditModal;
+export default InfoModal;

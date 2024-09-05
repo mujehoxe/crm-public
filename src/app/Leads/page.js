@@ -8,6 +8,7 @@ function Leads() {
   const [Leads, setLead] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [leadsPerPage] = useState(1);
+
   useEffect(() => {
     const fetchLead = async () => {
       try {

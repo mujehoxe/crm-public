@@ -23,7 +23,7 @@ import TokenDecoder from "../components/Cookies";
 import ReminderModal from "./EditModal/Reminders/ReminderModal";
 import BulkModal from "./Bulk/bulk";
 import LeadCard from "./LeadCard";
-import EditModal from "./EditModal/EditModal";
+import InfoModal from "./EditModal/InfoModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import InlineLoader from "./InlineLoader";
 
@@ -453,11 +453,13 @@ function Cold() {
     }
   };
 
-  const [edit, setEdit] = useState(false);
-  const toggleModal = (e) => {
-    setEdit(!edit);
-    e.stopPropagation();
-  };
+  const [edit, setEdit] = useState(0);
+  const [activeModalLead, setActiveModalLead] = useState(null);
+
+  const handleEditClick = useCallback((lead) => {
+    setEdit(lead._id);
+    setActiveModalLead(lead);
+  }, []);
 
   const containerRef = useRef(null);
   const handleClickOutsideButton = (event) => {
@@ -476,59 +478,71 @@ function Cold() {
   const renderLeadCards = useCallback(
     (leads) =>
       leads.map((lead) => (
-        <React.Fragment key={lead._id}>
-          <LeadCard
-            lead={lead}
-            setCurrentPageLeads={(leads) =>
-              setLeadsData({ ...leadsData, leads })
-            }
-            statusOptions={statusOptions}
-            sourceOptions={sourceOptions}
-            handleCardClick={handleCardClick}
-            selectedLeads={leadsData.selectedLeads}
-            setEdit={setEdit}
-          />
-          {renderModals(lead)}
-        </React.Fragment>
+        <LeadCard
+          key={lead._id}
+          lead={lead}
+          setCurrentPageLeads={(leads) => setLeadsData({ ...leadsData, leads })}
+          statusOptions={statusOptions}
+          sourceOptions={sourceOptions}
+          handleCardClick={handleCardClick}
+          selectedLeads={leadsData.selectedLeads}
+          onEditClick={() => handleEditClick(lead)}
+          onMeetingClick={() => {
+            modalStates.setMeetingOpenForLead(lead._id);
+            setActiveModalLead(lead);
+          }}
+          onReminderClick={() => {
+            modalStates.setReminderOpenForLead(lead._id);
+            setActiveModalLead(lead);
+          }}
+        />
       )),
-    [statusOptions, sourceOptions, leadsData.leads, leadsData.selectedLeads]
-  );
-
-  const renderModals = useCallback(
-    (lead) => {
-      return (
-        <>
-          {edit === lead._id && (
-            <EditModal
-              leadData={lead}
-              modalStates={modalStates}
-              onClose={(e) => toggleModal(e)}
-            />
-          )}
-          {modalStates.meetingOpenForLead === lead._id && (
-            <MeetingModal
-              onClose={() => modalStates.setMeetingOpenForLead(0)}
-              leadId={lead._id}
-            />
-          )}
-          {modalStates.reminderOpenForLead === lead._id && (
-            <ReminderModal
-              onClose={() => modalStates.setReminderOpenForLead(0)}
-              lead={lead._id}
-            />
-          )}
-        </>
-      );
-    },
     [
-      edit,
-      modalStates.meetingOpenForLead,
-      modalStates.setMeetingOpenForLead,
-      modalStates.reminderOpenForLead,
-      modalStates.setReminderOpenForLead,
-      toggleModal,
+      statusOptions,
+      sourceOptions,
+      leadsData,
+      handleCardClick,
+      handleEditClick,
+      modalStates,
     ]
   );
+
+  const renderModals = useMemo(() => {
+    if (!activeModalLead) return null;
+
+    return (
+      <>
+        {edit === activeModalLead._id && (
+          <InfoModal
+            leadData={activeModalLead}
+            modalStates={modalStates}
+            onClose={() => {
+              setEdit(0);
+              setActiveModalLead(null);
+            }}
+          />
+        )}
+        {modalStates.meetingOpenForLead === activeModalLead._id && (
+          <MeetingModal
+            onClose={() => {
+              modalStates.setMeetingOpenForLead(0);
+              setActiveModalLead(null);
+            }}
+            leadId={activeModalLead._id}
+          />
+        )}
+        {modalStates.reminderOpenForLead === activeModalLead._id && (
+          <ReminderModal
+            onClose={() => {
+              modalStates.setReminderOpenForLead(0);
+              setActiveModalLead(null);
+            }}
+            lead={activeModalLead._id}
+          />
+        )}
+      </>
+    );
+  }, [activeModalLead, edit, modalStates]);
 
   const renderLeadGrid = useMemo(() => {
     if (filters.searchTerm) {
@@ -697,6 +711,7 @@ function Cold() {
                   </p>
                   <div className="grid gap-x-4 gap-y-4 mobile:grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-3">
                     {renderLeadGrid}
+                    {renderModals}
                   </div>
                 </>
               )
