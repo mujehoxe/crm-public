@@ -20,7 +20,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
         "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-[99]"
       }
     >
-      <div className={`bg-white px-7 py-4 rounded-lg m-28`}>
+      <div className={`bg-white px-8 py-4 rounded-lg m-auto`}>
         <div className="flex w-full justify-between items-center">
           <p className="!mt-0 capitalize !mb-0 text-3xl font-Satoshi font-[500] flex items-end gap-2">
             {leadData.Name}
