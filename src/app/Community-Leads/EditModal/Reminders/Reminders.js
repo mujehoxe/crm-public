@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import ReminderCard from "./ReminderCard";
 import InlineLoader from "../../InlineLoader";
+import SkeletonLoader from "../../SkeletonLoader";
 
 const Reminders = ({ modalStates, leadData }) => {
   const [reminders, setReminders] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     const fetchReminders = async () => {
       if (!leadData || !leadData._id) return;
 
-      setIsLoading(true);
+      setLoading(true);
       try {
         const res = await fetch(`/api/Reminder/get/${leadData._id}`);
         const data = await res.json();
@@ -23,7 +24,7 @@ const Reminders = ({ modalStates, leadData }) => {
       } catch (error) {
         console.error("Error fetching reminders:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -31,14 +32,14 @@ const Reminders = ({ modalStates, leadData }) => {
   }, [modalStates.reminderOpenForLead]);
 
   const handleDeleteReminder = async (reminderId) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       await fetch(`/api/Reminder/delete/${reminderId}`, { method: "DELETE" });
       setReminders(reminders.filter((m) => m._id !== reminderId));
     } catch (error) {
       console.error("Error deleting reminder:", error);
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -51,8 +52,8 @@ const Reminders = ({ modalStates, leadData }) => {
           <i className="fa fa-plus" /> Add Reminder
         </button>
       </div>
-      {isLoading ? (
-        <InlineLoader className="text-blue-900" />
+      {loading ? (
+        <SkeletonLoader />
       ) : (
         <div>
           {!reminders.length ? (
@@ -64,7 +65,7 @@ const Reminders = ({ modalStates, leadData }) => {
                   <ReminderCard
                     reminder={reminder}
                     onDelete={() => handleDeleteReminder(reminder._id)}
-                    isLoading={isLoading}
+                    isLoading={loading}
                   />
                 </li>
               ))}

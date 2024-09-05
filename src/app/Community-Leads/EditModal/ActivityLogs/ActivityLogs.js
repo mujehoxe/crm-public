@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LogEntry from "./LogCard";
 import axios from "axios";
+import SkeletonLoader from "../../SkeletonLoader";
 
 const ActivityLogs = ({ leadData }) => {
   const [logs, setLogs] = useState([]);
@@ -26,18 +27,7 @@ const ActivityLogs = ({ leadData }) => {
   return (
     <div className="container mx-auto space-y-4">
       {loading ? (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="animate-pulse flex space-x-4">
-            <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-            <div className="flex-1 space-y-4 py-1">
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SkeletonLoader />
       ) : logs.length <= 0 ? (
         <div className="bg-white rounded-lg shadow-md p-6 md:w-96 text-center">
           <svg

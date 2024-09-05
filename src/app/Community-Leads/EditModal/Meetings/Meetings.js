@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import MeetingCard from "./MeetingCard";
 import InlineLoader from "../../InlineLoader";
+import SkeletonLoader from "../../SkeletonLoader";
 
 const Meetings = ({ modalStates, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   useEffect(() => {
     const fetchMeetings = async () => {
       if (!leadData || !leadData._id) return;
 
-      setIsLoading(true);
+      setLoading(true);
       try {
         const res = await fetch(`/api/Meeting/get/${leadData._id}`);
         const data = await res.json();
@@ -23,7 +24,7 @@ const Meetings = ({ modalStates, leadData }) => {
       } catch (error) {
         console.error("Error fetching meetings:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -31,14 +32,14 @@ const Meetings = ({ modalStates, leadData }) => {
   }, [modalStates.meetingOpenForLead]);
 
   const handleDeleteMeeting = async (meetingId) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       await fetch(`/api/Meeting/delete/${meetingId}`, { method: "DELETE" });
       setMeetings(meetings.filter((m) => m._id !== meetingId));
     } catch (error) {
       console.error("Error deleting meeting:", error);
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -51,8 +52,8 @@ const Meetings = ({ modalStates, leadData }) => {
           <i className="fa fa-plus" /> Add Meeting
         </button>
       </div>
-      {isLoading ? (
-        <InlineLoader className="text-blue-900" />
+      {loading ? (
+        <SkeletonLoader />
       ) : (
         <div>
           {!meetings.length ? (
@@ -64,7 +65,7 @@ const Meetings = ({ modalStates, leadData }) => {
                   <MeetingCard
                     meeting={meeting}
                     onDelete={() => handleDeleteMeeting(meeting._id)}
-                    isLoading={isLoading}
+                    isLoading={loading}
                   />
                 </li>
               ))}
