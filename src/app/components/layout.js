@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
                 {children}
               </div>
             </div>
-            <Rightbar />
+            <Rightbar userData={userData} />
           </div>
         </div>
         <Jsfile />

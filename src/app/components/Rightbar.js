@@ -1,18 +1,17 @@
-import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import TokenDecoder from "./Cookies";
-const Rightbar = () => {
+
+const Rightbar = ({ userData }) => {
   const rightsidebar = (e) => {
     e.preventDefault();
     document.body.classList.remove("right-bar-enabled");
   };
-  const userdata = TokenDecoder();
-  const userrole = userdata ? userdata.role : null;
+
+  const userRole = userData ? userData.role : null;
+
   return (
     <>
-      <div className="right-bar">
+      <div className="right-bar fixed right-0">
         <div className="rightbar-title d-flex align-items-center px-3 py-4">
           <h5 className="m-0 me-2">Settings</h5>
           <a
@@ -27,15 +26,15 @@ const Rightbar = () => {
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">Menu</li>
-            {userrole == "superAdmin" ||
-            userrole == "Admin" ||
-            userrole == "Marketing" ||
-            userrole == "Operations" ||
-            userrole == "BussinessHead" ||
-            userrole == "PNL" ||
-            userrole == "TL" ||
-            userrole == "FOS" ||
-            userrole == "ATL" ? (
+            {userRole == "superAdmin" ||
+            userRole == "Admin" ||
+            userRole == "Marketing" ||
+            userRole == "Operations" ||
+            userRole == "BussinessHead" ||
+            userRole == "PNL" ||
+            userRole == "TL" ||
+            userRole == "FOS" ||
+            userRole == "ATL" ? (
               <li>
                 <Link href={"/Tags"}>
                   <i className="fas fa-tags" />
@@ -47,7 +46,7 @@ const Rightbar = () => {
               </li>
             ) : null}
             <li>
-              {userrole == "superAdmin" || userrole == "Admin" ? (
+              {userRole == "superAdmin" || userRole == "Admin" ? (
                 <Link href={"RolePerms"}>
                   <i className="fas fa-tags" />
                   <span className="badge rounded-pill bg-success float-end">
