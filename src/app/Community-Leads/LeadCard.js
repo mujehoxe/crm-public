@@ -264,7 +264,7 @@ const LeadCard = ({
           }}
           onBlur={(e) => tagChange(e, "MarketingTags")}
           contentEditable={isMarketingTagInput}
-          className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
+          className="rounded-full hover:bg-blue-400 z-10 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
           {lead?.marketingtags?.Tag ? lead?.marketingtags?.Tag : "No Tag"}
         </p>
@@ -279,7 +279,7 @@ const LeadCard = ({
           }}
           onBlur={(e) => tagChange(e, "tags")}
           contentEditable={isTagInput}
-          className="rounded-full hover:bg-blue-400 z-50 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
+          className="rounded-full hover:bg-blue-400 z-10 bg-[#B3E5FC] px-2 font-Satoshi text-center font-[500] text-[10px] !mb-0 !mt-0"
         >
           {lead?.tags?.Tag ? lead?.tags?.Tag : "No Tag"}
         </p>

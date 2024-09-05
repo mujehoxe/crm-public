@@ -1,43 +1,34 @@
 // RootLayout.js
 "use client";
-import React, { useState, useRef } from "react";
-import Cssfile from "./Cssfile";
-import Jsfile from "./Scripts";
-import Topbar from "./topbar";
-import Sidebar from "./sidebar";
-import TokenDecoder from "./Cookies";
-import "../page.module.css";
-import Rightbar from "./Rightbar";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { usePathname } from "next/navigation";
+import "../page.module.css";
+import TokenDecoder from "./Cookies";
 import Loader from "./Loader"; // Import the Loader component
+import Rightbar from "./Rightbar";
+import Jsfile from "./Scripts";
+import Sidebar from "./sidebar";
+import Topbar from "./topbar";
+
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const [sidePanelStat, setSidePanelStat] = useState(false);
   const userData = TokenDecoder();
-  const avtaar = userData ? userData.avatar : null;
-  const userrole = userData ? userData.role : null;
   const buttonRef = useRef(null);
-  const pathname = usePathname();
-  setTimeout(() => {
+
+  useEffect(() => {
     setLoading(false);
-  }, 2000);
+  });
 
   return (
     <>
       {loading && <Loader />} {/* Conditionally render the loader */}
-      <div
-        style={{
-          visibility: loading ? "hidden" : "visible",
-          opacity: loading ? 0 : 1,
-        }}
-      >
-        <Cssfile />
-        <div data-sidebar="dark">
+      <div>
+        <div>
           <div id="layout-wrapper">
-            <div className="relative ">
-              <div className="">
+            <div className="relative">
+              <div className="fixed top-0 w-full bg-white z-[40]">
                 <Topbar
                   sidePanelStat={sidePanelStat}
                   setSidePanelStat={setSidePanelStat}
@@ -45,7 +36,7 @@ export default function RootLayout({ children }) {
                   buttonRef={buttonRef}
                 />
               </div>
-              <div>
+              <div className="fixed no-underline top-0 left-0 z-[40]">
                 <Sidebar
                   sidePanelStat={sidePanelStat}
                   setSidePanelStat={setSidePanelStat}

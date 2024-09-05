@@ -17,27 +17,30 @@ import {
   HomeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
+  const [loading, setLoading] = useState(false);
+
   const handleLogout = () => {
+    setLoading(true);
     axios
       .post("/api/users/logout")
       .then(() => {
         window.location.href = "/login";
       })
       .catch((error) => {
-        console.error("Failed to logout inactive user:", error);
+        console.error("Failed to logout:", error);
+        toast.error("Failed to logout");
+        setLoading(false);
       });
   };
 
   const userdata = TokenDecoder();
-  const userid = userdata ? userdata.id : null;
   const userrole = userdata ? userdata.role : null;
-  const hidden = ["Admin", "superAdmin", "Operations", "HR"];
 
   const pathname = usePathname();
-
-  const path = usePathname();
 
   const [currentIndex, setCurrentIndex] = useState(null);
 
@@ -235,34 +238,38 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   return (
     <Menu
       as="div"
-      className={`fixed top-0 h-screen bg-gray-900 text-gray-100 shadow-lg z-[200] transition-all duration-300 ease-in-out ${
+      className={`fixed top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out ${
         sidePanelStat ? "w-64" : "w-20"
       }`}
     >
-      <div className="flex p-2 py-3 bg-gray-800">
-        <MenuButton
-          onClick={() => {
-            setSidePanelStat(!sidePanelStat);
-          }}
-          className={`flex py-2 items-center ${
-            !sidePanelStat && "justify-center pl-0"
-          } w-full rounded-lg transition-colors pl-1 duration-200 text-gray-400 hover:bg-gray-700 hover:text-white`}
-        >
-          <Bars3Icon className="text-xl mx-3 w-6 text-gray-400" />
-          {sidePanelStat && (
-            <span className="capitalize whitespace-nowrap">Collapse</span>
-          )}
-        </MenuButton>
-      </div>
-
-      <div className="relative flex flex-col h-full my-2">
-        <nav className="flex flex-col flex-grow overflow-y-auto">
+      <div className="relative flex flex-col h-full overflow-hidden">
+        <div className="p-2 py-3 bg-gray-800">
+          <div
+            onClick={() => {
+              setSidePanelStat(!sidePanelStat);
+            }}
+            className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700"
+          >
+            <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
+              <Bars3Icon className={`ml-3 w-6 text-gray-400`} />
+            </MenuButton>
+            {sidePanelStat && (
+              <span className="flex-1 text-xs capitalize align-middle my-auto whitespace-nowrap">
+                Collapse
+              </span>
+            )}
+          </div>
+        </div>
+        <nav className="flex flex-col flex-grow overflow-y-auto my-2">
           <ul className="flex flex-1 flex-col space-y-2 px-2 w-full h-full">
             {sideMenus.map(
               (item, index) =>
                 (item.visibility?.includes(userrole?.toLowerCase()) ||
                   item.visibility?.includes("all")) && (
-                  <li key={item.id}>
+                  <li
+                    key={item.id}
+                    className={`${item.name === "Log out" && "mt-auto"}`}
+                  >
                     <Link
                       href={item.link || "#"}
                       className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
@@ -271,14 +278,14 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                           : "text-gray-400 hover:bg-gray-700 hover:text-white"
                       } ${
                         item.name === "Log out"
-                          ? "hover:bg-red-600 hover:text-white mt-auto"
+                          ? "hover:bg-red-600 hover:text-white"
                           : ""
-                      }`}
-                      onClick={() => sideHandler(index)}
+                      } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+                      onClick={() => !loading && sideHandler(index)}
                     >
-                      <span className="text-xl mr-3">{item.icon}</span>
+                      <span className="mr-3 text-2xl">{item.icon}</span>
                       {sidePanelStat && (
-                        <span className="flex-1 capitalize whitespace-nowrap">
+                        <span className="flex-1 text-xs capitalize whitespace-nowrap">
                           {item.name}
                         </span>
                       )}
@@ -305,7 +312,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                               <li key={subIndex}>
                                 <Link
                                   href={subItem.link || "#"}
-                                  className={`block p-2 rounded-lg transition-colors duration-200 ${
+                                  className={`block p-2 text-xs rounded-lg transition-colors duration-200 ${
                                     pathname === subItem.link
                                       ? "bg-gray-700 text-white"
                                       : "text-gray-400 hover:bg-gray-700 hover:text-white"
@@ -323,15 +330,8 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
             )}
           </ul>
         </nav>
-        {sidePanelStat && (
-          <div className="mt-auto">
-            <img
-              src="/login-logo.png"
-              className="w-20 m-auto px-2 object-center"
-            />
-          </div>
-        )}
       </div>
+
       <div className="relative flex flex-col h-screen my-2">
         <nav className="flex flex-col flex-grow overflow-y-auto">
           <ul className="space-y-2 px-2 w-full">

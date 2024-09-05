@@ -16,6 +16,11 @@
   }
 }
 
+a {
+  text-decoration: none !important;
+  color: black;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: white;
