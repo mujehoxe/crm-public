@@ -33,17 +33,17 @@ const ReminderModal = ({ onClose, lead }) => {
     setAssigneesOptions(newOptions);
   }, [users]);
 
-  const [Reminder, setReminder] = React.useState({
+  const [reminder, setReminder] = React.useState({
     DateTime: "",
     Assignees: "",
     Leadid: lead,
     Comment: "",
   });
 
-  const handleSelectChange = (Reminder, selectedOption) => {
+  const handleSelectChange = (reminder, selectedOption) => {
     setReminder((prevReminder) => ({
       ...prevReminder,
-      [Reminder]: selectedOption.value,
+      [reminder]: selectedOption.value,
     }));
   };
 
@@ -51,7 +51,7 @@ const ReminderModal = ({ onClose, lead }) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("/api/Reminder/add", Reminder);
+      const res = await axios.post("/api/Reminder/add", reminder);
       onClose();
       toast.success("Reminder Added successfully");
     } catch (error) {
@@ -81,7 +81,7 @@ const ReminderModal = ({ onClose, lead }) => {
               className="form-control"
               type="datetime-local"
               onChange={(e) =>
-                setReminder({ ...Reminder, DateTime: e.target.value })
+                setReminder({ ...reminder, DateTime: e.target.value })
               }
               id="example-datetime-local-input"
             />
@@ -101,7 +101,7 @@ const ReminderModal = ({ onClose, lead }) => {
             <input
               className="form-control"
               onChange={(e) =>
-                setReminder({ ...Reminder, Comment: e.target.value })
+                setReminder({ ...reminder, Comment: e.target.value })
               }
               type="text"
               placeholder="Reminder Description"

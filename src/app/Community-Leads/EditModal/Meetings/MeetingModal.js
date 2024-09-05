@@ -84,7 +84,7 @@ const MeetingModal = ({ onClose, leadId }) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("/api/Meeting/add", Reminder);
+      const res = await axios.post("/api/Meeting/add", meeting);
       onClose();
       toast.success("Meeting Added successfully");
     } catch (error) {

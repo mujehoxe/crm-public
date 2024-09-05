@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import MeetingCard from "./MeetingCard";
-import InlineLoader from "../../InlineLoader";
 import SkeletonLoader from "../../SkeletonLoader";
 
 const Meetings = ({ modalStates, leadData }) => {
