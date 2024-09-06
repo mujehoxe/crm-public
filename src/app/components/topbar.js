@@ -68,7 +68,7 @@ const Topbar = ({ userData }) => {
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center">
             <img
-              src="/login-logo.png"
+              src="/miles-logo.svg"
               className="h-8 w-auto ml-20"
               alt="Logo"
             />
