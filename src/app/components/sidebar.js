@@ -225,7 +225,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   return (
     <Menu
       as="div"
-      className="fixed top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
+      className="sticky top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
       style={{ width: sidePanelStat ? "16rem" : "5rem" }}
     >
       <div className="flex flex-col h-full">
@@ -248,7 +248,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
         </div>
 
         <nav className="flex-grow my-2">
-          <ul className="space-y-2 px-2">
+          <ul className="space-y-2 px-2 flex flex-col h-full">
             {sideMenus.map((item, index) =>
               (item.visibility?.includes(userrole?.toLowerCase()) ||
                 item.visibility?.includes("all")) &&
@@ -317,29 +317,20 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                 </li>
               ) : null
             )}
-          </ul>
-        </nav>
-
-        <div className="mt-auto p-2">
-          <ul className="space-y-2">
-            <li
-              onClick={() =>
-                window.document.body.classList.toggle("right-bar-enabled")
-              }
-              className={`rounded-lg ${
-                pathname === "/settings" && !loading
-                  ? "bg-gray-700 text-white"
-                  : "text-gray-400 hover:bg-gray-700 hover:text-white"
-              }`}
-            >
+            <li className="mt-auto">
               <Link
                 href=""
-                onClick={(e) => e.preventDefault()}
-                className={`flex text-inherit items-center p-2 transition-colors duration-200 ${
-                  loading ? "opacity-60 cursor-not-allowed" : ""
-                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.document.body.classList.toggle("right-bar-enabled");
+                }}
+                className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                  pathname === "/settings" && !loading
+                    ? "bg-gray-700 text-white"
+                    : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
               >
-                <Cog6ToothIcon className="w-6 min-w-[1.5rem]" />
+                <Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]" />
                 <span
                   className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                     sidePanelStat ? "opacity-100" : "opacity-0"
@@ -349,20 +340,18 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                 </span>
               </Link>
             </li>
-            <li
-              onClick={handleLogout}
-              className={`rounded-lg text-gray-400 hover:bg-gray-700 ${
-                !loading ? "hover:text-white" : ""
-              }`}
-            >
+            <li>
               <Link
                 href=""
-                onClick={(e) => e.preventDefault()}
-                className={`flex text-inherit items-center p-2 transition-colors duration-200 ${
-                  loading ? "opacity-60 cursor-not-allowed" : ""
-                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+                className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-gray-700 ${
+                  !loading ? "hover:text-white" : ""
+                } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
               >
-                <ArrowLeftStartOnRectangleIcon className="w-6 min-w-[1.5rem]" />
+                <ArrowLeftStartOnRectangleIcon className="ml-3 w-6 min-w-[1.5rem]" />
                 <span
                   className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                     sidePanelStat ? "opacity-100" : "opacity-0"
@@ -373,7 +362,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
     </Menu>
   );
