@@ -238,7 +238,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               <Bars3Icon className="ml-3 w-6 text-gray-400" />
             </MenuButton>
             <span
-              className={`flex-1 text-xs capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+              className={`flex-1 text-sm capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
                 sidePanelStat ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -265,7 +265,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                   >
                     <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
                     <span
-                      className={`flex-1 ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                      className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                         sidePanelStat ? "opacity-100" : "opacity-0"
                       }`}
                     >
@@ -273,7 +273,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                     </span>
                     {item.notifications && (
                       <span
-                        className={`inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
+                        className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
                           sidePanelStat ? "opacity-100" : "opacity-0"
                         }`}
                       >
@@ -301,7 +301,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                           <li key={subIndex}>
                             <Link
                               href={subItem.link || "#"}
-                              className={`block p-2 text-xs rounded-lg transition-colors duration-200 ${
+                              className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
                                 pathname === subItem.link
                                   ? "bg-gray-700 text-white"
                                   : "text-gray-400 hover:bg-gray-700 hover:text-white"
@@ -341,7 +341,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               >
                 <Cog6ToothIcon className="w-6 min-w-[1.5rem]" />
                 <span
-                  className={`ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                  className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                     sidePanelStat ? "opacity-100" : "opacity-0"
                   }`}
                 >
@@ -364,7 +364,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               >
                 <ArrowLeftStartOnRectangleIcon className="w-6 min-w-[1.5rem]" />
                 <span
-                  className={`ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                  className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                     sidePanelStat ? "opacity-100" : "opacity-0"
                   }`}
                 >
