@@ -20,7 +20,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 
-const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
+const Sidebar = () => {
+  const [sidePanelStat, setSidePanelStat] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   const handleLogout = () => {

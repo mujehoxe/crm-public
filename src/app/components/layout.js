@@ -13,7 +13,6 @@ import Topbar from "./topbar";
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
-  const [sidePanelStat, setSidePanelStat] = useState(false);
   const userData = TokenDecoder();
   const buttonRef = useRef(null);
 
@@ -32,19 +31,16 @@ export default function RootLayout({ children }) {
                 <Topbar userData={userData} />
               </div>
               <div className="fixed no-underline top-0 left-0 z-[40]">
-                <Sidebar
-                  sidePanelStat={sidePanelStat}
-                  setSidePanelStat={setSidePanelStat}
-                  buttonRef={buttonRef}
-                  userData={userData}
-                />
+                <Sidebar />
               </div>
             </div>
 
             <div className={``}>
               <div className={``}>
                 <ToastContainer />
-                <div className={`ml-auto tablet:w-[calc(100%-80px)]`}>
+                <div
+                  className={`ml-auto p-4 mt-[4.5rem] tablet:w-[calc(100%-80px)]`}
+                >
                   {children}
                 </div>
               </div>
