@@ -229,10 +229,10 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
       style={{ width: sidePanelStat ? "16rem" : "5rem" }}
     >
       <div className="flex flex-col h-full">
-        <div className="p-2 py-3 bg-gray-800">
+        <div className="p-2 py-3 shadow-sm bg-gray-800">
           <div
             onClick={() => setSidePanelStat(!sidePanelStat)}
-            className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+            className="flex w-full py-1 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
           >
             <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
               <Bars3Icon className="ml-3 w-6 text-gray-400" />
