@@ -17,7 +17,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
   return (
     <div
       className={
-        "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-[99]"
+        "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-10"
       }
     >
       <div className={`bg-white px-8 py-4 rounded-lg m-auto`}>

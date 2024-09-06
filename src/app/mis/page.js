@@ -537,14 +537,14 @@ function allDeals() {
       )}
 
       {myData ? (
-        <div className="flex justify-end  w-full mt-20 !px-0">
-          <div className=" tablet:w-[calc(100%-100px)]  mobile:w-full h-full">
+        <div className="flex justify-end w-full mt-20 !px-0">
+          <div className="  mobile:w-full h-full">
             <div className=" w-full  px-4 py-4 h-full">
               <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-blue-700 py-3 ">
                 MIS
               </p>
               {showEOI && (
-                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-10">
                   <IoMdClose
                     className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                     onClick={() => setShowEOI(null)}
@@ -561,7 +561,7 @@ function allDeals() {
               )}
 
               {showSPA && filteredData[eoiIndex].SPAmage && (
-                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-10">
                   <IoMdClose
                     className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                     onClick={() => setShowSPA(null)}
@@ -578,7 +578,7 @@ function allDeals() {
               )}
 
               {showBooking && (
-                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-[9999]">
+                <div className="!flex !flex-col  !w-[50%] !rounded-md !h-[80%] fixed items-end top-20 left-[30%] z-10">
                   <IoMdClose
                     className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                     onClick={() => setShowBooking(null)}
@@ -597,7 +597,7 @@ function allDeals() {
               )}
 
               {passFront && (
-                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
+                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-10">
                   <IoMdClose
                     className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                     onClick={() => setpassFront(null)}
@@ -623,7 +623,7 @@ function allDeals() {
                 </div>
               )}
               {passBack && (
-                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-[9999]">
+                <div className="!flex !flex-col  !w-[80%] !rounded-md !h-[80%] fixed items-end top-20 left-[10%] z-10">
                   <IoMdClose
                     className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                     onClick={() => setpassBack(null)}
@@ -649,7 +649,7 @@ function allDeals() {
                 </div>
               )}
               <div className="flex  items-center gap-3 ">
-                <div className={`relative z-[95]`}>
+                <div className={`relative z-1095]`}>
                   <SearchableSelect
                     options={agentNames}
                     onChange={(value) => setAgenFilter(value.label)}
@@ -657,7 +657,7 @@ function allDeals() {
                   ></SearchableSelect>
                 </div>
 
-                <div className={`relative z-[95]`}>
+                <div className={`relative z-1095]`}>
                   <SearchableSelect
                     options={[]}
                     onChange={(value) => setKycFilter(value.label)}
@@ -668,10 +668,10 @@ function allDeals() {
               <div className=" overflow-x-auto mt-3 h-[calc(100vh-12rem)]">
                 <table className="table-fixed  ">
                   <thead className="  text-gray-700 ">
-                    <tr className="text-md sticky z-[90] top-0 !border-b border-slate-600 py-2">
+                    <tr className="text-md sticky z-1090] top-0 !border-b border-slate-600 py-2">
                       <th
                         id="firstHeader"
-                        className={` !bg-[#D2E8F2] sticky left-0 z-[3]`}
+                        className={` !bg-[#D2E8F2] sticky left-0 z-103]`}
                       >
                         <div className="grid items-center px-3 grid-cols-5 w-[650px] ">
                           <p className="!mb-0 !mt-0">Serial No.</p>
@@ -959,7 +959,7 @@ function allDeals() {
                       <tr key={index} className="border-b   border-slate-400">
                         <td
                           id="rowHeader"
-                          className={` !bg-[#F1F5F7]  sticky left-0 z-[2] !mb-0`}
+                          className={` !bg-[#F1F5F7]  sticky left-0 z-102] !mb-0`}
                         >
                           <div className="grid grid-cols-5 w-[650px] px-3 items-center">
                             <p className="!mt-0 !mb-0">{index + 1}</p>
@@ -1458,41 +1458,41 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        <td scope="row" className="  z-[1] !px-1 "></td>
+                        <td scope="row" className="  z-101] !px-1 "></td>
 
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
 
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
                         {collapsed ? (
-                          <td scope="row" className="  z-[1] !px-1 "></td>
+                          <td scope="row" className="  z-101] !px-1 "></td>
                         ) : null}
 
                         <td scope="row" className=" !px-1 ">
@@ -1641,7 +1641,7 @@ function allDeals() {
                             }
                           >
                             <SearchableSelect
-                              className={"z-[0]"}
+                              className={"z-100]"}
                               options={developerOptions}
                               disabled={row.edit === null || row.edit === false}
                               defaultValue={row.Developer}
@@ -1935,9 +1935,9 @@ function allDeals() {
                           </p>
                         </td>
 
-                        <td scope="row" className=" !px-1 "></td>
+                        <td scope="row" className="!px-1"></td>
 
-                        <td scope="row" className="   !px-3  z-[1]">
+                        <td scope="row" className="!px-3 z-10]">
                           <div className="flex justify-between w-[300px] items-center gap-3">
                             <div className="flex w-full justify-around gap-2">
                               <p className="!m-0 !border-0">
@@ -2939,7 +2939,7 @@ function allDeals() {
                         <td
                           id="lastRow"
                           row={"row"}
-                          className="sticky right-0 z-[9] !bg-[#F1F5F7] px-1"
+                          className="sticky right-0 z-10 !bg-[#F1F5F7] px-1"
                         >
                           <div className={`flex item-center justify-around `}>
                             <button

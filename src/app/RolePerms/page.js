@@ -72,7 +72,7 @@ function RolePerms() {
   return (
     <RootLayout>
       <div className="flex justify-end w-full mt-20 !px-0">
-        <div className="tablet:w-[calc(100%-100px)]  mobile:w-full h-full overflow-x-hidden">
+        <div className=" mobile:w-full h-full overflow-x-hidden">
           <div className="w-full   px-4 py-4">
             <p className="text-lg font-[500]  font-Satoshi w-full ">
               Role Permissions

@@ -44,7 +44,9 @@ export default function RootLayout({ children }) {
             <div className={``}>
               <div className={``}>
                 <ToastContainer />
-                {children}
+                <div className={`ml-auto tablet:w-[calc(100%-80px)]`}>
+                  {children}
+                </div>
               </div>
             </div>
             <Rightbar userData={userData} />

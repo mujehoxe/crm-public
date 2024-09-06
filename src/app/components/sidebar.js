@@ -225,7 +225,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   return (
     <Menu
       as="div"
-      className="sticky top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
+      className="sticky top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
       style={{ width: sidePanelStat ? "16rem" : "5rem" }}
     >
       <div className="flex flex-col h-full">
@@ -238,7 +238,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               <Bars3Icon className="ml-3 w-6 text-gray-400" />
             </MenuButton>
             <span
-              className={`flex-1 text-sm capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+              className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
                 sidePanelStat ? "opacity-100" : "opacity-0"
               }`}
             >
