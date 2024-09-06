@@ -43,34 +43,29 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   const pathname = usePathname();
 
   const [currentIndex, setCurrentIndex] = useState(null);
-  const [expandedItem, setExpandedItem] = useState(null);
 
-  // const sideHandler = (index) => {
-  //   if (currentIndex == index) {
-  //     setCurrentIndex(null);
-  //   } else {
-  //     setCurrentIndex(index);
-  //   }
-  //   if (sideMenus[index].nested) {
-  //     setSidePanelStat(true);
-  //   }
-  // };
+  const sideHandler = (index) => {
+    if (sidePanelStat)
+      if (currentIndex == index) {
+        setCurrentIndex(null);
+      } else {
+        setCurrentIndex(index);
+      }
+    if (sideMenus[index].nested) {
+      setSidePanelStat(true);
+    }
+  };
 
   useEffect(() => {
-    // Find the parent menu item of the current route
     const parentItem = sideMenus.find((item) =>
       item.nested?.some((subItem) => subItem.link === pathname)
     );
     if (parentItem) {
-      setExpandedItem(parentItem.id);
+      setCurrentIndex(parentItem.id);
     } else {
-      setExpandedItem(null);
+      setCurrentIndex(null);
     }
   }, [pathname]);
-
-  const sideHandler = (id) => {
-    setExpandedItem((prev) => (prev === id ? null : id));
-  };
 
   const isActive = (item) => {
     if (item.link === pathname) return true;
@@ -307,7 +302,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                   {item.nested && (
                     <FaChevronDown
                       className={`ml-auto transition-transform duration-200 ${
-                        expandedItem === item.id ? "transform rotate-180" : ""
+                        currentIndex === item.id ? "transform rotate-180" : ""
                       } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
                     />
                   )}
@@ -315,7 +310,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                 {item.nested && (
                   <ul
                     className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
-                      expandedItem === item.id && sidePanelStat
+                      currentIndex === item.id && sidePanelStat
                         ? "max-h-96 opacity-100"
                         : "max-h-0 opacity-0"
                     } overflow-hidden`}
