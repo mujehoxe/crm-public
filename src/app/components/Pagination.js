@@ -51,7 +51,7 @@ export default function Pagination({
         <button
           onClick={prevPage}
           disabled={currentPage === 1}
-          className="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-miles-600 hover:text-miles-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center border-t-2 border-transparent pr-1 py-4 text-sm font-medium text-gray-500 hover:border-miles-600 hover:text-miles-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ArrowLongLeftIcon
             aria-hidden="true"
@@ -90,7 +90,7 @@ export default function Pagination({
         <button
           onClick={nextPage}
           disabled={currentPage === totalPages}
-          className="inline-flex items-center border-t-2 border-transparent pl-1 text-sm font-medium text-gray-500 hover:border-miles-600 hover:text-miles-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center border-t-2 border-transparent pl-1 py-4 text-sm font-medium text-gray-500 hover:border-miles-600 hover:text-miles-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next
           <ArrowLongRightIcon
