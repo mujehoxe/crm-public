@@ -225,9 +225,8 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   return (
     <Menu
       as="div"
-      className={`fixed top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out ${
-        sidePanelStat ? "w-64" : "w-20"
-      }`}
+      className="fixed top-0 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
+      style={{ width: sidePanelStat ? "16rem" : "5rem" }}
     >
       <div className="flex flex-col h-full">
         <div className="p-2 py-3 bg-gray-800">
@@ -238,11 +237,13 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
             <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
               <Bars3Icon className="ml-3 w-6 text-gray-400" />
             </MenuButton>
-            {sidePanelStat && (
-              <span className="flex-1 text-xs capitalize align-middle my-auto whitespace-nowrap">
-                Collapse
-              </span>
-            )}
+            <span
+              className={`flex-1 text-xs capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+                sidePanelStat ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {sidePanelStat ? "Collapse" : ""}
+            </span>
           </div>
         </div>
 
@@ -259,30 +260,42 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                       pathname === item.link
                         ? "bg-gray-700 text-white"
                         : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                    } ${loading && "opacity-60 cursor-not-allowed"}`}
+                    } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
                     onClick={() => !loading && sideHandler(index)}
                   >
-                    <span className="text-2xl">{item.icon}</span>
-                    {sidePanelStat && (
-                      <span className="flex-1 ml-3 text-xs capitalize whitespace-nowrap">
-                        {item.name}
+                    <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
+                    <span
+                      className={`flex-1 ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                        sidePanelStat ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      {sidePanelStat ? item.name : ""}
+                    </span>
+                    {item.notifications && (
+                      <span
+                        className={`inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
+                          sidePanelStat ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        {sidePanelStat ? item.notifications : ""}
                       </span>
                     )}
-                    {sidePanelStat && item.notifications && (
-                      <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-gray-900 bg-blue-200 rounded-full">
-                        {item.notifications}
-                      </span>
-                    )}
-                    {sidePanelStat && item.nested && (
+                    {item.nested && (
                       <FaChevronDown
                         className={`ml-auto transition-transform duration-200 ${
                           currentIndex === index ? "transform rotate-180" : ""
-                        }`}
+                        } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
                       />
                     )}
                   </Link>
-                  {sidePanelStat && currentIndex === index && item.nested && (
-                    <ul className="pl-6 mt-2 space-y-2">
+                  {currentIndex === index && item.nested && (
+                    <ul
+                      className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
+                        sidePanelStat
+                          ? "max-h-96 opacity-100"
+                          : "max-h-0 opacity-0"
+                      } overflow-hidden`}
+                    >
                       {item.nested.map((subItem, subIndex) =>
                         subItem.visibility?.includes(userrole.toLowerCase()) ? (
                           <li key={subIndex}>
@@ -310,9 +323,9 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
         <div className="mt-auto p-2">
           <ul className="space-y-2">
             <li
-              onClick={window.document.body.classList.toggle(
-                "right-bar-enabled"
-              )}
+              onClick={() =>
+                window.document.body.classList.toggle("right-bar-enabled")
+              }
               className={`rounded-lg ${
                 pathname === "/settings" && !loading
                   ? "bg-gray-700 text-white"
@@ -322,37 +335,41 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
               <Link
                 href=""
                 onClick={(e) => e.preventDefault()}
-                className={`flex text-inherit items-center p-2 ml-3 transition-colors duration-200 ${
-                  loading && "opacity-60 cursor-not-allowed"
+                className={`flex text-inherit items-center p-2 transition-colors duration-200 ${
+                  loading ? "opacity-60 cursor-not-allowed" : ""
                 }`}
               >
-                <Cog6ToothIcon className="w-6" />
-                {sidePanelStat && (
-                  <span className="flex-1 ml-3 text-xs capitalize whitespace-nowrap">
-                    Settings
-                  </span>
-                )}
+                <Cog6ToothIcon className="w-6 min-w-[1.5rem]" />
+                <span
+                  className={`ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                    sidePanelStat ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {sidePanelStat ? "Settings" : ""}
+                </span>
               </Link>
             </li>
             <li
               onClick={handleLogout}
               className={`rounded-lg text-gray-400 hover:bg-gray-700 ${
-                !loading && "hover:text-white"
+                !loading ? "hover:text-white" : ""
               }`}
             >
               <Link
                 href=""
                 onClick={(e) => e.preventDefault()}
-                className={`flex text-inherit items-center p-2 ml-3 transition-colors duration-200 ${
-                  loading && "opacity-60 cursor-not-allowed"
+                className={`flex text-inherit items-center p-2 transition-colors duration-200 ${
+                  loading ? "opacity-60 cursor-not-allowed" : ""
                 }`}
               >
-                <ArrowLeftStartOnRectangleIcon className="w-6" />
-                {sidePanelStat && (
-                  <span className="flex-1 ml-3 text-xs capitalize whitespace-nowrap">
-                    Log out
-                  </span>
-                )}
+                <ArrowLeftStartOnRectangleIcon className="w-6 min-w-[1.5rem]" />
+                <span
+                  className={`ml-3 text-xs capitalize whitespace-nowrap transition-opacity duration-300 ${
+                    sidePanelStat ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {sidePanelStat ? "Log out" : ""}
+                </span>
               </Link>
             </li>
           </ul>
