@@ -46,7 +46,7 @@ export default function Pagination({
   };
 
   return (
-    <nav className="flex flex-auto items-center justify-between border-t border-gray-200 px-4 sm:px-0 mt-10">
+    <nav className="flex flex-auto items-center justify-between border-t border-gray-200 px-4 sm:px-0">
       <div className="-mt-px flex flex-1">
         <button
           onClick={prevPage}
