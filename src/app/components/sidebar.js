@@ -43,17 +43,43 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   const pathname = usePathname();
 
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [expandedItem, setExpandedItem] = useState(null);
 
-  const sideHandler = (index) => {
-    if (currentIndex == index) {
-      setCurrentIndex(null);
+  // const sideHandler = (index) => {
+  //   if (currentIndex == index) {
+  //     setCurrentIndex(null);
+  //   } else {
+  //     setCurrentIndex(index);
+  //   }
+  //   if (sideMenus[index].nested) {
+  //     setSidePanelStat(true);
+  //   }
+  // };
+
+  useEffect(() => {
+    // Find the parent menu item of the current route
+    const parentItem = sideMenus.find((item) =>
+      item.nested?.some((subItem) => subItem.link === pathname)
+    );
+    if (parentItem) {
+      setExpandedItem(parentItem.id);
     } else {
-      setCurrentIndex(index);
+      setExpandedItem(null);
     }
-    if (sideMenus[index].nested) {
-      setSidePanelStat(true);
-    }
+  }, [pathname]);
+
+  const sideHandler = (id) => {
+    setExpandedItem((prev) => (prev === id ? null : id));
   };
+
+  const isActive = (item) => {
+    if (item.link === pathname) return true;
+    if (item.nested) {
+      return item.nested.some((subItem) => subItem.link === pathname);
+    }
+    return false;
+  };
+
   const divRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -225,99 +251,98 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
   return (
     <Menu
       as="div"
-      className="sticky top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
+      className="sticky top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
       style={{ width: sidePanelStat ? "16rem" : "5rem" }}
     >
-      <div className="flex flex-col h-full">
-        <div className="p-2 py-3 shadow-sm bg-gray-800">
-          <div
-            onClick={() => setSidePanelStat(!sidePanelStat)}
-            className="flex w-full py-1 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+      <div className="flex-shrink-0 p-2 py-3 shadow-sm bg-gray-800">
+        <div
+          onClick={() => setSidePanelStat(!sidePanelStat)}
+          className="flex w-full py-1 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+        >
+          <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
+            <Bars3Icon className="ml-3 w-6 text-gray-400" />
+          </MenuButton>
+          <span
+            className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+              sidePanelStat ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
-              <Bars3Icon className="ml-3 w-6 text-gray-400" />
-            </MenuButton>
-            <span
-              className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
-                sidePanelStat ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              {sidePanelStat ? "Collapse" : ""}
-            </span>
-          </div>
+            {sidePanelStat ? "Collapse" : ""}
+          </span>
         </div>
+      </div>
 
-        <nav className="flex-grow my-2">
-          <ul className="space-y-2 px-2 flex flex-col h-full">
-            {sideMenus.map((item, index) =>
-              (item.visibility?.includes(userrole?.toLowerCase()) ||
-                item.visibility?.includes("all")) &&
-              item.name !== "Log out" ? (
-                <li key={item.id}>
-                  <Link
-                    href={item.link || "#"}
-                    className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-                      pathname === item.link
-                        ? "bg-gray-700 text-white"
-                        : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                    } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-                    onClick={() => !loading && sideHandler(index)}
+      <nav className="flex-grow h-full">
+        <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
+          {sideMenus.map((item) =>
+            item.visibility?.includes(userrole?.toLowerCase()) ||
+            item.visibility?.includes("all") ? (
+              <li key={item.id}>
+                <Link
+                  href={item.link || "#"}
+                  className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                    isActive(item)
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                  } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+                  onClick={() => !loading && sideHandler(item.id)}
+                >
+                  <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
+                  <span
+                    className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                      sidePanelStat ? "opacity-100" : "opacity-0"
+                    }`}
                   >
-                    <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
+                    {sidePanelStat ? item.name : ""}
+                  </span>
+                  {item.notifications && (
                     <span
-                      className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                      className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
                         sidePanelStat ? "opacity-100" : "opacity-0"
                       }`}
                     >
-                      {sidePanelStat ? item.name : ""}
+                      {sidePanelStat ? item.notifications : ""}
                     </span>
-                    {item.notifications && (
-                      <span
-                        className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
-                          sidePanelStat ? "opacity-100" : "opacity-0"
-                        }`}
-                      >
-                        {sidePanelStat ? item.notifications : ""}
-                      </span>
-                    )}
-                    {item.nested && (
-                      <FaChevronDown
-                        className={`ml-auto transition-transform duration-200 ${
-                          currentIndex === index ? "transform rotate-180" : ""
-                        } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
-                      />
-                    )}
-                  </Link>
-                  {currentIndex === index && item.nested && (
-                    <ul
-                      className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
-                        sidePanelStat
-                          ? "max-h-96 opacity-100"
-                          : "max-h-0 opacity-0"
-                      } overflow-hidden`}
-                    >
-                      {item.nested.map((subItem, subIndex) =>
-                        subItem.visibility?.includes(userrole.toLowerCase()) ? (
-                          <li key={subIndex}>
-                            <Link
-                              href={subItem.link || "#"}
-                              className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
-                                pathname === subItem.link
-                                  ? "bg-gray-700 text-white"
-                                  : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                              }`}
-                            >
-                              {subItem.name}
-                            </Link>
-                          </li>
-                        ) : null
-                      )}
-                    </ul>
                   )}
-                </li>
-              ) : null
-            )}
-            <li className="mt-auto">
+                  {item.nested && (
+                    <FaChevronDown
+                      className={`ml-auto transition-transform duration-200 ${
+                        expandedItem === item.id ? "transform rotate-180" : ""
+                      } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
+                    />
+                  )}
+                </Link>
+                {item.nested && (
+                  <ul
+                    className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
+                      expandedItem === item.id && sidePanelStat
+                        ? "max-h-96 opacity-100"
+                        : "max-h-0 opacity-0"
+                    } overflow-hidden`}
+                  >
+                    {item.nested.map((subItem, subIndex) =>
+                      subItem.visibility?.includes(userrole.toLowerCase()) ? (
+                        <li key={subIndex}>
+                          <Link
+                            href={subItem.link || "#"}
+                            className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
+                              pathname === subItem.link
+                                ? "bg-gray-700 text-white"
+                                : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                            }`}
+                          >
+                            {subItem.name}
+                          </Link>
+                        </li>
+                      ) : null
+                    )}
+                  </ul>
+                )}
+              </li>
+            ) : null
+          )}
+          <div className="mt-auto absolute bottom-0 border-t border-gray-700 py-2">
+            <li>
               <Link
                 href=""
                 onClick={(e) => {
@@ -361,9 +386,9 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                 </span>
               </Link>
             </li>
-          </ul>
-        </nav>
-      </div>
+          </div>
+        </ul>
+      </nav>
     </Menu>
   );
 };
