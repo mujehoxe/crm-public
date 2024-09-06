@@ -347,7 +347,7 @@ const Sidebar = ({ sidePanelStat, setSidePanelStat, buttonRef }) => {
                   e.preventDefault();
                   handleLogout();
                 }}
-                className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-gray-700 ${
+                className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
                   !loading ? "hover:text-white" : ""
                 } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
               >
