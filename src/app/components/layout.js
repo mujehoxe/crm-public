@@ -29,12 +29,7 @@ export default function RootLayout({ children }) {
           <div id="layout-wrapper">
             <div className="relative">
               <div className="fixed top-0 w-full bg-white z-[40]">
-                <Topbar
-                  sidePanelStat={sidePanelStat}
-                  setSidePanelStat={setSidePanelStat}
-                  userData={userData}
-                  buttonRef={buttonRef}
-                />
+                <Topbar userData={userData} />
               </div>
               <div className="fixed no-underline top-0 left-0 z-[40]">
                 <Sidebar

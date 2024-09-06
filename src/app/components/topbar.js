@@ -5,7 +5,7 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
-const Topbar = ({ sidePanelStat, setSidePanelStat, userData, buttonRef }) => {
+const Topbar = ({ userData }) => {
   const [isBodyClassActive, setIsBodyClassActive] = useState(false);
   const [isMobileScreen, setIsMobileScreen] = useState(false);
 
