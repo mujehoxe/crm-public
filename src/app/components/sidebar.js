@@ -1,51 +1,120 @@
 "use client";
-import React from "react";
- 
-import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
-import TokenDecoder from "./Cookies";
-import {   usePathname } from "next/navigation";
+
 import axios from "axios";
-import { GoHome } from "react-icons/go";
-import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import { MdPeople } from "react-icons/md";
-import { FaHandshake } from "react-icons/fa6";
- import {motion} from 'framer-motion'
-import { IoGitNetworkSharp } from "react-icons/io5";
- 
-import { RiLogoutCircleLine } from "react-icons/ri";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-const Sidebar = ({ sidePanelStat, setSidePanelStat,buttonRef }) => {
- 
-  
+import { FaHandshake } from "react-icons/fa6";
+import { IoGitNetworkSharp } from "react-icons/io5";
+import TokenDecoder from "./Cookies";
+
+import { Menu, MenuButton } from "@headlessui/react";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  Bars3Icon,
+  ClipboardDocumentCheckIcon,
+  Cog6ToothIcon,
+  HomeIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
+
+const Sidebar = () => {
+  const [sidePanelStat, setSidePanelStat] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
   const handleLogout = () => {
+    setLoading(true);
     axios
       .post("/api/users/logout")
       .then(() => {
         window.location.href = "/login";
       })
       .catch((error) => {
-        console.error("Failed to logout inactive user:", error);
+        console.error("Failed to logout:", error);
+        toast.error("Failed to logout");
+        setLoading(false);
       });
   };
 
   const userdata = TokenDecoder();
-const userid = userdata ? userdata.id : null;
-const userrole = userdata ? userdata.role : null;
-const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
-   const sideMenus = [
+  const userrole = userdata ? userdata.role : null;
+
+  const pathname = usePathname();
+
+  const [currentIndex, setCurrentIndex] = useState(null);
+
+  const sideHandler = (index) => {
+    if (sidePanelStat)
+      if (currentIndex == index) {
+        setCurrentIndex(null);
+      } else {
+        setCurrentIndex(index);
+      }
+    if (sideMenus[index].nested) {
+      setSidePanelStat(true);
+    }
+  };
+
+  useEffect(() => {
+    const parentItem = sideMenus.find((item) =>
+      item.nested?.some((subItem) => subItem.link === pathname)
+    );
+    if (parentItem) {
+      setCurrentIndex(parentItem.id);
+    } else {
+      setCurrentIndex(null);
+    }
+  }, [pathname]);
+
+  const isActive = (item) => {
+    if (item.link === pathname) return true;
+    if (item.nested) {
+      return item.nested.some((subItem) => subItem.link === pathname);
+    }
+    return false;
+  };
+
+  const divRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (
+      divRef.current &&
+      !divRef.current.contains(event.target) &&
+      !(buttonRef.current && buttonRef.current.contains(event.target))
+    ) {
+      setSidePanelStat(false);
+    }
+  };
+
+  // Effect to add and remove click outside event listener
+  useEffect(() => {
+    if (sidePanelStat) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [sidePanelStat]);
+
+  const sideMenus = [
     {
       id: 0,
       name: "profile",
       link: "/profile",
-      icon: <GoHome />,
+      icon: <HomeIcon className="ml-3 w-6" />,
       visibility: ["all"],
     },
     {
       id: 1,
       name: "staff",
       link: "/Staff",
-      icon: <MdPeople />,
+      icon: <UserGroupIcon className="ml-3 w-6" />,
       notifications: 5,
       visibility: ["hr", "admin", "superadmin"],
     },
@@ -53,7 +122,7 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
       id: 2,
       name: "leads",
       link: "",
-      icon: <IoGitNetworkSharp />,
+      icon: <IoGitNetworkSharp className="ml-3 w-6" />,
       nested: [
         {
           name: "Community Leads",
@@ -87,7 +156,7 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
       id: 3,
       name: "reports",
       link: "",
-      icon: <HiOutlineClipboardDocumentCheck />,
+      icon: <ClipboardDocumentCheckIcon className="ml-3 w-6" />,
       nested: [
         {
           name: "Timesheet",
@@ -100,7 +169,7 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
             "tl",
             "atl",
             "fos",
-            "hr"
+            "hr",
           ],
         },
         {
@@ -133,7 +202,7 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
       id: 4,
       name: "your deals",
       link: "",
-      icon: <FaHandshake />,
+      icon: <FaHandshake className="ml-3 w-6" />,
       nested: [
         {
           name: "Deals Approvals",
@@ -147,18 +216,13 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
             "atl",
             "fos",
             "marketing",
-            "operations"
+            "operations",
           ],
         },
         {
           name: "KYC and Sanction",
           link: "/KYC-and-Sanctions",
-          visibility: [
-            "admin",
-            "superadmin",
-            "operations",
- 
-          ],
+          visibility: ["admin", "superadmin", "operations"],
         },
         {
           name: "MIS",
@@ -176,174 +240,153 @@ const hidden = ['Admin', 'superAdmin', 'Operations', 'HR']
         "fos",
         "operations",
         "marketing",
-        "finance"
+        "finance",
       ],
     },
-
-    {
-      id: 5,
-      name: "Log out",
-      icon: <RiLogoutCircleLine />,
-      visibility: ["all"],
-    },
   ];
- 
- 
- 
-  const pathname = usePathname();
- 
-  const path = usePathname();
 
-  const [currIndex, setCurrentIndex] = useState(null)
-  const sidehandler = (index) => {
-    if (currIndex == index) { 
-      setCurrentIndex(null)
-    }
-    else {
-      setCurrentIndex(index)
-    }
-    if (sideMenus[index].nested) { 
-      setSidePanelStat(true)
-    }
-    if (index == 5) { 
-      handleLogout();
-    }
-    
-  }
-   const divRef = useRef(null);
-
-  
-  
-
-  // Effect to add and remove click outside event listener
-  const handleClickOutside = (event) => {
-    if (
-      divRef.current &&
-      !divRef.current.contains(event.target) &&
-      !(buttonRef.current && buttonRef.current.contains(event.target))
-    ) {
-      setSidePanelStat(false);
-    }
-  };
-    
-    
-  // Effect to add and remove click outside event listener
-  useEffect(() => {
-    if (sidePanelStat) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [sidePanelStat]);
-   
   return (
-    <>
-       <>
-      <motion.div  
-        className={`fixed   top-16  tablet:h-[calc(100vh-4rem)] mobile:h-[calc(100vh+4rem)] shadow-md bg-white  z-[9999]  ${sidePanelStat ? "w-[300px] tablet:block mobile:block " : "w-[100px] tablet:block mobile:hidden"}`}
-     
-       ref={divRef}
-      >
+    <Menu
+      as="div"
+      className="sticky top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
+      style={{ width: sidePanelStat ? "16rem" : "5rem" }}
+    >
+      <div className="flex-shrink-0 p-2 py-3 shadow-sm bg-gray-800">
         <div
-          className={`flex flex-col justify-start  items-center relative h-full`}
+          onClick={() => setSidePanelStat(!sidePanelStat)}
+          className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
         >
-          <div
-            className={`flex flex-col w-full  gap-1 ${
-              sidePanelStat ? "" : "items-center"
+          <MenuButton className="flex px-2 items-center transition-colors duration-200 hover:text-white">
+            <Bars3Icon className="ml-3 w-6 text-gray-400" />
+          </MenuButton>
+          <span
+            className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+              sidePanelStat ? "opacity-100" : "opacity-0"
             }`}
           >
-            <div
-              className={` flex w-full tablet:px-4 mobile:px-1 justify-start transition-all duration-200  ${
-                sidePanelStat ? "" : ""
-              }`}
-            ></div>
-
-            <div
-              className={`flex flex-col items-center gap-2 tablet:px-5 mobile:px-3  w-full  ${
-                sidePanelStat ? " " : ""
-              }`}
-            >
-              {sideMenus.map((elem, index) => {
-                return elem.visibility?.includes(userrole?.toLowerCase()) ||
-                  elem.visibility?.includes("all") ? (
-                  <Link
-                    href={elem.link ? elem.link : ""}
-                    className={`flex relative flex-col items-center !mb-0 text-black justify-start gap-2 w-full ${
-                      elem.name == "Log out"
-                        ? "hover:!bg-red-400"
-                        : "hover:bg-slate-100 "
-                    } rounded-md transition-all duration-200 cursor-pointer items-center  py-1 group justify-between  ${
-                      pathname == elem.link  ? "bg-slate-100" : ""
-                    } `}
-                    onClick={() => sidehandler(index)}
-                    key={index}
-                  >
-                    {!sidePanelStat && (
-                      <div className="absolute left-[100%] capitalize group-hover:block hidden z-[999] rounded-md top-3 px-2 bg-black text-white text-nowrap">
-                        {elem.name}
-                      </div>
-                    )}
-                    <div className="flex items-center px-2 justify-between gap-2 w-full">
-                      <div
-                        className={`transition-all  p-2 flex justify-start items-center gap-3   duration-200  cursor-pointer rounded-lg`}
-                      >
-                        <p className="!mb-0 text-2xl">{elem.icon}</p>
-                        <p
-                          className={`!mb-0 font-Satoshi font-[500] !text-md text-nowrap !mb-0 !mt-0 capitalize ${
-                            sidePanelStat ? "block " : "hidden"
-                          }`}
-                        >
-                          {elem.name}
-                        </p>
-                      </div>
-
-                      {sidePanelStat && elem.notifications && (
-                        <div className="bg-[#8EE4FF] flex justify-center size-5 rounded-full items-center">
-                          {elem.notifications}
-                        </div>
-                      )}
-
-                      {elem.nested && <FaChevronDown />}
-                    </div>
-
-                    {sidePanelStat && currIndex
-                      ? index == currIndex && sideMenus[currIndex].nested
-                        ? elem.nested.map((nest, id) =>
-                            nest?.visibility &&
-                            nest?.visibility.includes(
-                              userrole.toLowerCase()
-                            ) ? (
-                              <Link
-                                key={id}
-                                className={`w-full text-md py-2 hover:bg-slate-200 px-2 text-black ${
-                                  pathname === nest.link ? "bg-slate-100" : ""
-                                }`}
-                                href={nest.link || ""}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                }}
-                              >
-                                <p className="!mb-0 ml-12 font-medium">
-                                  {nest.name}
-                                </p>
-                              </Link>
-                            ) : null
-                          )
-                        : null
-                      : null}
-                  </Link>
-                ) : null;
-              })}
-            </div>
-          </div>
+            {sidePanelStat ? "Collapse" : ""}
+          </span>
         </div>
-      </motion.div>
-    </>
-    </>
+      </div>
+
+      <nav className="flex-grow h-full">
+        <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
+          {sideMenus.map((item) =>
+            item.visibility?.includes(userrole?.toLowerCase()) ||
+            item.visibility?.includes("all") ? (
+              <li key={item.id}>
+                <Link
+                  href={item.link || "#"}
+                  className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                    isActive(item)
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                  } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+                  onClick={() => !loading && sideHandler(item.id)}
+                >
+                  <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
+                  <span
+                    className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                      sidePanelStat ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    {sidePanelStat ? item.name : ""}
+                  </span>
+                  {item.notifications && (
+                    <span
+                      className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
+                        sidePanelStat ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      {sidePanelStat ? item.notifications : ""}
+                    </span>
+                  )}
+                  {item.nested && (
+                    <FaChevronDown
+                      className={`ml-auto transition-transform duration-200 ${
+                        currentIndex === item.id ? "transform rotate-180" : ""
+                      } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
+                    />
+                  )}
+                </Link>
+                {item.nested && (
+                  <ul
+                    className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
+                      currentIndex === item.id && sidePanelStat
+                        ? "max-h-96 opacity-100"
+                        : "max-h-0 opacity-0"
+                    } overflow-hidden`}
+                  >
+                    {item.nested.map((subItem, subIndex) =>
+                      subItem.visibility?.includes(userrole.toLowerCase()) ? (
+                        <li key={subIndex}>
+                          <Link
+                            href={subItem.link || "#"}
+                            className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
+                              pathname === subItem.link
+                                ? "bg-gray-700 text-white"
+                                : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                            }`}
+                          >
+                            {subItem.name}
+                          </Link>
+                        </li>
+                      ) : null
+                    )}
+                  </ul>
+                )}
+              </li>
+            ) : null
+          )}
+          <div className="mt-auto absolute bottom-0 border-t border-gray-700 py-2">
+            <li>
+              <Link
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.document.body.classList.toggle("right-bar-enabled");
+                }}
+                className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                  pathname === "/settings" && !loading
+                    ? "bg-gray-700 text-white"
+                    : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+              >
+                <Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]" />
+                <span
+                  className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                    sidePanelStat ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {sidePanelStat ? "Settings" : ""}
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+                className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
+                  !loading ? "hover:text-white" : ""
+                } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+              >
+                <ArrowLeftStartOnRectangleIcon className="ml-3 w-6 min-w-[1.5rem]" />
+                <span
+                  className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                    sidePanelStat ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {sidePanelStat ? "Log out" : ""}
+                </span>
+              </Link>
+            </li>
+          </div>
+        </ul>
+      </nav>
+    </Menu>
   );
 };
 

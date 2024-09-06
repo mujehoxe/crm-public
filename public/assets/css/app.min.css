@@ -489,6 +489,7 @@ body[data-layout="horizontal"] .footer {
   font-family: "Inter", sans-serif;
   font-weight: 500;
 }
+
 #sidebar-menu ul li a i {
   display: inline-block;
   min-width: 1.5rem;
@@ -499,8 +500,9 @@ body[data-layout="horizontal"] .footer {
   color: var(--bs-sidebar-menu-item-icon-color);
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
-  opacity: 0.75;
+  opacity: 1;
 }
+
 #sidebar-menu ul li a:hover {
   color: var(--bs-sidebar-menu-item-hover-color);
 }
@@ -536,7 +538,7 @@ body[data-layout="horizontal"] .footer {
   color: var(--bs-sidebar-menu-item-icon-color);
   font-weight: 600;
   font-family: "Inter", sans-serif;
-  opacity: 0.5;
+  opacity: 1.5;
 }
 
 .mm-active {
@@ -1384,7 +1386,7 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
   height: 100px;
   margin-top: -50px;
   margin-right: -50px;
-  opacity: 0;
+  opacity: 1;
   background: rgba(0, 0, 0, 0.2);
   background: radial-gradient(
     rgba(0, 0, 0, 0.2) 0,
@@ -1728,7 +1730,7 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
   bottom: 0;
   right: 0;
   top: 0;
-  opacity: 0.7;
+  opacity: 1;
   background-color: #000;
 }
 
@@ -2078,7 +2080,7 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
   -webkit-box-sizing: inherit;
   box-sizing: inherit;
   display: block;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   top: 0;
   right: 0;
@@ -2126,14 +2128,14 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
   border-radius: 7px;
   right: 0;
   left: 0;
-  opacity: 0;
+  opacity: 1;
   -webkit-transition: opacity 0.2s linear;
   transition: opacity 0.2s linear;
 }
 
 .simplebar-scrollbar.simplebar-visible:before {
   /* When hovered, remove all transitions from drag handle */
-  opacity: 0.5;
+  opacity: 1;
   -webkit-transition: opacity 0s linear;
   transition: opacity 0s linear;
 }
@@ -2178,7 +2180,7 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
 .hs-dummy-scrollbar-size {
   direction: ltr;
   position: fixed;
-  opacity: 0;
+  opacity: 1;
   visibility: hidden;
   height: 500px;
   width: 500px;
@@ -2752,7 +2754,7 @@ body[data-layout="horizontal"][data-layout-size="boxed"] .topnav {
 #toast-container > div:hover {
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  opacity: 0.9;
+  opacity: 1.9;
 }
 #toast-container.toast-top-full-width > div,
 #toast-container.toast-bottom-full-width > div {
@@ -3172,7 +3174,7 @@ input[switch="dark"]:checked + label {
 .datepicker table tr td span.new,
 .datepicker table tr td span.old {
   color: #adb5bd;
-  opacity: 0.6;
+  opacity: 1.6;
 }
 .datepicker table tr td.range,
 .datepicker table tr td.range.disabled,
@@ -3620,12 +3622,12 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
 }
 .table-rep-plugin .checkbox-row input[type="checkbox"] {
   cursor: pointer;
-  opacity: 0;
+  opacity: 1;
   z-index: 1;
   outline: none !important;
 }
 .table-rep-plugin .checkbox-row input[type="checkbox"]:disabled + label {
-  opacity: 0.65;
+  opacity: 1.65;
 }
 .table-rep-plugin .checkbox-row input[type="checkbox"]:focus + label::before {
   outline-offset: -2px;
@@ -4230,7 +4232,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
   border-radius: 1px;
 }
 .message-list .checkbox-wrapper-mail input {
-  opacity: 0;
+  opacity: 1;
   cursor: pointer;
 }
 .message-list .checkbox-wrapper-mail input:checked ~ label {
@@ -4242,7 +4244,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
   width: 20px;
   right: 0;
   cursor: pointer;
-  opacity: 0;
+  opacity: 1;
   margin-bottom: 0;
   -webkit-transition-duration: 0.05s;
   transition-duration: 0.05s;
@@ -5015,7 +5017,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
   border-radius: 3px;
   white-space: nowrap;
   z-index: 1000;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s;
 }
 

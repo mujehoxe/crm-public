@@ -369,8 +369,8 @@ function ProfilePage() {
   return (
     <RootLayout>
       <div className="  flex justify-end  w-full mt-20   !px-0">
-        <div className=" tablet:w-[calc(100%-100px)] mobile:w-full h-full">
-          <div className=" w-full px-4 py-4 h-full">
+        <div className=" mobile:w-full h-full">
+          <div className=" w-fullh-full">
             <p className="font-Satoshi tablet:text-lg mobile:text-lg text-black font-bold">
               Dashboard
             </p>
@@ -552,7 +552,7 @@ function ProfilePage() {
                     </p>
                     <p className="!mb-0 py-2 tablet:text-2xl mobile:text-lg">
                       <span className="tablet:text-4xl mobile:text-xl font-[500] inline-block font-Ranade tracking-tight">
-                        <div>{parseFloat(lead.data)}</div>
+                        {parseFloat(lead.data)}
                       </span>
                     </p>
                   </div>

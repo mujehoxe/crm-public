@@ -557,8 +557,8 @@ function Cold() {
 
   return (
     <RootLayout>
-      <div className="flex justify-end  w-full mt-20   h-screen !px-0">
-        <div className=" tablet:w-[calc(100%-100px)] flex flex-col ">
+      <div className="flex justify-end w-full h-screen !px-0">
+        <div className="flex flex-col">
           {modalStates.isBulkModalOpen && (
             <BulkModal
               onClose={openbulkModal}
@@ -569,7 +569,7 @@ function Cold() {
           {modalStates.isExcelModalOpen && (
             <Excelmodal onClose={openExcelModal} onParse={handleParse} />
           )}
-          <div className="w-full px-4 py-4 ">
+          <div className="w-full">
             <p className="font-Satoshi tablet:text-lg !mb-0 mobile:text-lg text-black font-bold">
               Leads
             </p>
@@ -731,7 +731,7 @@ function Cold() {
                   onClick={openExcelModal}
                   animate={{ bottom: btnShow ? "120%" : 0 }}
                   transition={{ duration: 0.4, type: "spring", delay: 0.2 }}
-                  className={`size-12 cursor-pointer bg-sky-300  text-2xl -z-[99] flex items-center justify-center rounded-full absolute  `}
+                  className={`size-12 cursor-pointer bg-sky-300  text-2xl -z-10 flex items-center justify-center rounded-full absolute  `}
                 >
                   <RiUploadCloud2Fill />
                 </motion.div>
@@ -739,7 +739,7 @@ function Cold() {
                   onClick={fetchDataAndDownloadExcel}
                   animate={{ right: btnShow ? "120%" : 0 }}
                   transition={{ duration: 0.4, type: "spring" }}
-                  className={`size-12 bg-sky-300 cursor-pointer  text-2xl -z-[99] flex items-center justify-center bottom-0 rounded-full absolute  `}
+                  className={`size-12 bg-sky-300 cursor-pointer  text-2xl -z-10 flex items-center justify-center bottom-0 rounded-full absolute  `}
                 >
                   <SiGooglesheets />
                 </motion.div>
@@ -749,7 +749,7 @@ function Cold() {
                     bottom: btnShow ? "120%" : 0,
                   }}
                   transition={{ duration: 0.4, type: "spring", delay: 0.1 }}
-                  className={`size-12 bg-sky-300 cursor-pointer text-2xl -z-[99] flex items-center justify-center rounded-full absolute  `}
+                  className={`size-12 bg-sky-300 cursor-pointer text-2xl -z-10 flex items-center justify-center rounded-full absolute  `}
                 >
                   <Link
                     href={{

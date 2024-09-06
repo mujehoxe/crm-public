@@ -749,7 +749,7 @@ function WS() {
                                           />
 
                                           {showPassFront && (
-                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                               <div
                                                 className={`w-full h-full aspect-auto bg-slate-800/20`}
                                               >
@@ -870,7 +870,7 @@ function WS() {
                                             }
                                           />
                                           {showPassback && (
-                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                               <div
                                                 className={`w-full h-full aspect-auto bg-slate-800/20`}
                                               >
@@ -1012,7 +1012,7 @@ function WS() {
                                             }
                                           />
                                           {showemirates && (
-                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                            <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                               <div
                                                 className={`w-full h-full aspect-auto bg-slate-800/20`}
                                               >
@@ -1143,7 +1143,7 @@ function WS() {
                                         onClick={() => setShowVisa1(true)}
                                       />
                                       {showVisa1 && (
-                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                           <div
                                             className={`w-full h-full aspect-auto bg-slate-800/20`}
                                           >
@@ -1263,7 +1263,7 @@ function WS() {
                                         onClick={() => setShowEOI(true)}
                                       />
                                       {showEOI && (
-                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                           <div
                                             className={`w-full h-full aspect-auto bg-slate-800/20`}
                                           >
@@ -1379,7 +1379,7 @@ function WS() {
                                         onClick={() => setShowBooking(true)}
                                       />
                                       {showBooking && (
-                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                        <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                           <div
                                             className={`w-full h-full aspect-auto bg-slate-800/20`}
                                           >
@@ -1528,7 +1528,7 @@ function WS() {
                                       {buyerExtraDocs[0] &&
                                         buyerExtraDocs[0][2] &&
                                         showSPA && (
-                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                             <div
                                               className={`w-full h-full aspect-auto bg-slate-800/20`}
                                             >
@@ -1668,7 +1668,7 @@ function WS() {
                                             className="absolute cursor-pointer text-xl right-[-30px] mx-auto my-auto"
                                           />
                                           {buyerKycImages[0][0] && showKyc1 && (
-                                            <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                            <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                               <IoMdClose
                                                 className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                 onClick={() =>
@@ -1759,7 +1759,7 @@ function WS() {
                                           />
                                           {buyerKycImages[0][1] &&
                                             showUnSanction1 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                   onClick={() =>
@@ -1855,7 +1855,7 @@ function WS() {
                                           />
                                           {buyerKycImages[0][2] &&
                                             showRiskForm1 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                   onClick={() =>
@@ -1951,7 +1951,7 @@ function WS() {
                                           />
                                           {buyerKycImages[0][3] &&
                                             showUaeSanction1 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                   onClick={() =>
@@ -2357,7 +2357,7 @@ function WS() {
                                               }
                                             />
                                             {showPassFront1 && (
-                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                                 <div
                                                   className={`w-full h-full aspect-auto bg-slate-800/20`}
                                                 >
@@ -2508,7 +2508,7 @@ function WS() {
                                               }
                                             />
                                             {showPassback1 && (
-                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                                 <div
                                                   className={`w-full h-full aspect-auto bg-slate-800/20`}
                                                 >
@@ -2668,7 +2668,7 @@ function WS() {
                                               }
                                             />
                                             {showemirates1 && (
-                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                              <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                                 <div
                                                   className={`w-full h-full aspect-auto bg-slate-800/20`}
                                                 >
@@ -2817,7 +2817,7 @@ function WS() {
                                           onClick={() => setShowVisa2(true)}
                                         />
                                         {showVisa2 && (
-                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-[9999]">
+                                          <div className="!flex !flex-col gap-2 w-full !h-screen !rounded-md h-screen fixed items-end top-0 left-0 z-10">
                                             <div
                                               className={`w-full h-full aspect-auto bg-slate-800/20`}
                                             >
@@ -2976,7 +2976,7 @@ function WS() {
                                           {buyerKycImages1[id] &&
                                             buyerKycImages1[id][0] &&
                                             showKyc2 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   onClick={() =>
                                                     setShowKyc2(false)
@@ -3071,7 +3071,7 @@ function WS() {
                                           {buyerKycImages1[id] &&
                                             buyerKycImages1[id][1] &&
                                             showUnSanction2 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                   onClick={() =>
@@ -3167,7 +3167,7 @@ function WS() {
                                             buyerKycImages1[id][2] &&
                                             buyerKycImages1[id][2] &&
                                             showRiskForm2 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   onClick={() =>
                                                     setShowRiskForm2(false)
@@ -3262,7 +3262,7 @@ function WS() {
                                           {buyerKycImages1[id] &&
                                             buyerKycImages1[id][3] &&
                                             showUaeSanction2 && (
-                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-[9999]">
+                                              <div className="!flex !flex-col gap-2 !w-[80%] !rounded-md !h-[95%] fixed items-end bottom-5 left-[12%] z-10">
                                                 <IoMdClose
                                                   className="!text-[2.3rem] cursor-pointer hover:bg-red-500 rounded-full p-1 bg-gray-300  !text-gray-900"
                                                   onClick={() =>

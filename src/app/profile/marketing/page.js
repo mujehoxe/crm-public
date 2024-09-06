@@ -75,9 +75,9 @@ const Graphs = () => {
 
   return (
     <RootLayout>
-      <div className="flex justify-end w-full mt-20 !px-0">
-        <div className="tablet:w-[calc(100%-100px)] mobile:w-full h-full overflow-x-hidden">
-          <div className="w-full px-4 py-4 gap-3 flex flex-col justify-center items-center">
+      <div className="flex justify-end w-full !px-0">
+        <div className="mobile:w-full h-full overflow-x-hidden">
+          <div className="w-fullgap-3 flex flex-col justify-center items-center">
             <div className={`flex items-center gap-3`}>
               {tabs.map((tab, index) => (
                 <button
@@ -116,7 +116,7 @@ const Graphs = () => {
             </div>
 
             <div className={`w-[80%] `}>
-            <p className="!m-0">Showing Results for</p>
+              <p className="!m-0">Showing Results for</p>
               {tabIndex == 0 && (
                 <TableOne devData={devData} loading={loading} />
               )}
