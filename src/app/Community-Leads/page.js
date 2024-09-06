@@ -26,6 +26,7 @@ import LeadCard from "./LeadCard";
 import InfoModal from "./EditModal/InfoModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import InlineLoader from "./InlineLoader";
+import Pagination from "../components/Pagination";
 
 function Cold() {
   const [TagsCount, setTagsCount] = useState([]);
@@ -175,17 +176,6 @@ function Cold() {
     } catch (error) {
       console.error("Error fetching users:", error);
     }
-  };
-
-  const nextPage = () => {
-    const totalPages = getTotalPages();
-    if (leadsData.currentPage < totalPages)
-      setLeadsData({ ...leadsData, currentPage: leadsData.currentPage + 1 });
-  };
-
-  const prevPage = () => {
-    if (leadsData.currentPage > 1)
-      setLeadsData({ ...leadsData, currentPage: leadsData.currentPage - 1 });
   };
 
   const openExcelModal = () => {
@@ -557,7 +547,7 @@ function Cold() {
 
   return (
     <RootLayout>
-      <div className="flex justify-end w-full h-screen !px-0">
+      <div className="flex justify-end w-full h-screen overflow-hidden !px-0">
         <div className="flex flex-col">
           {modalStates.isBulkModalOpen && (
             <BulkModal
@@ -763,64 +753,18 @@ function Cold() {
               </div>
             </div>
 
-            <div className="mt-10">
-              <div
-                className="dataTables_paginate paging_simple_numbers"
-                id="datatable_paginate"
-              >
-                <ul className="pagination pagination-rounded flex flex-row justify-center">
-                  {!leadsData.loading && getTotalPages() > 0 && (
-                    <>
-                      <li
-                        className={`paginate_button page-item previous ${
-                          leadsData.currentPage === 1 ? "disabled" : ""
-                        }`}
-                        id="datatable_previous"
-                      >
-                        <button onClick={prevPage} className="page-link">
-                          <i className="fa fa-chevron-left" />
-                        </button>
-                      </li>
-                      <div className="flex flex-row px-3 gap-1">
-                        {Array.from({ length: getTotalPages() }, (_, i) => (
-                          <li
-                            key={i}
-                            className={`paginate_button page-item ${
-                              leadsData.currentPage === i + 1 ? "active" : ""
-                            }`}
-                          >
-                            <button
-                              onClick={() =>
-                                setLeadsData({
-                                  ...leadsData,
-                                  currentPage: i + 1,
-                                })
-                              }
-                              className="page-link"
-                            >
-                              {i + 1}
-                            </button>
-                          </li>
-                        ))}
-                      </div>
-                      <li
-                        className={`paginate_button page-item next ${
-                          leadsData.currentPage === getTotalPages()
-                            ? "disabled"
-                            : ""
-                        }`}
-                        id="datatable_next"
-                      >
-                        <button onClick={nextPage} className="page-link">
-                          {" "}
-                          <i className="fa fa-chevron-right" />
-                        </button>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </div>
-            </div>
+            {!leadsData.loading && (
+              <Pagination
+                currentPage={leadsData.currentPage}
+                setCurrentPage={(pageNumber) =>
+                  setLeadsData({
+                    ...leadsData,
+                    currentPage: pageNumber,
+                  })
+                }
+                totalPages={getTotalPages()}
+              />
+            )}
           </div>
         </div>
       </div>

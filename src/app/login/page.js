@@ -102,7 +102,7 @@ export default function LoginPage() {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#176298] hover:bg-[#176266] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#176298]"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-miles-500 hover:bg-miles-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-miles-500"
                   disabled={loading}
                 >
                   {loading ? (
