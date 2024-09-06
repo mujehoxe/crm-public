@@ -75,9 +75,9 @@ const Graphs = () => {
 
   return (
     <RootLayout>
-      <div className="flex justify-end w-full mt-20 !px-0">
+      <div className="flex justify-end w-full !px-0">
         <div className="mobile:w-full h-full overflow-x-hidden">
-          <div className="w-full px-4 py-4 gap-3 flex flex-col justify-center items-center">
+          <div className="w-fullgap-3 flex flex-col justify-center items-center">
             <div className={`flex items-center gap-3`}>
               {tabs.map((tab, index) => (
                 <button

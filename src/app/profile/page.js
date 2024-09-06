@@ -370,7 +370,7 @@ function ProfilePage() {
     <RootLayout>
       <div className="  flex justify-end  w-full mt-20   !px-0">
         <div className=" mobile:w-full h-full">
-          <div className=" w-full px-4 py-4 h-full">
+          <div className=" w-fullh-full">
             <p className="font-Satoshi tablet:text-lg mobile:text-lg text-black font-bold">
               Dashboard
             </p>

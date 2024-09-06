@@ -557,7 +557,7 @@ function Cold() {
 
   return (
     <RootLayout>
-      <div className="flex justify-end w-full mt-20 h-screen !px-0">
+      <div className="flex justify-end w-full h-screen !px-0">
         <div className="flex flex-col">
           {modalStates.isBulkModalOpen && (
             <BulkModal
@@ -569,7 +569,7 @@ function Cold() {
           {modalStates.isExcelModalOpen && (
             <Excelmodal onClose={openExcelModal} onParse={handleParse} />
           )}
-          <div className="w-full px-4 py-4 ">
+          <div className="w-full">
             <p className="font-Satoshi tablet:text-lg !mb-0 mobile:text-lg text-black font-bold">
               Leads
             </p>

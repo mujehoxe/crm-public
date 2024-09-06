@@ -537,9 +537,9 @@ function allDeals() {
       )}
 
       {myData ? (
-        <div className="flex justify-end w-full mt-20 !px-0">
+        <div className="flex justify-end w-full !px-0">
           <div className="  mobile:w-full h-full">
-            <div className=" w-full  px-4 py-4 h-full">
+            <div className=" w-fullh-full">
               <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-blue-700 py-3 ">
                 MIS
               </p>

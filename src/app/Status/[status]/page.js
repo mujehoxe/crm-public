@@ -112,13 +112,13 @@ function Status() {
     <RootLayout>
       {isModalOpen && <StatusModal onClose={AddStatus} />}
 
-      <div className="flex justify-end w-full mt-20 !px-0">
+      <div className="flex justify-end w-full !px-0">
         <script
           id="DragDropTouch"
           src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"
         ></script>
         <div className=" mobile:w-full h-full overflow-x-hidden">
-          <div className="w-full relative  px-4 py-4">
+          <div className="w-full relative">
             <p className="text-lg !mb-0 !mt-0 font-[500] px-2 font-Satoshi w-full ">
               Status
             </p>

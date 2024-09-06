@@ -82,9 +82,9 @@ function Tags() {
     <RootLayout>
       {isModalOpen && <TagMOdal onClose={AddTags} />}
       <div className="container-fluid">
-        <div className="flex justify-end w-full mt-20 !px-0">
+        <div className="flex justify-end w-full !px-0">
           <div className=" mobile:w-full h-full overflow-x-hidden">
-            <div className="w-full   px-4 py-4">
+            <div className="w-full">
               <p className="text-lg font-[500]  font-Satoshi w-full ">Tags</p>
 
               {currentTag.map((currentTags) => {
