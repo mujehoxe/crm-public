@@ -267,7 +267,7 @@ const Sidebar = ({setSettingsBarOpen}) => {
 			className="sticky select-none top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
 			style={{width: sidePanelStat ? "16rem" : "5rem"}}
 		>
-			<div className="flex-shrink-0 p-2 py-3 shadow-sm bg-gray-800">
+			<div className="flex-shrink-0 h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
 				<div
 					onClick={() => setSidePanelStat(!sidePanelStat)}
 					className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
