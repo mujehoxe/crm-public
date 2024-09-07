@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/24/outline";
 import {toast} from "react-toastify";
 
-const Sidebar = () => {
+const Sidebar = ({setSettingsBarOpen}) => {
 	const [sidePanelStat, setSidePanelStat] = useState(false);
 
 	const [loading, setLoading] = useState(false);
@@ -355,10 +355,10 @@ const Sidebar = () => {
 						<div className="border-t py-2 w-full space-y-2 border-gray-700">
 							<li className="w-full">
 								<Link
-									href=""
+									href="#"
 									onClick={(e) => {
 										e.preventDefault();
-										window.document.body.classList.toggle("right-bar-enabled");
+										setSettingsBarOpen(prev => !prev)
 									}}
 									className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
 										pathname === "/settings" && !loading

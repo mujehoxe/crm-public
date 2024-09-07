@@ -20,16 +20,6 @@ a {
   text-decoration: none !important;
 }
 
-a:hover {
-  text-decoration: none !important; /* Add underline on hover */
-  color: inherit !important; /* Change color when the link is being clicked */
-}
-
-a:focus {
-  text-decoration: none !important; /* Add underline on hover */
-  color: inherit !important; /* Change color when the link is being clicked */
-}
-
 body {
   color: rgb(var(--foreground-rgb));
   background: white;

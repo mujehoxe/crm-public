@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="fix settings and logout btn full width">
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="rightbar fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/layout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/Rightbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Rightbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/layout.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +100,7 @@
       <workItem from="1725661843228" duration="406000" />
       <workItem from="1725662256066" duration="35471000" />
       <workItem from="1725724858552" duration="233000" />
-      <workItem from="1725725104942" duration="2331000" />
+      <workItem from="1725725104942" duration="6389000" />
     </task>
     <task id="LOCAL-00001" summary="fix next and prev btns">
       <option name="closed" value="true" />
@@ -218,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725726931918</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="sidebar collapse on click outside">
+      <option name="closed" value="true" />
+      <created>1725727526541</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1725727526541</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,6 +274,8 @@
     <MESSAGE value=".idea" />
     <MESSAGE value="!! adjust sidebar header with topbar for production" />
     <MESSAGE value="fix settings and logout btn full width" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix settings and logout btn full width" />
+    <MESSAGE value="sidebar collapse on click outside" />
+    <MESSAGE value="rightbar fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="rightbar fix" />
   </component>
 </project>

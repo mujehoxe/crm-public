@@ -1,85 +1,105 @@
-import Link from "next/link";
-import TokenDecoder from "./Cookies";
+import React from 'react';
+import {
+	Cog6ToothIcon,
+	TagIcon,
+	UserGroupIcon,
+	FlagIcon,
+	MegaphoneIcon,
+} from '@heroicons/react/24/outline';
 
-const Rightbar = ({ userData }) => {
-  const rightsidebar = (e) => {
-    e.preventDefault();
-    document.body.classList.remove("right-bar-enabled");
-  };
+const navigation = [
+	{name: 'Tags', href: '/Tags', icon: TagIcon, count: '3', current: false},
+	{
+		name: 'Role Permissions',
+		href: '/RolePerms',
+		icon: UserGroupIcon,
+		current: false
+	},
+	{
+		name: 'Status',
+		href: '/Status/list',
+		icon: FlagIcon,
+		count: '3',
+		current: false
+	},
+	{
+		name: 'Source',
+		href: '/Source/list',
+		icon: MegaphoneIcon,
+		count: '3',
+		current: false
+	},
+];
 
-  const userRole = userData ? userData.role : null;
+function classNames(...classes) {
+	return classes.filter(Boolean).join(' ')
+}
 
-  return (
-    <>
-      <div className="right-bar fixed right-0">
-        <div className="rightbar-title d-flex align-items-center px-3 py-4">
-          <h5 className="m-0 me-2">Settings</h5>
-          <a
-            href="/"
-            className="right-bar-toggle ms-auto"
-            onClick={rightsidebar}
-          >
-            <i className="fa fa-times noti-icon" />
-          </a>
-        </div>
+const Rightbar = ({userData, setSettingsBarOpen}) => {
+	const userRole = userData ? userData.role : null;
 
-        <div id="sidebar-menu">
-          <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">Menu</li>
-            {userRole == "superAdmin" ||
-            userRole == "Admin" ||
-            userRole == "Marketing" ||
-            userRole == "Operations" ||
-            userRole == "BussinessHead" ||
-            userRole == "PNL" ||
-            userRole == "TL" ||
-            userRole == "FOS" ||
-            userRole == "ATL" ? (
-              <li>
-                <Link href={"/Tags"}>
-                  <i className="fas fa-tags" />
-                  <span className="badge rounded-pill bg-success float-end">
-                    3
-                  </span>
-                  <span>Tags</span>
-                </Link>
-              </li>
-            ) : null}
-            <li>
-              {userRole == "superAdmin" || userRole == "Admin" ? (
-                <Link href={"RolePerms"}>
-                  <i className="fas fa-tags" />
-                  <span className="badge rounded-pill bg-success float-end">
-                    3
-                  </span>
-                  <span>Role Permissions</span>
-                </Link>
-              ) : null}
-            </li>
-            <li className="menu-title">Menu</li>
-            <li>
-              <Link href={"/Status/list"}>
-                <i className="fas fa-tags" />
-                <span className="badge rounded-pill bg-success float-end">
-                  3
-                </span>
-                <span>Status</span>
-              </Link>
-            </li>
-            <li>
-              <Link href={"/Source/list"}>
-                <i className="fas fa-tags" />
-                <span className="badge rounded-pill bg-success float-end">
-                  3
-                </span>
-                <span>Source</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </>
-  );
+	const filteredNavigation = navigation.filter(item => {
+		if (item.name === 'Role Permissions') {
+			return userRole === 'superAdmin' || userRole === 'Admin';
+		}
+		if (item.name === 'Tags') {
+			return ['superAdmin', 'Admin', 'Marketing', 'Operations', 'BussinessHead', 'PNL', 'TL', 'FOS', 'ATL'].includes(userRole);
+		}
+		return true;
+	});
+
+	return (
+		<div
+			className="flex grow h-screen flex-col gap-y-5 overflow-y-auto border-l border-gray-200 bg-white px-6">
+			<div className="flex h-16 shrink-0 items-center justify-between">
+				<h2 className="text-2xl font-semibold text-gray-900">Settings</h2>
+				<button
+					onClick={() => setSettingsBarOpen(false)}
+					className="rounded-md bg-white p-2 text-gray-400 hover:text-miles-600"
+				>
+					<span className="sr-only">Close panel</span>
+					<Cog6ToothIcon className="h-6 w-6" aria-hidden="true"/>
+				</button>
+			</div>
+			<nav className="flex flex-1 flex-col">
+				<ul role="list"
+						className="flex flex-col relative space-y-2 p-2 h-full">
+					{filteredNavigation.map((item) => (
+						<li key={item.name} className="w-full">
+							<a
+								href={item.href}
+								className={`group flex gap-x-3 w-full text-nowrap rounded-md p-2 text-sm font-semibold leading-6 items-center transition-colors duration-200
+									text-gray-700 hover:bg-gray-50 hover:text-miles-700
+									${item.current && 'bg-gray-50 text-miles-600'}`
+								}
+							>
+								<div className="flex gap-x-4 justify-between">
+									<item.icon
+										className={classNames(
+											item.current ? 'text-miles-600' : 'text-gray-600 group-hover:text-miles-700',
+											'h-6 w-6 shrink-0'
+										)}
+										aria-hidden="true"
+									/>
+									{item.name}
+								</div>
+								<div className="flex ml-auto w-9 gap-x-3 justify-between">
+									{item.count &&
+										<span
+											className="min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
+											aria-hidden="true"
+										>
+										 {item.count}
+									</span>
+									}
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</div>
+	);
 };
 
 export default Rightbar;
