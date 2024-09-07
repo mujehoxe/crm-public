@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="show pagination while loading" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mujehoxe&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mujehoxe/crm-public.git&quot;,
+    &quot;accountId&quot;: &quot;2ba5e260-4137-4813-958b-7823b744c3ca&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2li9AVylnAidzulxTTa8qXfipgR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/o/WebstormProjects/crm-public&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/snap/webstorm/399/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/src/app/Community-Leads/UpdateDescriptionInput.js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/Community-Leads/Components" />
+      <recent name="$PROJECT_DIR$/src/app/components" />
+      <recent name="$PROJECT_DIR$/src/app/Community-Leads" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="" />
+      <created>1725651887470</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725651887470</updated>
+      <workItem from="1725651889491" duration="189000" />
+      <workItem from="1725652089275" duration="1620000" />
+      <workItem from="1725653754026" duration="1161000" />
+      <workItem from="1725654926567" duration="6770000" />
+      <workItem from="1725661843228" duration="406000" />
+      <workItem from="1725662256066" duration="35471000" />
+      <workItem from="1725724858552" duration="233000" />
+      <workItem from="1725725104942" duration="13000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix next and prev btns">
+      <option name="closed" value="true" />
+      <created>1725656081686</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1725656081686</updated>
+    </task>
+    <task id="LOCAL-00002" summary="no pagination top margin">
+      <option name="closed" value="true" />
+      <created>1725656365357</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725656365357</updated>
+    </task>
+    <task id="LOCAL-00003" summary="miles-logo.svg">
+      <option name="closed" value="true" />
+      <created>1725656844020</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725656844020</updated>
+    </task>
+    <task id="LOCAL-00004" summary="no btn ref">
+      <option name="closed" value="true" />
+      <created>1725685672949</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725685672949</updated>
+    </task>
+    <task id="LOCAL-00005" summary="community leads page fixes">
+      <option name="closed" value="true" />
+      <created>1725686025392</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1725686025392</updated>
+    </task>
+    <task id="LOCAL-00006" summary=".idea">
+      <option name="closed" value="true" />
+      <created>1725686044948</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1725686044948</updated>
+    </task>
+    <task id="LOCAL-00007" summary="lead card ui update">
+      <option name="closed" value="true" />
+      <created>1725686115482</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1725686115482</updated>
+    </task>
+    <task id="LOCAL-00008" summary="lead card update functionalities">
+      <option name="closed" value="true" />
+      <created>1725716179468</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1725716179468</updated>
+    </task>
+    <task id="LOCAL-00009" summary="lead card selection working">
+      <option name="closed" value="true" />
+      <created>1725718505504</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1725718505505</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update website colors to match logo">
+      <option name="closed" value="true" />
+      <created>1725722110448</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1725722110448</updated>
+    </task>
+    <task id="LOCAL-00011" summary="bluk modal opening">
+      <option name="closed" value="true" />
+      <created>1725722196419</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1725722196419</updated>
+    </task>
+    <task id="LOCAL-00012" summary="show pagination while loading">
+      <option name="closed" value="true" />
+      <created>1725724737845</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1725724737845</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="community-leads" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix next and prev btns" />
+    <MESSAGE value="no pagination top margin" />
+    <MESSAGE value="miles-logo.svg" />
+    <MESSAGE value="no btn ref" />
+    <MESSAGE value="community leads page fixes" />
+    <MESSAGE value=".idea" />
+    <MESSAGE value="lead card ui update" />
+    <MESSAGE value="lead card update functionalities" />
+    <MESSAGE value="lead card selection working" />
+    <MESSAGE value="update website colors to match logo" />
+    <MESSAGE value="bluk modal opening" />
+    <MESSAGE value="show pagination while loading" />
+    <option name="LAST_COMMIT_MESSAGE" value="show pagination while loading" />
+  </component>
+</project>
