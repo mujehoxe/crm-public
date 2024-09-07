@@ -89,7 +89,7 @@ export default function Pagination({
       <div className="-mt-px flex flex-1 justify-end">
         <button
           onClick={nextPage}
-          disabled={currentPage === totalPages}
+          disabled={currentPage >= totalPages}
           className="inline-flex items-center border-t-2 border-transparent pl-1 py-4 text-sm font-medium text-gray-500 hover:border-miles-600 hover:text-miles-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next

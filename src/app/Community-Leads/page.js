@@ -257,9 +257,6 @@ export default function CommunityLeadsPage() {
 		fetchSource();
 	}, []);
 
-	const handleParse = (data) => {
-		setParsedData(data);
-	};
 
 	useEffect(() => {
 		const fetchTags = async () => {
@@ -279,6 +276,9 @@ export default function CommunityLeadsPage() {
 		fetchTags();
 	}, []);
 
+	const handleParse = (data) => {
+		setParsedData(data);
+	};
 
 	const countOptions = [
 		{value: "6", label: "6"},
@@ -700,21 +700,23 @@ export default function CommunityLeadsPage() {
 					getTotalPages() > 0 && (
 						<>
 							{renderLeadGrid}
-
 							<span className="text-sm text-gray-700 mt-2">
                 Showing {Math.min(leadsData.leadsPerPage, leadsData.totalLeads)} leads of {leadsData.totalLeads} total
               </span>
-							<Pagination
-								currentPage={leadsData.currentPage}
-								setCurrentPage={(pageNumber) => setLeadsData({
-									...leadsData,
-									currentPage: pageNumber
-								})}
-								totalPages={getTotalPages()}
-							/>
 						</>
 					)
 				)}
+
+				<div className="mt-auto">
+					<Pagination
+						currentPage={leadsData.currentPage}
+						setCurrentPage={(pageNumber) => setLeadsData({
+							...leadsData,
+							currentPage: pageNumber
+						})}
+						totalPages={getTotalPages()}
+					/>
+				</div>
 
 				<div ref={containerRef} className="fixed bottom-5 right-6 z-10">
 					<div className={`relative rounded-full cursor-pointer`}>

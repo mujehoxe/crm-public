@@ -15,6 +15,7 @@ function Tags() {
   const AddTags = () => {
     setIsModalOpen(!isModalOpen);
   };
+
   useEffect(() => {
     const fetchTags = async () => {
       try {

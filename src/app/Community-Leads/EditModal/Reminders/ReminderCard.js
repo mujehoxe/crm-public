@@ -49,7 +49,7 @@ function ReminderCard({ reminder, onDelete, isLoading }) {
                     src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
                       reminder?.Assignees.Avatar
                     }`}
-                    alt={""}
+                    alt={"Avatar"}
                   />
                 ) : (
                   <FaRegUserCircle />
