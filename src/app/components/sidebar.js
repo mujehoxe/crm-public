@@ -245,156 +245,164 @@ const Sidebar = () => {
 		},
 	];
 
+	const menuRef = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (menuRef.current && !menuRef.current.contains(event.target))
+				setSidePanelStat(false)
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div
-			// onBlur={()=>setSidePanelStat(false)}
+		<Menu
+			as="div"
+			ref={menuRef}
+			className="sticky select-none top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
+			style={{width: sidePanelStat ? "16rem" : "5rem"}}
 		>
-			<Menu
-				as="div"
-				className="sticky top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
-				style={{width: sidePanelStat ? "16rem" : "5rem"}}
-			>
-				<div className="flex-shrink-0 p-2 py-3 shadow-sm bg-gray-800">
-					<div
-						onClick={() => setSidePanelStat(!sidePanelStat)}
-						className="flex w-full py-3 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+			<div className="flex-shrink-0 p-2 py-3 shadow-sm bg-gray-800">
+				<div
+					onClick={() => setSidePanelStat(!sidePanelStat)}
+					className="flex w-full py-3 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+				>
+					<MenuButton
+						className="flex px-2 items-center transition-colors duration-200 hover:text-white">
+						<Bars3Icon className="ml-3 w-6 text-gray-400"/>
+					</MenuButton>
+					<span
+						className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+							sidePanelStat ? "opacity-100" : "opacity-0"
+						}`}
 					>
-						<MenuButton
-							className="flex px-2 items-center transition-colors duration-200 hover:text-white">
-							<Bars3Icon className="ml-3 w-6 text-gray-400"/>
-						</MenuButton>
-						<span
-							className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
-								sidePanelStat ? "opacity-100" : "opacity-0"
-							}`}
-						>
             {sidePanelStat ? "Collapse" : ""}
           </span>
-					</div>
 				</div>
+			</div>
 
-				<nav className="flex-grow h-full">
-					<ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
-						{sideMenus.map((item) =>
-							item.visibility?.includes(userRole?.toLowerCase()) ||
-							item.visibility?.includes("all") ? (
-								<li key={item.id}>
-									<Link
-										href={item.link || "#"}
-										className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-											isActive(item)
-												? "bg-gray-700 text-white"
-												: "text-gray-400 hover:bg-gray-700 hover:text-white"
-										} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-										onClick={() => !loading && sideHandler(item.id)}
+			<nav className="flex-grow h-full">
+				<ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
+					{sideMenus.map((item) =>
+						item.visibility?.includes(userRole?.toLowerCase()) ||
+						item.visibility?.includes("all") ? (
+							<li key={item.id}>
+								<Link
+									href={item.link || "#"}
+									className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+										isActive(item)
+											? "bg-gray-700 text-white"
+											: "text-gray-400 hover:bg-gray-700 hover:text-white"
+									} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+									onClick={() => !loading && sideHandler(item.id)}
+								>
+									<span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
+									<span
+										className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+											sidePanelStat ? "opacity-100" : "opacity-0"
+										}`}
 									>
-										<span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
-										<span
-											className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-												sidePanelStat ? "opacity-100" : "opacity-0"
-											}`}
-										>
                     {sidePanelStat ? item.name : ""}
                   </span>
-										{item.notifications && (
-											<span
-												className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-miles-200 rounded-full transition-opacity duration-300 ${
-													sidePanelStat ? "opacity-100" : "opacity-0"
-												}`}
-											>
+									{item.notifications && (
+										<span
+											className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-miles-200 rounded-full transition-opacity duration-300 ${
+												sidePanelStat ? "opacity-100" : "opacity-0"
+											}`}
+										>
                       {sidePanelStat ? item.notifications : ""}
                     </span>
-										)}
-										{item.nested && (
-											<FaChevronDown
-												className={`ml-auto transition-transform duration-200 ${
-													currentIndex === item.id ? "transform rotate-180" : ""
-												} ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
-											/>
-										)}
-									</Link>
-									{sidePanelStat && item.nested && (
-										<ul
-											className={`pl-6 mt-2 space-y-2 transition-all duration-300 ${
-												currentIndex === item.id && sidePanelStat
-													? "max-h-96 opacity-100"
-													: "max-h-0 opacity-0"
-											} overflow-hidden`}
-										>
-											{item.nested.map((subItem, subIndex) =>
-												subItem.visibility?.includes(userRole.toLowerCase()) ? (
-													<li key={subIndex}>
-														<Link
-															href={subItem.link || "#"}
-															className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
-																pathname === subItem.link
-																	? "bg-gray-700 text-white"
-																	: "text-gray-400 hover:bg-gray-700 hover:text-white"
-															}`}
-														>
-															{subItem.name}
-														</Link>
-													</li>
-												) : null
-											)}
-										</ul>
 									)}
-								</li>
-							) : null
-						)}
-						<div className="absolute w-full right-0 px-2 bottom-0">
-							<div className="border-t py-2 w-full space-y-2 border-gray-700">
-								<li className="w-full">
-									<Link
-										href=""
-										onClick={(e) => {
-											e.preventDefault();
-											window.document.body.classList.toggle("right-bar-enabled");
-										}}
-										className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-											pathname === "/settings" && !loading
-												? "bg-gray-700 text-white"
-												: "text-gray-400 hover:bg-gray-700 hover:text-white"
-										} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+									{item.nested && (
+										<FaChevronDown
+											className={`ml-auto transition-transform duration-200 ${
+												currentIndex === item.id ? "transform rotate-180" : ""
+											} ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
+										/>
+									)}
+								</Link>
+								{currentIndex === item.id && sidePanelStat && item.nested && (
+									<ul
+										className={`pl-6 mt-2 space-y-2 transition-all duration-300 max-h-96 opacity-100 overflow-hidden`}
 									>
-										<Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]"/>
-										<span
-											className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-												sidePanelStat ? "opacity-100" : "opacity-0"
-											}`}
-										>
+										{item.nested.map((subItem, subIndex) =>
+											subItem.visibility?.includes(userRole.toLowerCase()) ? (
+												<li key={subIndex}>
+													<Link
+														href={subItem.link || "#"}
+														className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
+															pathname === subItem.link
+																? "bg-gray-700 text-white"
+																: "text-gray-400 hover:bg-gray-700 hover:text-white"
+														}`}
+													>
+														{subItem.name}
+													</Link>
+												</li>
+											) : null
+										)}
+									</ul>
+								)}
+							</li>
+						) : null
+					)}
+					<div className="absolute w-full right-0 px-2 bottom-0">
+						<div className="border-t py-2 w-full space-y-2 border-gray-700">
+							<li className="w-full">
+								<Link
+									href=""
+									onClick={(e) => {
+										e.preventDefault();
+										window.document.body.classList.toggle("right-bar-enabled");
+									}}
+									className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+										pathname === "/settings" && !loading
+											? "bg-gray-700 text-white"
+											: "text-gray-400 hover:bg-gray-700 hover:text-white"
+									} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+								>
+									<Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]"/>
+									<span
+										className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+											sidePanelStat ? "opacity-100" : "opacity-0"
+										}`}
+									>
                   {sidePanelStat ? "Settings" : ""}
                 </span>
-									</Link>
-								</li>
-								<li>
-									<Link
-										href=""
-										onClick={(e) => {
-											e.preventDefault();
-											handleLogout();
-										}}
-										className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
-											!loading ? "hover:text-white" : ""
-										} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+								</Link>
+							</li>
+							<li>
+								<Link
+									href=""
+									onClick={(e) => {
+										e.preventDefault();
+										handleLogout();
+									}}
+									className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
+										!loading ? "hover:text-white" : ""
+									} ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+								>
+									<ArrowLeftStartOnRectangleIcon
+										className="ml-3 w-6 min-w-[1.5rem]"/>
+									<span
+										className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+											sidePanelStat ? "opacity-100" : "opacity-0"
+										}`}
 									>
-										<ArrowLeftStartOnRectangleIcon
-											className="ml-3 w-6 min-w-[1.5rem]"/>
-										<span
-											className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-												sidePanelStat ? "opacity-100" : "opacity-0"
-											}`}
-										>
                   {sidePanelStat ? "Log out" : ""}
                 </span>
-									</Link>
-								</li>
-							</div>
+								</Link>
+							</li>
 						</div>
-					</ul>
-				</nav>
-			</Menu>
-		</div>
+					</div>
+				</ul>
+			</nav>
+		</Menu>
 	);
 };
 
