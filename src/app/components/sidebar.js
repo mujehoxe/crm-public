@@ -342,7 +342,7 @@ const Sidebar = () => {
 								</li>
 							) : null
 						)}
-						<div className="absolute bottom-0">
+						<div className="absolute w-full right-0 px-2 bottom-0">
 							<div className="border-t py-2 w-full space-y-2 border-gray-700">
 								<li className="w-full">
 									<Link
