@@ -99,7 +99,7 @@ const Graphs = () => {
                 disabled={loading || isButtonDisabled()}
                 className={`!mb-0 !mt-0  ${
                   isButtonDisabled() ? "w-48" : "w-28"
-                } disabled:bg-gray-300 disabled:hover:border-gray-700  ml-10   py-2  hover:bg-[#42A5F5]  !border-[1px] transition-all duration-300 border-gray-700 hover:border-blue-300 font-[500] font-Satoshi text-lg rounded-lg`}
+                } disabled:bg-gray-300 disabled:hover:border-gray-700  ml-10   py-2  hover:bg-[#42A5F5]  !border-[1px] transition-all duration-300 border-gray-700 hover:border-miles-300 font-[500] font-Satoshi text-lg rounded-lg`}
               >
                 {loading ? (
                   <Spin />

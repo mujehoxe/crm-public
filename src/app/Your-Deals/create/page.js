@@ -777,7 +777,7 @@ function SuspenceWrapped() {
                   <div className="flex gap-4 justify-end ">
                     <button
                       disabled={formCounter < 2}
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-gray-200"
+                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-gray-200"
                       onClick={() => {
                         setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
                       }}
@@ -789,7 +789,7 @@ function SuspenceWrapped() {
                         radioBtnStatus !== "offPlan" &&
                         radioBtnStatus !== "secondaryPlan"
                       }
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-gray-200 "
+                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-gray-200 "
                       onClick={() => {
                         setFormCounter((prev) => prev + 1);
                       }}
@@ -1532,7 +1532,7 @@ function SuspenceWrapped() {
 
                     <div className="flex gap-1 w-full justify-center mt-5">
                       <button
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
                         onClick={addBuyer}
                       >
                         Add Buyer
@@ -1549,7 +1549,7 @@ function SuspenceWrapped() {
 
                     <div className="flex gap-4 w-full justify-end mt-5">
                       <button
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
                         onClick={() => {
                           setFormCounter((prev) =>
                             prev > 1 ? prev - 1 : prev
@@ -1559,7 +1559,7 @@ function SuspenceWrapped() {
                         Back
                       </button>
                       <button
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
                         onClick={onClickBack}
                       >
                         Next
@@ -2109,7 +2109,7 @@ function SuspenceWrapped() {
 
                   <div className="flex gap-4 w-full justify-end mt-5">
                     <button
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
                       onClick={() => {
                         setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
                       }}
@@ -2117,14 +2117,14 @@ function SuspenceWrapped() {
                       Back
                     </button>
                     <button
-                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
                       onClick={HandleSubmit}
                     >
                       {submitting ? (
                         <div role="status">
                           <svg
                             aria-hidden="true"
-                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-miles-600"
                             viewBox="0 0 100 101"
                             fill="black"
                             xmlns="http://www.w3.org/2000/svg"
@@ -2155,12 +2155,12 @@ function SuspenceWrapped() {
                   </p>
                   <div className="flex gap-4 w-full justify-center mt-5">
                     <Link href="/Your-Deals">
-                      <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                      <button className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800">
                         Click here to see all your deals
                       </button>
                     </Link>
                     <Link href="/profile">
-                      <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                      <button className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800">
                         Return to dashboard
                       </button>
                     </Link>

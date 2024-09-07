@@ -571,7 +571,7 @@ function Invoice() {
             </div>
             <div className="w-full">
               <button
-                className="w-full bg-blue-500 hover:!bg-blue-400 hover:shadow-md text-lg text-slate-200 py-2 rounded-md"
+                className="w-full bg-miles-500 hover:!bg-miles-400 hover:shadow-md text-lg text-slate-200 py-2 rounded-md"
                 onClick={handleDisapprove}
               >
                 Submit

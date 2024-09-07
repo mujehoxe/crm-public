@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LogEntry from "./LogCard";
 import axios from "axios";
-import SkeletonLoader from "../../SkeletonLoader";
+import SkeletonLoader from "../../Components/SkeletonLoader";
 
 const ActivityLogs = ({ leadData }) => {
   const [logs, setLogs] = useState([]);

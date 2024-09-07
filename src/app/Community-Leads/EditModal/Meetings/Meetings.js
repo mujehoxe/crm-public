@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MeetingCard from "./MeetingCard";
-import SkeletonLoader from "../../SkeletonLoader";
+import SkeletonLoader from "../../Components/SkeletonLoader";
 
 const Meetings = ({ modalStates, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);
@@ -46,7 +46,7 @@ const Meetings = ({ modalStates, leadData }) => {
       <div className="flex justify-center">
         <button
           onClick={() => modalStates.setMeetingOpenForLead(leadData._id)}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+          className="bg-miles-500 hover:bg-miles-600 text-white font-bold py-2 px-4 rounded"
         >
           <i className="fa fa-plus" /> Add Meeting
         </button>

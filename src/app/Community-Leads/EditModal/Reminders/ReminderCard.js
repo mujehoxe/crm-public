@@ -18,13 +18,13 @@ const formatDateAndTime = (dateTimeString) => {
     <div>
       <i
         className={`fa fa-calendar mr-2 ${
-          daysDiff > 0 ? "text-red-600" : "text-green-600"
+          daysDiff > 0 ? "text-red-600" : "text-miles-600"
         }`}
       />
       <span className="font-medium ">
         <span
           className={`font-medium ${
-            daysDiff > 0 ? "text-red-600" : "text-green-600"
+            daysDiff > 0 ? "text-red-600" : "text-miles-600"
           }`}
         >
           {formattedDate} {formattedTime}
@@ -43,12 +43,13 @@ function ReminderCard({ reminder, onDelete, isLoading }) {
             <span>Assignees: </span>
             <span className="!mb-0 !mt-0 font-semibold text-black text-lg flex flex-row gap-2">
               {reminder.Assignees.username}
-              <div className="size-6 ml-1 bg-gray-200 group-hover:bg-blue-300 overflow-hidden rounded-full flex justify-center items-center">
+              <div className="size-6 ml-1 bg-gray-200 group-hover:bg-miles-300 overflow-hidden rounded-full flex justify-center items-center">
                 {reminder?.Assignees.Avatar ? (
                   <img
                     src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
                       reminder?.Assignees.Avatar
                     }`}
+                    alt={"Avatar"}
                   />
                 ) : (
                   <FaRegUserCircle />
@@ -74,7 +75,7 @@ function ReminderCard({ reminder, onDelete, isLoading }) {
             </span>
           </div>
           {reminder.Comment && (
-            <div className="flex items-center text-indigo-500">
+            <div className="flex items-center text-miles-500">
               <i className="fas fa-comment mr-2" />
               <span>{reminder.Comment}</span>
             </div>

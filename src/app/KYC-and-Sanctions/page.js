@@ -467,7 +467,7 @@ function allDeals() {
                                 "https://crm-milestonehomes.com/public/kyc/undefined" &&
                               user.approved != 53 &&
                               user.approved != 54 ? (
-                              <p className="px-1 py-2 mb-0 w-content bg-gray-100 rounded-full text-center text-blue-400">
+                              <p className="px-1 py-2 mb-0 w-content bg-gray-100 rounded-full text-center text-miles-400">
                                 Awaiting
                               </p>
                             ) : (

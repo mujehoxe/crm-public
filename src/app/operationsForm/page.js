@@ -3302,7 +3302,7 @@ function WS() {
                       className={`text-white flex items-center disabled:bg-slate-300  ${
                         submitError
                           ? "bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300"
-                          : "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                          : "bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300"
                       }  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 `}
                       onClick={HandleSubmit}
                       disabled={
@@ -3315,7 +3315,7 @@ function WS() {
                         <div role="status">
                           <svg
                             aria-hidden="true"
-                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-miles-600"
                             viewBox="0 0 100 101"
                             fill="black"
                             xmlns="http://www.w3.org/2000/svg"

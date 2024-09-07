@@ -540,7 +540,7 @@ function allDeals() {
         <div className="flex justify-end w-full !px-0">
           <div className="  mobile:w-full h-full">
             <div className=" w-fullh-full">
-              <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-blue-700 py-3 ">
+              <p className="text-lg font-[500] px-2 text-white font-Satoshi w-full bg-miles-700 py-3 ">
                 MIS
               </p>
               {showEOI && (
@@ -683,9 +683,9 @@ function allDeals() {
                       </th>
                       <th
                         onClick={() => setCollapsed2(!collapsed2)}
-                        className={`cursor-pointer  hover:!bg-blue-200 !px-1 !bg-[#D2E8F2] ${
+                        className={`cursor-pointer  hover:!bg-miles-200 !px-1 !bg-[#D2E8F2] ${
                           collapsed2
-                            ? "shadow-r-md !bg-blue-200"
+                            ? "shadow-r-md !bg-miles-200"
                             : "shadow-none !bg-[#D2E8F2]"
                         }`}
                       >
@@ -2609,7 +2609,7 @@ function allDeals() {
                                 Rejected
                               </p>
                             ) : (
-                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-blue-400">
+                              <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-miles-400">
                                 Awaiting
                               </p>
                             )}

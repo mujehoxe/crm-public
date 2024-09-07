@@ -1,9 +1,7 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextRequest, NextResponse } from "next/server";
-import logger from "@/utils/logger";
+import {NextResponse} from "next/server";
 import jwt from 'jsonwebtoken';
 import StatusModel from "@/models/Status";
-import axios from "axios";
 import ActivityLog from "@/models/Activity";
 
 connect();

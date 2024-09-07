@@ -14,7 +14,6 @@ import Topbar from "./topbar";
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const userData = TokenDecoder();
-  const buttonRef = useRef(null);
 
   useEffect(() => {
     setLoading(false);
