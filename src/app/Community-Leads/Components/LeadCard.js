@@ -129,7 +129,7 @@ export default function LeadCard({
 					className="truncate text-base font-medium text-gray-900">{lead.Name}</h3>
 				<div className="flex-shrink-0 flex items-center space-x-2">
 					<span
-						className="text-sm  text-gray-500">Assigned to:{" "}
+						className="text-sm text-nowrap text-gray-500 truncate">Assigned to:{" "}
 						<span className="font-medium text-gray-900">
 							{lead?.Assigned?.username}
 						</span>

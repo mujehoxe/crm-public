@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="rightbar fix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/layout.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/Rightbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Rightbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/Components/LeadCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/Components/LeadCard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,6 +271,6 @@
     <MESSAGE value="fix settings and logout btn full width" />
     <MESSAGE value="sidebar collapse on click outside" />
     <MESSAGE value="rightbar fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="rightbar fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
