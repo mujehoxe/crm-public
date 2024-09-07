@@ -41,7 +41,7 @@ export default function UpdateDescriptionInput({
 								name="update-description"
 								id="update-description"
 								className="block w-full rounded-lg text-gray-900 bg-slate-100 focus:border border-gray-300 px-2 py-1 shadow-sm sm:text-sm
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                         focus:outline-none focus:ring-2 focus:ring-miles-500 focus:border-miles-500
                          transition-colors duration-200 placeholder-gray-400"
 								placeholder="Enter your update description"
 								autoFocus={true}
@@ -64,7 +64,7 @@ export default function UpdateDescriptionInput({
 										whileTap={{scale: 0.9}}
 									>
 										<CheckCircleIcon
-											className="h-5 w-5 text-green-400 cursor-pointer"
+											className="h-5 w-5 text-miles-500 cursor-pointer"
 											aria-hidden="true"
 											onClick={handleUpdateSubmit}
 										/>

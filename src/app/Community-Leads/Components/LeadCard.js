@@ -112,14 +112,14 @@ export default function LeadCard({
 	return <li
 		className={`relative select-none col-span-1  overflow-shown border hover:border-gray-400 
 			h-min rounded-lg bg-white
-			${selectedLeads.includes(lead) ? "ring-2 ring-blue-400" : "shadow"}`}
+			${selectedLeads.includes(lead) ? "ring-2 ring-miles-400" : "shadow"}`}
 		ref={divRef}
 		onClick={(e) => handleCardClick(lead, e)}
 	>
 
 		{selectedLeads.includes(lead) && (
-			<div className="absolute -top-2 -left-2 z-50 text-xl">
-				<CheckCircleIcon className="text-blue-600 w-6 h-6"/>
+			<div className="absolute -top-2 -left-2 text-xl">
+				<CheckCircleIcon className="text-miles-600 w-6 h-6"/>
 			</div>
 		)}
 		<div className="divide-y divide-gray-200">
@@ -197,7 +197,7 @@ export default function LeadCard({
 					</span>
 						{!isDescriptionInput &&
 							<PencilIcon
-								className="min-w-6 min-h-6 w-6 h-6 text-green-400 bg-green-100 rounded-full p-1 cursor-pointer hover:bg-green-200"
+								className="min-w-6 min-h-6 w-6 h-6 text-miles-500 bg-miles-100 rounded-full p-1 cursor-pointer hover:bg-miles-200"
 								onClick={e => {
 									e.stopPropagation();
 									setIsDescriptionInput(true)
@@ -246,7 +246,7 @@ export default function LeadCard({
 					<motion.div variants={listItem}
 											className="flex items-center space-x-2">
 						<a href={`tel:${lead.Phone}`}
-							 className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+							 className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-miles-700 ring-1 ring-inset ring-miles-700/10">
 							<FaPhone className="mr-1"/> {lead.Phone}
 						</a>
 						{lead.AltPhone && (<a href={`tel:${lead.AltPhone}`}
@@ -259,7 +259,7 @@ export default function LeadCard({
 						<a
 							target="_blank"
 							href={`https://wa.me/${encodeURIComponent(lead.Phone)}?text=${encodeURIComponent("Your custom message here")}`}
-							className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10"
+							className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-miles-700 ring-1 ring-inset ring-miles-700/10"
 						>
 							<FaWhatsapp className="mr-1"/> WhatsApp
 						</a>

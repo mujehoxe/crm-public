@@ -51,12 +51,13 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
             Added by:{" "}
             <span className="font-medium">{meeting.addedby.username}</span>
           </span>
-          <div className="size-6 ml-1 bg-gray-200 group-hover:bg-blue-300 overflow-hidden rounded-full flex justify-center items-center">
+          <div className="size-6 ml-1 bg-gray-200 group-hover:bg-miles-300 overflow-hidden rounded-full flex justify-center items-center">
             {meeting?.addedby.Avatar ? (
               <img
                 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
                   meeting?.addedby.Avatar
                 }`}
+                alt={"Avatar"}
               />
             ) : (
               <FaRegUserCircle />
@@ -77,7 +78,7 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
               {meeting.MeetingType === "Secondary" ? (
                 <>
                   <i className="fa fa-user mt-1 mr-2" />
-                  {meeting.directoragnet == "Agent" ? (
+                  {meeting.directoragnet === "Agent" ? (
                     <div className="flex flex-col">
                       <span className="">Agent</span>
                       <span>
@@ -128,7 +129,7 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
           <div className="flex justify-between items-center text-xs text-gray-500">
             <span>Meeting Type: {meeting.MeetingType}</span>
             {meeting.Comment && (
-              <div className="flex items-center text-indigo-500">
+              <div className="flex items-center text-miles-500">
                 <i className="fas fa-comment mr-2" />
                 <span>{meeting.Comment}</span>
               </div>

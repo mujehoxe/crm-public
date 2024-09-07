@@ -53,7 +53,7 @@ export default function LoginPage() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-miles-500 focus:border-miles-500 sm:text-sm"
                     placeholder="Email address"
                     value={user.email}
                     onChange={(e) =>
@@ -77,7 +77,7 @@ export default function LoginPage() {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block text-gray-900 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-miles-500 focus:border-miles-500 sm:text-sm"
                     placeholder="Password"
                     value={user.password}
                     onChange={(e) =>

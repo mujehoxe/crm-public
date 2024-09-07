@@ -35,7 +35,9 @@ export default function EditableSpan({content, onBlur}) {
 			onKeyDown={handleKeyDown}
 			contentEditable={isEditing}
 			suppressContentEditableWarning={true}
-			className={`text-sm text-gray-900 rounded-md p-1 inline-block max-w-[calc(100%-100px)] truncate bg-blue-100 ${isEditing ? 'focus:ring-2 focus:ring-blue-500 outline-none' : ''}`}
+			className={`rounded-md p-1 max-w-[calc(100%-100px)] truncate text-xs font-medium
+				inline-flex items-center bg-miles-50 px-2 py-1 text-miles-700 ring-1 ring-inset ring-miles-700/10
+				${isEditing ? 'focus:ring-2 focus:ring-miles-500 outline-none' : ''}`}
 		>
       {content}
     </span>);

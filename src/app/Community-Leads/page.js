@@ -29,7 +29,7 @@ import InlineLoader from "../components/InlineLoader";
 import Pagination from "../components/Pagination";
 
 export default function CommunityLeadsPage() {
-	const [TagsCount, setTagsCount] = useState([]);
+	const [tagOptions, setTagOptions] = useState([]);
 	const [users, setUsers] = useState([]);
 	const [selectedValues, setSelectedValues] = useState([]);
 	const [selectedValues2, setSelectedValues2] = useState([]);
@@ -190,6 +190,7 @@ export default function CommunityLeadsPage() {
 			...modalStates,
 			isBulkModalOpen: !modalStates.isBulkModalOpen,
 		});
+		console.log(modalStates.isBulkModalOpen)
 	};
 
 	const handleCardClick = (cardLead, e) => {
@@ -265,7 +266,11 @@ export default function CommunityLeadsPage() {
 			try {
 				let url = `/api/tags/get`;
 				const response = await axios.get(url);
-				setTagsCount(response.data.data);
+				const tags = response.data.data.map((tag) => ({
+					label: tag.Tag,
+					value: tag._id,
+				}))
+				setTagOptions(tags);
 			} catch (error) {
 				console.error("Error fetching Tags:", error);
 			}
@@ -274,10 +279,6 @@ export default function CommunityLeadsPage() {
 		fetchTags();
 	}, []);
 
-	const tagOptions = TagsCount.map((tag) => ({
-		label: tag.Tag,
-		value: tag._id,
-	}));
 
 	const countOptions = [
 		{value: "6", label: "6"},
@@ -471,7 +472,10 @@ export default function CommunityLeadsPage() {
 				<LeadCard
 					key={lead._id}
 					lead={lead}
-					setCurrentPageLeads={(leads) =>  console.log(leadsData.leads, leads) && setLeadsData({...leadsData, leads})}
+					setCurrentPageLeads={(leads) => console.log(leadsData.leads, leads) && setLeadsData({
+						...leadsData,
+						leads
+					})}
 					handleCardClick={handleCardClick}
 					selectedLeads={leadsData.selectedLeads}
 					onEditClick={() => handleEditClick(lead)}
@@ -493,7 +497,7 @@ export default function CommunityLeadsPage() {
 		if (filters.searchTerm) {
 			return leadsData.leads.length > 0 ? (
 				<ul role="list"
-				    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 ml-0 pl-0">
+						className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 ml-0 pl-0">
 					{renderLeadCards(leadsData.leads)}
 				</ul>
 			) : (
@@ -503,7 +507,7 @@ export default function CommunityLeadsPage() {
 			return (
 				leadsData.leads.length > 0 ? (
 					<ul role="list"
-					    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 pl-0">
+							className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 pl-0">
 						{renderLeadCards(leadsData.leads)}
 					</ul>
 				) : (
@@ -515,11 +519,9 @@ export default function CommunityLeadsPage() {
 	}, [filters.searchTerm, leadsData.leads, renderLeadCards]);
 
 	const renderModals = useMemo(() => {
-		if (!activeModalLead) return null;
-
 		return (
 			<>
-				{edit === activeModalLead._id && (
+				{edit === activeModalLead?._id && (
 					<>
 						<InfoModal
 							leadData={activeModalLead}
@@ -547,13 +549,18 @@ export default function CommunityLeadsPage() {
 						)}
 					</>
 				)}
+
 				{modalStates.isBulkModalOpen && (
 					<BulkModal
 						onClose={toggleBulkModal}
 						selectedLeads={leadsData.selectedLeads}
 						setBulkOperationMade={setBulkOperationMade}
+						sourceOptions={sourceOptions}
+						statusOptions={statusOptions}
+						users={users}
 					/>
 				)}
+
 				{modalStates.isExcelModalOpen && (
 					<ExcelModal onClose={toggleExcelModal} onParse={handleParse}/>
 				)}
@@ -563,6 +570,7 @@ export default function CommunityLeadsPage() {
 
 	return (
 		<RootLayout>
+			{renderModals}
 			<div className="container h-screen mx-auto">
 				<h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
 
@@ -655,46 +663,39 @@ export default function CommunityLeadsPage() {
 						onChange={handleSearchTermChange}
 					/>
 				</div>
-				<div
-					className="flex items-center tablet:w-2/5 mobile:w-full gap-2 mt-3">
+
+				<div className="flex flex-wrap items-center gap-2 mt-3">
 					<button
 						onClick={handleDealSubmission}
-						className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
+						className="rounded-md bg-miles-50 px-3 py-2 text-sm font-semibold text-miles-600 shadow-sm hover:bg-miles-100"
 					>
 						Submit Deal
 					</button>
 					<button
 						onClick={toggleBulkModal}
-						className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
+						className="rounded-md bg-miles-50 px-3 py-2 text-sm font-semibold text-miles-600 shadow-sm hover:bg-miles-100"
 					>
 						Mapping
 					</button>
-					{
+					<button
+						onClick={handleSelectAll}
+						className="rounded-md bg-miles-50 px-3 py-2 text-sm font-semibold text-miles-600 shadow-sm hover:bg-miles-100"
+					>
+						Select All
+					</button>
+					{userRole !== "FOS" && leadsData.selectedLeads.length > 0 && (
 						<button
-							onClick={handleSelectAll}
-							className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
+							onClick={deleteSelectedLeads}
+							className="rounded-md bg-miles-50 px-3 py-2 text-sm font-semibold text-miles-600 shadow-sm hover:bg-miles-100"
 						>
-							Select All
+							Delete Selected
 						</button>
-					}
-
-					{userRole !== "FOS" && (
-						<>
-							{leadsData.selectedLeads.length > 0 && (
-								<button
-									onClick={deleteSelectedLeads}
-									className="bg-[#83D2FF] hover:bg-transparent hover:border-[#83D2FF] border-2 transition-all duration-300 rounded-md tablet:px-3  tablet:py-2 mobile:px-2  mobile:py-2 tablet:text-md `mobile:text-sm font-Satoshi font-bold"
-								>
-									Delete All
-								</button>
-							)}
-						</>
 					)}
 				</div>
 
 				{leadsData.loading ? (
 					<InlineLoader
-						className="flex w-full mt-10 text-center text-blue-900 justify-center rounded-2xl bg-blue-100 items-center h-56"/>
+						className="flex w-full mt-10 text-center text-miles-900 justify-center rounded-2xl bg-miles-100 items-center h-56"/>
 				) : (
 					getTotalPages() > 0 && (
 						<>
@@ -762,9 +763,6 @@ export default function CommunityLeadsPage() {
 						</motion.div>
 					</div>
 				</div>
-
-				{renderModals}
-
 			</div>
 		</RootLayout>
 	);

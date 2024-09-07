@@ -48,7 +48,7 @@ const Sidebar = () => {
 
   const sideHandler = (index) => {
     if (sidePanelStat)
-      if (currentIndex == index) {
+      if (currentIndex === index) {
         setCurrentIndex(null);
       } else {
         setCurrentIndex(index);
@@ -294,7 +294,7 @@ const Sidebar = () => {
                   </span>
                   {item.notifications && (
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-blue-200 rounded-full transition-opacity duration-300 ${
+                      className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-miles-200 rounded-full transition-opacity duration-300 ${
                         sidePanelStat ? "opacity-100" : "opacity-0"
                       }`}
                     >
