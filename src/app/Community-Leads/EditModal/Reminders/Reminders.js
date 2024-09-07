@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReminderCard from "./ReminderCard";
-import SkeletonLoader from "../../SkeletonLoader";
+import SkeletonLoader from "../../Components/SkeletonLoader";
 
 const Reminders = ({ modalStates, leadData }) => {
   const [reminders, setReminders] = React.useState([]);

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import InlineLoader from "../Community-Leads/InlineLoader";
+import InlineLoader from "../components/InlineLoader";
 
 export default function LoginPage() {
   const router = useRouter();

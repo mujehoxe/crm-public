@@ -22,10 +22,10 @@ import ExcelModal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
 import ReminderModal from "./EditModal/Reminders/ReminderModal";
 import BulkModal from "./Bulk/bulk";
-import LeadCard from "./LeadCard";
+import LeadCard from "./Components/LeadCard";
 import InfoModal from "./EditModal/InfoModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
-import InlineLoader from "./InlineLoader";
+import InlineLoader from "../components/InlineLoader";
 import Pagination from "../components/Pagination";
 
 export default function CommunityLeadsPage() {
@@ -471,7 +471,7 @@ export default function CommunityLeadsPage() {
 				<LeadCard
 					key={lead._id}
 					lead={lead}
-					setCurrentPageLeads={(leads) => setLeadsData({...leadsData, leads})}
+					setCurrentPageLeads={(leads) =>  console.log(leadsData.leads, leads) && setLeadsData({...leadsData, leads})}
 					handleCardClick={handleCardClick}
 					selectedLeads={leadsData.selectedLeads}
 					onEditClick={() => handleEditClick(lead)}

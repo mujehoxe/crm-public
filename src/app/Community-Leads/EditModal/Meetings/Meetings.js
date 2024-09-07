@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MeetingCard from "./MeetingCard";
-import SkeletonLoader from "../../SkeletonLoader";
+import SkeletonLoader from "../../Components/SkeletonLoader";
 
 const Meetings = ({ modalStates, leadData }) => {
   const [meetings, setMeetings] = React.useState([]);

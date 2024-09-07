@@ -4,7 +4,7 @@ import axios from "axios";
 import SearchableSelect from "@/app/Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
 import { toast } from "react-toastify";
-import InlineLoader from "../../InlineLoader";
+import InlineLoader from "../../../components/InlineLoader";
 
 const MeetingModal = ({ onClose, leadId }) => {
   const [users, setUsers] = useState([]);
@@ -85,7 +85,7 @@ const MeetingModal = ({ onClose, leadId }) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("/api/Meeting/add", meeting);
+      await axios.post("/api/Meeting/add", meeting);
       onClose();
       toast.success("Meeting Added successfully");
     } catch (error) {

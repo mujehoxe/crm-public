@@ -4,7 +4,7 @@ import axios from "axios";
 import SearchableSelect from "../../../Leads/dropdown";
 import "bootstrap/dist/css/bootstrap.css";
 import { toast } from "react-toastify";
-import InlineLoader from "../../InlineLoader";
+import InlineLoader from "../../../components/InlineLoader";
 
 const ReminderModal = ({ onClose, lead }) => {
   const [users, setUsers] = useState([]);
