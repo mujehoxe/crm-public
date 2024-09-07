@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="show pagination while loading" />
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment=".idea">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/sidebar.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,7 +96,7 @@
       <workItem from="1725661843228" duration="406000" />
       <workItem from="1725662256066" duration="35471000" />
       <workItem from="1725724858552" duration="233000" />
-      <workItem from="1725725104942" duration="13000" />
+      <workItem from="1725725104942" duration="1516000" />
     </task>
     <task id="LOCAL-00001" summary="fix next and prev btns">
       <option name="closed" value="true" />
@@ -191,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725724737845</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary=".idea">
+      <option name="closed" value="true" />
+      <created>1725725244955</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1725725244955</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +219,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="community-leads" />
+                        <option value="layout" />
                       </list>
                     </value>
                   </entry>
@@ -226,13 +237,13 @@
     <MESSAGE value="miles-logo.svg" />
     <MESSAGE value="no btn ref" />
     <MESSAGE value="community leads page fixes" />
-    <MESSAGE value=".idea" />
     <MESSAGE value="lead card ui update" />
     <MESSAGE value="lead card update functionalities" />
     <MESSAGE value="lead card selection working" />
     <MESSAGE value="update website colors to match logo" />
     <MESSAGE value="bluk modal opening" />
     <MESSAGE value="show pagination while loading" />
-    <option name="LAST_COMMIT_MESSAGE" value="show pagination while loading" />
+    <MESSAGE value=".idea" />
+    <option name="LAST_COMMIT_MESSAGE" value=".idea" />
   </component>
 </project>
