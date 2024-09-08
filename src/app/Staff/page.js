@@ -1,315 +1,253 @@
 "use client";
 import axios from "axios";
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import DocumentModal from "../components/doument";
 import RootLayout from "../components/layout";
 import Modal from "../components/modal";
-import Script from "next/script";
+import {
+	ArrowUpTrayIcon, MagnifyingGlassIcon,
+	PencilSquareIcon,
+	TrashIcon
+} from "@heroicons/react/24/outline";
+import Pagination from "@/app/components/Pagination";
+import {FaRegUserCircle} from "react-icons/fa";
 
-function Staff() {
-  useEffect(() => {
-    // If you need to run any Bootstrap-related JavaScript
-    if (typeof window !== "undefined") {
-      require("bootstrap");
-    }
-  }, []);
+export default function Staff() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+	const [selectedUser, setSelectedUser] = useState(null);
+	const [selectedUserId, setSelectedUserId] = useState(null);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [userPerPage, setUserPerPage] = useState(10);
+	const [searchTerm, setSearchTerm] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [userPerPage, setUserPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+	const toggleModal = (e, user = null) => {
+		if (e) {
+			e.preventDefault();
+		}
+		setSelectedUser(user);
+		setIsModalOpen(!isModalOpen);
+	};
+	const [users, setUsers] = useState([]);
 
-  const toggleModal = (e, user = null) => {
-    if (e) {
-      e.preventDefault();
-    }
-    setSelectedUser(user);
-    setIsModalOpen(!isModalOpen);
-  };
-  const [users, setUsers] = useState([]);
+	useEffect(() => {
+		const fetchUsers = async () => {
+			try {
+				const response = await axios.get("/api/staff/get");
+				setUsers(response.data.data);
+			} catch (error) {
+				console.error("Error fetching users:", error);
+			}
+		};
+		fetchUsers();
+	}, []);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/staff/get");
-        setUsers(response.data.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
+	const filteredUsers = users.filter((user) =>
+		user.username.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
-    return;
-  }, []);
+	const toggleDocumentModal = (e, userId) => {
+		setIsDocumentModalOpen(!isDocumentModalOpen);
+		setSelectedUserId(userId);
+	};
 
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+	const indexOfLastUser = currentPage * userPerPage;
+	const indexOfFirstUser = indexOfLastUser - userPerPage;
+	const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  console.log(filteredUsers);
+	const deleteUser = async (e, userId) => {
+		e.preventDefault();
 
-  const toggleDocumentModal = (e, userId) => {
-    setIsDocumentModalOpen(!isDocumentModalOpen);
-    setSelectedUserId(userId);
-  };
+		const result = await Swal.fire({
+			title: "Are you sure you want to delete this user?",
+			text: "You won't be able to revert this!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		});
 
-  const indexOfLastUser = currentPage * userPerPage;
-  const indexOfFirstUser = indexOfLastUser - userPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+		if (!result.isConfirmed) {
+			return; // User canceled the deletion
+		}
+		try {
+			const response = await axios.delete(`/api/staff/delete/${userId}`);
+			setCurrentUsers(currentUsers.filter((user) => user.id !== userId));
+		} catch (error) {
+			console.error("There was an error deleting the user!", error);
+		}
+	};
 
-  const nextPage = () => {
-    if (currentPage < Math.ceil(users.length / userPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+	return (
+		<RootLayout>
+			{isModalOpen && (
+				<Modal
+					setUsers={setUsers}
+					userdata={selectedUser}
+					onClose2={toggleModal}
+				/>
+			)}{" "}
+			{isDocumentModalOpen && (
+				<DocumentModal
+					isOpen={isDocumentModalOpen}
+					onClose={toggleDocumentModal}
+					savedUser={selectedUserId}
+				/>
+			)}
+			<div className="container mx-auto h-screen">
+				<div className="sm:flex sm:items-center">
+					<div className="sm:flex-auto w-full !min-w-[300px]">
+						<h1 className="text-2xl font-bold text-gray-900 mb-6">Staff
+							Members</h1>
+						<p className="mt-2 text-sm text-gray-700">
+							A list of all staff members including their name, email, phone,
+							role, and associated documents.
+						</p>
+					</div>
+					<div className="sm:ml-16 w-[calc(100%-500px)] sm:flex-none">
+						<div className="flex justify-between items-center rounded-md !border
+								border-slate-300 text-lg focus:outline-none transition-all duration-200
+								focus:shadow-md bg-white px-3 py-1 w-full">
+							<input
+								type="text"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+								placeholder="Search..."
+							/>
+							<MagnifyingGlassIcon className="size-[18px]"/>
+						</div>
+					</div>
+				</div>
+				<div
+					className="border mb-6 rounded-lg shadow border-gray-200">
+					<div className="inline-block min-w-full align-middle">
+						<table className="min-w-full divide-y divide-gray-300">
+							<thead>
+							<tr>
+								<th scope="col"
+										className="py-3.5 pr-3 mt-2 text-left text-sm font-semibold text-gray-900 sm:pl-0 pl-4 sm:pl-6">Name
+								</th>
+								<th scope="col"
+										className="px-3 py-3.5 mt-2 text-left text-sm font-semibold text-gray-900">Phone
+								</th>
+								<th scope="col"
+										className="px-3 py-3.5 mt-2 text-left text-sm font-semibold text-gray-900">Role
+								</th>
+								<th scope="col"
+										className="px-3 py-3.5 mt-2 text-left text-sm font-semibold text-gray-900">Documents
+								</th>
+								<th scope="col" className="relative py-3.5 pr-4 sm:pr-6"/>
+							</tr>
+							</thead>
+							<tbody className="divide-y divide-gray-200 bg-white">
+							{currentUsers.map((user) => (
+								<tr className="hover:bg-gray-50" key={user._id}>
+									<td
+										className="whitespace-nowrap py-4 pr-3 text-sm sm:pl-0">
+										<div className="flex pl-4 sm:pl-6 items-center">
+											<div
+												className="size-10 bg-gray-200 group-hover:bg-miles-300 overflow-hidden rounded-full flex justify-center items-center">
+												{user.Avatar ? (
+													<img
+														className="size-10 object-cover"
+														src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${user.Avatar}`}
+														alt={"Avatar"}
+													/>
+												) : (
+													<FaRegUserCircle/>
+												)}
+											</div>
+											<div className="ml-4">
+												<div
+													className="font-medium text-gray-900">{user.username}</div>
+												<div
+													className="mt-1 text-gray-500">{user.email}</div>
+											</div>
+										</div>
+									</td>
+									<td
+										className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.Phone}</td>
+									<td
+										className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{user.Role}</td>
+									<td
+										className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+										{user.documents ? (
+											<div className="relative inline-block text-left">
+												<button
+													type="button"
+													className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+													id={`dropdown-button-${user._id}`}
+													aria-expanded="true"
+													aria-haspopup="true"
+												>
+													Select Document
+												</button>
+												{/* Dropdown menu would go here */}
+											</div>
+										) : (
+											<span className="text-gray-500">No documents</span>
+										)}
+									</td>
+									<td>
+										<div
+											className="relative flex py-4 h-full justify-around items-center pr-4 sm:pr-6	">
+											<div
+												className="p-1 rounded-full text-miles-600 hover:text-miles-900 bg-miles-50 hover:bg-miles-200">
+												<ArrowUpTrayIcon
+													onClick={() => toggleDocumentModal(user._id)}
+													className="size-5 cursor-pointer"
+												/>
+											</div>
+											<div
+												className="p-1 rounded-full text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-200">
+												<PencilSquareIcon
+													onClick={() => toggleModal(user)}
+													className="size-5 cursor-pointer"
+												/>
+											</div>
+											<div
+												className="p-1 rounded-full text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-200">
+												<TrashIcon
+													onClick={() => deleteUser(user._id)}
+													className="size-5 cursor-pointer"
+												/>
+											</div>
+										</div>
+									</td>
+								</tr>
+							))}
+							</tbody>
+						</table>
+					</div>
 
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  const deleteUser = async (e, userId) => {
-    e.preventDefault();
+				</div>
 
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    });
+				<span className="text-sm text-gray-700">Showing {}
+					<b>{Math.min(userPerPage, filteredUsers.length)} user{filteredUsers.length !== 1 && 's'}, </b>from {}
+					{filteredUsers.length > 1 &&
+						<>
+								<span className="font-medium">
+									{indexOfFirstUser + 1}
+								</span> to{' '}
+							<span className="font-medium">
+									{Math.min(indexOfLastUser, filteredUsers.length)}
+								</span> of{' '}
+						</>
+					}
+					<span
+						className="font-medium">{filteredUsers.length}</span> result{filteredUsers.length !== 1 && 's'}
+				</span>
 
-    if (!result.isConfirmed) {
-      return; // User canceled the deletion
-    }
-    try {
-      const response = await axios.delete(`/api/staff/delete/${userId}`);
-      window.location.reload();
-    } catch (error) {
-      console.error("There was an error deleting the user!", error);
-    }
-  };
-  return (
-    <>
-      <Script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        strategy="afterInteractive"
-      />
-
-      <RootLayout>
-        {isModalOpen && (
-          <Modal
-            setUsers={setUsers}
-            userdata={selectedUser}
-            onClose2={toggleModal}
-          />
-        )}{" "}
-        {/* Render modal if isModalOpen is true */}
-        {isDocumentModalOpen && (
-          <DocumentModal
-            isOpen={isDocumentModalOpen}
-            onClose={toggleDocumentModal}
-            savedUser={selectedUserId}
-          />
-        )}
-        <div className="flex justify-end w-full !px-0">
-          <div className=" mobile:w-full h-full overflow-x-hidden">
-            <div className="w-full">
-              <p className="text-lg font-[500]  font-Satoshi w-full ">
-                Staff Members
-              </p>
-
-              <input
-                type="text"
-                style={{ width: "30%" }}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-control"
-                placeholder="Search..."
-              />
-              <table className="table mb-0">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Documents</th>
-                    <th>Upload Document</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentUsers.map((user, index) => (
-                    <tr key={user._id}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{user.username}</td>
-                      <td>{user.email}</td>
-                      <td>{user.Phone}</td>
-                      <td>{user.Role}</td>
-                      <td>
-                        {user.documents ? (
-                          <div className="dropdown">
-                            <button
-                              className="btn btn-secondary dropdown-toggle"
-                              type="button"
-                              id="dropdownMenuButton"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              Select Document
-                            </button>
-                            <ul
-                              className="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton"
-                            >
-                              {user.documents
-                                .split(",")
-                                .map((document_, index) => (
-                                  <li key={index}>
-                                    <a
-                                      className="dropdown-item"
-                                      href={`/documents/${document_.trim()}`}
-                                      download
-                                    >
-                                      {document_.trim()}
-                                    </a>
-                                  </li>
-                                ))}
-                            </ul>
-                          </div>
-                        ) : (
-                          <h6>Please Upload Document</h6>
-                        )}
-                      </td>
-                      <td>
-                        <i
-                          className="fas fa-cloud-upload-alt f-24"
-                          onClick={(e) => toggleDocumentModal(e, user._id)}
-                        ></i>
-                      </td>
-
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={(e) => toggleModal(e, user)}
-                        >
-                          Edit
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-danger"
-                          onClick={(e) => deleteUser(e, user._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div
-              className="p-4"
-              id="datatable_info"
-              role="status"
-              aria-live="polite"
-            >
-              Showing {currentPage * userPerPage - userPerPage + 1} to{" "}
-              {Math.min(currentPage * userPerPage, users.length)} of{" "}
-              {users.length} entries
-            </div>
-
-            <div
-              className="dataTables_paginate paging_simple_numbers !px-4 !py-4"
-              id="datatable_paginate"
-            >
-              <ul className="pagination pagination-rounded">
-                <li
-                  className={`paginate_button page-item previous ${
-                    currentPage === 1 ? "disabled" : ""
-                  }`}
-                  id="datatable_previous"
-                >
-                  <a
-                    href="#"
-                    aria-controls="datatable"
-                    aria-disabled={currentPage === 1}
-                    role="link"
-                    data-dt-idx="previous"
-                    tabIndex={0}
-                    className="page-link"
-                    onClick={prevPage}
-                  >
-                    <i className="fa fa-chevron-left" />
-                  </a>
-                </li>
-                {Array.from(
-                  { length: Math.ceil(users.length / userPerPage) },
-                  (_, i) => (
-                    <li
-                      key={i}
-                      className={`paginate_button page-item ${
-                        i + 1 === currentPage ? "active" : ""
-                      }`}
-                    >
-                      <a
-                        href="#"
-                        aria-controls="datatable"
-                        role="link"
-                        aria-current={i + 1 === currentPage ? "page" : null}
-                        data-dt-idx={i}
-                        tabIndex={0}
-                        className="page-link"
-                        onClick={() => setCurrentPage(i + 1)}
-                      >
-                        {i + 1}
-                      </a>
-                    </li>
-                  )
-                )}
-                <li
-                  className={`paginate_button page-item next ${
-                    currentPage === Math.ceil(users.length / userPerPage)
-                      ? "disabled"
-                      : ""
-                  }`}
-                  id="datatable_next"
-                >
-                  <a
-                    href="#"
-                    aria-controls="datatable"
-                    aria-disabled={
-                      currentPage === Math.ceil(users.length / userPerPage)
-                    }
-                    role="link"
-                    data-dt-idx="next"
-                    tabIndex={0}
-                    className="page-link"
-                    onClick={nextPage}
-                  >
-                    <i className="fa fa-chevron-right" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </RootLayout>
-    </>
-  );
+				<Pagination
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					totalPages={Math.ceil(filteredUsers.length / userPerPage)}
+				/>
+			</div>
+		</RootLayout>
+	)
 }
-
-export default Staff;

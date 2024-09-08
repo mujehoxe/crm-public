@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="py for sidebar element should be 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/ActivityLogs/LogCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/ActivityLogs/LogCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Meetings/MeetingCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Meetings/MeetingCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Reminders/ReminderCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Reminders/ReminderCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Staff/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Staff/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/Pagination.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Pagination.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/topbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/topbar.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,6 +102,9 @@
       <workItem from="1725662256066" duration="35471000" />
       <workItem from="1725724858552" duration="233000" />
       <workItem from="1725725104942" duration="6389000" />
+      <workItem from="1725786863528" duration="1441000" />
+      <workItem from="1725812599291" duration="589000" />
+      <workItem from="1725813201074" duration="13954000" />
     </task>
     <task id="LOCAL-00001" summary="fix next and prev btns">
       <option name="closed" value="true" />
