@@ -77,7 +77,8 @@ const LogEntry = ({ log, leadData: lead, index }) => {
           <div className="flex flex-row items-center">
             <div className="size-8 bg-gray-200 mr-2 group-hover:bg-miles-300 overflow-hidden cursor-pointer rounded-full flex justify-center items-center">
               {log?.Userid?.Avatar ? (
-                <img
+                <imgd
+                  className="size-8 object-cover"
                   src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
                     log?.Userid.Avatar
                   }`}

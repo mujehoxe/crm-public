@@ -94,8 +94,8 @@ const Topbar = ({ userData }) => {
                 <div className="flex items-center">
                   {avatar ? (
                     <img
+                      className="size-8 rounded-full object-cover"
                       src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${avatar}`}
-                      className="h-8 w-8 rounded-full object-cover"
                       alt={username}
                     />
                   ) : (
