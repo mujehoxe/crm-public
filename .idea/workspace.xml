@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="py for sidebar element should be 2">
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="staff table fix delete user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/ActivityLogs/LogCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/ActivityLogs/LogCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Meetings/MeetingCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Meetings/MeetingCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Reminders/ReminderCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/Reminders/ReminderCard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Staff/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Staff/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/Pagination.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Pagination.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/topbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/topbar.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +99,7 @@
       <workItem from="1725725104942" duration="6389000" />
       <workItem from="1725786863528" duration="1441000" />
       <workItem from="1725812599291" duration="589000" />
-      <workItem from="1725813201074" duration="13954000" />
+      <workItem from="1725813201074" duration="15173000" />
     </task>
     <task id="LOCAL-00001" summary="fix next and prev btns">
       <option name="closed" value="true" />
@@ -250,7 +245,31 @@
       <option name="project" value="LOCAL" />
       <updated>1725732826673</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="pagination ui fixes">
+      <option name="closed" value="true" />
+      <created>1725829569893</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1725829569893</updated>
+    </task>
+    <task id="LOCAL-00020" summary="image cover">
+      <option name="closed" value="true" />
+      <created>1725829605886</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1725829605886</updated>
+    </task>
+    <task id="LOCAL-00021" summary="staff table fixes">
+      <option name="closed" value="true" />
+      <created>1725829631130</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1725829631130</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +317,10 @@
     <MESSAGE value="rightbar fix" />
     <MESSAGE value="long assigned username on card" />
     <MESSAGE value="py for sidebar element should be 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="py for sidebar element should be 2" />
+    <MESSAGE value="pagination ui fixes" />
+    <MESSAGE value="image cover" />
+    <MESSAGE value="staff table fixes" />
+    <MESSAGE value="staff table fix delete user" />
+    <option name="LAST_COMMIT_MESSAGE" value="staff table fix delete user" />
   </component>
 </project>

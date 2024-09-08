@@ -75,7 +75,7 @@ export default function Staff() {
 			return; // User canceled the deletion
 		}
 		try {
-			const response = await axios.delete(`/api/staff/delete/${userId}`);
+			await axios.delete(`/api/staff/delete/${userId}`);
 			setCurrentUsers(currentUsers.filter((user) => user.id !== userId));
 		} catch (error) {
 			console.error("There was an error deleting the user!", error);
@@ -129,7 +129,7 @@ export default function Staff() {
 							<thead>
 							<tr>
 								<th scope="col"
-										className="py-3.5 pr-3 mt-2 text-left text-sm font-semibold text-gray-900 sm:pl-0 pl-4 sm:pl-6">Name
+										className="py-3.5 pr-3 mt-2 text-left text-sm font-semibold text-gray-900 pl-4 sm:pl-6">Name
 								</th>
 								<th scope="col"
 										className="px-3 py-3.5 mt-2 text-left text-sm font-semibold text-gray-900">Phone
@@ -179,14 +179,13 @@ export default function Staff() {
 											<div className="relative inline-block text-left">
 												<button
 													type="button"
-													className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+													className="rounded-md bg-miles-50 px-3 py-2 text-sm font-semibold text-miles-600 shadow-sm hover:bg-miles-100"
 													id={`dropdown-button-${user._id}`}
 													aria-expanded="true"
 													aria-haspopup="true"
 												>
-													Select Document
+													Select
 												</button>
-												{/* Dropdown menu would go here */}
 											</div>
 										) : (
 											<span className="text-gray-500">No documents</span>
@@ -212,7 +211,7 @@ export default function Staff() {
 											<div
 												className="p-1 rounded-full text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-200">
 												<TrashIcon
-													onClick={() => deleteUser(user._id)}
+													onClick={(e) => deleteUser(e, user._id)}
 													className="size-5 cursor-pointer"
 												/>
 											</div>
