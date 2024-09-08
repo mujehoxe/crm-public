@@ -128,18 +128,28 @@ export default function LeadCard({
 				<h3
 					className="truncate text-base font-medium text-gray-900">{lead.Name}</h3>
 				<div className="flex-shrink-0 flex items-center space-x-2">
-					<span
-						className="text-sm text-nowrap text-gray-500 truncate">Assigned to:{" "}
-						<span className="font-medium text-gray-900">
-							{lead?.Assigned?.username}
+					{lead?.Assigned ?
+						<>
+							<span
+								className="text-sm text-nowrap text-gray-500 truncate">Assigned to:{" "}
+								<span className="font-medium text-gray-900">
+									{lead?.Assigned.username}
+								</span>
+							</span>
+							{lead?.Assigned?.Avatar ?
+								<img className="h-6 w-6 rounded-full object-cover"
+										 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${lead?.Assigned.Avatar}`}
+										 alt=""/> :
+								<FaRegUserCircle className="h-6 w-6 text-gray-300"
+																 aria-hidden="true"/>
+							}
+						</>
+						:
+						<span
+							className="text-sm text-nowrap text-gray-500 truncate">
+							Not assigned to any agent
 						</span>
-					</span>
-					{lead?.Assigned?.Avatar ?
-						<img className="h-6 w-6 rounded-full object-cover"
-								 src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${lead?.Assigned.Avatar}`}
-								 alt=""/> : <FaRegUserCircle className="h-6 w-6 text-gray-300"
-																						 aria-hidden="true"/>}
-				</div>
+					}</div>
 			</div>
 
 			<div className="absloute bottom-0 top-auto p-3 space-y-2">
