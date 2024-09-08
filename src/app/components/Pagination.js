@@ -1,7 +1,7 @@
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/solid";
 
 export default function Pagination({
   currentPage,
@@ -46,8 +46,8 @@ export default function Pagination({
   };
 
   return (
-    <nav className="flex flex-auto items-center justify-between border-t border-gray-200 px-4 sm:px-0">
-      <div className="-mt-px flex flex-1">
+    <nav className="flex flex-auto items-center justify-between bg-white border-t border-gray-200 px-4 sm:px-0">
+      <div className="flex flex-1">
         <button
           onClick={prevPage}
           disabled={currentPage === 1}
