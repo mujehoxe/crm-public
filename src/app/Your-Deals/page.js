@@ -1,24 +1,22 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import RootLayout from "@/app/components/layout";
 import axios from "axios";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-modal";
 import TokenDecoder from "../components/Cookies";
 import {
-  PDFDownloadLink,
   Document,
   Page,
+  PDFDownloadLink,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
 } from "@react-pdf/renderer";
 import styles from "../Modal.module.css";
-import { formatDate } from "date-fns";
-import { FaDownload } from "react-icons/fa6";
-import { IoIosInformationCircle } from "react-icons/io";
-import { IoCloseSharp } from "react-icons/io5";
+import {FaDownload} from "react-icons/fa6";
+import {IoIosInformationCircle} from "react-icons/io";
+import {IoCloseSharp} from "react-icons/io5";
 import ViewModal from "../components/ViewModal";
 
 const styless = StyleSheet.create({
@@ -110,8 +108,7 @@ function Invoice() {
         let response;
         if (role === "Admin") {
           response = await axios.get(`/api/invoice/get`);
-        }
-        if (role === "superAdmin") {
+        } else if (role === "superAdmin") {
           response = await axios.get(`/api/invoice/get`);
         } else if (role === "FOS") {
           response = await axios.get(`/api/invoice/me/${parentStaff}`);
@@ -129,8 +126,6 @@ function Invoice() {
       fetchData();
     }
   }, [parentStaff, role]);
-
-  const htmlContent = "<h1>Hello, world!</h1>";
 
   const handleDownloadPDF = (item) => {
     console.log(item, "item");
@@ -238,7 +233,7 @@ function Invoice() {
     // Return the PDFDownloadLink component for downloading the PDF
     return (
       <PDFDownloadLink document={pdfContent} fileName="invoice.pdf">
-        {({ blob, url, loading, error }) =>
+        {({ loading }) =>
           loading ? (
             "Loading document..."
           ) : (
@@ -248,8 +243,6 @@ function Invoice() {
       </PDFDownloadLink>
     );
   };
-
-  const [date, setDate] = useState();
 
   const approved = async (invoiceid, approvedBy) => {
     try {
@@ -290,6 +283,7 @@ function Invoice() {
       console.error("Error updating lead status:", error);
     }
   };
+
   const openModal = (invoiceid) => {
     setSelectedInvoiceId(invoiceid);
     setIsModalOpen(true);
@@ -299,6 +293,7 @@ function Invoice() {
     setIsModalOpen(false);
     setReason("");
   };
+
   const handleDisapprove = async () => {
     try {
       let status;
