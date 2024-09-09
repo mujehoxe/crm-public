@@ -113,7 +113,7 @@ export default function LeadCard({
 		<li className="shadow hover:shadow-lg rounded-lg">
 			<div
 				className={`relative select-none col-span-1
-					rounded-lg bg-white p-0 h-full w-full
+					rounded-lg bg-white p-0 h-full w-full border
 					${selectedLeads.includes(lead) && "ring-2 ring-miles-400"}
 				`}
 				ref={divRef}
