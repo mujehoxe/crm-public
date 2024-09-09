@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="handle lead not assigned to any agent">
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/Components/LeadCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Community-Leads/Components/LeadCard.js" afterDir="false" />
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="lead card border">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725831449351</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="lead card border">
+      <option name="closed" value="true" />
+      <created>1725904758979</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1725904758979</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,6 +338,7 @@
     <MESSAGE value="staff table fixes" />
     <MESSAGE value="staff table fix delete user" />
     <MESSAGE value="handle lead not assigned to any agent" />
-    <option name="LAST_COMMIT_MESSAGE" value="handle lead not assigned to any agent" />
+    <MESSAGE value="lead card border" />
+    <option name="LAST_COMMIT_MESSAGE" value="lead card border" />
   </component>
 </project>
