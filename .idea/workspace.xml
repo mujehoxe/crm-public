@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="lead card border">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="remove duplicate mandatory fields">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Your-Deals/create/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Your-Deals/create/page.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,6 +100,7 @@
       <workItem from="1725786863528" duration="1441000" />
       <workItem from="1725812599291" duration="589000" />
       <workItem from="1725813201074" duration="15173000" />
+      <workItem from="1726119166290" duration="1742000" />
     </task>
     <task id="LOCAL-00001" summary="fix next and prev btns">
       <option name="closed" value="true" />
@@ -285,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725904758979</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="ignore .idea">
+      <option name="closed" value="true" />
+      <created>1725905133359</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1725905133359</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,7 +324,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix next and prev btns" />
     <MESSAGE value="no pagination top margin" />
     <MESSAGE value="miles-logo.svg" />
     <MESSAGE value="no btn ref" />
@@ -339,6 +347,8 @@
     <MESSAGE value="staff table fix delete user" />
     <MESSAGE value="handle lead not assigned to any agent" />
     <MESSAGE value="lead card border" />
-    <option name="LAST_COMMIT_MESSAGE" value="lead card border" />
+    <MESSAGE value="ignore .idea" />
+    <MESSAGE value="remove duplicate mandatory fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove duplicate mandatory fields" />
   </component>
 </project>
