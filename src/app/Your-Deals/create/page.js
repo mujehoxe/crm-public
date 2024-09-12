@@ -449,22 +449,11 @@ function SuspenceWrapped() {
 		}
 
 		if (tempAddedBuyerData.length > 0) {
-			let lastBuyerMandatoryFields = [
-				"buyername",
-				"buyercontact",
-				"buyerdob",
-				"buyerpassport",
-				"passportexpiry",
-				"nationality",
-				"Resident",
-				"address",
-			];
+			let lastBuyerMandatoryFields = mandatoryFields
 
-			if (
-				tempAddedBuyerData[tempAddedBuyerData.length - 1].Resident === "Yes"
-			) {
-				mandatoryFields.push("emiratesExpiry", "emirateid")
-			}
+			if (tempAddedBuyerData[tempAddedBuyerData.length - 1].Resident === "Yes")
+				lastBuyerMandatoryFields.push("emiratesExpiry", "emirateid")
+
 
 			const lastAddedBuyer = tempAddedBuyerData[tempAddedBuyerData.length - 1];
 
