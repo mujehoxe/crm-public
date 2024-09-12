@@ -18,6 +18,7 @@ import {
 	AccordionItemPanel,
 } from "react-accessible-accordion";
 import {NumericFormat} from "react-number-format";
+import BuyerForm from "@/app/Your-Deals/create/BuyerForm";
 
 function Invoice() {
 	return (
@@ -32,9 +33,20 @@ function SuspenceWrapped() {
 	const router = useRouter();
 	const [formCounter, setFormCounter] = useState(1);
 	const [radioBtnStatus, setRadioBtnStatus] = useState("");
-	const [buyerImages, setBuyerImages] = useState([[]]); // Nested array to hold images for each buyer
-	const [Oherimage, setOtherImage] = useState([[]]); // Nested array to hold images for each buyer
-	const [buyerImages1, setBuyerImages1] = useState([[]]); // Nested array to hold images for each buyer
+
+	const [images, setImages] = useState({
+		buyerIdentificationImages: [[]], // Identification images like passport and ID
+		buyerAdditionalDocuments: [[]],
+		transactionSupportingDocuments: [[]],
+	});
+
+	const handleFileChange = (type, index, fileIndex, files) => {
+		setImages((prev) => {
+			const updatedImages = {...prev};
+			updatedImages[type][index][fileIndex] = files[0];
+			return updatedImages;
+		});
+	};
 
 	useEffect(() => {
 		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -54,7 +66,7 @@ function SuspenceWrapped() {
 		}
 	}, []);
 
-	const options1 = [
+	const yesNoOptions = [
 		{value: "Yes", label: "Yes"},
 		{value: "No", label: "No"},
 	];
@@ -255,32 +267,6 @@ function SuspenceWrapped() {
 		});
 	};
 
-	const handleFileChange = (index, fileIndex, files) => {
-		setBuyerImages((prev) => {
-			const updatedImages = [...prev];
-			updatedImages[index] = [...(updatedImages[index] || [])];
-			updatedImages[index][fileIndex] = files[0];
-			return updatedImages;
-		});
-	};
-	const handleFileChange2 = (index, fileIndex, files) => {
-		setOtherImage((prev) => {
-			const updatedImages = [...prev];
-			updatedImages[index] = [...(updatedImages[index] || [])];
-			updatedImages[index][fileIndex] = files[0];
-			return updatedImages;
-		});
-	};
-
-	const handleFileChange3 = (index, fileIndex, files) => {
-		setBuyerImages1((prev) => {
-			const updatedImages = [...prev];
-			updatedImages[index] = [...(updatedImages[index] || [])];
-			updatedImages[index][fileIndex] = files[0];
-			return updatedImages;
-		});
-	};
-
 	function reinitializeTempAddedBuyerData() {
 		setTempAddedBuyerData((curr) => [
 			...curr,
@@ -320,32 +306,30 @@ function SuspenceWrapped() {
 
 		const lastAddedBuyer = tempAddedBuyerData[tempAddedBuyerData.length - 1];
 
-		if (!lastAddedBuyer) {
-			return;
-		}
+		if (!lastAddedBuyer) return;
 
 		const emptyFields = mandatoryFields.filter(
 			(field) => !lastAddedBuyer[field]
 		);
 
+
 		const imageErrors = [];
 		const buyerIndex = tempAddedBuyerData.length - 1;
-		const buyerImagestmp = buyerImages[buyerIndex] || [];
 
-		if (!buyerImagestmp[0]) {
+		if (!images.transactionSupportingDocuments[buyerIndex][0])
 			imageErrors.push("Passport front required");
-		}
-		if (!buyerImagestmp[1]) {
+
+		if (!images.transactionSupportingDocuments[buyerIndex][1])
 			imageErrors.push("Passport back required");
-		}
-		if (lastAddedBuyer.Resident === "Yes" && !buyerImagestmp[2]) {
+
+		if (lastAddedBuyer.Resident === "Yes" && !images.transactionSupportingDocuments[buyerIndex][2])
 			imageErrors.push("Emirates ID required");
-		}
 
 		if (emptyFields.length > 0 || imageErrors.length > 0) {
 			const emptyFieldNames = emptyFields.map((field) =>
 				field.replace(/([A-Z])/g, " $1").toLowerCase()
 			);
+
 			const errorMessages = [
 				...(emptyFieldNames.length > 0
 					? [
@@ -386,18 +370,18 @@ function SuspenceWrapped() {
 			mandatoryFields.push("emiratesExpiry", "emiratesid")
 
 		const emptyFields = mandatoryFields.filter((field) => !buyerOneData[field]);
+		console.log(emptyFields)
+
 		const imageErrors = [];
-		if (!buyerImages1[0] || !buyerImages1[0][0]) {
+		if (!images.buyerIdentificationImages[0] || !images.buyerIdentificationImages[0][0])
 			imageErrors.push("Passport front required");
-		}
-		if (!buyerImages1[0] || !buyerImages1[0][1]) {
+
+		if (!images.buyerIdentificationImages[0] || !images.buyerIdentificationImages[0][1])
 			imageErrors.push("Passport back required");
-		}
-		if (buyerOneData.Resident === "Yes") {
-			if (!buyerImages1[0] || !buyerImages1[0][2]) {
+
+		if (buyerOneData.Resident === "Yes")
+			if (!images.buyerIdentificationImages[0] || !images.buyerIdentificationImages[0][2])
 				imageErrors.push("Emirates ID required");
-			}
-		}
 
 		if (emptyFields.length > 0 || imageErrors.length > 0) {
 			const emptyFieldNames = emptyFields.map((field) =>
@@ -407,6 +391,7 @@ function SuspenceWrapped() {
 				...(emptyFieldNames.length > 0
 					? [`Please fill all the following mandatory fields.`]
 					: []),
+				...emptyFieldNames,
 				...(imageErrors.length > 0 ? imageErrors : []),
 			];
 			toast.error(errorMessages.join("\n"));
@@ -416,33 +401,29 @@ function SuspenceWrapped() {
 
 		if (tempAddedBuyerData.length > 0) {
 			let lastBuyerMandatoryFields = mandatoryFields
-
 			if (tempAddedBuyerData[tempAddedBuyerData.length - 1].Resident === "Yes")
 				lastBuyerMandatoryFields.push("emiratesExpiry", "emirateid")
 
-
 			const lastAddedBuyer = tempAddedBuyerData[tempAddedBuyerData.length - 1];
 
-			if (!lastAddedBuyer) {
-				return;
-			}
+			if (!lastAddedBuyer) return;
 
 			const lastBuyerEmptyFields = lastBuyerMandatoryFields.filter(
 				(field) => !lastAddedBuyer[field]
 			);
+
 			const lastBuyerImageErrors = [];
 			const buyerIndex = tempAddedBuyerData.length - 1;
-			const buyerImagestmp = buyerImages[buyerIndex] || [];
 
-			if (!buyerImagestmp[0]) {
+			if (!images.transactionSupportingDocuments[buyerIndex][0])
 				lastBuyerImageErrors.push("Passport front required");
-			}
-			if (!buyerImagestmp[1]) {
+
+			if (!images.transactionSupportingDocuments[buyerIndex][1])
 				lastBuyerImageErrors.push("Passport back required");
-			}
-			if (lastAddedBuyer.Resident === "Yes" && !buyerImagestmp[2]) {
+
+			if (lastAddedBuyer.Resident === "Yes" && !images.transactionSupportingDocuments[buyerIndex][2])
 				lastBuyerImageErrors.push("Emirates ID required");
-			}
+
 
 			if (lastBuyerEmptyFields.length > 0 || lastBuyerImageErrors.length > 0) {
 				const lastBuyerEmptyFieldNames = lastBuyerEmptyFields.map((field) =>
@@ -451,7 +432,7 @@ function SuspenceWrapped() {
 				const lastBuyerErrorMessages = [
 					...(lastBuyerEmptyFieldNames.length > 0
 						? [
-							`Please fill all the following mandatory fields for the last added buyer}`,
+							`Please fill all the following mandatory fields for the last added buyer`,
 						]
 						: []),
 					...(lastBuyerImageErrors.length > 0 ? lastBuyerImageErrors : []),
@@ -495,6 +476,7 @@ function SuspenceWrapped() {
 		},
 		{value: "other", label: "Other"},
 	];
+
 	const readyStatus = [
 		{value: "Ready", label: "Ready"},
 		{value: "Off-Plan", label: "Off-Plan"},
@@ -530,23 +512,20 @@ function SuspenceWrapped() {
 			"ProjectName",
 		];
 
-		if (buyerOneData.developer === "other")
-			mandatoryFields.push("otherDeveloper")
+		if (buyerOneData.developer === "other") mandatoryFields.push("otherDeveloper")
 
-		if (buyerOneData.propertyType !== "Apartment")
-			mandatoryFields.push("PlotNumber")
+		if (buyerOneData.propertyType !== "Apartment") mandatoryFields.push("PlotNumber")
 
 		const emptyFields = mandatoryFields.filter((field) => !buyerOneData[field]);
 
 		const imageErrors = [];
 
-		if (!Oherimage[0] || !Oherimage[0][0]) {
+		if (!images.buyerAdditionalDocuments[0] || !images.buyerAdditionalDocuments[0][0])
 			imageErrors.push("Eoi Receipt required");
-		}
 
-		if (!Oherimage[1] || !Oherimage[1]) {
+
+		if (!images.buyerAdditionalDocuments[1] || !images.buyerAdditionalDocuments[1])
 			imageErrors.push("Booking form required");
-		}
 
 		if (emptyFields.length > 0 || imageErrors.length > 0) {
 			const emptyFieldNames = emptyFields.map((field) =>
@@ -562,7 +541,7 @@ function SuspenceWrapped() {
 		} else {
 			const imagePromises = [];
 
-			const buyerImagesBase64 = buyerImages.map((images) =>
+			const transactionSupportingDocumentsBase64 = images.transactionSupportingDocuments.map((images) =>
 				images.map((image) => {
 					const reader = new FileReader();
 					reader.readAsDataURL(image);
@@ -574,7 +553,7 @@ function SuspenceWrapped() {
 				})
 			);
 
-			const OtherImageBase64 = Oherimage.map((images) =>
+			const buyerAdditionalDocumentsBase64 = images.buyerAdditionalDocuments.map((images) =>
 				images.map((image) => {
 					const reader = new FileReader();
 					reader.readAsDataURL(image);
@@ -586,7 +565,7 @@ function SuspenceWrapped() {
 				})
 			);
 
-			const buyerImages1Base64 = buyerImages1[0].map((image) => {
+			const buyerIdentificationImagesBase64 = images.buyerIdentificationImages[0].map((image) => {
 				const reader = new FileReader();
 				reader.readAsDataURL(image);
 				return new Promise((resolve) => {
@@ -596,17 +575,17 @@ function SuspenceWrapped() {
 				});
 			});
 
-			imagePromises.push(Promise.all(buyerImagesBase64.flat()));
-			imagePromises.push(Promise.all(OtherImageBase64.flat()));
-			imagePromises.push(Promise.all(buyerImages1Base64));
+			imagePromises.push(Promise.all(transactionSupportingDocumentsBase64.flat()));
+			imagePromises.push(Promise.all(buyerAdditionalDocumentsBase64.flat()));
+			imagePromises.push(Promise.all(buyerIdentificationImagesBase64));
 
 			// Wait for all base64 conversion to finish
 			const resolvedImages = await Promise.all(imagePromises);
 
 			const imageData = {
-				buyerImages: resolvedImages[0],
+				transactionSupportingDocuments: resolvedImages[0],
 				OtherImage: resolvedImages[1],
-				buyerImages1: resolvedImages[2],
+				buyerIdentificationImages: resolvedImages[2],
 			};
 
 			const updatedData = {
@@ -628,6 +607,13 @@ function SuspenceWrapped() {
 
 	const handleKeyDown = (event) => {
 		event.preventDefault();
+	};
+
+	const handleNext = () => setFormCounter((prev) => prev + 1);
+	const handleBack = () => setFormCounter((prev) => Math.max(prev - 1, 1));
+
+	const handleBuyerChange = (field) => (event) => {
+		setBuyerOneData({...buyerOneData, [field]: event.target.value});
 	};
 
 	return (
@@ -678,9 +664,7 @@ function SuspenceWrapped() {
 										<button
 											disabled={formCounter < 2}
 											className="bg-miles-50 text-miles-600 hover:bg-miles-100 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-opacity-80 disabled:cursor-not-allowed disabled:text-gray-400"
-											onClick={() => {
-												setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
-											}}
+											onClick={handleBack}
 										>
 											Back
 										</button>
@@ -690,9 +674,7 @@ function SuspenceWrapped() {
 												radioBtnStatus !== "secondaryPlan"
 											}
 											className="bg-miles-500 text-miles-50 hover:bg-miles-600 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-opacity-80 disabled:cursor-not-allowed disabled:text-gray-300"
-											onClick={() => {
-												setFormCounter((prev) => prev + 1);
-											}}
+											onClick={handleNext}
 										>
 											Next
 										</button>
@@ -713,372 +695,12 @@ function SuspenceWrapped() {
 													</AccordionItemButton>
 												</AccordionItemHeading>
 												<AccordionItemPanel>
-													<div
-														className="grid grid-cols-2 gap-x-5 gap-y-3 mt-4">
-														<div className="">
-															<label className="mr-2">
-																Full name
-															</label>
-															<input
-																disabled
-																className="form-control"
-																type="text"
-																value={buyerOneData.buyername}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		buyername: e.target.value,
-																	})
-																}
-																placeholder="Buyer Cutomer Name"
-															/>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																Phone
-															</label>
-															<input
-																disabled
-																className="form-control"
-																value={buyerOneData.buyerContact}
-																type="number"
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		buyerContact: e.target.value,
-																	})
-																}
-																placeholder="Contact Number"
-															/>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																Email
-															</label>
-															<input
-																className="form-control"
-																value={buyerOneData.buyerEmail}
-																type="text"
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		buyerEmail: e.target.value,
-																	})
-																}
-																placeholder="Email"
-															/>
-														</div>
-
-														<div className="">
-															<label className="mr-2">
-																Date of Birth{" "}
-																<span className="text-red-500">*</span>
-															</label>
-															<input
-																className="form-control"
-																type="date"
-																onKeyDown={handleKeyDown}
-																// onFocus={toggleInputType}
-																value={buyerOneData.buyerdob}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		buyerdob: e.target.value,
-																	})
-																}
-																placeholder="Date of Birth"
-																max={new Date().toISOString().split("T")[0]} // Set max date to today's date
-															/>
-														</div>
-
-														<div className="">
-															<label className="mr-2">
-																Passport Number{" "}
-																<span className="text-red-500">*</span>
-															</label>
-
-															<input
-																className="form-control"
-																value={buyerOneData.buyerpassport}
-																type="text"
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		buyerpassport: e.target.value,
-																	})
-																}
-																placeholder="Passport Number"
-															/>
-														</div>
-
-														<div className="">
-															<label className="mr-2">
-																Passport Expiry{" "}
-																<span className="text-red-500">*</span>
-															</label>
-															<input
-																className="form-control"
-																type="date"
-																onKeyDown={handleKeyDown}
-																// onFocus={toggleInputType}
-																value={buyerOneData.passportexpiry}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		passportexpiry: e.target.value,
-																	})
-																}
-																placeholder="Emirates Expiry"
-																min={new Date().toISOString().split("T")[0]} // Set max date to today's date
-															/>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																Nationality{" "}
-																<span className="text-red-500">*</span>
-															</label>
-															<input
-																className="form-control"
-																value={buyerOneData.nationality}
-																type="text"
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		nationality: e.target.value,
-																	})
-																}
-																placeholder="Nationality"
-															/>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																UAE Resident/Non Resident{" "}
-																<span className="text-red-500">*</span>
-															</label>
-
-															<SearchableSelect
-																options={options1}
-																defaultValue={buyerOneData.Resident}
-																onChange={(selectedOption2) =>
-																	handleSelectChange2(
-																		"Resident",
-																		selectedOption2
-																	)
-																}
-															></SearchableSelect>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																Emirates ID
-															</label>
-															<input
-																disabled={
-																	buyerOneData.Resident === "No" ||
-																	!buyerOneData.Resident
-																}
-																value={buyerOneData.emiratesid}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		emiratesid: e.target.value,
-																	})
-																}
-																className="form-control"
-																type="text"
-																placeholder="Emirates ID"
-															/>
-														</div>
-														<div className="">
-															<label className="mr-2">
-																Emirates Expiry
-															</label>
-															<input
-																className="form-control"
-																type="date"
-																onKeyDown={handleKeyDown}
-																disabled={
-																	buyerOneData.Resident === "No" ||
-																	!buyerOneData.Resident
-																}
-																// onFocus={toggleInputType}
-																value={buyerOneData.emiratesExpiry}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		emiratesExpiry: e.target.value,
-																	})
-																}
-																placeholder="Emirates Expiry"
-																min={new Date().toISOString().split("T")[0]} // Set max date to today's date
-															/>
-														</div>
-
-														<div className="col-span-2">
-															<label className="mr-2">
-																Buyer Address{" "}
-																<span className="text-red-500">*</span>
-															</label>
-															<input
-																className="form-control"
-																type="text"
-																value={buyerOneData.address}
-																onChange={(e) =>
-																	setBuyerOneData({
-																		...buyerOneData,
-																		address: e.target.value,
-																	})
-																}
-																placeholder="Buyer Address"
-															/>
-														</div>
-													</div>
-													<div className="w-full mt-4">
-														<div
-															className="w-full flex items-center justify-between ">
-															<p
-																className="w-full relative overflow-hidden block text-xl font-bold">
-                                <span
-																	className='block relative after:content-[" "] align-baseline  after:absolute after:w-full after:h-2 after:border-t-4 after:ml-3 after:border-slate-400 after:top-[50%]'>
-                                  Documents to Upload
-                                </span>
-															</p>
-														</div>
-														<div
-															className="w-full grid grid-cols-2 gap-x-5 gap-y-3">
-															<div>
-																<div className="flex  gap-3">
-																	<p
-																		className="block mb-0 text-lg font-medium  text-gray-900 leading-normal ">
-																		Buyer's Passport{" "}
-																		<span className="text-red-500">*</span>
-																	</p>
-																	<div>
-																		<div className="flex items-center gap-2 ">
-																			<div className="input-group">
-																				<div className="relative">
-																					<label
-																						htmlFor="emirateID"
-																						className="absolute cursor-pointer text-xl right-0 mx-auto my-auto"
-																					></label>
-																				</div>
-																				<p>Passport Front</p>
-
-																				<input
-																					onChange={(e) =>
-																						handleFileChange3(
-																							0,
-																							0,
-																							e.target.files
-																						)
-																					}
-																					className="block  text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-																					aria-describedby="file_input_help"
-																					id="emirateID"
-																					title="Passport front"
-																					type="file"
-																				/>
-																			</div>
-																		</div>
-
-																		<div className="flex items-top gap-2 mt-2">
-																			<div className="input-group">
-																				<div className="relative">
-																					<label
-																						htmlFor="emirateID"
-																						className="absolute cursor-pointer text-xl right-0 mx-auto my-auto"
-																					></label>
-																				</div>
-
-																				<p>Passport Back</p>
-																				<input
-																					onChange={(e) =>
-																						handleFileChange3(
-																							0,
-																							1,
-																							e.target.files
-																						)
-																					}
-																					className="block  text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-																					aria-describedby="file_input_help"
-																					id="emirateID"
-																					type="file"
-																					title="Passport Back"
-																				/>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-															{buyerOneData.Resident === "" ||
-															buyerOneData.Resident == "No" ? null : (
-																<div>
-																	<div className="flex items-center gap-4">
-																		<p
-																			className="block text-lg mb-0 leading-normal font-medium text-gray-900">
-																			Emirates ID
-																		</p>
-																		<div>
-																			<div className="flex items-center gap-2">
-																				<div className="relative">
-																					<label
-																						htmlFor="emirateID"
-																						className="absolute cursor-pointer text-xl right-0 mx-auto my-auto"
-																					></label>
-																				</div>
-
-																				<input
-																					onChange={(e) =>
-																						handleFileChange3(
-																							0,
-																							3,
-																							e.target.files
-																						)
-																					}
-																					className="block  text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-																					aria-describedby="file_input_help"
-																					id="emirateID"
-																					type="file"
-																					title="Emirate Id"
-																				/>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															)}
-														</div>
-
-														<div
-															className="flex items-center gap-4 w-[450px] justify-between mt-2">
-															<p
-																className=" text-lg !mb-0 leading-normal inline-block font-medium text-gray-900">
-																Visa{" "}
-																<span className={`text-red-500 inline-block`}>
-                                  *
-                                </span>
-															</p>
-															<div>
-																<div className="flex items-center gap-2">
-																	<div className="relative">
-																		<label
-																			htmlFor="Visa"
-																			className="absolute cursor-pointer text-xl right-0 mx-auto my-auto"
-																		></label>
-																	</div>
-																	<input
-																		onChange={(e) =>
-																			handleFileChange3(0, 2, e.target.files)
-																		}
-																		title="Emirates ID"
-																		className="block  text-sm text-gray-900 border border-gray-300 cursor-pointer focus:outline-none"
-																		aria-describedby="file_input_help"
-																		id="Visa"
-																		type="file"
-																	/>
-																</div>
-															</div>
-														</div>
-													</div>
+													<BuyerForm
+														buyerData={buyerOneData}
+														handleBuyerChange={handleBuyerChange}
+														handleFileChange={handleFileChange}
+														yesNoOptions={yesNoOptions}
+													/>
 												</AccordionItemPanel>
 											</AccordionItem>
 										</Accordion>
@@ -1135,7 +757,9 @@ function SuspenceWrapped() {
 																	/>
 																</div>
 																<div className="">
-																	<label>Email</label>
+																	<label className="mr-2">
+																		Email
+																	</label>
 																	<input
 																		className="form-control"
 																		value={buyer.buyeremail}
@@ -1151,7 +775,7 @@ function SuspenceWrapped() {
 																</div>
 
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		Date of Birth{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1159,7 +783,6 @@ function SuspenceWrapped() {
 																		className="form-control"
 																		type="date"
 																		onKeyDown={handleKeyDown}
-																		// onFocus={toggleInputType}
 																		value={buyer.buyerdob}
 																		onChange={(e) =>
 																			handleInputChange(
@@ -1174,7 +797,7 @@ function SuspenceWrapped() {
 																</div>
 
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		Passport Number{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1194,7 +817,7 @@ function SuspenceWrapped() {
 																</div>
 
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		Passport Expiry{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1202,7 +825,6 @@ function SuspenceWrapped() {
 																		className="form-control"
 																		type="date"
 																		onKeyDown={handleKeyDown}
-																		// onFocus={toggleInputType}
 																		value={buyer.passportexpiry}
 																		onChange={(e) =>
 																			handleInputChange(
@@ -1216,7 +838,7 @@ function SuspenceWrapped() {
 																	/>
 																</div>
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		Nationality{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1224,30 +846,26 @@ function SuspenceWrapped() {
 																		className="form-control"
 																		type="text"
 																		value={buyer.nationality}
-																		onChange={(e) =>
-																			handleInputChange(
-																				index,
-																				"nationality",
-																				e.target.value
-																			)
-																		}
+																		onChange={handleBuyerChange('nationality')}
 																		placeholder="Nationality"
 																	/>
 																</div>
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		UAE Resident/Non Resident{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
 																	<SearchableSelect
-																		options={options1}
+																		options={yesNoOptions}
 																		onChange={(selectedOption) =>
 																			handleSelectChange(index, selectedOption)
 																		}
 																	/>
 																</div>
 																<div className="">
-																	<label>Emirates ID</label>
+																	<label className="mr-2">
+																		Emirates ID
+																	</label>
 																	<input
 																		disabled={
 																			buyer.Resident === "No" || !buyer.Resident
@@ -1266,7 +884,9 @@ function SuspenceWrapped() {
 																	/>
 																</div>
 																<div className="">
-																	<label>Emirates Expiry</label>
+																	<label className="mr-2">
+																		Emirates Expiry
+																	</label>
 																	<input
 																		className="form-control"
 																		disabled={
@@ -1516,7 +1136,6 @@ function SuspenceWrapped() {
 												className="form-control"
 												type="date"
 												onKeyDown={handleKeyDown}
-												// onFocus={toggleInputType}
 												onChange={(e) =>
 													setBuyerOneData({
 														...buyerOneData,
