@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="no white text">
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="ui fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Your-Deals/create/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Your-Deals/create/page.js" afterDir="false" />
     </list>
@@ -318,7 +318,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726125348975</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="disabled back and next btns colors">
+      <option name="closed" value="true" />
+      <created>1726125871111</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1726125871111</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -348,8 +356,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="community leads page fixes" />
-    <MESSAGE value="lead card ui update" />
     <MESSAGE value="lead card update functionalities" />
     <MESSAGE value="lead card selection working" />
     <MESSAGE value="update website colors to match logo" />
@@ -373,6 +379,8 @@
     <MESSAGE value="fix: should push to lastBuyerMandatoryFields instead of mandatory fields" />
     <MESSAGE value="refactor Reinitialize Temp Added Buyer Data" />
     <MESSAGE value="no white text" />
-    <option name="LAST_COMMIT_MESSAGE" value="no white text" />
+    <MESSAGE value="disabled back and next btns colors" />
+    <MESSAGE value="ui fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="ui fixes" />
   </component>
 </project>

@@ -637,19 +637,16 @@ function SuspenceWrapped() {
 					<div className="w-full flex justify-center  items-center">
 						<div className="w-full flex flex-col justify-center items-center">
 							<div className="w-full">
-								<h4 className="text-center">Deal Type</h4>
+								<h1 className="text-center text-xl font-bold">Deal Type</h1>
 							</div>
 							{formCounter === 1 && (
 								<div
-									className="flex flex-col  w-full max-w-[85%] gap-4 h-[65svh] mt-[3em]">
+									className="flex flex-col w-full max-w-[85%] gap-4 h-[65svh]">
 									<div className="flex gap-4 justify-center items-center">
-										<p className="text-2xl mb-0">Your Deal Type:</p>
+										<p className="text-xl mb-0">Your Deal Type:</p>
 										<div className="flex items-center mt-1 h-[50svh]">
-											<label className="text-xl mb-0" htmlFor="checker1">
-												Off-Plan
-											</label>
 											<input
-												className="ml-2"
+												className="mr-2"
 												type="radio"
 												id="checker1"
 												name="dealRadio"
@@ -657,13 +654,13 @@ function SuspenceWrapped() {
 												onChange={(e) => setRadioBtnStatus(e.target.value)}
 												checked={radioBtnStatus === "offPlan"}
 											/>
+											<label className="text-xl mb-0" htmlFor="checker1">
+												Off-Plan
+											</label>
 										</div>
 										<div className="flex items-center mt-1">
-											<label className="text-xl mb-0" htmlFor="checker2">
-												Secondary
-											</label>
 											<input
-												className="ml-2"
+												className="mr-2"
 												type="radio"
 												id="checker2"
 												name="dealRadio"
@@ -671,6 +668,9 @@ function SuspenceWrapped() {
 												checked={radioBtnStatus === "secondaryPlan"}
 												onChange={(e) => setRadioBtnStatus(e.target.value)}
 											/>
+											<label className="text-xl mb-0" htmlFor="checker2">
+												Secondary
+											</label>
 										</div>
 									</div>
 									<div className=""></div>
@@ -716,7 +716,9 @@ function SuspenceWrapped() {
 													<div
 														className="grid grid-cols-2 gap-x-5 gap-y-3 mt-4">
 														<div className="">
-															<label>Full name</label>
+															<label className="mr-2">
+																Full name
+															</label>
 															<input
 																disabled
 																className="form-control"
@@ -732,7 +734,9 @@ function SuspenceWrapped() {
 															/>
 														</div>
 														<div className="">
-															<label>Phone</label>
+															<label className="mr-2">
+																Phone
+															</label>
 															<input
 																disabled
 																className="form-control"
@@ -748,7 +752,9 @@ function SuspenceWrapped() {
 															/>
 														</div>
 														<div className="">
-															<label>Email</label>
+															<label className="mr-2">
+																Email
+															</label>
 															<input
 																className="form-control"
 																value={buyerOneData.buyerEmail}
@@ -764,7 +770,7 @@ function SuspenceWrapped() {
 														</div>
 
 														<div className="">
-															<label>
+															<label className="mr-2">
 																Date of Birth{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -772,7 +778,7 @@ function SuspenceWrapped() {
 																className="form-control"
 																type="date"
 																onKeyDown={handleKeyDown}
-																onFocus={toggleInputType}
+																// onFocus={toggleInputType}
 																value={buyerOneData.buyerdob}
 																onChange={(e) =>
 																	setBuyerOneData({
@@ -786,7 +792,7 @@ function SuspenceWrapped() {
 														</div>
 
 														<div className="">
-															<label>
+															<label className="mr-2">
 																Passport Number{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -806,7 +812,7 @@ function SuspenceWrapped() {
 														</div>
 
 														<div className="">
-															<label>
+															<label className="mr-2">
 																Passport Expiry{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -814,7 +820,7 @@ function SuspenceWrapped() {
 																className="form-control"
 																type="date"
 																onKeyDown={handleKeyDown}
-																onFocus={toggleInputType}
+																// onFocus={toggleInputType}
 																value={buyerOneData.passportexpiry}
 																onChange={(e) =>
 																	setBuyerOneData({
@@ -827,7 +833,7 @@ function SuspenceWrapped() {
 															/>
 														</div>
 														<div className="">
-															<label>
+															<label className="mr-2">
 																Nationality{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -845,7 +851,7 @@ function SuspenceWrapped() {
 															/>
 														</div>
 														<div className="">
-															<label>
+															<label className="mr-2">
 																UAE Resident/Non Resident{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -862,7 +868,9 @@ function SuspenceWrapped() {
 															></SearchableSelect>
 														</div>
 														<div className="">
-															<label>Emirates ID</label>
+															<label className="mr-2">
+																Emirates ID
+															</label>
 															<input
 																disabled={
 																	buyerOneData.Resident === "No" ||
@@ -881,7 +889,9 @@ function SuspenceWrapped() {
 															/>
 														</div>
 														<div className="">
-															<label>Emirates Expiry</label>
+															<label className="mr-2">
+																Emirates Expiry
+															</label>
 															<input
 																className="form-control"
 																type="date"
@@ -890,7 +900,7 @@ function SuspenceWrapped() {
 																	buyerOneData.Resident === "No" ||
 																	!buyerOneData.Resident
 																}
-																onFocus={toggleInputType}
+																// onFocus={toggleInputType}
 																value={buyerOneData.emiratesExpiry}
 																onChange={(e) =>
 																	setBuyerOneData({
@@ -904,7 +914,7 @@ function SuspenceWrapped() {
 														</div>
 
 														<div className="col-span-2">
-															<label>
+															<label className="mr-2">
 																Buyer Address{" "}
 																<span className="text-red-500">*</span>
 															</label>
@@ -1087,8 +1097,8 @@ function SuspenceWrapped() {
 														<AccordionItemPanel>
 															<div
 																className="grid grid-cols-2 gap-x-5 gap-y-3 mt-4">
-																<div className="">
-																	<label>
+																<div>
+																	<label className="mr-2">
 																		Full name{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1107,7 +1117,7 @@ function SuspenceWrapped() {
 																	/>
 																</div>
 																<div className="">
-																	<label>
+																	<label className="mr-2">
 																		Phone{" "}
 																		<span className="text-red-500">*</span>
 																	</label>
@@ -1149,7 +1159,7 @@ function SuspenceWrapped() {
 																		className="form-control"
 																		type="date"
 																		onKeyDown={handleKeyDown}
-																		onFocus={toggleInputType}
+																		// onFocus={toggleInputType}
 																		value={buyer.buyerdob}
 																		onChange={(e) =>
 																			handleInputChange(
@@ -1192,7 +1202,7 @@ function SuspenceWrapped() {
 																		className="form-control"
 																		type="date"
 																		onKeyDown={handleKeyDown}
-																		onFocus={toggleInputType}
+																		// onFocus={toggleInputType}
 																		value={buyer.passportexpiry}
 																		onChange={(e) =>
 																			handleInputChange(
@@ -1264,7 +1274,7 @@ function SuspenceWrapped() {
 																		}
 																		type="date"
 																		onKeyDown={handleKeyDown}
-																		onFocus={toggleInputType}
+																		// onFocus={toggleInputType}
 																		value={buyer.emiratesExpiry}
 																		onChange={(e) =>
 																			handleInputChange(
@@ -1506,7 +1516,7 @@ function SuspenceWrapped() {
 												className="form-control"
 												type="date"
 												onKeyDown={handleKeyDown}
-												onFocus={toggleInputType}
+												// onFocus={toggleInputType}
 												onChange={(e) =>
 													setBuyerOneData({
 														...buyerOneData,
@@ -1545,7 +1555,7 @@ function SuspenceWrapped() {
 												className="form-control"
 												type="date"
 												onKeyDown={handleKeyDown}
-												onFocus={toggleInputType}
+												// onFocus={toggleInputType}
 												onChange={(e) =>
 													setBuyerOneData({
 														...buyerOneData,
@@ -1566,7 +1576,7 @@ function SuspenceWrapped() {
 												className="form-control"
 												type="date"
 												onKeyDown={handleKeyDown}
-												onFocus={toggleInputType}
+												// onFocus={toggleInputType}
 												onChange={(e) =>
 													setBuyerOneData({
 														...buyerOneData,
