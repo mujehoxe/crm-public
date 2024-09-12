@@ -5,3 +5,4 @@ config
 .vercel
 logs.log
 .idea
+.idea/workspace.xml
