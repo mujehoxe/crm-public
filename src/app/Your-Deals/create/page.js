@@ -677,7 +677,7 @@ function SuspenceWrapped() {
 									<div className="flex gap-4 justify-end ">
 										<button
 											disabled={formCounter < 2}
-											className="bg-miles-50 text-miles-600 hover:bg-miles-100 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-gray-200"
+											className="bg-miles-50 text-miles-600 hover:bg-miles-100 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-opacity-80 disabled:cursor-not-allowed disabled:text-gray-400"
 											onClick={() => {
 												setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
 											}}
@@ -689,7 +689,7 @@ function SuspenceWrapped() {
 												radioBtnStatus !== "offPlan" &&
 												radioBtnStatus !== "secondaryPlan"
 											}
-											className="bg-miles-500 text-miles-50 hover:bg-miles-600 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-gray-200 "
+											className="bg-miles-500 text-miles-50 hover:bg-miles-600 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-opacity-80 disabled:cursor-not-allowed disabled:text-gray-300"
 											onClick={() => {
 												setFormCounter((prev) => prev + 1);
 											}}
