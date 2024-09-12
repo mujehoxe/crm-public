@@ -281,45 +281,27 @@ function SuspenceWrapped() {
 		});
 	};
 
-	const addBuyer = () => {
-		// Initialize tempAddedBuyerData if it's null
-		if (!tempAddedBuyerData) {
-			setTempAddedBuyerData([
-				{
-					buyername: "",
-					buyercontact: "",
-					buyeremail: "",
-					buyerdob: "",
-					buyerpassport: "",
-					passportexpiry: "",
-					nationality: "",
-					Resident: "",
-					emiratesExpiry: "",
-					emirateid: "",
-					address: "",
-				},
-			]);
-			return;
-		}
+	function reinitializeTempAddedBuyerData() {
+		setTempAddedBuyerData((curr) => [
+			...curr,
+			{
+				buyername: "",
+				buyercontact: "",
+				buyeremail: "",
+				buyerdob: "",
+				buyerpassport: "",
+				passportexpiry: "",
+				nationality: "",
+				Resident: "",
+				emiratesExpiry: "",
+				address: "",
+			},
+		]);
+	}
 
-		// Check if tempAddedBuyerData is empty
-		if (tempAddedBuyerData.length === 0) {
-			setTempAddedBuyerData([
-				{
-					buyername: "",
-					buyercontact: "",
-					buyeremail: "",
-					buyerdob: "",
-					buyerpassport: "",
-					passportexpiry: "",
-					nationality: "",
-					Resident: "",
-					emiratesExpiry: "",
-					emirateid: "",
-					address: "",
-				},
-			]);
-			return;
+	const addBuyer = () => {
+		if (!tempAddedBuyerData || tempAddedBuyerData.length === 0) {
+			reinitializeTempAddedBuyerData();
 		}
 
 		let mandatoryFields = [
@@ -333,9 +315,8 @@ function SuspenceWrapped() {
 			"address",
 		];
 
-		if (tempAddedBuyerData[tempAddedBuyerData.length - 1].Resident == "Yes") {
+		if (tempAddedBuyerData[tempAddedBuyerData.length - 1].Resident == "Yes")
 			mandatoryFields.push("emiratesExpiry", "emirateid")
-		}
 
 		const lastAddedBuyer = tempAddedBuyerData[tempAddedBuyerData.length - 1];
 
@@ -377,21 +358,7 @@ function SuspenceWrapped() {
 			];
 			toast.error(errorMessages.join("\n"));
 		} else {
-			setTempAddedBuyerData((curr) => [
-				...curr,
-				{
-					buyername: "",
-					buyercontact: "",
-					buyeremail: "",
-					buyerdob: "",
-					buyerpassport: "",
-					passportexpiry: "",
-					nationality: "",
-					Resident: "",
-					emiratesExpiry: "",
-					address: "",
-				},
-			]);
+			reinitializeTempAddedBuyerData();
 		}
 	};
 
@@ -415,9 +382,8 @@ function SuspenceWrapped() {
 			"address",
 		];
 
-		if (buyerOneData.Resident === "Yes") {
+		if (buyerOneData.Resident === "Yes")
 			mandatoryFields.push("emiratesExpiry", "emiratesid")
-		}
 
 		const emptyFields = mandatoryFields.filter((field) => !buyerOneData[field]);
 		const imageErrors = [];
@@ -564,13 +530,11 @@ function SuspenceWrapped() {
 			"ProjectName",
 		];
 
-		if (buyerOneData.developer === "other") {
+		if (buyerOneData.developer === "other")
 			mandatoryFields.push("otherDeveloper")
-		}
 
-		if (buyerOneData.propertyType !== "Apartment") {
+		if (buyerOneData.propertyType !== "Apartment")
 			mandatoryFields.push("PlotNumber")
-		}
 
 		const emptyFields = mandatoryFields.filter((field) => !buyerOneData[field]);
 
@@ -595,8 +559,7 @@ function SuspenceWrapped() {
 				...(imageErrors.length > 0 ? imageErrors : []),
 			];
 			toast.error(errorMessages.join("\n"));
-		}
-		else {
+		} else {
 			const imagePromises = [];
 
 			const buyerImagesBase64 = buyerImages.map((images) =>
