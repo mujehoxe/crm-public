@@ -15,7 +15,7 @@ import {
 	Bars3Icon,
 	ClipboardDocumentCheckIcon,
 	Cog6ToothIcon,
-	HomeIcon,
+	HomeIcon, MapIcon,
 	UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import {toast} from "react-toastify";
@@ -243,6 +243,13 @@ const Sidebar = ({setSettingsBarOpen}) => {
 				"finance",
 			],
 		},
+		{
+			id: 5,
+			name: "locate",
+			link: "/locate",
+			icon: <MapIcon className="ml-3 w-6"/>,
+			visibility: ["all"],
+		},
 	];
 
 	const menuRef = useRef(null);
@@ -267,13 +274,13 @@ const Sidebar = ({setSettingsBarOpen}) => {
 			className="sticky select-none top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
 			style={{width: sidePanelStat ? "16rem" : "5rem"}}
 		>
-			<div className="flex-shrink-0 h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
+			<div className="flex-shrink-0 flex h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
 				<div
 					onClick={() => setSidePanelStat(!sidePanelStat)}
 					className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
 				>
 					<MenuButton
-						className="flex px-2 items-center transition-colors duration-200 hover:text-white">
+						className="flex my-auto px-2 items-center transition-colors duration-200 hover:text-white">
 						<Bars3Icon className="ml-3 w-6 text-gray-400"/>
 					</MenuButton>
 					<span

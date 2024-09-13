@@ -573,7 +573,6 @@ export default function CommunityLeadsPage() {
 			{renderModals}
 			<div className="container h-screen mx-auto">
 				<h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
-
 				<div
 					className="w-full tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
 					<div
