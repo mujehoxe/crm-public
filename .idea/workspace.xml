@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="remove duplicate mandatory fields">
+    <list default="true" id="c4b9153a-c458-4a5a-a9af-831f155eee4c" name="Changes" comment="marker ui fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Community-Leads/EditModal/CustomMarker.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/locate/CustomMarker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/locate/RealtimeMap.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/locate/RealtimeMap.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -306,7 +305,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726265225151</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="marker ui fixes">
+      <option name="closed" value="true" />
+      <created>1726265988496</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1726265988497</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,7 +343,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="miles-logo.svg" />
     <MESSAGE value="no btn ref" />
     <MESSAGE value="community leads page fixes" />
     <MESSAGE value="lead card ui update" />
@@ -361,6 +367,7 @@
     <MESSAGE value="ignore .idea" />
     <MESSAGE value="remove duplicate mandatory fields" />
     <MESSAGE value="Agents real time map" />
-    <option name="LAST_COMMIT_MESSAGE" value="Agents real time map" />
+    <MESSAGE value="marker ui fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="marker ui fixes" />
   </component>
 </project>

@@ -237,7 +237,7 @@ export default function RealtimeMap() {
 			className="border rounded-lg shadow-lg overflow-hidden border-gray-200 scrollbar-none">
 			<div className="inline-block min-w-full align-middle">
 				<div className="w-full h-[36rem] flex">
-					<div className="p-4">
+					<div className="">
 						<ul role="list"
 								className="h-full divide-y w-[382px] divide-gray-100 select-none overflow-y-auto">
 							{agents.map((agent) => (
