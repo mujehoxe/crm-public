@@ -12,7 +12,7 @@ import L from 'leaflet';
 import TokenDecoder from "@/app/components/Cookies";
 import axios from "axios";
 import {FaRegUserCircle} from "react-icons/fa";
-import CustomMarker from "@/app/Community-Leads/EditModal/CustomMarker";
+import CustomMarker from "./CustomMarker";
 
 // Fix for default marker icon in Leaflet with Next.js
 delete L.Icon.Default.prototype._getIconUrl;
@@ -310,14 +310,16 @@ export default function RealtimeMap() {
 										</div>
 									}
 								>
+									<div className="overflow-hidden h-12 w-12 rounded-full bg-gray-50 object-cover">
 									{agent.Avatar ?
 										<img
-											className="h-12 w-12 flex-none bg-gray-50 rounded-full object-cover"
+											className="h-12 w-12 m-auto flex-none rounded-full"
 											src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${agent?.Avatar}`}
 											alt=""/> :
 										<FaRegUserCircle className="h-12 w-12 bg-gray-50 rounded-full text-gray-400"
 																		 aria-hidden="true"/>
 									}
+									</div>
 								</CustomMarker>
 							))}
 							{selectedAgent && agentHistory[selectedAgent] && (
