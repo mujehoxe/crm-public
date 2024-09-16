@@ -235,6 +235,12 @@ export default function RealtimeMap() {
     }
   };
 
+  const isAgentOnline = useCallback((agent) => {
+    return (
+      Object.values(onlineAgents).filter((a) => a.id === agent._id).length > 0
+    );
+  });
+
   return (
     <div className="border rounded-lg shadow-lg overflow-hidden border-gray-200 scrollbar-none">
       <div className="inline-block min-w-full align-middle">
@@ -250,12 +256,12 @@ export default function RealtimeMap() {
                   onClick={(e) => {
                     handleAgentSelect(agent._id);
                   }}
-                  className={`flex rounded-md justify-between gap-x-4 px-2 py-4 ${
+                  className={`${!isAgentOnline(agent) && "opacity-40"} ${
                     agent._id === selectedAgent
                       ? "bg-miles-100 hover:bg-miles-200"
-                      : "hover:bg-gray-100"
-                  }
-										`}
+                      : isAgentOnline(agent) && "hover:bg-gray-100"
+                  } flex rounded-md justify-between gap-x-4 px-2 py-4 
+									`}
                 >
                   <div className="flex space-x-2 items-center">
                     {agent?.Avatar ? (
@@ -285,9 +291,7 @@ export default function RealtimeMap() {
                     <p className="text-sm leading-6 text-gray-900 mb-1">
                       {agent.Role}
                     </p>
-                    {Object.values(onlineAgents).filter(
-                      (a) => a.id === agent._id
-                    ).length > 0 && (
+                    {isAgentOnline(agent) && (
                       <div className="flex items-center gap-x-1.5">
                         <div className="flex-none h-min rounded-full bg-emerald-500/20 p-1">
                           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
