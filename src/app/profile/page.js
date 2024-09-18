@@ -170,9 +170,6 @@ function ProfilePage() {
     const fetchdocument = async () => {
       try {
         let url = `/api/staff/get`;
-        if (userrole !== "HR") {
-          url = `/api/staff/document/get/${userid}`;
-        }
         const response = await axios.get(url);
         const staffWithoutDocument = response.data.data.filter(
           (staff) => !staff.documents

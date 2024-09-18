@@ -1,18 +1,12 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Polyline,
-  useMap,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 import TokenDecoder from "@/app/components/Cookies";
 import axios from "axios";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import { MapContainer, Polyline, TileLayer, useMap } from "react-leaflet";
 import CustomMarker from "./CustomMarker";
+import HierarchicalAgentList from "./HierarchicalAgentList";
 
 // Fix for default marker icon in Leaflet with Next.js
 delete L.Icon.Default.prototype._getIconUrl;
@@ -29,7 +23,7 @@ export default function RealtimeMap() {
   const [onlineAgents, setOnlineAgents] = useState({});
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agentHistory, setAgentHistory] = useState({});
-  const [agents, setAgents] = useState([]);
+  const [agents, setAgents] = useState(null);
 
   const userData = TokenDecoder();
   const userid = userData ? userData.id : null;
@@ -43,74 +37,11 @@ export default function RealtimeMap() {
     if (userRole) {
       const fetchAgents = async () => {
         try {
-          const response = await axios.get("/api/staff/get");
-
-          let filteredUsers = response.data.data;
-          if (userRole === "BussinessHead") {
-            const PNLUsers = response.data.data.filter(
-              (user) => user.Role === "PNL" && user.PrentStaff === userid
-            );
-            const PNLIds = PNLUsers.map((user) => user._id);
-            const tlUsers = response.data.data.filter(
-              (user) => user.Role === "TL" && PNLIds.includes(user.PrentStaff)
-            );
-            const tlIds = tlUsers.map((user) => user._id);
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && tlIds.includes(user.PrentStaff)
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredUsers = [...PNLUsers, ...tlUsers, ...atlUsers, ...fosUsers];
-          } else if (userRole === "TL") {
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && user.PrentStaff === userid
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredUsers = [...atlUsers, ...fosUsers];
-          } else if (userRole === "PNL") {
-            const tlUsers = response.data.data.filter(
-              (user) => user.Role === "TL" && user.PrentStaff === userid
-            );
-            const tlIds = tlUsers.map((user) => user._id);
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && tlIds.includes(user.PrentStaff)
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredUsers = [...tlUsers, ...atlUsers, ...fosUsers];
-          } else if (userRole === "ATL") {
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && user.PrentStaff === userid
-            );
-            filteredUsers = [...fosUsers];
-          } else if (userRole === "FOS") {
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && user._id === userid
-            );
-            filteredUsers = [...fosUsers];
-          } else if (userRole === "Admin") {
-            filteredUsers = response.data.data;
-          }
-          filteredUsers = filteredUsers.filter(
-            (user) =>
-              ![
-                "HR",
-                "Finance",
-                "Manager",
-                "Operations",
-                "Marketing",
-                "SalesHead",
-              ].includes(user.Role)
+          const response = await axios.get(
+            "/api/staff/get?preserveHierarchy=true"
           );
 
-          setAgents(filteredUsers);
+          setAgents(response.data.data);
         } catch (error) {
           console.error("Error fetching users:", error);
         }
@@ -126,7 +57,12 @@ export default function RealtimeMap() {
     eventSource.onmessage = (event) => {
       try {
         const data = parseSSEData(event.data);
-        const avatar = agents.find((agent) => agent._id === data.id)?.Avatar;
+        let avatar = "";
+        if (agents?.subordinates?.length > 0)
+          avatar = findAgentInTree(agents, data.id)?.Avatar;
+        else if (agents?.length > 0)
+          agents?.find((agent) => agent._id === data.id)?.Avatar;
+
         if (data && data.id) {
           setOnlineAgents((prevAgents) => ({
             ...prevAgents,
@@ -223,10 +159,11 @@ export default function RealtimeMap() {
     };
   }, [connectToSSE]);
 
-  const handleAgentSelect = (agentId) => {
-    setSelectedAgent(agentId);
-    if (agentId) {
-      connectToHistorySSE(agentId);
+  const handleAgentSelect = (agent) => {
+    if (!isAgentOnline(agent)) return;
+    setSelectedAgent(agent._id);
+    if (agent._id) {
+      connectToHistorySSE(agent._id);
     } else {
       if (historyEventSourceRef.current) {
         historyEventSourceRef.current.close();
@@ -245,67 +182,13 @@ export default function RealtimeMap() {
     <div className="border rounded-lg shadow-lg overflow-hidden border-gray-200 scrollbar-none">
       <div className="inline-block min-w-full align-middle">
         <div className="w-full h-[36rem] flex">
-          <div className="">
-            <ul
-              role="list"
-              className="h-full divide-y w-[382px] divide-gray-100 select-none overflow-y-auto"
-            >
-              {agents.map((agent) => (
-                <li
-                  key={agent.email}
-                  onClick={(e) => {
-                    handleAgentSelect(agent._id);
-                  }}
-                  className={`${!isAgentOnline(agent) && "opacity-40"} ${
-                    agent._id === selectedAgent
-                      ? "bg-miles-100 hover:bg-miles-200"
-                      : isAgentOnline(agent) && "hover:bg-gray-100"
-                  } flex rounded-md justify-between gap-x-4 px-2 py-4 
-									`}
-                >
-                  <div className="flex space-x-2 items-center">
-                    {agent?.Avatar ? (
-                      <img
-                        className="h-12 w-12 flex-none bg-gray-50 rounded-full object-contain"
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL || ""}${
-                          agent?.Avatar
-                        }`}
-                        alt=""
-                      />
-                    ) : (
-                      <FaRegUserCircle
-                        className="h-12 w-12 text-gray-300"
-                        aria-hidden="true"
-                      />
-                    )}
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold leading-6 text-gray-900">
-                        {agent.username}
-                      </p>
-                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                        {agent.email}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p className="text-sm leading-6 text-gray-900 mb-1">
-                      {agent.Role}
-                    </p>
-                    {isAgentOnline(agent) && (
-                      <div className="flex items-center gap-x-1.5">
-                        <div className="flex-none h-min rounded-full bg-emerald-500/20 p-1">
-                          <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        </div>
-                        <p className="text-xs leading-5 text-gray-500">
-                          Online
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <HierarchicalAgentList
+            data={agents}
+            isAgentOnline={isAgentOnline}
+            selectedAgent={selectedAgent}
+            handleAgentSelect={handleAgentSelect}
+          />
+
           <div className="flex-grow">
             {error && <div className="bg-red-500 text-white p-2">{error}</div>}
             <MapContainer
@@ -407,4 +290,15 @@ const parseHistoryData = (data) => {
     console.error("Raw history data:", data);
     throw error;
   }
+};
+
+const findAgentInTree = (tree, id) => {
+  if (tree?._id === id) {
+    return tree;
+  }
+  for (const subordinate of tree?.subordinates) {
+    const found = findAgentInTree(subordinate, id);
+    if (found) return found;
+  }
+  return null;
 };
