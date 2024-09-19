@@ -6,15 +6,29 @@ async function connect() {
     const connection = mongoose.connection;
     connection.setMaxListeners(15);
     connection.on("connected", () => {
-      console.log("connected");
+      console.info("connected");
     });
-    connection.on("error", (err) => {
-      console.log(err);
-      process.exit(1);
+    connection.on("error", (e) => {
+      console.error("MongoDB connection error:", e);
+      retryConnect();
+    });
+    connection.on("disconnected", () => {
+      console.warn("Disconnected from MongoDB");
+      retryConnect();
     });
   } catch (e) {
-    console.log(e);
+    console.error("Initial MongoDB connection failed:", e);
+    retryConnect();
   }
+}
+
+function retryConnect() {
+  setTimeout(() => {
+    connect().catch((err) => {
+      console.error("Retry failed:", err);
+      process.exit(1); // Exit if all retries fail
+    });
+  }, 5000); // Retry after 5 seconds
 }
 
 export default connect;
