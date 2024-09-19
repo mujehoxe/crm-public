@@ -45,6 +45,15 @@ async function addUserToOneSignalAndCRM(userDetails) {
 
 export async function POST(request) {
   try {
+    const token = request.cookies.get("token")?.value || "";
+    const loggedUser = jwt.decode(token);
+
+    if (!loggedUser || cruPermitedRoles.includesloggedUser.role)
+      return NextResponse.json(
+        { error: "You don't have permissions to add staff" },
+        { status: 401 }
+      );
+
     const reqBody = await request.json();
     const {
       username,
@@ -56,15 +65,6 @@ export async function POST(request) {
       image,
       PrentStaff,
     } = reqBody;
-
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || cruPermitedRoles.includesloggedUser.role)
-      return NextResponse.json(
-        { error: "You don't have permissions to add staff" },
-        { status: 401 }
-      );
 
     const imagePath = path.join(
       process.cwd(),

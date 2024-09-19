@@ -3,6 +3,7 @@ import User from "@/models/Users";
 import fs, { promises as fsPromises } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
+import { cruPermitedRoles } from "../permissions";
 
 connect();
 export async function POST(request) {

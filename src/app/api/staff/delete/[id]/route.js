@@ -7,6 +7,15 @@ connect();
 
 export async function DELETE(request, { params }) {
   try {
+    const token = request.cookies.get("token")?.value || "";
+    const loggedUser = jwt.decode(token);
+
+    if (!loggedUser || deletePermitedRoles.includesloggedUser.role)
+      return NextResponse.json(
+        { error: "You don't have permissions to add staff" },
+        { status: 401 }
+      );
+
     const userid = params.id;
     if (!userid) {
       return NextResponse.json(
