@@ -5,11 +5,21 @@ import logger from "@/utils/logger";
 import axios from "axios";
 import jwt from "jsonwebtoken"; // Import jwt directly here
 import ActivityLog from "@/models/Activity";
+import { addPermitedRoles } from "../permisions";
 
 connect();
 
 export async function POST(request) {
   try {
+    const token = request.cookies.get("token")?.value || "";
+    const loggedUser = jwt.decode(token);
+
+    if (!loggedUser || !addPermitedRoles.includes(loggedUser.role))
+      return NextResponse.json(
+        { error: "You don't have permissions to add leads" },
+        { status: 401 }
+      );
+
     const reqBody = await request.json();
     const {
       LeadStatus,
@@ -17,7 +27,6 @@ export async function POST(request) {
       Assigned,
       typeprop,
       Name,
-      Score,
       Phone,
       AltPhone,
       Address,
@@ -35,8 +44,6 @@ export async function POST(request) {
       tags,
       marketingtags,
     } = reqBody;
-    const token = request.cookies.get("token")?.value || "";
-    const decoded = jwt.decode(token);
     const userId = decoded.id;
     const username = decoded.name;
     const newLead = new Leads({
@@ -64,6 +71,7 @@ export async function POST(request) {
       marketingtags: marketingtags || undefined,
       unitnumber,
     });
+
     const savedLead = await newLead.save();
     logger.info("New lead added:", savedLead);
 

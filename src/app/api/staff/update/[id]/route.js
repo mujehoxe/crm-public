@@ -1,11 +1,11 @@
 import connect from "@/dbConfig/dbConfig";
 import User from "@/models/Users";
-import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import fs from "fs";
+import { NextResponse } from "next/server";
 import path from "path";
-import axios from "axios";
 import { cruPermitedRoles } from "../../permissions";
+import jwt from "jsonwebtoken";
 
 connect();
 
@@ -14,7 +14,7 @@ export async function PUT(request, { params }) {
     const token = request.cookies.get("token")?.value || "";
     const loggedUser = jwt.decode(token);
 
-    if (!loggedUser || cruPermitedRoles.includesloggedUser.role)
+    if (!loggedUser || !cruPermitedRoles.includes(loggedUser.role))
       return NextResponse.json(
         { error: "You don't have permissions to add staff" },
         { status: 401 }

@@ -6,6 +6,8 @@ import fs from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
 import { cruPermitedRoles } from "../permissions";
+import jwt from "jsonwebtoken";
+import { addPermitedRoles } from "../../Lead/permisions";
 
 connect();
 async function addUserToOneSignalAndCRM(userDetails) {
@@ -48,7 +50,7 @@ export async function POST(request) {
     const token = request.cookies.get("token")?.value || "";
     const loggedUser = jwt.decode(token);
 
-    if (!loggedUser || cruPermitedRoles.includesloggedUser.role)
+    if (!loggedUser || !addPermitedRoles.includes(loggedUser.role))
       return NextResponse.json(
         { error: "You don't have permissions to add staff" },
         { status: 401 }
@@ -66,14 +68,16 @@ export async function POST(request) {
       PrentStaff,
     } = reqBody;
 
-    const imagePath = path.join(
-      process.cwd(),
-      "public",
-      "users",
-      `${Date.now()}_${username}.png`
-    );
+    const dir = path.join(process.cwd(), "public", "users");
 
-    fs.writeFileSync(imagePath, Buffer.from(image, "base64"));
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+    const imagePath = path.join(dir, `${Date.now()}_${username}.png`);
+
+    fs.writeFileSync(imagePath, Buffer.from(image, "base64"), {
+      recursive: true,
+    });
+
     const user = await User.findOne({ email });
 
     if (user) {

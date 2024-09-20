@@ -6,10 +6,4 @@ export const cruPermitedRoles = [
   "Operations",
 ];
 
-export const deletePermitedRoles = [
-  "superAdmin",
-  "Admin",
-  "HR",
-  "Marketing",
-  "Operations",
-];
+export const deletePermitedRoles = ["superAdmin", "Admin", "HR", "Marketing"];

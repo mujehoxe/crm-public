@@ -1,6 +1,7 @@
 import connect from "@/dbConfig/dbConfig";
 import User from "@/models/Users";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 connect();
 
@@ -18,6 +19,12 @@ export async function GET(request) {
   try {
     const token = request.cookies.get("token")?.value || "";
     const user = jwt.decode(token);
+
+    if (!token)
+      return NextResponse.json(
+        { error: "You're not authorised to get staff" },
+        { status: 401 }
+      );
 
     const handler = roleHandlers[user.role];
     if (!handler)

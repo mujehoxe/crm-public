@@ -4,6 +4,7 @@ import fs, { promises as fsPromises } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
 import { cruPermitedRoles } from "../permissions";
+import jwt from "jsonwebtoken";
 
 connect();
 export async function POST(request) {
@@ -11,7 +12,7 @@ export async function POST(request) {
     const token = request.cookies.get("token")?.value || "";
     const loggedUser = jwt.decode(token);
 
-    if (!loggedUser || cruPermitedRoles.includesloggedUser.role)
+    if (!loggedUser || !cruPermitedRoles.includes(loggedUser.role))
       return NextResponse.json(
         { error: "You don't have permissions to add staff" },
         { status: 401 }
