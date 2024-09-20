@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import RootLayout from "../components/layout";
-import Modal from "../components/modal";
+import Modal from "../Staff/modal";
 import DocumentModal from "../components/doument";
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";

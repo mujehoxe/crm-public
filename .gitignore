@@ -5,3 +5,5 @@ config
 .vercel
 logs.log
 .idea
+public/users
+public/documents
