@@ -77,7 +77,11 @@ const AgentTree = ({
         <div className="flex items-center">
           <button
             onClick={toggleExpand}
-            className={data.subordinates?.length <= 0 && "opacity-0"}
+            className={
+              data.subordinates?.length > 0
+                ? "text-gray-600 hover:text-miles-400"
+                : "opacity-0"
+            }
           >
             {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
           </button>
