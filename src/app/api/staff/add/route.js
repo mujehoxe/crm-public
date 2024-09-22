@@ -5,9 +5,6 @@ import bcryptjs from "bcryptjs";
 import fs from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
-import { cruPermitedRoles } from "../permissions";
-import jwt from "jsonwebtoken";
-import { addPermitedRoles } from "../../Lead/permisions";
 
 connect();
 async function addUserToOneSignalAndCRM(userDetails) {
@@ -46,16 +43,10 @@ async function addUserToOneSignalAndCRM(userDetails) {
 }
 
 export async function POST(request) {
+  if (!(await checkPermission(request, "add", "staff")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || !addPermitedRoles.includes(loggedUser.role))
-      return NextResponse.json(
-        { error: "You don't have permissions to add staff" },
-        { status: 401 }
-      );
-
     const reqBody = await request.json();
     const {
       username,

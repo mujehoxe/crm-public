@@ -1,22 +1,14 @@
-import { NextResponse } from "next/server";
-import User from "@/models/Users";
 import connect from "@/dbConfig/dbConfig";
-import { deletePermitedRoles } from "../../permissions";
-import jwt from "jsonwebtoken";
+import User from "@/models/Users";
+import { NextResponse } from "next/server";
 
 connect();
 
 export async function DELETE(request, { params }) {
+  if (!(await checkPermission(request, "delete", "staff")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || !deletePermitedRoles.includes(loggedUser.role))
-      return NextResponse.json(
-        { error: "You don't have permissions to add staff" },
-        { status: 401 }
-      );
-
     const userid = params.id;
     if (!userid) {
       return NextResponse.json(

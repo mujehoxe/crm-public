@@ -31,9 +31,8 @@ export async function GET(request) {
 }
 
 export async function PATCH(request) {
-  if (!(await checkPermission(request, "manage", "permissions"))) {
+  if (!(await checkPermission(request, "manage", "permissions")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
 
   try {
     const { modules } = await request.json();

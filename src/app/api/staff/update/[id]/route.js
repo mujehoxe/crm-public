@@ -4,22 +4,14 @@ import bcryptjs from "bcryptjs";
 import fs from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
-import { cruPermitedRoles } from "../../permissions";
-import jwt from "jsonwebtoken";
 
 connect();
 
 export async function PUT(request, { params }) {
+  if (!(await checkPermission(request, "edit", "staff")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || !cruPermitedRoles.includes(loggedUser.role))
-      return NextResponse.json(
-        { error: "You don't have permissions to add staff" },
-        { status: 401 }
-      );
-
     const reqBody = await request.json();
     const id = params.id;
     const {
