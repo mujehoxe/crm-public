@@ -6,6 +6,9 @@ import Papa from "papaparse";
 connect();
 
 export async function POST(request, { params }) {
+  if (!(await checkPermission(request, "export", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const id = params.id;
 

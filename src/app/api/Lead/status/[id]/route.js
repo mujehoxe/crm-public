@@ -7,16 +7,10 @@ import { NextResponse } from "next/server";
 connect();
 
 export async function PUT(request, { params }) {
+  if (!(await checkPermission(request, "export", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || !cruPermitedRoles.includes(loggedUser.role))
-      return NextResponse.json(
-        { error: "You don't have permissions to update leads" },
-        { status: 401 }
-      );
-
     const reqBody = await request.json();
     const { status, previousStatus } = reqBody;
     const leadid = params.id;

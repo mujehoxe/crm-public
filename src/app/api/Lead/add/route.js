@@ -1,25 +1,17 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextRequest, NextResponse } from "next/server";
+import ActivityLog from "@/models/Activity";
 import Leads from "@/models/Leads";
 import logger from "@/utils/logger";
-import axios from "axios";
-import jwt from "jsonwebtoken"; // Import jwt directly here
-import ActivityLog from "@/models/Activity";
-import { addPermitedRoles } from "../permisions";
+import { NextResponse } from "next/server";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 
 export async function POST(request) {
+  if (!(await checkPermission(request, "add", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
-    const token = request.cookies.get("token")?.value || "";
-    const loggedUser = jwt.decode(token);
-
-    if (!loggedUser || !addPermitedRoles.includes(loggedUser.role))
-      return NextResponse.json(
-        { error: "You don't have permissions to add leads" },
-        { status: 401 }
-      );
-
     const reqBody = await request.json();
     const {
       LeadStatus,

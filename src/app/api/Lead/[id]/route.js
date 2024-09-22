@@ -5,6 +5,9 @@ import connect from "@/dbConfig/dbConfig";
 connect();
 
 export async function GET(request, { params }) {
+  if (!(await checkPermission(request, "view", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const id = params.id;
 

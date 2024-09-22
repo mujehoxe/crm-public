@@ -1,13 +1,16 @@
-import getDataFromToken from "@/helpers/getDataFromtoken";
-import { NextResponse } from "next/server";
 import connect from "@/dbConfig/dbConfig";
-import Leads from "@/models/Leads";
 import ActivityLog from "@/models/Activity";
+import Leads from "@/models/Leads";
 import jwt from "jsonwebtoken"; // Import jwt directly here
+import { NextResponse } from "next/server";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 
 export async function PUT(request) {
+  if (!(await checkPermission(request, "map_leads", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const reqBody = await request.json();
     const { leads, assignee, source, status, description } = reqBody;

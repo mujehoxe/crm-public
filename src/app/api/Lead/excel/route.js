@@ -1,12 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import Papa from "papaparse";
 import connect from "@/dbConfig/dbConfig";
 import Leads from "@/models/Leads";
-import TagsModel from "@/models/Tags";
-import StatusModel from "@/models/Status";
 import Source from "@/models/Source";
+import TagsModel from "@/models/Tags";
 import User from "@/models/Users";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
+import Papa from "papaparse";
 // Connect to the database
 connect();
 
@@ -141,6 +140,9 @@ function parseCSV(csvData) {
 }
 
 export async function POST(request) {
+  if (!(await checkPermission(request, "import_from_csv", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const reqBody = await request.json();
     const { file, LeadStatus, Source } = reqBody;

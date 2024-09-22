@@ -9,6 +9,9 @@ import ActivityLog from "@/models/Activity";
 connect();
 
 export async function POST(request) {
+  if (!(await checkPermission(request, "add_meeting", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const reqBody = await request.json();
     const {

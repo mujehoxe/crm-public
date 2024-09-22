@@ -1,4 +1,4 @@
-import {NextResponse} from "next/server";
+import { NextResponse } from "next/server";
 import connect from "@/dbConfig/dbConfig";
 import Leads from "@/models/Leads";
 import ActivityLog from "@/models/Activity";
@@ -7,112 +7,115 @@ import TagsModel from "@/models/Tags";
 
 connect();
 
-export async function PATCH(request, {params}) {
-	try {
-		const reqBody = await request.json();
+export async function PATCH(request, { params }) {
+  if (!(await checkPermission(request, "add", "lead")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-		// Define the fields we expect to update
-		const expectedFields = [
-			"LeadStatus",
-			"Source",
-			"Assigned",
-			"Name",
-			"Score",
-			"Phone",
-			"AltPhone",
-			"Address",
-			"Email",
-			"City",
-			"State",
-			"Project",
-			"Budget",
-			"Country",
-			"Location",
-			"ZipCode",
-			"Priority",
-			"Type",
-			"marketingtags",
-			"tags",
-			"Description",
-			"updateDescription",
-			"previousStatus",
-			"currentLead",
-		];
+  try {
+    const reqBody = await request.json();
 
-		const token = request.cookies.get("token")?.value || "";
-		const decoded = jwt.decode(token);
-		const userId = decoded.id;
+    const expectedFields = [
+      "LeadStatus",
+      "Source",
+      "Assigned",
+      "Name",
+      "Score",
+      "Phone",
+      "AltPhone",
+      "Address",
+      "Email",
+      "City",
+      "State",
+      "Project",
+      "Budget",
+      "Country",
+      "Location",
+      "ZipCode",
+      "Priority",
+      "Type",
+      "marketingtags",
+      "tags",
+      "Description",
+      "updateDescription",
+      "previousStatus",
+      "currentLead",
+    ];
 
-		const updateObj = {};
+    const token = request.cookies.get("token")?.value || "";
+    const decoded = jwt.decode(token);
+    const userId = decoded.id;
 
-		for (const field of expectedFields) {
-			if (
-				!reqBody[field] ||
-				reqBody[field] === "" ||
-				field === "updateDescription" ||
-				field === "currentLead"
-			)
-				continue;
+    const updateObj = {};
 
-			if (field === "tags" || field === "marketingtags") {
-				const existingTag = await TagsModel.findOne({Tag: reqBody[field], type: field});
-				let newTag;
-				if (!existingTag) {
-					newTag = new TagsModel({
-						AddBy: userId,
-						Tag: reqBody[field],
-						type: field,
-					});
-					await newTag.save();
-				} else {
-					newTag = existingTag;
-				}
-				updateObj[field] = newTag._id;
-				continue;
-			}
+    for (const field of expectedFields) {
+      if (
+        !reqBody[field] ||
+        reqBody[field] === "" ||
+        field === "updateDescription" ||
+        field === "currentLead"
+      )
+        continue;
 
-			if (reqBody[field] && field !== "previousStatus") {
-				updateObj[field] = reqBody[field].value
-					? reqBody[field].value
-					: reqBody[field];
-			}
-		}
+      if (field === "tags" || field === "marketingtags") {
+        const existingTag = await TagsModel.findOne({
+          Tag: reqBody[field],
+          type: field,
+        });
+        let newTag;
+        if (!existingTag) {
+          newTag = new TagsModel({
+            AddBy: userId,
+            Tag: reqBody[field],
+            type: field,
+          });
+          await newTag.save();
+        } else {
+          newTag = existingTag;
+        }
+        updateObj[field] = newTag._id;
+        continue;
+      }
 
-		const leadid = params.id;
-		const updatedLead = await Leads.findByIdAndUpdate(
-				leadid,
-				{$set: updateObj},
-				{new: true, strict: false}
-			).populate("tags marketingtags Assigned LeadStatus Source")
-		;
+      if (reqBody[field] && field !== "previousStatus") {
+        updateObj[field] = reqBody[field].value
+          ? reqBody[field].value
+          : reqBody[field];
+      }
+    }
 
-		const currentDate = new Date().toLocaleDateString();
+    const leadid = params.id;
+    const updatedLead = await Leads.findByIdAndUpdate(
+      leadid,
+      { $set: updateObj },
+      { new: true, strict: false }
+    ).populate("tags marketingtags Assigned LeadStatus Source");
+    const currentDate = new Date().toLocaleDateString();
 
-		const activityPromises = Object.keys(updateObj).map(
-			async (updatedField) => {
-				const activityLog = new ActivityLog({
-					action: `Lead Field ${updatedField} updated`,
-					Userid: userId,
-					Leadid: leadid,
-					leadstatus: reqBody[updatedField]?.label || reqBody[updatedField],
-					date: currentDate,
-					previousLeadstatus:
-						reqBody.previousStatus?.label ||
-						(reqBody.currentLead && reqBody.currentLead[updatedField]),
-					description: reqBody.updateDescription,
-				});
-				return activityLog.save();
-			}
-		);
+    const activityPromises = Object.keys(updateObj).map(
+      async (updatedField) => {
+        const activityLog = new ActivityLog({
+          action: `Lead Field ${updatedField} updated`,
+          Userid: userId,
+          Leadid: leadid,
+          leadstatus: reqBody[updatedField]?.label || reqBody[updatedField],
+          date: currentDate,
+          previousLeadstatus:
+            reqBody.previousStatus?.label ||
+            (reqBody.currentLead && reqBody.currentLead[updatedField]),
+          description: reqBody.updateDescription,
+        });
+        return activityLog.save();
+      }
+    );
 
-		await Promise.all(activityPromises);
+    await Promise.all(activityPromises);
 
-		return NextResponse.json({
-			message: "Lead updated successfully",
-			data: updatedLead,
-		});
-	} catch (error) {
-		console.error(error);
-		return NextResponse.json({error: error.message}, {status: 400});
-	}
+    return NextResponse.json({
+      message: "Lead updated successfully",
+      data: updatedLead,
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
 }
