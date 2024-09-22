@@ -17,7 +17,7 @@ function RolePerms() {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BussinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Bussiness Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },

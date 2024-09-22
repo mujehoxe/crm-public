@@ -72,7 +72,7 @@ function ProfilePage() {
           url = `/api/invoice/get`;
         } else if (userrole === "FOS") {
           url = `/api/invoice/FOS/${userid}`;
-        } else if (userrole === "BussinessHead") {
+        } else if (userrole === "BusinessHead") {
           url = `/api/invoice/parentstaff?role=ATL&userid=${userid}`;
         } else if (userrole === "PNL") {
           url = `/api/invoice/parentstaff?role=PNL&userid=${userid}`;
@@ -198,7 +198,7 @@ function ProfilePage() {
           url = `/api/Lead/get`;
         } else if (userrole === "FOS") {
           url = `/api/Lead/FOS/${userid}`;
-        } else if (userrole === "BussinessHead") {
+        } else if (userrole === "BusinessHead") {
           url = `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
         } else if (userrole === "PNL") {
           url = `/api/Lead/hiearchy?role=PNL&userid=${userid}`;

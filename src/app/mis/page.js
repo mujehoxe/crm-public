@@ -363,7 +363,7 @@ function allDeals() {
     { value: "Admin", label: "Admin" },
     { value: "SalesHead", label: "Sales Head" },
     { value: "Manager", label: "Manager" },
-    { value: "BussinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Bussiness Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },

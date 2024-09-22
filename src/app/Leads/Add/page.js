@@ -42,7 +42,7 @@ function SuspenseWrappde() {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BussinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Bussiness Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },
@@ -57,7 +57,7 @@ function SuspenseWrappde() {
           console.log("User Data:", response.data.data);
 
           let filteredUsers = response.data.data;
-          if (userrole == "BussinessHead") {
+          if (userrole == "BusinessHead") {
             const PNLUsers = response.data.data.filter(
               (user) => user.Role === "PNL" && user.PrentStaff === userid
             );

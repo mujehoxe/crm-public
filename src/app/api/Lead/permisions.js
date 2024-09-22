@@ -3,7 +3,7 @@ export const addPermitedRoles = [
   "Admin",
   "Marketing",
   "Operations",
-  "BussinessHead",
+  "BusinessHead",
   "Strategist & Operations",
   "PNL",
   "TL",

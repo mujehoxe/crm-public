@@ -23,7 +23,7 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BussinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Bussiness Head" },
     { value: "Strategist", label: "Strategist & Operations" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
@@ -79,12 +79,12 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
           formData.Role === "Finance" ||
           formData.Role === "Operations" ||
           formData.Role === "HR" ||
-          formData.Role === "BussinessHead" ||
+          formData.Role === "BusinessHead" ||
           formData.Role === "Marketing"
         ) {
           filteredUsers = users.filter((user) => user.Role === "superAdmin");
         } else if (formData.Role === "Strategist") {
-          filteredUsers = users.filter((user) => user.Role === "BussinessHead");
+          filteredUsers = users.filter((user) => user.Role === "BusinessHead");
         } else if (formData.Role === "Employee") {
           filteredUsers = users.filter((user) => user.Role === "Individuals");
         } else if (formData.Role === "Manager") {

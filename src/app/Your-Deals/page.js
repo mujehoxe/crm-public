@@ -279,7 +279,7 @@ function Invoice() {
           status: 3,
           approvedBy,
         });
-      } else if (role == "BussinessHead") {
+      } else if (role == "BusinessHead") {
         await axios.put(`/api/invoice/status/${invoiceid}`, {
           status: 4,
           approvedBy,
@@ -313,7 +313,7 @@ function Invoice() {
         status = 7;
       } else if (role === "PNL") {
         status = 8;
-      } else if (role === "BussinessHead") {
+      } else if (role === "BusinessHead") {
         status = 9;
       }
       await axios.put(`/api/invoice/status/${selectedInvoiceId}`, {

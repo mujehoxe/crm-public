@@ -112,8 +112,8 @@ export default function Staff() {
             <div className="flex space-x-2">
               <div
                 className="flex justify-between items-center rounded-md !border
-								border-slate-300 text-lg focus:outline-none transition-all duration-200
-								focus:shadow-md bg-white px-3 py-1 w-full"
+								border-slate-300 text-md focus:outline-none transition-all duration-200
+								focus:shadow-md bg-white px-3 py-0 w-full"
               >
                 <input
                   type="text"
@@ -121,7 +121,7 @@ export default function Staff() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search..."
                 />
-                <MagnifyingGlassIcon className="size-[18px]" />
+                <MagnifyingGlassIcon className="size-[16px]" />
               </div>
               <button
                 className="btn text-nowrap btn-primary disabled:bg-gray-400"

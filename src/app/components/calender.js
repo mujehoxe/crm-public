@@ -1,11 +1,11 @@
 // Calendar.js
-import React from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import styles from '../Modal.module.css';
-import TokenDecoder from './Cookies';
+import React from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import styles from "../Modal.module.css";
+import TokenDecoder from "./Cookies";
 const Calendar = () => {
   const [events, setEvents] = useState([]);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
@@ -15,24 +15,18 @@ const Calendar = () => {
   useEffect(() => {
     const fetchmeetings = async () => {
       try {
-
         let url;
         if (userrole === "Admin") {
           url = `/api/Meeting/all`;
-        }
-        else if (userrole === "FOS") {
+        } else if (userrole === "FOS") {
           url = `/api/Meeting/FOS/${userid}`;
-        }
-        else if (userrole === "BussinessHead") {
+        } else if (userrole === "BusinessHead") {
           url = `/api/Meeting/hiearchy?role=ATL&userid=${userid}`;
-        }
-        else if (userrole === "PNL") {
+        } else if (userrole === "PNL") {
           url = `/api/Meeting/hiearchy?role=PNL&userid=${userid}`;
-        }
-        else if (userrole === "TL") {
+        } else if (userrole === "TL") {
           url = `/api/Meeting/hiearchy?role=TL&userid=${userid}`;
-        }
-        else if (userrole === "ATL") {
+        } else if (userrole === "ATL") {
           url = `/api/Meeting/hiearchy?role=ATL&userid=${userid}`;
         }
         const response = await axios.get(url);
@@ -46,16 +40,11 @@ const Calendar = () => {
           },
         }));
         setEvents(transformedEvents);
-
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchmeetings();
-
   }, [userrole]);
-
-
 
   const handleEventClick = (eventInfo) => {
     setSelectedMeeting(eventInfo.event.extendedProps.meetingDetails);

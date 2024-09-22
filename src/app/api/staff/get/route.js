@@ -11,7 +11,7 @@ const roleHandlers = {
   ATL: getAtlAndHisStaff,
   TL: getTlAndHisStaff,
   PNL: getPnlAndHisStaff,
-  BussinessHead: getBhAndHisStaff,
+  BusinessHead: getBhAndHisStaff,
   Admin: getAdminAndHisStaff,
   superAdmin: getAllStaff,
 };

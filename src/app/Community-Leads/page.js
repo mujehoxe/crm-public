@@ -91,7 +91,7 @@ export default function CommunityLeadsPage() {
         return `/api/Lead/get`;
       case "FOS":
         return `/api/Lead/FOS/${userid}`;
-      case "BussinessHead":
+      case "BusinessHead":
         return `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
       case "PNL":
         return `/api/Lead/hiearchy?role=PNL&userid=${userid}`;
@@ -323,7 +323,7 @@ export default function CommunityLeadsPage() {
           const response = await axios.get("/api/staff/get");
 
           let filteredUsers = response.data.data;
-          if (userRole === "BussinessHead") {
+          if (userRole === "BusinessHead") {
             const PNLUsers = response.data.data.filter(
               (user) => user.Role === "PNL" && user.PrentStaff === userid
             );
