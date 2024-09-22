@@ -75,12 +75,15 @@ const AgentTree = ({
     <li>
       {!data.length > 0 ? (
         <div className="flex items-center">
-          {data.subordinates?.length > 0 && (
-            <button onClick={toggleExpand} className="mr-2">
-              {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
-            </button>
-          )}
+          <button
+            onClick={toggleExpand}
+            className={data.subordinates?.length <= 0 && "opacity-0"}
+          >
+            {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
+          </button>
+
           <AgentItem
+            className="ml-2"
             agent={data}
             isOnline={isAgentOnline}
             isSelected={data._id === selectedAgent}

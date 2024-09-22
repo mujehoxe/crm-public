@@ -179,7 +179,7 @@ export default function RealtimeMap() {
   });
 
   return (
-    <div className="border rounded-lg shadow-lg overflow-hidden border-gray-200 scrollbar-none">
+    <div className="border rounded-lg shadow overflow-hidden border-gray-200 scrollbar-none">
       <div className="inline-block min-w-full align-middle">
         <div className="w-full h-[36rem] flex">
           <HierarchicalAgentList
