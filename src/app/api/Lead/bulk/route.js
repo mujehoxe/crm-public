@@ -4,6 +4,8 @@ import Leads from "@/models/Leads";
 import jwt from "jsonwebtoken"; // Import jwt directly here
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
+import Meeting from "@/models/Meeting";
+import Reminder from "@/models/Reminder";
 
 connect();
 
@@ -13,7 +15,7 @@ export async function PUT(request) {
 
   try {
     const reqBody = await request.json();
-    const { leads, assignee, source, status, description } = reqBody;
+    const { leads, assignee, source, status, description, clearData } = reqBody;
     const token = request.cookies.get("token")?.value || "";
     const decoded = jwt.decode(token);
     const userId = decoded.id;
@@ -56,6 +58,11 @@ export async function PUT(request) {
       }
 
       await Leads.findByIdAndUpdate(lead._id, updateObject);
+
+      if (clearData) {
+        Meeting.deleteMany({ Leadid: lead._id }).exec();
+        Reminder.deleteMany({ Leadid: lead._id }).exec();
+      }
 
       operations.forEach(async (operation) => {
         const activityLog = new ActivityLog({

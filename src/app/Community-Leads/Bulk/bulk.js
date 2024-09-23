@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import styles from "../../Modal.module.css";
+import SearchableSelect from "@/app/Leads/dropdown";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
-import SearchableSelect from "@/app/Leads/dropdown";
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
+import styles from "../../Modal.module.css";
 
 const BulkModal = ({
   onClose,
@@ -14,22 +14,20 @@ const BulkModal = ({
   users,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(null);
-  const [selectedSource, setSelectedSource] = useState(null);
-  const [selectedAssignee, setSelectedAssignee] = useState(null);
-  const [description, setDescription] = useState("");
-  const [isDescriptionDisabled, setIsDescriptionDisabled] = useState(false);
+  const [bulkData, setBulkData] = useState({
+    status: null,
+    source: null,
+    assignee: null,
+    description: "",
+    clearData: false,
+  });
 
-  const handleStatusChange = (selectedOption) => {
-    setSelectedStatus(selectedOption);
+  const handleChange = (field) => (value) => {
+    setBulkData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSourceChange = (selectedOption) => {
-    setSelectedSource(selectedOption);
-  };
-
-  const handleAssigneeChange = (selectedOption) => {
-    setSelectedAssignee(selectedOption);
+  const toggleBooleanField = (field) => () => {
+    setBulkData((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleSubmit = async () => {
@@ -37,12 +35,15 @@ const BulkModal = ({
     try {
       const body = {
         leads: selectedLeads,
-        status: selectedStatus,
-        source: selectedSource,
-        assignee: selectedAssignee,
+        status: bulkData.status,
+        source: bulkData.source,
+        assignee: bulkData.assignee,
+        clearData: bulkData.clearData,
       };
 
-      description !== "" && (body.description = description);
+      if (bulkData.description !== "") {
+        body.description = bulkData.description;
+      }
 
       await axios.put("/api/Lead/bulk", body);
       setBulkOperationMade((prev) => !prev);
@@ -52,12 +53,6 @@ const BulkModal = ({
       setLoading(false);
       onClose();
     }
-  };
-
-  const checkRef = useRef(null);
-
-  const handleCheckClicked = () => {
-    setIsDescriptionDisabled(!isDescriptionDisabled);
   };
 
   return (
@@ -80,28 +75,28 @@ const BulkModal = ({
                     : undefined
                 }
                 placeholder="Change Status..."
-                onChange={handleStatusChange}
+                onChange={handleChange("status")}
               />
             </div>
             <div className="mb-4">
               <h5>Source</h5>
               <SearchableSelect
                 options={sourceOptions}
-                placeholder="Change Source..."
                 defaultValue={
                   selectedLeads.length === 1
                     ? selectedLeads[0].Source._id
                     : undefined
                 }
-                onChange={handleSourceChange}
+                placeholder="Change Source..."
+                onChange={handleChange("source")}
               />
             </div>
             <div className="mb-4">
               <h5>Assigned</h5>
               <SearchableSelect
                 options={users}
-                placeholder="Assigne..."
-                onChange={handleAssigneeChange}
+                placeholder="Assign..."
+                onChange={handleChange("assignee")}
                 defaultValue={
                   selectedLeads.length === 1
                     ? selectedLeads[0].Assigned?._id
@@ -111,44 +106,41 @@ const BulkModal = ({
             </div>
 
             <div className="mb-4">
-              <div className="flex flex-row items-center align-top gap-2">
-                <FaCheck
-                  onClick={handleCheckClicked}
-                  className={`text-red w-4 h-4 text-center fa fa-check text-xs border-2 border-gray-600 ${
-                    isDescriptionDisabled
-                      ? "text-transparent"
-                      : "text-miles-400"
-                  }`}
-                />
-                <h5 className="p-0 m-0">Description</h5>
+              <h5 className="">Description</h5>
+              <p className="">Describe the change being made</p>
+              <div class="pl-2 css-13cymwt-control">
+                <textarea
+                  placeholder="Description your changes"
+                  className="text-inherit bg-transparent w-full border-none m-0 p-0 h-32 outline-none pt-1 text-gray-500"
+                  style={{
+                    gridArea: "1 / 2",
+                    fontFamily: "inherit",
+                    outline: "none",
+                  }}
+                  onBlur={(e) => setDescription(e.target.value)}
+                ></textarea>
               </div>
-
-              <p className="pl-6">Describe the change being made</p>
-              {!isDescriptionDisabled && (
-                <div class="pl-2 css-13cymwt-control">
-                  <textarea
-                    placeholder="Description your changes"
-                    className="css-19bb58m css-1jqq78o-placeholder h-32 pt-1 text-gray-500"
-                    style={{
-                      color: "inherit",
-                      backgroundColor: "transparent",
-                      width: "100%",
-                      gridArea: "1 / 2",
-                      fontFamily: "inherit",
-                      minWidth: "2px",
-                      border: "none",
-                      margin: "0px",
-                      outline: "none",
-                      padding: "0px",
-                    }}
-                    onBlur={(e) => setDescription(e.target.value)}
-                  ></textarea>
-                </div>
-              )}
             </div>
 
-            <div className="mb-4">
-              <button className="btn btn-primary w-100" onClick={handleSubmit}>
+            <div
+              onClick={toggleBooleanField("clearData")}
+              className="flex select-none flex-row cursor-pointer text-red-600 mb-4 items-center gap-2"
+            >
+              <FaCheck
+                className={`w-4 h-4 rounded text-center text-xs border-2  ${
+                  bulkData.clearData
+                    ? "text-white bg-red-600 border-red-600"
+                    : "text-transparent"
+                }`}
+              />
+              <span className="p-0 m-0">Clear Data</span>
+            </div>
+
+            <div className="mb-4 text-right">
+              <button
+                className="bg-miles-600 text-white rounded px-6"
+                onClick={handleSubmit}
+              >
                 Submit
               </button>
             </div>
