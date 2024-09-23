@@ -1,6 +1,7 @@
+import { PlusIcon } from "@heroicons/react/24/solid";
 import React, { useEffect } from "react";
-import ReminderCard from "./ReminderCard";
 import SkeletonLoader from "../../Components/SkeletonLoader";
+import ReminderCard from "./ReminderCard";
 
 const Reminders = ({ modalStates, leadData }) => {
   const [reminders, setReminders] = React.useState([]);
@@ -45,10 +46,10 @@ const Reminders = ({ modalStates, leadData }) => {
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => modalStates.setReminderOpenForLead(leadData._id)}
-          className="bg-miles-500 hover:bg-miles-600 text-white font-bold py-2 px-4 rounded"
+          onClick={() => modalStates.setMeetingOpenForLead(leadData._id)}
+          className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 rounded"
         >
-          <i className="fa fa-plus" /> Add Reminder
+          <PlusIcon className="size-4" /> Add Reminder
         </button>
       </div>
       {loading ? (
