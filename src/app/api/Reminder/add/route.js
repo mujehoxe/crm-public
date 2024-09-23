@@ -1,11 +1,11 @@
 import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
+import Leads from "@/models/Leads";
 import Reminder from "@/models/Reminder";
 import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
-import Leads from "@/models/Leads";
 
 connect();
 

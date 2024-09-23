@@ -1,9 +1,9 @@
 "use client";
 
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import RootLayout from "../components/layout";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export default function PermissionsManagement({ initialModules, roles }) {
   const [modules, setModules] = useState(initialModules);
