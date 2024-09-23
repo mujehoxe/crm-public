@@ -6,12 +6,17 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 import ActivityLog from "@/models/Activity";
 import { checkPermission } from "../../permissions/checkPermission";
+import Leads from "@/models/Leads";
 
 connect();
 
 export async function POST(request) {
-  if (!(await checkPermission(request, "add_meeting", "lead")))
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    if (!(await checkPermission(request, "add_meeting", "lead")))
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  } catch (err) {
+    return NextResponse.json({ error: "Forbidden " + err }, { status: 403 });
+  }
 
   try {
     const reqBody = await request.json();
@@ -19,7 +24,6 @@ export async function POST(request) {
       Subject,
       MeetingDate,
       Priority,
-      Assignees,
       Followers,
       Lead,
       Status,
@@ -39,11 +43,7 @@ export async function POST(request) {
     const username = decoded.name;
     const leadid = Lead;
 
-    const leadResponse = await axios.get(
-      (process.env.BASE_URL || "") + `/api/Lead/${leadid}`
-    );
-
-    const { Name, Email, Phone } = leadResponse.data.data;
+    const { Name, Email, Phone } = await Leads.findById(leadid).exec();
 
     const newMeeting = new Meeting({
       Subject,
@@ -85,8 +85,6 @@ export async function POST(request) {
       success: true,
     });
   } catch (error) {
-    console.error(error);
-
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

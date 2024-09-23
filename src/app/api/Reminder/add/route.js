@@ -25,7 +25,6 @@ export async function POST(request) {
     });
 
     const savedReminder = await newReminder.save();
-    console.log(savedReminder);
     logger.info("New Reminder added:", savedReminder);
 
     const token = request.cookies.get("token")?.value || "";
@@ -34,11 +33,8 @@ export async function POST(request) {
     const userId = decoded.id;
     const username = decoded.name;
     const leadid = Leadid;
-    const leadResponse = await axios.get(
-      (process.env.BASE_URL || "") + `/api/Lead/${leadid}`
-    );
 
-    const { Name, Email, Phone } = leadResponse.data.data;
+    const { Name, Email, Phone } = await Leads.findById(leadid).exec();
 
     const action = `Reminder added by ${username} to Lead: ${
       Name ? `Name: "${Name}"` : ""
