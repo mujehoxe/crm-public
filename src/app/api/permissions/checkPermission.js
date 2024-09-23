@@ -9,8 +9,7 @@ export async function checkPermission(request, permission, module) {
   if (!token) return false;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const user = decoded;
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     if (!user) return false;
 
