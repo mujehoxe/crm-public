@@ -6,6 +6,7 @@ import User from "@/models/Users";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import Papa from "papaparse";
+import { checkPermission } from "../../permissions/checkPermission";
 // Connect to the database
 connect();
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Leads from "@/models/Leads";
 import connect from "@/dbConfig/dbConfig";
 import Papa from "papaparse";
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 
 connect();
 

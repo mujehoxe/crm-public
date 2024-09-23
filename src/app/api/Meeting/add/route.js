@@ -5,6 +5,7 @@ import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import ActivityLog from "@/models/Activity";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 

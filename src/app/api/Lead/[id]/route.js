@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Leads from "@/models/Leads";
 import connect from "@/dbConfig/dbConfig";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 

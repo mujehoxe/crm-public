@@ -5,6 +5,7 @@ import bcryptjs from "bcryptjs";
 import fs from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 async function addUserToOneSignalAndCRM(userDetails) {

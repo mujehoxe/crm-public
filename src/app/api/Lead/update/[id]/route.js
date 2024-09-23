@@ -4,6 +4,7 @@ import Leads from "@/models/Leads";
 import ActivityLog from "@/models/Activity";
 import jwt from "jsonwebtoken";
 import TagsModel from "@/models/Tags";
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 
 connect();
 

@@ -1,6 +1,7 @@
 import Reminder from "@/models/Reminder";
 import connect from "@/dbConfig/dbConfig";
 import { NextResponse } from "next/server";
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 
 connect();
 

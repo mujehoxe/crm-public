@@ -3,6 +3,7 @@ import User from "@/models/Users";
 import fs, { promises as fsPromises } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 export async function POST(request) {

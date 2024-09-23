@@ -1,7 +1,7 @@
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
 import Leads from "@/models/Leads";
-import jwt from "jsonwebtoken"; // Import jwt directly here
 import { NextResponse } from "next/server";
 
 connect();

@@ -1,3 +1,4 @@
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 import connect from "@/dbConfig/dbConfig";
 import User from "@/models/Users";
 import { NextResponse } from "next/server";
