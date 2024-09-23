@@ -1,13 +1,14 @@
-import getDataFromToken from "@/helpers/getDataFromtoken";
-import { NextRequest, NextResponse } from "next/server";
-import Invoice from "@/models/invoice";
-import User from "@/models/Users";
 import connect from "@/dbConfig/dbConfig";
-import Source from "@/models/Source";
+import Invoice from "@/models/invoice";
+import { NextResponse } from "next/server";
+import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 
 export async function GET(request) {
+  if (!(await checkPermission(request, "view_invoice", "deals_approval")))
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+
   try {
     const invoices = await Invoice.find({})
       .populate("Userid")
