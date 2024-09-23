@@ -5,13 +5,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 import Link from "next/link";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { HiOutlineDocumentAdd } from "react-icons/hi";
 import { RiUploadCloud2Fill } from "react-icons/ri";
@@ -20,13 +14,13 @@ import { toast } from "react-toastify";
 import "rsuite/dist/rsuite.min.css";
 import ExcelModal from "../Leads/excelmodal";
 import TokenDecoder from "../components/Cookies";
-import ReminderModal from "./EditModal/Reminders/ReminderModal";
+import InlineLoader from "../components/InlineLoader";
+import Pagination from "../components/Pagination";
 import BulkModal from "./Bulk/bulk";
 import LeadCard from "./Components/LeadCard";
 import InfoModal from "./EditModal/InfoModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
-import InlineLoader from "../components/InlineLoader";
-import Pagination from "../components/Pagination";
+import ReminderModal from "./EditModal/Reminders/ReminderModal";
 
 export default function CommunityLeadsPage() {
   const [tagOptions, setTagOptions] = useState([]);

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import Meetings from "./Meetings/Meetings";
+import "react-toastify/dist/ReactToastify.css";
 import ActivityLogs from "./ActivityLogs/ActivityLogs";
+import Comments from "./Comments/Comments";
+import Meetings from "./Meetings/Meetings";
 import Reminders from "./Reminders/Reminders";
 
 const InfoModal = ({ leadData, modalStates, onClose }) => {
@@ -42,7 +43,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
                 }`}
                 onClick={(e) => handleTabClick("tab1", e)}
               >
-                Description
+                Comments
               </button>
               <button
                 className={`text-gray-600 px-4 rounded-lg font-[500] font-Satoshi text-lg py-2 ${
@@ -70,12 +71,9 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
               </button>
             </div>
             <div className="border rounded-lg p-4 h-[28rem] overflow-y-auto">
-              {activeTab === "tab1" &&
-                (leadData.Description ? (
-                  <div> {leadData.Description} </div>
-                ) : (
-                  <div> No Description </div>
-                ))}
+              {activeTab === "tab1" && (
+                <Comments modalStates={modalStates} leadData={leadData} />
+              )}
               {activeTab === "tab2" && (
                 <Reminders modalStates={modalStates} leadData={leadData} />
               )}

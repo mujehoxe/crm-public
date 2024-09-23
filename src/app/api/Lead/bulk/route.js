@@ -1,11 +1,12 @@
 import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
+import Comment from "@/models/Comment";
 import Leads from "@/models/Leads";
+import Meeting from "@/models/Meeting";
+import Reminder from "@/models/Reminder";
 import jwt from "jsonwebtoken"; // Import jwt directly here
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
-import Meeting from "@/models/Meeting";
-import Reminder from "@/models/Reminder";
 
 connect();
 
@@ -62,6 +63,7 @@ export async function PUT(request) {
       if (clearData) {
         Meeting.deleteMany({ Leadid: lead._id }).exec();
         Reminder.deleteMany({ Leadid: lead._id }).exec();
+        Comment.deleteMany({ LeadId: lead._id }).exec();
       }
 
       operations.forEach(async (operation) => {
