@@ -21,6 +21,6 @@ export async function checkPermission(request, permission, module) {
     return operation.allowedRoles.includes(user.role);
   } catch (error) {
     console.error("Error checking permission:", error);
-    return false;
+    throw error;
   }
 }

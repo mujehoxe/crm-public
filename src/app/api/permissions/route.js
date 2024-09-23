@@ -7,8 +7,12 @@ import Role from "@/models/Role";
 connect();
 
 export async function GET(request) {
-  if (!(await checkPermission(request, "manage", "permissions")))
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    if (!(await checkPermission(request, "manage", "permissions")))
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  } catch (err) {
+    return NextResponse.json({ error: "Forbidden " + err }, { status: 403 });
+  }
 
   try {
     const groupedOperations = await Operation.groupByModule();
