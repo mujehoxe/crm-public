@@ -125,16 +125,16 @@ export default function PermissionsManagement({ initialModules, roles }) {
             <table className="min-w-full divide-y divide-gray-300">
               <thead className="sticky top-0 z-10 bg-gradient-to-r from-miles-500 to-miles-700 text-white">
                 <tr>
-                  <th className="py-3 px-2 text-left text-sm font-semibold capitalize tracking-wider">
+                  <th className="py-4 px-2 text-left text-sm font-semibold capitalize tracking-wider">
                     Module
                   </th>
-                  <th className="py-3 px-2 text-left text-sm font-semibold capitalize tracking-wider">
+                  <th className="py-4 px-2 text-left text-sm font-semibold capitalize tracking-wider">
                     Operation
                   </th>
                   {roles.map((role) => (
                     <th
                       key={role}
-                      className="py-3 px-2 text-sm font-semibold text-center capitalize tracking-wider"
+                      className="py-4 px-2 text-sm font-semibold text-center capitalize tracking-wider"
                     >
                       {role.charAt(0).toUpperCase() + role.slice(1)}
                     </th>
