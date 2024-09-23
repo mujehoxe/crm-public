@@ -5,6 +5,7 @@ import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
+import Leads from "@/models/Leads";
 
 connect();
 
