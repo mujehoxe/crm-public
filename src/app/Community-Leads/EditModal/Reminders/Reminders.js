@@ -46,7 +46,7 @@ const Reminders = ({ modalStates, leadData }) => {
     <section className="w-full flex flex-col gap-4">
       <div className="flex justify-center">
         <button
-          onClick={() => modalStates.setMeetingOpenForLead(leadData._id)}
+          onClick={() => modalStates.set(leadData._id)}
           className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 rounded"
         >
           <PlusIcon className="size-4" /> Add Reminder
