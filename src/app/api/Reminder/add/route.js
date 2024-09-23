@@ -1,10 +1,9 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextResponse } from "next/server";
+import ActivityLog from "@/models/Activity";
 import Reminder from "@/models/Reminder";
 import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
-import axios from "axios";
-import ActivityLog from "@/models/Activity";
+import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
