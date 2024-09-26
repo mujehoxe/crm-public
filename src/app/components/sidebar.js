@@ -1,27 +1,29 @@
 "use client";
 
 import axios from "axios";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
 import { FaHandshake } from "react-icons/fa6";
 import { IoGitNetworkSharp } from "react-icons/io5";
 import TokenDecoder from "./Cookies";
 
 import { Menu, MenuButton } from "@headlessui/react";
 import {
-  ArrowLeftStartOnRectangleIcon,
-  Bars3Icon,
+  ChevronRightIcon,
   ClipboardDocumentCheckIcon,
-  Cog6ToothIcon,
   HomeIcon,
   MapIcon,
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  Bars3Icon,
+  Cog6ToothIcon,
+  ShieldCheckIcon,
+} from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { toast } from "react-toastify";
-import { ShieldCheckIcon } from "@heroicons/react/24/solid";
 
 const Sidebar = ({ setSettingsBarOpen }) => {
   const [sidePanelStat, setSidePanelStat] = useState(false);
@@ -286,8 +288,9 @@ const Sidebar = ({ setSettingsBarOpen }) => {
     <Menu
       as="div"
       ref={menuRef}
-      className="sticky select-none top-0 z-50 h-screen bg-gray-900 text-gray-100 shadow-lg transition-all duration-300 ease-in-out overflow-hidden flex flex-col"
-      style={{ width: sidePanelStat ? "16rem" : "5rem" }}
+      className={`select-none z-50 bg-gray-900 text-gray-100 shadow-lg ${
+        sidePanelStat ? "w-full sm:w-64" : "w-20"
+      } transition-all duration-300 ease-in-out overflow-hidden flex flex-col`}
     >
       <div className="flex-shrink-0 flex h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
         <div
@@ -307,7 +310,11 @@ const Sidebar = ({ setSettingsBarOpen }) => {
         </div>
       </div>
 
-      <nav className="flex-grow h-full">
+      <nav
+        className={`${
+          sidePanelStat ? "" : "hidden sm:block"
+        }  h-[calc(100vh-72px)]`}
+      >
         <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
           {sideMenus.map((item) =>
             item.visibility?.includes(userRole?.toLowerCase()) ||
@@ -340,9 +347,9 @@ const Sidebar = ({ setSettingsBarOpen }) => {
                     </span>
                   )}
                   {item.nested && (
-                    <FaChevronDown
-                      className={`ml-auto transition-transform duration-200 ${
-                        currentIndex === item.id ? "transform rotate-180" : ""
+                    <ChevronRightIcon
+                      className={`ml-auto size-4 transition-transform duration-200 ${
+                        currentIndex === item.id ? "transform rotate-90" : ""
                       } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
                     />
                   )}
