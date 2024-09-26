@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
               <div className="fixed top-0 w-full bg-white z-40">
                 <Topbar userData={userData} />
               </div>
-              <div className="fixed inset-0 left-0 z-40">
+              <div>
                 <Sidebar setSettingsBarOpen={setSettingsBarOpen} />
               </div>
             </div>

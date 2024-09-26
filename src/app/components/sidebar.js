@@ -285,151 +285,153 @@ const Sidebar = ({ setSettingsBarOpen }) => {
   }, []);
 
   return (
-    <Menu
-      as="div"
-      ref={menuRef}
-      className={`select-none z-50 bg-gray-900 text-gray-100 shadow-lg ${
-        sidePanelStat ? "w-full sm:w-64" : "w-20"
-      } transition-all duration-300 ease-in-out overflow-hidden flex flex-col`}
-    >
-      <div className="flex-shrink-0 flex h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
-        <div
-          onClick={() => setSidePanelStat(!sidePanelStat)}
-          className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
-        >
-          <MenuButton className="flex my-auto px-2 items-center transition-colors duration-200 hover:text-white">
-            <Bars3Icon className="ml-3 w-6 text-gray-400" />
-          </MenuButton>
-          <span
-            className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
-              sidePanelStat ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {sidePanelStat ? "Collapse" : ""}
-          </span>
-        </div>
-      </div>
-
-      <nav
-        className={`${
-          sidePanelStat ? "" : "hidden sm:block"
-        }  h-[calc(100vh-72px)]`}
+    <div className={`fixed ${sidePanelStat && "inset-0"} top-0 left-0 z-40`}>
+      <Menu
+        as="div"
+        ref={menuRef}
+        className={`select-none z-50 bg-gray-900 text-gray-100 shadow-lg ${
+          sidePanelStat ? "w-full sm:w-64" : "w-20"
+        } transition-all duration-300 ease-in-out overflow-hidden flex flex-col`}
       >
-        <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
-          {sideMenus.map((item) =>
-            item.visibility?.includes(userRole?.toLowerCase()) ||
-            item.visibility?.includes("all") ? (
-              <li key={item.id}>
-                <Link
-                  href={item.link || "#"}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-                    isActive(item)
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                  } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-                  onClick={() => !loading && sideHandler(item.id)}
-                >
-                  <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
-                  <span
-                    className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-                      sidePanelStat ? "opacity-100" : "opacity-0"
-                    }`}
+        <div className="flex-shrink-0 flex h-[4.5rem] max-h-[4.5rem] min-h-[4.5rem] p-2 py-3 shadow-sm bg-gray-800">
+          <div
+            onClick={() => setSidePanelStat(!sidePanelStat)}
+            className="flex w-full py-2 gap-1 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 cursor-pointer"
+          >
+            <MenuButton className="flex my-auto px-2 items-center transition-colors duration-200 hover:text-white">
+              <Bars3Icon className="ml-3 w-6 text-gray-400" />
+            </MenuButton>
+            <span
+              className={`flex-1 text-sm font-medium capitalize align-middle my-auto whitespace-nowrap transition-opacity duration-300 ${
+                sidePanelStat ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {sidePanelStat ? "Collapse" : ""}
+            </span>
+          </div>
+        </div>
+
+        <nav
+          className={`${
+            sidePanelStat ? "" : "hidden sm:block"
+          }  h-[calc(100vh-72px)]`}
+        >
+          <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
+            {sideMenus.map((item) =>
+              item.visibility?.includes(userRole?.toLowerCase()) ||
+              item.visibility?.includes("all") ? (
+                <li key={item.id}>
+                  <Link
+                    href={item.link || "#"}
+                    className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                      isActive(item)
+                        ? "bg-gray-700 text-white"
+                        : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                    } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
+                    onClick={() => !loading && sideHandler(item.id)}
                   >
-                    {sidePanelStat ? item.name : ""}
-                  </span>
-                  {item.notifications && (
+                    <span className="text-2xl min-w-[1.5rem]">{item.icon}</span>
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-miles-200 rounded-full transition-opacity duration-300 ${
+                      className={`flex-1 ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
                         sidePanelStat ? "opacity-100" : "opacity-0"
                       }`}
                     >
-                      {sidePanelStat ? item.notifications : ""}
+                      {sidePanelStat ? item.name : ""}
                     </span>
-                  )}
-                  {item.nested && (
-                    <ChevronRightIcon
-                      className={`ml-auto size-4 transition-transform duration-200 ${
-                        currentIndex === item.id ? "transform rotate-90" : ""
-                      } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
-                    />
-                  )}
-                </Link>
-                {currentIndex === item.id && sidePanelStat && item.nested && (
-                  <ul
-                    className={`pl-6 mt-2 space-y-2 transition-all duration-300 max-h-96 opacity-100 overflow-hidden`}
-                  >
-                    {item.nested.map((subItem, subIndex) =>
-                      subItem.visibility?.includes(userRole.toLowerCase()) ? (
-                        <li key={subIndex}>
-                          <Link
-                            href={subItem.link || "#"}
-                            className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
-                              pathname === subItem.link
-                                ? "bg-gray-700 text-white"
-                                : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                            }`}
-                          >
-                            {subItem.name}
-                          </Link>
-                        </li>
-                      ) : null
+                    {item.notifications && (
+                      <span
+                        className={`inline-flex items-center justify-center px-2 py-1 text-sm font-bold leading-none text-gray-900 bg-miles-200 rounded-full transition-opacity duration-300 ${
+                          sidePanelStat ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        {sidePanelStat ? item.notifications : ""}
+                      </span>
                     )}
-                  </ul>
-                )}
-              </li>
-            ) : null
-          )}
-          <div className="absolute w-full right-0 px-2 bottom-0">
-            <div className="border-t py-2 w-full space-y-2 border-gray-700">
-              <li className="w-full">
-                <Link
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSettingsBarOpen((prev) => !prev);
-                  }}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
-                    pathname === "/settings" && !loading
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-400 hover:bg-gray-700 hover:text-white"
-                  } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-                >
-                  <Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]" />
-                  <span
-                    className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-                      sidePanelStat ? "opacity-100" : "opacity-0"
-                    }`}
+                    {item.nested && (
+                      <ChevronRightIcon
+                        className={`ml-auto size-4 transition-transform duration-200 ${
+                          currentIndex === item.id ? "transform rotate-90" : ""
+                        } ${sidePanelStat ? "opacity-100" : "opacity-0"}`}
+                      />
+                    )}
+                  </Link>
+                  {currentIndex === item.id && sidePanelStat && item.nested && (
+                    <ul
+                      className={`pl-6 mt-2 space-y-2 transition-all duration-300 max-h-96 opacity-100 overflow-hidden`}
+                    >
+                      {item.nested.map((subItem, subIndex) =>
+                        subItem.visibility?.includes(userRole.toLowerCase()) ? (
+                          <li key={subIndex}>
+                            <Link
+                              href={subItem.link || "#"}
+                              className={`block p-2 text-sm rounded-lg transition-colors duration-200 ${
+                                pathname === subItem.link
+                                  ? "bg-gray-700 text-white"
+                                  : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                              }`}
+                            >
+                              {subItem.name}
+                            </Link>
+                          </li>
+                        ) : null
+                      )}
+                    </ul>
+                  )}
+                </li>
+              ) : null
+            )}
+            <div className="absolute w-full right-0 px-2 bottom-0">
+              <div className="border-t py-2 w-full space-y-2 border-gray-700">
+                <li className="w-full">
+                  <Link
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSettingsBarOpen((prev) => !prev);
+                    }}
+                    className={`flex items-center p-2 rounded-lg transition-colors duration-200 ${
+                      pathname === "/settings" && !loading
+                        ? "bg-gray-700 text-white"
+                        : "text-gray-400 hover:bg-gray-700 hover:text-white"
+                    } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
                   >
-                    {sidePanelStat ? "Settings" : ""}
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLogout();
-                  }}
-                  className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
-                    !loading ? "hover:text-white" : ""
-                  } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
-                >
-                  <ArrowLeftStartOnRectangleIcon className="ml-3 w-6 min-w-[1.5rem]" />
-                  <span
-                    className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
-                      sidePanelStat ? "opacity-100" : "opacity-0"
-                    }`}
+                    <Cog6ToothIcon className="ml-3 w-6 min-w-[1.5rem]" />
+                    <span
+                      className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                        sidePanelStat ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      {sidePanelStat ? "Settings" : ""}
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                    className={`flex items-center p-2 rounded-lg transition-colors duration-200 text-gray-400 hover:bg-red-700 ${
+                      !loading ? "hover:text-white" : ""
+                    } ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
                   >
-                    {sidePanelStat ? "Log out" : ""}
-                  </span>
-                </Link>
-              </li>
+                    <ArrowLeftStartOnRectangleIcon className="ml-3 w-6 min-w-[1.5rem]" />
+                    <span
+                      className={`ml-3 text-sm capitalize whitespace-nowrap transition-opacity duration-300 ${
+                        sidePanelStat ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      {sidePanelStat ? "Log out" : ""}
+                    </span>
+                  </Link>
+                </li>
+              </div>
             </div>
-          </div>
-        </ul>
-      </nav>
-    </Menu>
+          </ul>
+        </nav>
+      </Menu>
+    </div>
   );
 };
 
