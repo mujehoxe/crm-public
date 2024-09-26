@@ -68,68 +68,82 @@ const Comments = ({ modalStates, leadData }) => {
   };
 
   return (
-    <section className="w-full flex flex-col gap-4">
-      {loading ? (
-        <SkeletonLoader />
-      ) : (
-        <div>
-          <ul className="space-y-2 list-none pl-[0.1px]">
-            {!comments.length ? (
-              <li className="text-center text-gray-500">No comments found.</li>
-            ) : (
-              <>
-                {comments.map((comment, index) => (
-                  <li key={index} className="">
-                    <CommentCard
-                      comment={comment}
-                      index={index}
-                      onDelete={() => handleDeleteComment(comment._id)}
-                      isLoading={loading}
-                    />
+    <>
+      <section className="border rounded-lg p-4 h-[28rem] overflow-y-auto">
+        <div className="w-full flex flex-col gap-4">
+          {loading ? (
+            <SkeletonLoader />
+          ) : (
+            <div className="scroll-smooth snap-y snap-mandatory">
+              <ul
+                id="comments-container"
+                className="flex flex-col space-y-2 list-none pl-[0.1px]"
+                style={{ overflowAnchor: "none" }}
+              >
+                {!comments.length ? (
+                  <li className="text-center text-gray-500">
+                    No comments found.
                   </li>
-                ))}
-              </>
-            )}
-            {adding && (
-              <li>
-                <form
-                  onSubmit={onSubmit}
-                  className="flex flex-col space-y-2 mt-4"
-                >
-                  <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    className="border border-gray-300 p-2 rounded"
-                    placeholder="Write a comment..."
-                    rows="4"
-                  />
-                  <div className="flex justify-end space-x-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setAdding(false);
-                        setNewComment("");
-                      }}
-                      className="px-5 bg-gray-200 rounded hover:bg-gray-300"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-6 bg-miles-500 text-white rounded hover:bg-miles-600"
-                      disabled={loading}
-                    >
-                      {sending ? "Sending..." : "Send"}
-                    </button>
+                ) : (
+                  <div>
+                    {comments.map((comment, index) => (
+                      <li
+                        key={index}
+                        className="h-36"
+                        style={{ overflowAnchor: "auto" }}
+                      >
+                        <CommentCard
+                          comments={comments}
+                          index={index}
+                          onDelete={() => handleDeleteComment(comment._id)}
+                          isLoading={loading}
+                        />
+                      </li>
+                    ))}
                   </div>
-                </form>
-              </li>
-            )}
-          </ul>
+                )}
+                {adding && (
+                  <li>
+                    <form
+                      onSubmit={onSubmit}
+                      className="flex flex-col space-y-2 mt-4"
+                    >
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        className="border border-gray-300 p-2 rounded"
+                        placeholder="Write a comment..."
+                        rows="4"
+                      />
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setAdding(false);
+                            setNewComment("");
+                          }}
+                          className="px-5 bg-gray-200 rounded hover:bg-gray-300"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-6 bg-miles-500 text-white rounded hover:bg-miles-600"
+                          disabled={loading}
+                        >
+                          {sending ? "Sending..." : "Send"}
+                        </button>
+                      </div>
+                    </form>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
         </div>
-      )}
+      </section>
       {!adding && !loading && (
-        <div className="flex justify-center">
+        <div className="flex justify-end mt-4">
           <button
             onClick={() => setAdding(true)}
             className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 rounded"
@@ -138,7 +152,7 @@ const Comments = ({ modalStates, leadData }) => {
           </button>
         </div>
       )}
-    </section>
+    </>
   );
 };
 
