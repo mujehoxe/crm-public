@@ -73,13 +73,15 @@ export default function LeadCard({
       marketingtags: JSON.parse(JSON.stringify(lead.marketingtags)),
       updateDescription: "",
     });
-    console.log(submitions);
   }, [submitions]);
 
   const [isUpdateDescriptionInput, setIsUpdateDescriptionInput] =
     useState(false);
 
-  const [addingTag, setAddingTag] = useState({});
+  const [addingTag, setAddingTag] = useState({
+    marketingtags: false,
+    tags: false,
+  });
 
   const [loading, setLoading] = useState(false);
   const [isDescriptionInput, setIsDescriptionInput] = useState(false);
@@ -88,50 +90,74 @@ export default function LeadCard({
     setLoading(true);
     try {
       const response = await axios.patch(
-        "/api/Lead/update/" + lead._id,
+        `/api/Lead/update/${lead._id}`,
         updateBody
       );
-      (response.status === 200 &&
-        (setIsUpdateDescriptionInput(false) ||
-          setUpdateBody({
-            ...updateBody,
-            updateDescription: "",
-          }) ||
-          setCurrentPageLeads((prev) => {
-            const newLeads = prev.map((prevLead) => {
-              if (prevLead._id === lead._id) {
-                return response.data.data;
-              } else {
-                return prevLead;
-              }
-            });
-            return newLeads;
-          }))) ||
-        setAddingTag({}) ||
-        setSubmitions(submitions + 1);
+
+      if (response.status === 200) {
+        setIsUpdateDescriptionInput(false);
+        setUpdateBody((prevState) => ({
+          ...prevState,
+          updateDescription: "",
+        }));
+        setCurrentPageLeads((prevLeads) =>
+          prevLeads.map((prevLead) =>
+            prevLead._id === lead._id ? response.data.data : prevLead
+          )
+        );
+        setAddingTag({ marketingtags: false, tags: false });
+        setSubmitions((prev) => prev + 1);
+
+        toast.success("Lead updated successfully");
+      } else {
+        throw new Error("Unexpected response status");
+      }
     } catch (e) {
-      console.log(e);
-      toast("An Error occurred while updating the lead: " + e.message);
+      console.error("Error updating lead:", e);
+      toast.error(`An error occurred while updating the lead: ${e.message}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   function tagChange(innerText, field, index) {
-    console.log(lead[field][index]?.Tag, innerText);
-    if (lead[field][index]?.Tag !== innerText) {
-      setUpdateBody({ ...updateBody });
-      updateBody[field][index].Tag = innerText;
-      setIsUpdateDescriptionInput(true);
-    } else setIsUpdateDescriptionInput(false);
+    setUpdateBody((prevState) => {
+      if (prevState[field][index]?.Tag !== innerText) {
+        const newState = { ...prevState };
+        newState[field][index].Tag = innerText;
+        setIsUpdateDescriptionInput(true);
+        return newState;
+      }
+      return prevState;
+    });
   }
 
   function addTag(innerText, field) {
     if (innerText !== "") {
-      updateBody[field].push({ Tag: innerText });
-      setUpdateBody(updateBody);
+      if (updateBody[field][updateBody[field].length - 1].newTag)
+        setUpdateBody((prevState) => ({
+          ...prevState,
+          [field]: [
+            ...prevState[field].slice(0, -1),
+            { Tag: innerText, newTag: true },
+          ],
+        }));
+      else
+        setUpdateBody((prevState) => ({
+          ...prevState,
+          [field]: [...prevState[field], { Tag: innerText, newTag: true }],
+        }));
       setIsUpdateDescriptionInput(true);
     }
   }
+
+  const deleteTag = (field, index) => {
+    setUpdateBody((prevState) => ({
+      ...prevState,
+      [field]: prevState[field].filter((_, i) => i !== index),
+    }));
+    setIsUpdateDescriptionInput(true);
+  };
 
   function selectChange(option, field) {
     lead[field]?._id !== option?.value
@@ -225,59 +251,71 @@ export default function LeadCard({
                 placeholder={"Source"}
               />
             </div>
-            <div className="flex space-x-1 items-center">
+
+            <div className="space-x-1 items-center">
               <span className="text-sm text-nowrap font-medium text-gray-500">
-                Marketing Tag:
-              </span>
-              <PlusCircleIcon
-                className="h-5 w-5 text-miles-500 hover:text-miles-400 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAddingTag({ marketingtags: true });
-                }}
-              />
-              {lead?.marketingtags?.length > 0 &&
-                lead.marketingtags.map((tag, index) => (
-                  <EditableSpan
-                    content={tag.Tag}
-                    onBlur={(innerText) =>
-                      tagChange(innerText, "marketingtags", index)
-                    }
-                  />
-                ))}
-              {addingTag.marketingtags && (
-                <EditableSpan
-                  content={""}
-                  onBlur={(innerText) => addTag(innerText, "marketingtags")}
-                  focus={true}
+                Marketing Tags:
+                <PlusCircleIcon
+                  className="inline size-5 text-miles-500 hover:text-miles-400 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAddingTag({ ...addingTag, marketingtags: true });
+                  }}
                 />
-              )}
+              </span>
+              <div className="flex flex-wrap mt-1 space-x-1 space-y-1">
+                {lead?.marketingtags?.length > 0 &&
+                  lead.marketingtags.map((tag, index) => (
+                    <EditableSpan
+                      key={`${tag._id}`}
+                      content={tag.Tag}
+                      onBlur={(innerText) =>
+                        tagChange(innerText, "marketingtags", index)
+                      }
+                      onDelete={() => deleteTag("marketingtags", index)}
+                    />
+                  ))}
+                {addingTag.marketingtags && (
+                  <EditableSpan
+                    content={""}
+                    onBlur={(innerText) => addTag(innerText, "marketingtags")}
+                    newTag={true}
+                  />
+                )}
+              </div>
             </div>
-            <div className="flex flex-wrap space-x-1 items-center">
+
+            <div className="space-x-1 items-center">
               <span className="text-sm text-nowrap font-medium text-gray-500">
                 DLD Tags:
-              </span>
-              <PlusCircleIcon
-                className="h-5 w-5 text-miles-500 hover:text-miles-400 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAddingTag({ tags: true });
-                }}
-              />
-              {lead?.tags?.length > 0 &&
-                lead.tags.map((tag, index) => (
-                  <EditableSpan
-                    content={tag.Tag}
-                    onBlur={(innerText) => tagChange(innerText, "tags", index)}
-                  />
-                ))}
-              {addingTag.tags && (
-                <EditableSpan
-                  content={""}
-                  onBlur={(innerText) => addTag(innerText, "tags")}
-                  focus={true}
+                <PlusCircleIcon
+                  className="inline size-5 text-miles-500 hover:text-miles-400 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAddingTag({ ...addingTag, tags: true });
+                  }}
                 />
-              )}
+              </span>
+              <div className="flex flex-wrap mt-1 space-x-1">
+                {lead?.tags?.length > 0 &&
+                  lead.tags.map((tag, index) => (
+                    <EditableSpan
+                      key={`${tag._id}`}
+                      content={tag.Tag}
+                      onBlur={(innerText) =>
+                        tagChange(innerText, "tags", index)
+                      }
+                      onDelete={() => deleteTag("tags", index)}
+                    />
+                  ))}
+                {addingTag.tags && (
+                  <EditableSpan
+                    content={""}
+                    onBlur={(innerText) => addTag(innerText, "tags")}
+                    newTag={true}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="space-y-1">

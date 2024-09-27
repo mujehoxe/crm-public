@@ -508,7 +508,7 @@ export default function CommunityLeadsPage() {
       return leadsData.leads.length > 0 ? (
         <ul
           role="list"
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 pl-0"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 ml-0 pl-0"
         >
           {renderLeadCards(leadsData.leads)}
         </ul>
