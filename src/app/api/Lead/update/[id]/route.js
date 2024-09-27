@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
-import connect from "@/dbConfig/dbConfig";
-import Leads from "@/models/Leads";
-import ActivityLog from "@/models/Activity";
-import jwt from "jsonwebtoken";
-import TagsModel from "@/models/Tags";
 import { checkPermission } from "@/app/api/permissions/checkPermission";
+import connect from "@/dbConfig/dbConfig";
+import ActivityLog from "@/models/Activity";
+import Leads from "@/models/Leads";
+import TagsModel from "@/models/Tags";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 connect();
 
 export async function PATCH(request, { params }) {
-  if (!(await checkPermission(request, "add", "lead")))
+  if (!(await checkPermission(request, "add_individual", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {
@@ -58,22 +58,31 @@ export async function PATCH(request, { params }) {
         continue;
 
       if (field === "tags" || field === "marketingtags") {
-        const existingTag = await TagsModel.findOne({
-          Tag: reqBody[field],
-          type: field,
-        });
-        let newTag;
-        if (!existingTag) {
-          newTag = new TagsModel({
-            AddBy: userId,
-            Tag: reqBody[field],
+        const tagArray = Array.isArray(reqBody[field])
+          ? reqBody[field]
+          : [reqBody[field]];
+        const tagIds = [];
+
+        for (const tagItem of tagArray) {
+          const tagValue = typeof tagItem === "object" ? tagItem.Tag : tagItem;
+          let existingTag = await TagsModel.findOne({
+            Tag: tagValue,
             type: field,
           });
-          await newTag.save();
-        } else {
-          newTag = existingTag;
+
+          if (!existingTag) {
+            existingTag = new TagsModel({
+              AddBy: userId,
+              Tag: tagValue,
+              type: field,
+            });
+            await existingTag.save();
+          }
+
+          tagIds.push(existingTag._id);
         }
-        updateObj[field] = newTag._id;
+
+        updateObj[field] = tagIds;
         continue;
       }
 
@@ -98,11 +107,13 @@ export async function PATCH(request, { params }) {
           action: `Lead Field ${updatedField} updated`,
           Userid: userId,
           Leadid: leadid,
-          leadstatus: reqBody[updatedField]?.label || reqBody[updatedField],
+          leadstatus:
+            reqBody[updatedField]?.label || reqBody[updatedField].toString(),
           date: currentDate,
           previousLeadstatus:
             reqBody.previousStatus?.label ||
-            (reqBody.currentLead && reqBody.currentLead[updatedField]),
+            (reqBody.currentLead &&
+              reqBody.currentLead[updatedField].toString()),
           description: reqBody.updateDescription,
         });
         return activityLog.save();

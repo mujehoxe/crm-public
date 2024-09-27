@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
 const LeadsSchema = new mongoose.Schema({
   Source: { type: mongoose.Schema.Types.ObjectId, ref: "Source" },
@@ -19,11 +20,13 @@ const LeadsSchema = new mongoose.Schema({
   Email: { type: String },
   typeprop: { type: String },
   City: { type: String },
+
   Project: { type: String },
   Budget: { type: String },
   Country: { type: String },
   Location: { type: String },
   ZipCode: { type: String },
+
   Type: { type: String },
   Description: { type: String },
   status: {
@@ -49,4 +52,39 @@ const LeadsSchema = new mongoose.Schema({
 
 const Leads = mongoose.models.Leads || mongoose.model("Leads", LeadsSchema);
 
-export default Leads;
+dotenv.config();
+
+async function migrateTags() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("Connected to MongoDB");
+
+    const leads = await Leads.find({});
+
+    for (const lead of leads) {
+      if (lead.tags && !Array.isArray(lead.tags)) {
+        lead.tags = lead.tags ? [lead.tags] : [];
+      }
+
+      if (lead.marketingtags && !Array.isArray(lead.marketingtags)) {
+        lead.marketingtags = lead.marketingtags ? [lead.marketingtags] : [];
+      }
+
+      await lead.save();
+      console.log(`Updated lead: ${lead._id}`);
+    }
+
+    console.log("Migration completed successfully");
+  } catch (error) {
+    console.error("Migration failed:", error);
+  } finally {
+    await mongoose.connection.close();
+    console.log("Database connection closed");
+  }
+}
+
+migrateTags();

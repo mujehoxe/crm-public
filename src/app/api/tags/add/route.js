@@ -1,8 +1,8 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-import TagsModel from "@/models/Tags";
 import ActivityLog from "@/models/Activity";
+import TagsModel from "@/models/Tags";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 connect();
 

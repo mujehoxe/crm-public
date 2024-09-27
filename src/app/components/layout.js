@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
 
   return (
     <>
-      {loading && <Loader />} {/* Conditionally render the loader */}
+      {loading && <Loader />}
       <div>
         <div>
           <div id="layout-wrapper">

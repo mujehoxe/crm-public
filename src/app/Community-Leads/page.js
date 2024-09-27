@@ -139,7 +139,7 @@ export default function CommunityLeadsPage() {
   };
 
   useEffect(() => {
-    userRole && fetchLeads(leadsData.currentPage);
+    userRole && fetchLeads();
   }, [
     userRole,
     userid,
@@ -468,13 +468,13 @@ export default function CommunityLeadsPage() {
         <LeadCard
           key={lead._id}
           lead={lead}
-          setCurrentPageLeads={(leads) =>
-            console.log(leadsData.leads, leads) &&
+          setCurrentPageLeads={(getCurrent) => {
+            const leads = getCurrent(leadsData.leads);
             setLeadsData({
               ...leadsData,
               leads,
-            })
-          }
+            });
+          }}
           handleCardClick={handleCardClick}
           selectedLeads={leadsData.selectedLeads}
           onEditClick={() => handleEditClick(lead)}

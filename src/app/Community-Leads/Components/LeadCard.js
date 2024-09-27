@@ -1,14 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaRegUserCircle } from "react-icons/fa";
-import { IoIosInformationCircle } from "react-icons/io";
-import { AnimatePresence, motion } from "framer-motion";
-import { FaPhone, FaWhatsapp } from "react-icons/fa6";
+import EditableSpan from "@/app/Community-Leads/Components/EditableSpan";
+import {
+  CheckCircleIcon,
+  PencilIcon,
+  PlusCircleIcon,
+} from "@heroicons/react/24/solid";
 import { Select } from "antd";
 import axios from "axios";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { FaRegUserCircle } from "react-icons/fa";
+import { FaPhone, FaWhatsapp } from "react-icons/fa6";
+import { IoIosInformationCircle } from "react-icons/io";
 import { toast } from "react-toastify";
-import { CheckCircleIcon, PencilIcon } from "@heroicons/react/24/solid";
 import UpdateDescriptionInput from "./UpdateDescriptionInput";
-import EditableSpan from "@/app/Community-Leads/Components/EditableSpan";
 
 export default function LeadCard({
   lead,
@@ -57,18 +61,25 @@ export default function LeadCard({
     show: { x: 0 },
   };
 
-  const [updateBody, setUpdateBody] = useState({
-    lead,
-    Source: lead.Source._id,
-    LeadStatus: lead.LeadStatus._id,
-    Description: lead.Description,
-    tags: lead.tags?.Tag,
-    marketingtags: lead.marketingtags?.Tag,
-    updateDescription: "",
-  });
+  const [updateBody, setUpdateBody] = useState();
+  const [submitions, setSubmitions] = useState(0);
+  useEffect(() => {
+    setUpdateBody({
+      lead,
+      Source: lead.Source._id,
+      LeadStatus: lead.LeadStatus._id,
+      Description: lead.Description,
+      tags: JSON.parse(JSON.stringify(lead.tags)),
+      marketingtags: JSON.parse(JSON.stringify(lead.marketingtags)),
+      updateDescription: "",
+    });
+    console.log(submitions);
+  }, [submitions]);
 
   const [isUpdateDescriptionInput, setIsUpdateDescriptionInput] =
     useState(false);
+
+  const [addingTag, setAddingTag] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [isDescriptionInput, setIsDescriptionInput] = useState(false);
@@ -80,17 +91,24 @@ export default function LeadCard({
         "/api/Lead/update/" + lead._id,
         updateBody
       );
-      response.status === 200 &&
+      (response.status === 200 &&
         (setIsUpdateDescriptionInput(false) ||
           setUpdateBody({
             ...updateBody,
             updateDescription: "",
           }) ||
-          setCurrentPageLeads((prev) =>
-            prev.map((prevLead) => {
-              prevLead._id === lead._id ? response.data.data : lead;
-            })
-          ));
+          setCurrentPageLeads((prev) => {
+            const newLeads = prev.map((prevLead) => {
+              if (prevLead._id === lead._id) {
+                return response.data.data;
+              } else {
+                return prevLead;
+              }
+            });
+            return newLeads;
+          }))) ||
+        setAddingTag({}) ||
+        setSubmitions(submitions + 1);
     } catch (e) {
       console.log(e);
       toast("An Error occurred while updating the lead: " + e.message);
@@ -98,13 +116,21 @@ export default function LeadCard({
     setLoading(false);
   }
 
-  function tagChange(innerText, field) {
-    (lead[field]?.Tag || "No Tag") !== innerText
-      ? setUpdateBody({
-          ...updateBody,
-          [field]: innerText,
-        }) || setIsUpdateDescriptionInput(true)
-      : setIsUpdateDescriptionInput(false);
+  function tagChange(innerText, field, index) {
+    console.log(lead[field][index]?.Tag, innerText);
+    if (lead[field][index]?.Tag !== innerText) {
+      setUpdateBody({ ...updateBody });
+      updateBody[field][index].Tag = innerText;
+      setIsUpdateDescriptionInput(true);
+    } else setIsUpdateDescriptionInput(false);
+  }
+
+  function addTag(innerText, field) {
+    if (innerText !== "") {
+      updateBody[field].push({ Tag: innerText });
+      setUpdateBody(updateBody);
+      setIsUpdateDescriptionInput(true);
+    }
   }
 
   function selectChange(option, field) {
@@ -116,12 +142,10 @@ export default function LeadCard({
 
   function descriptionChanged(innerText) {
     setIsDescriptionInput(false);
-    (lead.Description || "No Description") !== innerText
-      ? setUpdateBody({
-          ...updateBody,
-          Description: innerText,
-        }) || setIsUpdateDescriptionInput(true)
-      : setIsUpdateDescriptionInput(false);
+    if ((lead.Description || "No Description") !== innerText) {
+      updateBody.Description = innerText;
+      setIsUpdateDescriptionInput(true);
+    } else setIsUpdateDescriptionInput(false);
   }
 
   return (
@@ -202,23 +226,60 @@ export default function LeadCard({
               />
             </div>
             <div className="flex space-x-1 items-center">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm text-nowrap font-medium text-gray-500">
                 Marketing Tag:
               </span>
-              <EditableSpan
-                content={lead?.marketingtags?.Tag || "No Tag"}
-                onBlur={(tag) => tagChange(tag, "marketingtags")}
+              <PlusCircleIcon
+                className="h-5 w-5 text-miles-500 hover:text-miles-400 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAddingTag({ marketingtags: true });
+                }}
               />
+              {lead?.marketingtags?.length > 0 &&
+                lead.marketingtags.map((tag, index) => (
+                  <EditableSpan
+                    content={tag.Tag}
+                    onBlur={(innerText) =>
+                      tagChange(innerText, "marketingtags", index)
+                    }
+                  />
+                ))}
+              {addingTag.marketingtags && (
+                <EditableSpan
+                  content={""}
+                  onBlur={(innerText) => addTag(innerText, "marketingtags")}
+                  focus={true}
+                />
+              )}
             </div>
-            <div className="flex space-x-1 items-center">
-              <span className="text-sm font-medium text-gray-500">
-                DLD Tag:
+            <div className="flex flex-wrap space-x-1 items-center">
+              <span className="text-sm text-nowrap font-medium text-gray-500">
+                DLD Tags:
               </span>
-              <EditableSpan
-                content={lead?.tags?.Tag || "No Tag"}
-                onBlur={(tag) => tagChange(tag, "tags")}
+              <PlusCircleIcon
+                className="h-5 w-5 text-miles-500 hover:text-miles-400 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAddingTag({ tags: true });
+                }}
               />
+              {lead?.tags?.length > 0 &&
+                lead.tags.map((tag, index) => (
+                  <EditableSpan
+                    content={tag.Tag}
+                    onBlur={(innerText) => tagChange(innerText, "tags", index)}
+                  />
+                ))}
+              {addingTag.tags && (
+                <EditableSpan
+                  content={""}
+                  onBlur={(innerText) => addTag(innerText, "tags")}
+                  focus={true}
+                />
+              )}
             </div>
+
             <div className="space-y-1">
               <span className="text-sm font-medium text-gray-500">
                 Description:
