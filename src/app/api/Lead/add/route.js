@@ -2,6 +2,7 @@ import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
 import Leads from "@/models/Leads";
 import logger from "@/utils/logger";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
 
@@ -36,8 +37,13 @@ export async function POST(request) {
       tags,
       marketingtags,
     } = reqBody;
-    const userId = decoded.id;
-    const username = decoded.name;
+
+    const cookieStore = cookies();
+    const token = cookieStore.get("token")?.value;
+    const user = jwt.decode(token, process.env.JWT_SECRET_KEY);
+
+    const userId = user.id;
+    const username = user.name;
     const newLead = new Leads({
       LeadStatus: LeadStatus || undefined,
       Source: Source || undefined,
