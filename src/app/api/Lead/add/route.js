@@ -2,9 +2,9 @@ import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
 import Leads from "@/models/Leads";
 import logger from "@/utils/logger";
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { jwt } from "twilio";
 import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
