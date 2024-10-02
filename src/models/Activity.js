@@ -1,17 +1,15 @@
 import axios from "axios";
 import mongoose from "mongoose";
 
-const dotenv = require("dotenv");
-dotenv.config();
+if (process.env.MODE) {
+  await import("./Source");
+  await import("./Status");
+  await import("./Tags");
+  await import("./Users");
+}
+
 const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
 const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
-
-if (process.env.MODE === "dev") {
-  Source = await import("./Source");
-  StatusModel = await import("./Status");
-  TagsModel = await import("./Tags");
-  User = await import("./Users");
-}
 
 const activityLogSchema = new mongoose.Schema(
   {
