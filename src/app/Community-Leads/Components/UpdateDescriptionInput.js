@@ -64,7 +64,10 @@ export default function UpdateDescriptionInput({
                     <CheckCircleIcon
                       className="h-5 w-5 text-miles-500 hover:text-miles-400 cursor-pointer"
                       aria-hidden="true"
-                      onClick={handleUpdateSubmit}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdateSubmit(e);
+                      }}
                     />
                   </motion.div>
                 )}
