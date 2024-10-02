@@ -64,6 +64,7 @@ jobs:
             cd ~/nextjs-app &&
             echo 'MONGO_URL=${{ secrets.MONGO_URL }}' > .env &&
             echo 'JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' >> .env &&
+            echo 'ONE_SIGNAL_REST_API_KEY=${{ secrets.ONE_SIGNAL_REST_API_KEY }}' >> .env &&
             npm ci --omit=dev &&
             npm install -g pm2 next &&
             pm2 delete nextjs-app || true &&
