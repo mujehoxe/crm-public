@@ -17,43 +17,52 @@ const activityLogSchema = new mongoose.Schema(
   { strict: false }
 );
 
-// Store active connections
-export const activeConnections = new Set();
+export const activeConnections = new Map();
 
-export function addSSEConnection(writer) {
-  activeConnections.add(writer);
+export function addSSEConnection(id, res) {
+  activeConnections.set(id, res);
   console.log(
-    `New connection added. Total connections: ${activeConnections.size}`
+    `New connection added. ID: ${id}. Total connections: ${activeConnections.size}`
   );
 }
 
-export function removeSSEConnection(writer) {
-  activeConnections.delete(writer);
+export function removeSSEConnection(id) {
+  activeConnections.delete(id);
   console.log(
-    `Connection removed. Total connections: ${activeConnections.size}`
+    `Connection removed. ID: ${id}. Total connections: ${activeConnections.size}`
   );
 }
 
-// Function to notify all clients of a new activity log
 export async function notifyClientsOfNewActivityLog(activityLog) {
-  const message = JSON.stringify({
+  console.log(
+    `Notifying clients. Total connections: ${activeConnections.size}`
+  );
+  const message = {
     type: "NEW_ACTIVITY_LOG",
     data: activityLog,
-  });
+  };
 
-  activeConnections.forEach((writer) => {
+  const staleConnections = [];
+
+  for (const [id, connection] of activeConnections) {
     try {
-      writer.write(`data: ${message}\n\n`).catch(console.error);
+      connection.write(message);
+      console.log(`Message sent to client ${id}`);
     } catch (error) {
-      console.error("Error writing to connection:", error);
-      removeSSEConnection(writer);
+      console.error(`Error writing to connection ${id}:`, error);
+      staleConnections.push(id);
     }
+  }
+
+  staleConnections.forEach((id) => {
+    removeSSEConnection(id);
   });
 }
 
 activityLogSchema.post("save", async function (doc) {
   try {
-    const populatedDoc = await doc.populate("Userid", "Leadid");
+    const populatedDoc = await doc.populate("Userid Leadid");
+    console.log("New activity log saved:", populatedDoc);
     await notifyClientsOfNewActivityLog(populatedDoc);
   } catch (error) {
     console.error("Error in post-save hook:", error);
