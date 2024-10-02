@@ -10,6 +10,7 @@ if (process.env.MODE) {
 
 const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
 const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
+console.log(ONE_SIGNAL_REST_API_KEY);
 
 const activityLogSchema = new mongoose.Schema(
   {
