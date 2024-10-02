@@ -1,4 +1,16 @@
+import axios from "axios";
 import mongoose from "mongoose";
+import Source from "./Source";
+import StatusModel from "./Status";
+import TagsModel from "./Tags";
+import User from "./Users";
+User;
+StatusModel;
+Source;
+TagsModel;
+
+const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
+const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
 
 const activityLogSchema = new mongoose.Schema(
   {
@@ -17,53 +29,54 @@ const activityLogSchema = new mongoose.Schema(
   { strict: false }
 );
 
-export const activeConnections = new Map();
-
-export function addSSEConnection(id, res) {
-  activeConnections.set(id, res);
-  console.log(
-    `New connection added. ID: ${id}. Total connections: ${activeConnections.size}`
-  );
-}
-
-export function removeSSEConnection(id) {
-  activeConnections.delete(id);
-  console.log(
-    `Connection removed. ID: ${id}. Total connections: ${activeConnections.size}`
-  );
-}
-
-export async function notifyClientsOfNewActivityLog(activityLog) {
-  console.log(
-    `Notifying clients. Total connections: ${activeConnections.size}`
-  );
-  const message = {
-    type: "NEW_ACTIVITY_LOG",
-    data: activityLog,
+async function sendOneSignalNotification(activityLog) {
+  const notification = {
+    app_id: ONE_SIGNAL_APP_ID,
+    headings: {
+      en: `${activityLog.action} by ${
+        activityLog.Userid.username || "Unknown User"
+      }`,
+    },
+    contents: {
+      en: `Changed${
+        activityLog.previousValue ? " from " + activityLog.previousValue : ""
+      }${activityLog.newValue ? " to " + activityLog.newValue : ""}`,
+    },
+    data: {
+      timestamp: activityLog.timestamp,
+      userId: activityLog.Userid._id.toString(),
+      leadId: activityLog.Leadid._id.toString(),
+    },
+    included_segments: ["All"],
   };
 
-  const staleConnections = [];
-
-  for (const [id, connection] of activeConnections) {
-    try {
-      connection.write(message);
-      console.log(`Message sent to client ${id}`);
-    } catch (error) {
-      console.error(`Error writing to connection ${id}:`, error);
-      staleConnections.push(id);
-    }
+  try {
+    const response = await axios.post(
+      "https://onesignal.com/api/v1/notifications",
+      notification,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Basic ${ONE_SIGNAL_REST_API_KEY}`,
+        },
+      }
+    );
+    console.log("OneSignal Notification sent:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error sending OneSignal notification:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
   }
-
-  staleConnections.forEach((id) => {
-    removeSSEConnection(id);
-  });
 }
 
 activityLogSchema.post("save", async function (doc) {
   try {
     const populatedDoc = await doc.populate("Userid Leadid");
     console.log("New activity log saved:", populatedDoc);
-    await notifyClientsOfNewActivityLog(populatedDoc);
+    await sendOneSignalNotification(populatedDoc);
   } catch (error) {
     console.error("Error in post-save hook:", error);
   }

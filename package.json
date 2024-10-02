@@ -23,6 +23,7 @@
     "@heroicons/react": "^2.1.5",
     "@mantine/core": "^7.11.2",
     "@nextui-org/react": "^2.4.6",
+    "@onesignal/node-onesignal": "^5.0.0-alpha-01",
     "@react-pdf/renderer": "^3.4.4",
     "@types/chart.js": "^2.9.41",
     "ag-grid-react": "^32.0.2",
