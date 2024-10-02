@@ -71,9 +71,9 @@ export async function PUT(request) {
           action: operation.action,
           Userid: userId,
           Leadid: lead._id,
-          leadstatus: operation.newVal.label,
           date: currentDate,
-          previousLeadstatus: operation.oldVal,
+          previousValue: operation.oldVal,
+          newValue: operation.newVal.label,
         });
 
         description &&

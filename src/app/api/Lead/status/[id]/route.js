@@ -73,11 +73,11 @@ export async function PUT(request, { params }) {
       action,
       Userid: userId,
       Leadid: leadid,
-      leadstatus: status.label,
       date: currentDate,
-      previousLeadstatus: previousStatus.label
+      previousValue: previousStatus.label
         ? previousStatus.label
         : previousStatus,
+      newValue: status.label,
     });
 
     await activityLog.save();

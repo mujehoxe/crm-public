@@ -1,5 +1,7 @@
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+
+const dotenv = require("dotenv");
+dotenv.config();
 
 const LeadsSchema = new mongoose.Schema({
   Source: { type: mongoose.Schema.Types.ObjectId, ref: "Source" },
@@ -51,8 +53,6 @@ const LeadsSchema = new mongoose.Schema({
 });
 
 const Leads = mongoose.models.Leads || mongoose.model("Leads", LeadsSchema);
-
-dotenv.config();
 
 async function migrateTags() {
   try {

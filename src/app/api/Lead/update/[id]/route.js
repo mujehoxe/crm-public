@@ -101,24 +101,29 @@ export async function PATCH(request, { params }) {
     ).populate("tags marketingtags Assigned LeadStatus Source");
     const currentDate = new Date().toLocaleDateString();
 
-    const activityPromises = Object.keys(updateObj).map(
-      async (updatedField) => {
-        const activityLog = new ActivityLog({
-          action: `Lead Field ${updatedField} updated`,
-          Userid: userId,
-          Leadid: leadid,
-          leadstatus:
-            reqBody[updatedField]?.label || reqBody[updatedField].toString(),
-          date: currentDate,
-          previousLeadstatus:
-            reqBody.previousStatus?.label ||
-            (reqBody.currentLead &&
-              reqBody.currentLead[updatedField].toString()),
-          description: reqBody.updateDescription,
-        });
-        return activityLog.save();
-      }
-    );
+    const activityPromises = Object.keys(updateObj).map((updatedField) => {
+      let newValue =
+        reqBody[updatedField]?.label || reqBody[updatedField].toString();
+
+      if (updatedField === "tags" || updatedField === "marketingtags")
+        newValue = reqBody[updatedField]
+          .map((val) => val.Tag)
+          .toString()
+          .replaceAll(",", ", ");
+
+      const activityLog = new ActivityLog({
+        action: `Lead Field ${updatedField} updated`,
+        Userid: userId,
+        Leadid: leadid,
+        date: currentDate,
+        previousValue:
+          reqBody.previousStatus?.label ||
+          (reqBody.currentLead && reqBody.currentLead[updatedField].toString()),
+        newValue: newValue,
+        description: reqBody.updateDescription,
+      });
+      return activityLog.save();
+    });
 
     await Promise.all(activityPromises);
 

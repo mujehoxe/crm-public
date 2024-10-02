@@ -1,4 +1,3 @@
-import React from "react";
 import { formatDistanceToNow } from "date-fns";
 import { FaRegUserCircle } from "react-icons/fa";
 
@@ -15,11 +14,10 @@ const LogEntry = ({ log, leadData: lead, index }) => {
               : "Lead Status"}{" "}
             {log.previousLeadstatus && log.previousLeadstatus !== "" ? (
               <>
-                from{" "}
-                <span className="font-semibold">{log.previousLeadstatus}</span>{" "}
+                from <span className="font-semibold">{log.previousValue}</span>{" "}
               </>
             ) : null}
-            to <span className="font-semibold">{log.leadstatus}</span>
+            to <span className="font-semibold">{log.newValue}</span>
           </>
         );
       case log.action.includes("Tags added"):

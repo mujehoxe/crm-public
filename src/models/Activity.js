@@ -6,12 +6,12 @@ const activityLogSchema = new mongoose.Schema(
     Userid: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     Leadid: { type: mongoose.Schema.Types.ObjectId, ref: "Leads" },
     timestamp: { type: Date, default: Date.now },
-    leadstatus: String,
     date: {
       type: String,
       required: true,
     },
-    previousLeadstatus: String,
+    previousValue: String,
+    newValue: String,
     description: String,
   },
   { strict: false }

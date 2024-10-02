@@ -180,8 +180,10 @@ export default function LeadCard({
 
   function selectChange(option, field) {
     lead[field]?._id !== option?.value
-      ? setUpdateBody({ ...updateBody, [field]: option?.value }) ||
-        setIsUpdateDescriptionInput(true)
+      ? setUpdateBody({
+          ...updateBody,
+          [field]: option,
+        }) || setIsUpdateDescriptionInput(true)
       : setIsUpdateDescriptionInput(false);
   }
 
