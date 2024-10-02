@@ -2,6 +2,8 @@ import { addSSEConnection, removeSSEConnection } from "@/models/Activity";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req) {
   const connectionId = uuidv4();
   console.log(`New SSE connection attempt. ID: ${connectionId}`);
