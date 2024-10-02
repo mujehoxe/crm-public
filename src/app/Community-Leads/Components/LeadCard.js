@@ -65,12 +65,6 @@ export default function LeadCard({
   const [submitions, setSubmitions] = useState(0);
   useEffect(() => {
     setUpdateBody({
-      lead,
-      Source: lead.Source._id,
-      LeadStatus: lead.LeadStatus._id,
-      Description: lead.Description,
-      tags: JSON.parse(JSON.stringify(lead.tags)),
-      marketingtags: JSON.parse(JSON.stringify(lead.marketingtags)),
       updateDescription: "",
     });
   }, [submitions]);
@@ -120,28 +114,51 @@ export default function LeadCard({
     }
   }
 
+  function populateUpdateBodyTags(prevState, field, index) {
+    if (!prevState[field]) {
+      prevState[field] = lead[field];
+      return;
+    }
+    if ((index = -1)) return;
+    if (!prevState[field][index]) {
+      prevState[field][index] = lead[field][index];
+      return;
+    }
+    if (!prevState[field][index].Tag) {
+      prevState[field][index].Tag = lead[field][index].Tag;
+      return;
+    }
+  }
+
   function tagChange(innerText, field, index) {
     setUpdateBody((prevState) => {
-      if (prevState[field][index]?.Tag !== innerText) {
+      populateUpdateBodyTags(prevState, field, index);
+
+      if (prevState[field][index].Tag !== innerText) {
         const newState = { ...prevState };
         newState[field][index].Tag = innerText;
         setIsUpdateDescriptionInput(true);
         return newState;
       }
+
       return prevState;
     });
   }
 
   function addTag(innerText, field) {
     if (innerText !== "") {
+      populateUpdateBodyTags(updateBody, field, -1);
+
       if (updateBody[field][updateBody[field].length - 1].newTag)
-        setUpdateBody((prevState) => ({
-          ...prevState,
-          [field]: [
-            ...prevState[field].slice(0, -1),
-            { Tag: innerText, newTag: true },
-          ],
-        }));
+        setUpdateBody((prevState) => {
+          return {
+            ...prevState,
+            [field]: [
+              ...prevState[field].slice(0, -1),
+              { Tag: innerText, newTag: true },
+            ],
+          };
+        });
       else
         setUpdateBody((prevState) => ({
           ...prevState,
@@ -152,6 +169,8 @@ export default function LeadCard({
   }
 
   const deleteTag = (field, index) => {
+    populateUpdateBodyTags(updateBody, field, index);
+
     setUpdateBody((prevState) => ({
       ...prevState,
       [field]: prevState[field].filter((_, i) => i !== index),
