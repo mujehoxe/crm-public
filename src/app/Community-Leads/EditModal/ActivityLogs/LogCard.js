@@ -69,7 +69,7 @@ const LogEntry = ({ log, leadData: lead, index }) => {
   return (
     <article
       key={index}
-      className="bg-white w-[40rem] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mb-4"
+      className="bg-white min-w-[40rem] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mb-4"
     >
       <header className="p-4 border-b border-gray-200">
         <div className="flex justify-between items-center mb-3">
