@@ -14,7 +14,7 @@ export async function POST(request) {
     const decoded = jwt.decode(token);
     const userId = decoded.id;
     const username = decoded.name;
-    const action = `Tags added by ${username}`;
+    const action = `tags added`;
     const currentDate = new Date().toLocaleDateString("en-GB");
     const activityLog = new ActivityLog({
       action,

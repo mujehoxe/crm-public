@@ -3,8 +3,9 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 const LogEntry = ({ log, leadData: lead, index }) => {
   const renderLogContent = () => {
+    console.log(log);
     switch (true) {
-      case log.action.includes("Lead status updated") ||
+      case log.action.includes("status updated") ||
         log.action.includes("Lead Field"):
         return (
           <>

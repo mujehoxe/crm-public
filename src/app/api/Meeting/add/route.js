@@ -1,12 +1,11 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextResponse } from "next/server";
+import ActivityLog from "@/models/Activity";
+import Leads from "@/models/Leads";
 import Meeting from "@/models/Meeting";
 import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
-import axios from "axios";
-import ActivityLog from "@/models/Activity";
+import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
-import Leads from "@/models/Leads";
 
 connect();
 
@@ -68,9 +67,7 @@ export async function POST(request) {
     logger.info("New Meeting added:", savedMeeting);
     const currentDate = new Date().toLocaleDateString();
 
-    const action = `Meeting added by ${username} to Lead: ${
-      Name ? `Name: "${Name}"` : ""
-    }${Email ? ` Email: ${Email}` : ""}${Phone ? ` Phone: ${Phone}` : ""}`;
+    const action = `meeting added`;
 
     const activityLog = new ActivityLog({
       action,

@@ -32,7 +32,7 @@ export async function PUT(request) {
         updateObject.LeadAssignedDate = new Date();
         operations.push({
           editedField: "Assigned",
-          action: "Lead reassigned",
+          action: "reassigned",
           oldVal: lead.Assigned.username,
           newVal: assignee,
         });
@@ -42,7 +42,7 @@ export async function PUT(request) {
         updateObject.Source = source.value;
         operations.push({
           editedField: "Source",
-          action: "Lead Field Source updated",
+          action: "source updated",
           oldVal: lead.Source.Source,
           newVal: source,
         });
@@ -52,7 +52,7 @@ export async function PUT(request) {
         updateObject.LeadStatus = status.value;
         operations.push({
           editedField: "LeadStatus",
-          action: "Lead status updated by " + username,
+          action: "status updated",
           oldVal: lead.LeadStatus.Status,
           newVal: status,
         });

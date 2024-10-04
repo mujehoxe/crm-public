@@ -36,9 +36,7 @@ export async function POST(request) {
     const savedComment = await newComment.save();
     logger.info("New Comment added:", savedComment);
 
-    const action = `Comment added by ${username} to Lead${
-      leadData.leadName && `: "${leadData.leadName}"`
-    }`;
+    const action = `comment added`;
 
     const activityLog = new ActivityLog({
       action,

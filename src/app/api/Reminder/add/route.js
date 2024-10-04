@@ -1,6 +1,5 @@
 import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
-import Leads from "@/models/Leads";
 import Reminder from "@/models/Reminder";
 import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
@@ -31,14 +30,9 @@ export async function POST(request) {
 
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-    const username = decoded.name;
     const leadid = Leadid;
 
-    const { Name, Email, Phone } = await Leads.findById(leadid).exec();
-
-    const action = `Reminder added by ${username} to Lead: ${
-      Name ? `Name: "${Name}"` : ""
-    }${Email ? ` Email: ${Email}` : ""}${Phone ? ` Phone: ${Phone}` : ""}`;
+    const action = `reminder added`;
 
     const activityLog = new ActivityLog({
       action,
@@ -51,6 +45,7 @@ export async function POST(request) {
 
     return NextResponse.json({
       message: "Reminder created",
+      activityLog,
       success: true,
     });
   } catch (error) {

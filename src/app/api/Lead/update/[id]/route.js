@@ -112,7 +112,7 @@ export async function PATCH(request, { params }) {
           .replaceAll(",", ", ");
 
       const activityLog = new ActivityLog({
-        action: `Lead Field ${updatedField} updated`,
+        action: `${updatedField} updated`,
         Userid: userId,
         Leadid: leadid,
         date: currentDate,

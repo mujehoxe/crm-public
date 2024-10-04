@@ -77,7 +77,7 @@ export async function POST(request) {
     const leadid = savedLead._id;
     const currentDate = new Date().toLocaleDateString();
 
-    const action = `Lead added by ${username} and assigned to ${Assigned}`;
+    const action = `new lead`;
     const activityLog = new ActivityLog({
       action,
       Userid: userId,

@@ -28,7 +28,7 @@ export async function PUT(request, { params }) {
 
     const userId = decoded.id;
     const username = decoded.name;
-    const action = `Lead status updated by ${username}`;
+    const action = `status updated`;
     const currentDate = new Date().toLocaleDateString();
 
     const newStatusLable = status?.lable;
@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
       }
 
       return NextResponse.json({
-        message: "Lead status updated",
+        message: "status updated",
         data: { LeadStatus: status.value, statusCount: newStatusCount },
       });
     }
