@@ -86,6 +86,14 @@ async function fetchTargetedPlayerIds(activityLog) {
 
   const users = await User.find({ _id: { $in: userIds } });
 
+  if ((activityLog.action = "reassigned")) {
+    const previousAssigned = await User.findOne({
+      username: activityLog.previousValue,
+    }).exec();
+    users.push(previousAssigned);
+    console.log("**", users);
+  }
+
   const playerIds = users.map((user) => user.onesignalPlayerId).filter(Boolean);
   console.log("**", playerIds);
 
