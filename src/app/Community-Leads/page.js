@@ -116,8 +116,6 @@ export default function CommunityLeadsPage() {
     return params.toString();
   };
 
-  const [bulkOperationMade, setBulkOperationMade] = useState(false);
-
   const fetchLeads = async () => {
     setLeadsData({ ...leadsData, loading: true });
     try {
@@ -138,7 +136,10 @@ export default function CommunityLeadsPage() {
     }
   };
 
+  const [bulkOperationMade, setBulkOperationMade] = useState(false);
+
   useEffect(() => {
+    setLeadsData({ ...leadsData, selectedLeads: [] });
     userRole && fetchLeads();
   }, [
     userRole,
