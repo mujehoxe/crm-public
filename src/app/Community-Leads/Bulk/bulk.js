@@ -1,13 +1,15 @@
+import InlineLoader from "@/app/components/InlineLoader";
 import SearchableSelect from "@/app/Leads/dropdown";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import styles from "../../Modal.module.css";
 
 const BulkModal = ({
   onClose,
   selectedLeads,
+  setSelectedLeads,
   setBulkOperationMade,
   sourceOptions,
   statusOptions,
@@ -21,6 +23,8 @@ const BulkModal = ({
     description: "",
     clearData: false,
   });
+
+  useEffect(() => console.log(selectedLeads));
 
   const handleChange = (field) => (value) => {
     setBulkData((prev) => ({ ...prev, [field]: value }));
@@ -47,11 +51,12 @@ const BulkModal = ({
 
       await axios.put("/api/Lead/bulk", body);
       setBulkOperationMade((prev) => !prev);
+      onClose();
+      setSelectedLeads([]);
     } catch (error) {
       console.error("Error updating data:", error);
     } finally {
       setLoading(false);
-      onClose();
     }
   };
 
@@ -61,8 +66,7 @@ const BulkModal = ({
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <h4>Bulk Actions</h4>
-        <h5>{loading ? "Processing..." : ""}</h5>
+        <h4>Bulk Actions {loading && <InlineLoader disableText={true} />}</h4>
         <div className="card-body mt-4">
           <div>
             <div className="mb-4">
@@ -138,8 +142,12 @@ const BulkModal = ({
 
             <div className="mb-4 text-right">
               <button
-                className="bg-miles-600 text-white rounded px-6"
+                className={`
+                  px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 ${
+                    loading && "cursor-wait"
+                  } focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150`}
                 onClick={handleSubmit}
+                disabled={loading}
               >
                 Submit
               </button>

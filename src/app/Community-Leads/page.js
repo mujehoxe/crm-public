@@ -552,10 +552,13 @@ export default function CommunityLeadsPage() {
           </>
         )}
 
-        {modalStates.isBulkModalOpen && (
+        {modalStates.isBulkModalOpen && leadsData.selectedLeads.length > 0 && (
           <BulkModal
             onClose={toggleBulkModal}
             selectedLeads={leadsData.selectedLeads}
+            setSelectedLeads={(leads) => {
+              setLeadsData({ ...leadsData, selectedLeads: leads });
+            }}
             setBulkOperationMade={setBulkOperationMade}
             sourceOptions={sourceOptions}
             statusOptions={statusOptions}
