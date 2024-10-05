@@ -2,7 +2,7 @@ import InlineLoader from "@/app/components/InlineLoader";
 import SearchableSelect from "@/app/Leads/dropdown";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import styles from "../../Modal.module.css";
 
@@ -23,8 +23,6 @@ const BulkModal = ({
     description: "",
     clearData: false,
   });
-
-  useEffect(() => console.log(selectedLeads));
 
   const handleChange = (field) => (value) => {
     setBulkData((prev) => ({ ...prev, [field]: value }));
