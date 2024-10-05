@@ -27,7 +27,6 @@ export async function PUT(request, { params }) {
     }
 
     const userId = decoded.id;
-    const username = decoded.name;
     const action = `status updated`;
     const currentDate = new Date().toLocaleDateString();
 

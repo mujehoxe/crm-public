@@ -6,9 +6,6 @@ await import("./Source");
 await import("./Status");
 await import("./Tags");
 
-const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
-const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
-
 const activityLogSchema = new mongoose.Schema(
   {
     action: String,
@@ -26,7 +23,9 @@ const activityLogSchema = new mongoose.Schema(
   { strict: false }
 );
 
-async function sendOneSignalNotification(activityLog, targetedUserIds) {
+const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
+const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
+async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
   const notification = {
     app_id: ONE_SIGNAL_APP_ID,
     headings: {
@@ -44,7 +43,7 @@ async function sendOneSignalNotification(activityLog, targetedUserIds) {
       userId: activityLog.Userid._id.toString(),
       leadId: activityLog.Leadid._id.toString(),
     },
-    include_player_ids: targetedUserIds,
+    include_player_ids: targetedPlayerIds,
   };
 
   try {
@@ -72,30 +71,23 @@ async function sendOneSignalNotification(activityLog, targetedUserIds) {
 activityLogSchema.post("save", async function (doc) {
   try {
     const populatedDoc = await doc.populate("Userid Leadid");
-    console.log("New activity log saved:", populatedDoc);
 
-    // Fetch the OneSignal player IDs for the users you want to target
-    // This is just an example, you'll need to implement this method
-    const targetedUserIds = await fetchTargetedUserIds(populatedDoc);
+    const targetedPlayerIds = await fetchTargetedPlayerIds(populatedDoc);
 
-    if (targetedUserIds.length > 0)
-      await sendOneSignalNotification(populatedDoc, targetedUserIds);
+    if (targetedPlayerIds.length > 0)
+      await sendOneSignalNotification(populatedDoc, targetedPlayerIds);
   } catch (error) {
     console.error("Error in post-save hook:", error);
   }
 });
 
-// You need to implement this function to fetch the OneSignal player IDs
-// for the users you want to target based on your business logic
-async function fetchTargetedUserIds(activityLog) {
-  // For example, you might want to notify the user who made the change and the lead owner
+async function fetchTargetedPlayerIds(activityLog) {
   const userIds = [activityLog.Leadid.Assigned];
 
-  // Fetch the OneSignal player IDs for these users from your database
-  // This is just an example, you'll need to implement this based on your data model
   const users = await User.find({ _id: { $in: userIds } });
 
   const playerIds = users.map((user) => user.onesignalPlayerId).filter(Boolean);
+  console.log("**", playerIds);
 
   return playerIds;
 }
