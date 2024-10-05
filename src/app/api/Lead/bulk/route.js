@@ -20,7 +20,6 @@ export async function PUT(request) {
     const token = request.cookies.get("token")?.value || "";
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-    const username = decoded.name;
     const currentDate = new Date().toLocaleDateString();
 
     for (const lead of leads) {
@@ -33,7 +32,7 @@ export async function PUT(request) {
         operations.push({
           editedField: "Assigned",
           action: "reassigned",
-          oldVal: lead.Assigned.username,
+          oldVal: lead.Assigned?.username,
           newVal: assignee,
         });
       }
@@ -67,20 +66,22 @@ export async function PUT(request) {
       }
 
       operations.forEach(async (operation) => {
-        const activityLog = new ActivityLog({
-          action: operation.action,
-          Userid: userId,
-          Leadid: lead._id,
-          date: currentDate,
-          previousValue: operation.oldVal,
-          newValue: operation.newVal.label,
-        });
+        if (operation.oldVal != operation.newVal.label) {
+          const activityLog = new ActivityLog({
+            action: operation.action,
+            Userid: userId,
+            Leadid: lead._id,
+            date: currentDate,
+            previousValue: operation.oldVal,
+            newValue: operation.newVal.label,
+          });
 
-        description &&
-          description != "" &&
-          (activityLog.description = description);
+          description &&
+            description != "" &&
+            (activityLog.description = description);
 
-        await activityLog.save();
+          await activityLog.save();
+        }
       });
     }
 
