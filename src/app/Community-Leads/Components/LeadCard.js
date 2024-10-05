@@ -284,7 +284,7 @@ export default function LeadCard({
                   }}
                 />
               </span>
-              <div className="flex flex-wrap mt-1 space-x-1 space-y-1">
+              <div className="flex flex-wrap items-center space-x-1 mt-1">
                 {lead?.marketingtags?.length > 0 &&
                   lead.marketingtags.map((tag, index) => (
                     <EditableSpan

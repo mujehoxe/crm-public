@@ -45,7 +45,7 @@ export default function EditableSpan({ content, onBlur, onDelete, newTag }) {
       onKeyDown={handleKeyDown}
       contentEditable={isEditing && !isDeleted}
       suppressContentEditableWarning={true}
-      className={`group rounded-md p-1 truncate text-xs font-medium
+      className={`group h-6 rounded-md p-1 truncate text-xs font-medium
 				inline-flex items-center min-h-6 ${
           newTag
             ? "bg-green-100 text-green-700 focus:ring-green-500"
