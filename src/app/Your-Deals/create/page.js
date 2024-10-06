@@ -680,13 +680,10 @@ function SuspenceWrapped() {
 
   return (
     <RootLayout>
-      <div className="w-full mt-16">
+      <div className="w-full">
         <div className="w-full">
-          <div className="w-full flex justify-center  items-center">
+          <div className="w-full flex justify-center items-center">
             <div className="w-full flex flex-col justify-center items-center">
-              <div className="bg-blue w-full">
-                <h4 className="text-white text-center">Deal Type</h4>
-              </div>
               {formCounter === 1 && (
                 <div className="flex flex-col  w-full max-w-[85%] gap-4 h-[65svh] mt-[3em]">
                   <div className="flex gap-4 justify-center items-center">
