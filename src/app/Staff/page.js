@@ -1,20 +1,21 @@
 "use client";
 import axios from "axios";
 
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-import DocumentModal from "../components/doument";
-import RootLayout from "../components/layout";
-import Modal from "./modal";
+import Pagination from "@/app/components/Pagination";
 import {
   ArrowUpTrayIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import Pagination from "@/app/components/Pagination";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+import DocumentModal from "../components/doument";
+import RootLayout from "../components/layout";
+import Modal from "./modal";
 
 export default function Staff() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,10 +125,10 @@ export default function Staff() {
                 <MagnifyingGlassIcon className="size-[16px]" />
               </div>
               <button
-                className="btn text-nowrap btn-primary disabled:bg-gray-400"
+                className="flex items-center text-nowrap px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150"
                 onClick={() => toggleModal()}
               >
-                Add Staff
+                <PlusIcon className="size-4" /> Add Staff
               </button>
             </div>
           </div>
