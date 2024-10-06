@@ -1,6 +1,7 @@
 "use client";
 import RootLayout from "@/app/components/layout";
 import SearchableSelect from "@/app/Leads/dropdown";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -717,11 +718,10 @@ function SuspenceWrapped() {
                       />
                     </div>
                   </div>
-                  <div className=""></div>
                   <div className="flex gap-4 justify-end ">
                     <button
                       disabled={formCounter < 2}
-                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  disabled:bg-gray-200"
+                      className="px-6 py-1 bg-miles-50 disabled:bg-gray-300 text-miles-600 disabled:text-gray-400 rounded-md shadow-lg hover:bg-miles-100 focus:ring-2 focus:ring-miles-300 focus:ring-offset-2 transition-all duration-150"
                       onClick={() => {
                         setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
                       }}
@@ -733,7 +733,7 @@ function SuspenceWrapped() {
                         radioBtnStatus !== "offPlan" &&
                         radioBtnStatus !== "secondaryPlan"
                       }
-                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 disabled:bg-gray-200 "
+                      className="flex items-center px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150"
                       onClick={() => {
                         setFormCounter((prev) => prev + 1);
                       }}
@@ -1482,26 +1482,27 @@ function SuspenceWrapped() {
                         ))}
                     </Accordion>
 
-                    <div className="flex gap-1 w-full justify-center mt-5">
+                    <div className="flex gap-4 w-full justify-center mt-5">
                       <button
-                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
+                        className="flex items-center px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150"
                         onClick={addBuyer}
                       >
-                        Add Buyer
+                        <PlusIcon className="size-4" /> Add Buyer
                       </button>
+
                       {tempAddedBuyerData && tempAddedBuyerData.length > 0 && (
                         <button
-                          className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                          className="flex items-center px-6 py-1 bg-red-700 hover:bg-red-800 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-150"
                           onClick={removeLastBuyer}
                         >
-                          Remove Buyer
+                          <MinusIcon className="size-4" /> Remove Buyer
                         </button>
                       )}
                     </div>
 
                     <div className="flex gap-4 w-full justify-end mt-5">
                       <button
-                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
+                        className="px-6 py-1 bg-miles-50 disabled:bg-gray-300 text-miles-600 disabled:text-gray-400 rounded-md shadow-lg hover:bg-miles-100 focus:ring-2 focus:ring-miles-300 focus:ring-offset-2 transition-all duration-150"
                         onClick={() => {
                           setFormCounter((prev) =>
                             prev > 1 ? prev - 1 : prev
@@ -1511,7 +1512,7 @@ function SuspenceWrapped() {
                         Back
                       </button>
                       <button
-                        className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
+                        className="flex items-center px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150"
                         onClick={onClickBack}
                       >
                         Next
@@ -2061,7 +2062,7 @@ function SuspenceWrapped() {
 
                   <div className="flex gap-4 w-full justify-end mt-5">
                     <button
-                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
+                      className="px-6 py-1 bg-miles-50 disabled:bg-gray-300 text-miles-600 disabled:text-gray-400 rounded-md shadow-lg hover:bg-miles-100 focus:ring-2 focus:ring-miles-300 focus:ring-offset-2 transition-all duration-150"
                       onClick={() => {
                         setFormCounter((prev) => (prev > 1 ? prev - 1 : prev));
                       }}
@@ -2069,7 +2070,7 @@ function SuspenceWrapped() {
                       Back
                     </button>
                     <button
-                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-miles-600 dark:hover:bg-miles-700 focus:outline-none dark:focus:ring-miles-800"
+                      className="text-white bg-miles-700 hover:bg-miles-800 focus:ring-4 focus:ring-miles-300 rounded-lg text-sm px-6 me-2 disabled:bg-gray-200"
                       onClick={HandleSubmit}
                     >
                       {submitting ? (
