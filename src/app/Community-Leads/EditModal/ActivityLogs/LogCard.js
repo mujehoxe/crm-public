@@ -13,7 +13,7 @@ const LogEntry = ({ log, leadData: lead, index }) => {
             {!log.action.includes("Lead status")
               ? log.action.split(" ")[2]
               : "Lead Status"}{" "}
-            {log.previousLeadstatus && log.previousLeadstatus !== "" ? (
+            {log.previousValue && log.previousValue !== "" ? (
               <>
                 from <span className="font-semibold">{log.previousValue}</span>{" "}
               </>
@@ -59,8 +59,17 @@ const LogEntry = ({ log, leadData: lead, index }) => {
       default:
         return (
           <>
-            Performed an action:{" "}
-            <span className="font-semibold">{log.action}</span>
+            <span className="font-semibold capitalize">{log.action}</span>{" "}
+            {log.previousValue && log.previousValue !== "" ? (
+              <>
+                from <span className="font-semibold">{log.previousValue}</span>{" "}
+              </>
+            ) : null}
+            {log.newValue && log.newValue !== "" && (
+              <>
+                to <span className="font-semibold">{log.newValue}</span>
+              </>
+            )}
           </>
         );
     }
