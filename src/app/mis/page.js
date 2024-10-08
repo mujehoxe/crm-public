@@ -664,7 +664,7 @@ function allDeals() {
               <div className=" overflow-x-auto mt-3 border mb-6 rounded-lg overflow-hidden shadow border-gray-200">
                 <table className="table-fixed min-w-full text-sm divide-y divide-gray-300">
                   <thead className="text-gray-800 font-semibold">
-                    <tr className="text-md sticky py-2 z-[109] top-0 !border-0">
+                    <tr className="text-md sticky py-2 z-[109] top-0 3border-b border-slate-500">
                       <th
                         id="firstHeader"
                         className="!bg-miles-50 sticky left-0 z-[999] py-2"
