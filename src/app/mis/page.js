@@ -1,26 +1,22 @@
 "use client";
+import SearchableSelect from "@/app/Leads/dropdown";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import FileSaver from "file-saver";
+import moment from "moment/moment";
+import { useCallback, useEffect, useState } from "react";
+import { FaCheck, FaRegEdit } from "react-icons/fa";
+import { ImCheckmark } from "react-icons/im";
+import { IoMdClose, IoMdDownload, IoMdEye } from "react-icons/io";
+import { MdFileDownload } from "react-icons/md";
+import { TbDatabaseEdit } from "react-icons/tb";
+import { NumericFormat } from "react-number-format";
+import "react-toastify/dist/ReactToastify.css";
+import "rsuite/dist/rsuite.min.css";
+import * as XLSX from "xlsx";
 import RootLayout from "../components/layout";
 import PriceModal from "../components/priceModal";
-import { NumericFormat } from "react-number-format";
-import "rsuite/dist/rsuite.min.css";
-import SearchableSelect from "@/app/Leads/dropdown";
-import moment from "moment/moment";
-import * as XLSX from "xlsx";
-import FileSaver from "file-saver";
 import "./table.css";
-import { FaRegEdit } from "react-icons/fa";
-import { ImCheckmark } from "react-icons/im";
-import { RiCloseFill } from "react-icons/ri";
-import { IoMdDownload } from "react-icons/io";
-import { IoMdClose } from "react-icons/io";
-import { IoMdEye } from "react-icons/io";
-import { FaCheck } from "react-icons/fa";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { TbDatabaseEdit } from "react-icons/tb";
-import "react-toastify/dist/ReactToastify.css";
-import { MdFileDownload } from "react-icons/md";
 
 function allDeals() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -488,7 +484,7 @@ function allDeals() {
     }
   };
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [sellerFieldsCollapsed, setSellerFieldsCollapsed] = useState(false);
   const handleDownload = async (apiUrl) => {
     const fileName = apiUrl.split("/").pop();
     const aTag = document.createElement("a");
@@ -525,7 +521,7 @@ function allDeals() {
     },
     { value: "other", label: "Other" },
   ];
-  const [collapsed2, setCollapsed2] = useState(false);
+  const [buyerFieldsCollapsed, setBuyerFieldsCollapsed] = useState(false);
 
   return (
     <RootLayout>
@@ -649,7 +645,7 @@ function allDeals() {
                 </div>
               )}
               <div className="flex  items-center gap-3 ">
-                <div className={`relative z-1095]`}>
+                <div className={`relative z-[109]`}>
                   <SearchableSelect
                     options={agentNames}
                     onChange={(value) => setAgenFilter(value.label)}
@@ -657,7 +653,7 @@ function allDeals() {
                   ></SearchableSelect>
                 </div>
 
-                <div className={`relative z-1095]`}>
+                <div className={`relative z-[109]`}>
                   <SearchableSelect
                     options={[]}
                     onChange={(value) => setKycFilter(value.label)}
@@ -665,13 +661,13 @@ function allDeals() {
                   ></SearchableSelect>
                 </div>
               </div>
-              <div className=" overflow-x-auto mt-3 h-[calc(100vh-12rem)]">
-                <table className="table-fixed  ">
-                  <thead className="  text-gray-700 ">
-                    <tr className="text-md sticky z-1090] top-0 !border-b border-slate-600 py-2">
+              <div className=" overflow-x-auto mt-3 border mb-6 rounded-lg overflow-hidden shadow border-gray-200">
+                <table className="table-fixed min-w-full text-sm divide-y divide-gray-300">
+                  <thead className="text-gray-800 font-semibold">
+                    <tr className="text-md sticky py-2 z-[109] top-0 !border-0">
                       <th
                         id="firstHeader"
-                        className={` !bg-[#D2E8F2] sticky left-0 z-103]`}
+                        className="!bg-miles-50 sticky left-0 z-[999] py-2"
                       >
                         <div className="grid items-center px-3 grid-cols-5 w-[650px] ">
                           <p className="!mb-0 !mt-0">Serial No.</p>
@@ -682,273 +678,231 @@ function allDeals() {
                         </div>
                       </th>
                       <th
-                        onClick={() => setCollapsed2(!collapsed2)}
-                        className={`cursor-pointer  hover:!bg-miles-200 !px-1 !bg-[#D2E8F2] ${
-                          collapsed2
-                            ? "shadow-r-md !bg-miles-200"
-                            : "shadow-none !bg-[#D2E8F2]"
+                        onClick={() =>
+                          setBuyerFieldsCollapsed(!buyerFieldsCollapsed)
+                        }
+                        className={`cursor-pointer text-nowrap hover:!bg-miles-100 !px-1 py-2 !bg-miles-50 ${
+                          buyerFieldsCollapsed
+                            ? "shadow-r-md !bg-miles-300"
+                            : "shadow-none !bg-miles-200"
                         }`}
                       >
                         <div
-                          className={`flex justify-start items-center gap-3`}
+                          className={`flex justify-between items-center gap-3`}
                         >
                           Buyer Full Name
-                          <MdKeyboardArrowRight
-                            className={`${
-                              collapsed2 ? "rotate-180" : "rotate-0"
+                          <ChevronRightIcon
+                            className={`size-4 ${
+                              buyerFieldsCollapsed ? "rotate-180" : "rotate-0"
                             }`}
                           />
                         </div>
                       </th>
 
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Phone Number</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Email Id</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Date of Birth</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className=" !px-1  !bg-[#9ED8F2]">
-                          Passport Number
-                        </th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className=" !px-1  !bg-[#9ED8F2]">
-                          <div
-                            className={`flex !px-4 justify-between items-center`}
-                          >
-                            <p className={`!mb-0 !mt-0`}>Front</p>
-                            <p className={`!mb-0 !mt-0`}>Back</p>
-                          </div>
-                        </th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">
-                          Passport Expiry
-                        </th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Nationality</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">UAE Resident</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Emirates ID</th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">
-                          Emirates Expiry
-                        </th>
-                      ) : null}
-                      {collapsed2 ? (
-                        <th className="  !px-1 !bg-[#9ED8F2]">Address</th>
+                      {buyerFieldsCollapsed ? (
+                        <>
+                          <th className="!px-1 !bg-miles-300">Phone Number</th>
+                          <th className="!px-1 !bg-miles-300">Email Id</th>
+                          <th className="!px-1 !bg-miles-300">Date of Birth</th>
+                          <th className="!px-1 !bg-miles-300">
+                            Passport Number
+                          </th>
+                          <th className="!px-1 !bg-miles-300">
+                            <div
+                              className={`flex !px-4 justify-between items-center`}
+                            >
+                              <p className={`!mb-0 !mt-0`}>Front</p>
+                              <p className={`!mb-0 !mt-0`}>Back</p>
+                            </div>
+                          </th>
+                          <th className="!px-1 !bg-miles-300">
+                            Passport Expiry
+                          </th>
+                          <th className="!px-1 !bg-miles-300">Nationality</th>
+                          <th className="!px-1 !bg-miles-300">UAE Resident</th>
+                          <th className="  !px-1 !bg-miles-300">Emirates ID</th>
+                          <th className="!px-1 !bg-miles-300">
+                            Emirates Expiry
+                          </th>
+                          <th className="!px-1 !bg-miles-300">Address</th>
+                        </>
                       ) : null}
 
                       <th
-                        className="!px-1 !bg-[#ffbb7c] hover:!bg-[#cc9663] cursor-pointer flex justify-start items-center gap-3"
-                        onClick={() => setCollapsed(!collapsed)}
+                        onClick={() =>
+                          setSellerFieldsCollapsed(!sellerFieldsCollapsed)
+                        }
                       >
-                        Seller Full Name{" "}
-                        <MdKeyboardArrowRight
-                          className={`${collapsed ? "rotate-180" : "rotate-0"}`}
-                        />
+                        <div className="!px-1 w-[160px] py-2 h-full !bg-[#ffbb7c] hover:!bg-[#cc9663] cursor-pointer flex justify-between items-center gap-3">
+                          Seller's Full Name{" "}
+                          <ChevronRightIcon
+                            className={`!size-4 ${
+                              sellerFieldsCollapsed ? "rotate-180" : "rotate-0"
+                            }`}
+                          />
+                        </div>
                       </th>
 
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">
-                          Buyer Full Name
-                        </th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Phone Number</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Email Id</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Date of Birth</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className=" !px-1  !bg-[#ffbb7c]">
-                          Passport Number
-                        </th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">
-                          Passport Expiry
-                        </th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Nationality</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">UAE Resident</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Emirates ID</th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">
-                          Emirates Expiry
-                        </th>
-                      ) : null}
-                      {collapsed ? (
-                        <th className="  !px-1 !bg-[#ffbb7c]">Address</th>
+                      {sellerFieldsCollapsed ? (
+                        <>
+                          <th className="!px-1 !bg-[#ffbb7c]">Phone Number</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">Email Id</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">Date of Birth</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">
+                            Passport Number
+                          </th>
+                          <th className="!px-1 !bg-[#ffbb7c]">
+                            Passport Expiry
+                          </th>
+                          <th className="!px-1 !bg-[#ffbb7c]">Nationality</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">UAE Resident</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">Emirates ID</th>
+                          <th className="!px-1 !bg-[#ffbb7c]">
+                            Emirates Expiry
+                          </th>
+                          <th className="!px-1 !bg-[#ffbb7c]">Address</th>
+                        </>
                       ) : null}
 
-                      <th className="  !px-1 !bg-[#D2E8F2]">
-                        EOI / Token Date
-                      </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Date of Closure</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Date of Booking</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className=" !px-1 !bg-miles-50">EOI / Token Date</th>
+                      <th className=" !px-1 !bg-miles-50">Date of Closure</th>
+                      <th className=" !px-1 !bg-miles-50">Date of Booking</th>
+                      <th className=" !px-1 !bg-miles-50">
                         {" "}
                         Expected Handover Date{" "}
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
-                        {" "}
-                        Status of Deal{" "}
-                      </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50"> Status of Deal </th>
+                      <th className=" !px-1 !bg-miles-50">
                         {" "}
                         Direct/Indirect Buyer/Tenant{" "}
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className=" !px-1 !bg-miles-50">
                         {" "}
                         Direct/Indirect Seller/Owner{" "}
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]"> Remarks </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Property Type</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Developer</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">No. of Bed</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Size /BUA Sq/Ft</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className=" !px-1 !bg-miles-50"> Remarks </th>
+                      <th className=" !px-1 !bg-miles-50">Property Type</th>
+                      <th className=" !px-1 !bg-miles-50">Developer</th>
+                      <th className=" !px-1 !bg-miles-50">No. of Bed</th>
+                      <th className=" !px-1 !bg-miles-50">Size /BUA Sq/Ft</th>
+                      <th className=" !px-1 !bg-miles-50">
                         Plot Area in Sq.FT
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Plot Number</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Deal Type</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Sale/Rent</th>
+                      <th className=" !px-1 !bg-miles-50">Plot Number</th>
+                      <th className=" !px-1 !bg-miles-50">Deal Type</th>
+                      <th className=" !px-1 !bg-miles-50">Sale/Rent</th>
 
-                      <th className="  !px-1 !bg-[#D2E8F2]">Ready/Offplan</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Unit No.</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Mode</th>
+                      <th className=" !px-1 !bg-miles-50">Ready/Offplan</th>
+                      <th className=" !px-1 !bg-miles-50">Unit No.</th>
+                      <th className=" !px-1 !bg-miles-50">Mode</th>
 
-                      <th className="  !px-1 !bg-[#D2E8F2]">Unit Address</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Unit Price</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Comission</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">Spot Cash</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50">Unit Address</th>
+                      <th className="  !px-1 !bg-miles-50">Unit Price</th>
+                      <th className="  !px-1 !bg-miles-50">Comission</th>
+                      <th className="  !px-1 !bg-miles-50">Spot Cash</th>
+                      <th className="  !px-1 !bg-miles-50">
                         Gross Total Comission
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">VAT 5%</th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50">VAT 5%</th>
+                      <th className="  !px-1 !bg-miles-50">
                         Total Commission Including VAT
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50">
                         Loyalty Bonus if Any
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50">
                         Net/Total Comission
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]">
+                      <th className="  !px-1 !bg-miles-50">
                         MOU/Contract Signed
                       </th>
-                      <th className="  !px-1 !bg-[#D2E8F2]  ">
+                      <th className="  !px-1 !bg-miles-50  ">
                         <div className="flex items-center justify-between px-3 gap-3">
                           <p className="!m-0 !border-0">EOI Receipt</p>
                           <p className="!m-0 !border-0">Booking Form</p>
                           <p className="!m-0 !border-0">SPA Copy</p>
                         </div>
                       </th>
-                      <th className="   !bg-[#D2E8F2]">Invoice Number</th>
+                      <th className="   !bg-miles-50">Invoice Number</th>
 
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Agent Commission %
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Agent (AED) Commission
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
-                        ATL Commission %
-                      </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">ATL Commission %</th>
+                      <th className=" !px-1  !bg-miles-50">
                         ATL (AED) Commission
                       </th>
-                      <th className="!px-1   !bg-[#D2E8F2]">TL Comission %</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className="!px-1   !bg-miles-50">TL Comission %</th>
+                      <th className=" !px-1  !bg-miles-50">
                         TL (AED) Comission
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">SM Comission %</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">SM Comission %</th>
+                      <th className=" !px-1  !bg-miles-50">
                         SM (AED) Comission
                       </th>
 
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Total Agent %age Commission to Total Agent
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Total Agent Commission to Total Agent
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         BH %age Commission
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">BH Commission</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">BH Commission</th>
+                      <th className=" !px-1  !bg-miles-50">
                         Total Agents + BH %age Commission to total agent
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Total Commission to Agent + BH (AED)
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         %age Commission to Company
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Commission to Company (AED)
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Additional Comments
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         Commission Status to Agent
                       </th>
 
-                      <th className=" !px-1  !bg-[#D2E8F2]">Sanction List</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">AML Remarks</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">Sanction List</th>
+                      <th className=" !px-1  !bg-miles-50">AML Remarks</th>
+                      <th className=" !px-1  !bg-miles-50">
                         Contract End Date
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">No. of Cheques</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">No. of Cheques</th>
+                      <th className=" !px-1  !bg-miles-50">
                         Security Deposits
                       </th>
 
-                      <th className=" !px-1  !bg-[#D2E8F2]">TA</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">Full Comission</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">1st Claim</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">2nd Claim</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">3rd Claim</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
-                        Comission Status
-                      </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">Cancelled Price</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">Dewa Premises</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">Contract Number</th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">TA</th>
+                      <th className=" !px-1  !bg-miles-50">Full Comission</th>
+                      <th className=" !px-1  !bg-miles-50">1st Claim</th>
+                      <th className=" !px-1  !bg-miles-50">2nd Claim</th>
+                      <th className=" !px-1  !bg-miles-50">3rd Claim</th>
+                      <th className=" !px-1  !bg-miles-50">Comission Status</th>
+                      <th className=" !px-1  !bg-miles-50">Cancelled Price</th>
+                      <th className=" !px-1  !bg-miles-50">Dewa Premises</th>
+                      <th className=" !px-1  !bg-miles-50">Contract Number</th>
+                      <th className=" !px-1  !bg-miles-50">
                         Title Deed Number
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">
+                      <th className=" !px-1  !bg-miles-50">
                         New Title Deed Number
                       </th>
-                      <th className=" !px-1  !bg-[#D2E8F2]">External Agent</th>
+                      <th className=" !px-1  !bg-miles-50">External Agent</th>
 
                       <th
                         id="lastHeader"
-                        className=" !px-1 sticky right-0 text-white  !bg-red-500
-                  "
+                        className="!px-1 sticky right-0 text-center text-white !bg-red-500"
                       >
                         Actions
                       </th>
@@ -959,14 +913,14 @@ function allDeals() {
                       <tr key={index} className="border-b   border-slate-400">
                         <td
                           id="rowHeader"
-                          className={` !bg-[#F1F5F7]  sticky left-0 z-102] !mb-0`}
+                          className={` !bg-[#F1F5F7]  sticky left-0 z-[102] !mb-0`}
                         >
                           <div className="grid grid-cols-5 w-[650px] px-3 items-center">
                             <p className="!mt-0 !mb-0">{index + 1}</p>
                             <p className="!w-[100px] !mb-0">
                               {row?.Userid?.username}
                             </p>
-                            <p className="!w-[200px] !mb-0 text-nowrap  overflow-x-hidden">
+                            <p className="!w-[200px] !mb-0 text-nowrap overflow-x-hidden">
                               {row?.Userid?.Phone}
                             </p>
                             <p className="!w-[100px] text-wrap !mb-0">
@@ -1015,7 +969,7 @@ function allDeals() {
                             : null}
                         </td>
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" ">
                             <input
                               value={row?.buyerContact}
@@ -1057,7 +1011,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <input
                               value={row?.buyerEmail}
@@ -1099,7 +1053,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1">
                             <input
                               value={row?.buyerdob}
@@ -1151,7 +1105,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-3">
                             <input
                               value={row?.buyerpassport}
@@ -1193,7 +1147,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className="!px-3 ">
                             <div className="flex flex-col items-center gap-2 justify-between">
                               <div className="flex justify-between items-center gap-2 w-[140px]">
@@ -1256,7 +1210,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <input
                               value={row?.passportexpiry}
@@ -1309,7 +1263,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <input
                               value={row?.nationality}
@@ -1351,7 +1305,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <p className={`w-[100px] !mb-0`}>{row?.Resident}</p>
                             {row.additionalBuyers.length > 0
@@ -1368,7 +1322,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <p className={`w-[100px] !mb-0`}>
                               {row?.emiratesid ? row?.emiratesid : "N/A"}
@@ -1389,7 +1343,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1 ">
                             <input
                               className={`px-1 !mb-0 disabled:bg-slate-200`}
@@ -1417,7 +1371,7 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        {collapsed2 ? (
+                        {buyerFieldsCollapsed ? (
                           <td scope="row" className=" !px-1">
                             <input
                               value={row?.address}
@@ -1458,41 +1412,41 @@ function allDeals() {
                           </td>
                         ) : null}
 
-                        <td scope="row" className="  z-101] !px-1 "></td>
+                        <td scope="row" className="  z-[101] !px-1 "></td>
 
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
 
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
-                        {collapsed ? (
-                          <td scope="row" className="  z-101] !px-1 "></td>
+                        {sellerFieldsCollapsed ? (
+                          <td scope="row" className="  z-[101] !px-1 "></td>
                         ) : null}
 
                         <td scope="row" className=" !px-1 ">
@@ -1641,7 +1595,7 @@ function allDeals() {
                             }
                           >
                             <SearchableSelect
-                              className={"z-100]"}
+                              className={"z-[100]"}
                               options={developerOptions}
                               disabled={row.edit === null || row.edit === false}
                               defaultValue={row.Developer}
@@ -1937,7 +1891,7 @@ function allDeals() {
 
                         <td scope="row" className="!px-1"></td>
 
-                        <td scope="row" className="!px-3 z-10]">
+                        <td scope="row" className="!px-3 z-10">
                           <div className="flex justify-between w-[300px] items-center gap-3">
                             <div className="flex w-full justify-around gap-2">
                               <p className="!m-0 !border-0">
@@ -2941,9 +2895,11 @@ function allDeals() {
                           row={"row"}
                           className="sticky right-0 z-10 !bg-[#F1F5F7] px-1"
                         >
-                          <div className={`flex item-center justify-around `}>
+                          <div
+                            className={`flex item-center justify-around space-x-2 mx-1`}
+                          >
                             <button
-                              className="text-lg cursor-pointer inline-block !mr-2"
+                              className="text-lg cursor-pointer inline-block"
                               onClick={() => {
                                 const newFilteredData = [...filteredData];
                                 newFilteredData[index].edit = true;
@@ -2992,7 +2948,7 @@ function allDeals() {
                               <ImCheckmark />
                             </button>
                             <button
-                              className="text-lg cursor-pointer inline-block !mr-2"
+                              className="text-lg cursor-pointer inline-block"
                               onClick={() => {
                                 exportFile(index);
                               }}
