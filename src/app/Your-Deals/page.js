@@ -1,25 +1,23 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
 import RootLayout from "@/app/components/layout";
-import axios from "axios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Modal from "react-modal";
-import TokenDecoder from "../components/Cookies";
 import {
-  PDFDownloadLink,
   Document,
   Page,
+  PDFDownloadLink,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
 } from "@react-pdf/renderer";
-import styles from "../Modal.module.css";
-import { formatDate } from "date-fns";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { IoIosInformationCircle } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
+import Modal from "react-modal";
+import "react-toastify/dist/ReactToastify.css";
+import TokenDecoder from "../components/Cookies";
 import ViewModal from "../components/ViewModal";
+import styles from "../Modal.module.css";
 
 const styless = StyleSheet.create({
   page: {
