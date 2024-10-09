@@ -210,8 +210,8 @@ export default function LeadCard({
             <CheckCircleIcon className="text-miles-600 w-6 h-6" />
           </div>
         )}
-        <div className="divide-y divide-gray-200">
-          <div className="relative w-full items-center justify-between space-y-4 p-3">
+        <div className="flex flex-col divide-y divide-gray-200 h-full">
+          <div className="w-full items-center justify-between space-y-4 p-3">
             <h3 className="truncate text-base font-medium text-gray-900">
               {lead.Name}
             </h3>
@@ -247,7 +247,7 @@ export default function LeadCard({
             </div>
           </div>
 
-          <div className="absloute bottom-0 top-auto p-3 space-y-2">
+          <div className="p-3 space-y-2">
             <div className="flex space-x-2">
               <Select
                 mode="single"
