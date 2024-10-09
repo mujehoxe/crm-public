@@ -1,21 +1,20 @@
 "use client";
-import axios from "axios";
-import Link from "next/link";
-import React, { useCallback, useEffect, useState, useRef } from "react";
-import RootLayout from "../components/layout";
-import Modal from "../Staff/modal";
-import DocumentModal from "../components/doument";
-import { DateRangePicker } from "rsuite";
-import "rsuite/dist/rsuite.min.css";
 import SearchableSelect from "@/app/Leads/dropdown";
+import axios from "axios";
+import FileSaver from "file-saver";
+import moment from "moment/moment";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
-import moment from "moment/moment";
-import * as XLSX from "xlsx";
-import FileSaver from "file-saver";
-import { MultiSelect } from "react-multi-select-component";
 import { IoIosInformationCircle } from "react-icons/io";
+import { DateRangePicker } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
+import * as XLSX from "xlsx";
 import TokenDecoder from "../components/Cookies";
+import DocumentModal from "../components/doument";
+import RootLayout from "../components/layout";
+import Modal from "../Staff/modal";
 function allDeals() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -199,7 +198,7 @@ function allDeals() {
     { value: "Admin", label: "Admin" },
     { value: "SalesHead", label: "Sales Head" },
     { value: "Manager", label: "Manager" },
-    { value: "BusinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Business Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },

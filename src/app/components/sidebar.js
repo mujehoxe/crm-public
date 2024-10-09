@@ -1,12 +1,5 @@
 "use client";
 
-import axios from "axios";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { FaHandshake } from "react-icons/fa6";
-import { IoGitNetworkSharp } from "react-icons/io5";
-import TokenDecoder from "./Cookies";
-
 import { Menu, MenuButton } from "@headlessui/react";
 import {
   ChevronRightIcon,
@@ -22,13 +15,25 @@ import {
   Cog6ToothIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/solid";
+import axios from "axios";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { FaHandshake } from "react-icons/fa6";
+import { IoGitNetworkSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
+import TokenDecoder from "./Cookies";
 
 const Sidebar = ({ setSettingsBarOpen }) => {
   const [sidePanelStat, setSidePanelStat] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState();
+
+  const userData = TokenDecoder();
+  useEffect(() => {
+    userData && setUserRole(userData.role);
+  }, [userData]);
 
   const handleLogout = () => {
     setLoading(true);
@@ -43,9 +48,6 @@ const Sidebar = ({ setSettingsBarOpen }) => {
         setLoading(false);
       });
   };
-
-  const userData = TokenDecoder();
-  const userRole = userData ? userData.role : null;
 
   const pathname = usePathname();
 
@@ -121,7 +123,7 @@ const Sidebar = ({ setSettingsBarOpen }) => {
       link: "/Staff",
       icon: <UserGroupIcon className="ml-3 w-6" />,
       notifications: 5,
-      visibility: ["hr", "admin", "superadmin"],
+      visibility: ["HR", "Admin", "superAdmin"],
     },
     {
       id: 2,
@@ -133,28 +135,28 @@ const Sidebar = ({ setSettingsBarOpen }) => {
           name: "Community Leads",
           link: "/Community-Leads",
           visibility: [
-            "admin",
-            "superadmin",
+            "Admin",
+            "superAdmin",
             "BusinessHead",
-            "pnl",
-            "tl",
-            "atl",
-            "fos",
-            "operations",
-            "marketing",
+            "PNL",
+            "TL",
+            "ATL",
+            "FOS",
+            "Operations",
+            "Marketing",
           ],
         },
       ],
       visibility: [
-        "marketing",
-        "admin",
-        "superadmin",
-        "operations",
+        "Marketing",
+        "Admin",
+        "superAdmin",
+        "Operations",
         "BusinessHead",
-        "pnl",
-        "tl",
-        "atl",
-        "fos",
+        "PNL",
+        "TL",
+        "ATL",
+        "FOS",
       ],
     },
     {
@@ -167,40 +169,40 @@ const Sidebar = ({ setSettingsBarOpen }) => {
           name: "Timesheet",
           link: "/Timesheet",
           visibility: [
-            "admin",
-            "superadmin",
+            "Admin",
+            "superAdmin",
             "BusinessHead",
-            "pnl",
-            "tl",
-            "atl",
-            "fos",
-            "hr",
+            "PNL",
+            "TL",
+            "ATL",
+            "FOS",
+            "HR",
           ],
         },
         {
           name: "Detailed progress report",
           link: "/Detailed-Progress-Report",
           visibility: [
-            "admin",
-            "superadmin",
-            "hr",
+            "Admin",
+            "superAdmin",
+            "HR",
             "BusinessHead",
-            "pnl",
-            "tl",
-            "atl",
-            "fos",
+            "PNL",
+            "TL",
+            "ATL",
+            "FOS",
           ],
         },
       ],
       visibility: [
-        "admin",
-        "superadmin",
-        "hr",
+        "Admin",
+        "superAdmin",
+        "HR",
         "BusinessHead",
-        "pnl",
-        "tl",
-        "atl",
-        "fos",
+        "PNL",
+        "TL",
+        "ATL",
+        "FOS",
       ],
     },
     {
@@ -213,39 +215,39 @@ const Sidebar = ({ setSettingsBarOpen }) => {
           name: "Deals Approvals",
           link: "/Your-Deals",
           visibility: [
-            "admin",
-            "superadmin",
+            "Admin",
+            "superAdmin",
             "BusinessHead",
-            "pnl",
-            "tl",
-            "atl",
-            "fos",
-            "marketing",
-            "operations",
+            "PNL",
+            "TL",
+            "ATL",
+            "FOS",
+            "Marketing",
+            "Operations",
           ],
         },
         {
           name: "KYC and Sanction",
           link: "/KYC-and-Sanctions",
-          visibility: ["admin", "superadmin", "operations"],
+          visibility: ["Admin", "superAdmin", "Operations"],
         },
         {
           name: "MIS",
           link: "/mis",
-          visibility: ["admin", "superadmin", "finance"],
+          visibility: ["Admin", "superAdmin", "Finance"],
         },
       ],
       visibility: [
-        "admin",
-        "superadmin",
+        "Admin",
+        "superAdmin",
         "BusinessHead",
-        "pnl",
-        "tl",
-        "atl",
-        "fos",
-        "operations",
-        "marketing",
-        "finance",
+        "PNL",
+        "TL",
+        "ATL",
+        "FOS",
+        "Operations",
+        "Marketing",
+        "Finance",
       ],
     },
     {
@@ -318,7 +320,7 @@ const Sidebar = ({ setSettingsBarOpen }) => {
         >
           <ul className="relative space-y-2 px-2 py-2 flex flex-col h-full">
             {sideMenus.map((item) =>
-              item.visibility?.includes(userRole?.toLowerCase()) ||
+              item.visibility?.includes(userRole) ||
               item.visibility?.includes("all") ? (
                 <li key={item.id}>
                   <Link
@@ -360,7 +362,7 @@ const Sidebar = ({ setSettingsBarOpen }) => {
                       className={`pl-6 mt-2 space-y-2 transition-all duration-300 max-h-96 opacity-100 overflow-hidden`}
                     >
                       {item.nested.map((subItem, subIndex) =>
-                        subItem.visibility?.includes(userRole.toLowerCase()) ? (
+                        subItem.visibility?.includes(userRole) ? (
                           <li key={subIndex}>
                             <Link
                               href={subItem.link || "#"}

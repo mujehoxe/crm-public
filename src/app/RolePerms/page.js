@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import RootLayout from "@/app/components/layout";
-import SearchableSelect from "../Leads/dropdown";
-import axios from "axios";
 import { Select } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
 function RolePerms() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [permissions, setPermissions] = useState({});
@@ -17,7 +16,7 @@ function RolePerms() {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BusinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Business Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },

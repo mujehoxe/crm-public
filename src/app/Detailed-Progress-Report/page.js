@@ -1,8 +1,8 @@
 "use client";
 // Import the necessary components
-import React, { useEffect, useState } from "react";
 import RootLayout from "@/app/components/layout";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import SearchableSelect from "../Leads/dropdown";
 import BarChart from "../components/bar";
 function Report() {

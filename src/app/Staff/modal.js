@@ -1,7 +1,7 @@
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegUserCircle } from "react-icons/fa";
 import DocumentModal from "../components/doument";
@@ -23,7 +23,7 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BusinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Business Head" },
     { value: "Strategist", label: "Strategist & Operations" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },

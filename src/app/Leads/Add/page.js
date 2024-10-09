@@ -1,15 +1,14 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
-import axios from "axios";
-import SearchableSelect from "../dropdown";
-import "bootstrap/dist/css/bootstrap.css";
-import RootLayout from "@/app/components/layout";
 import TokenDecoder from "@/app/components/Cookies";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import RootLayout from "@/app/components/layout";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.css";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NumericFormat } from "react-number-format";
+import SearchableSelect from "../dropdown";
 
 function Add() {
   return (
@@ -42,7 +41,7 @@ function SuspenseWrappde() {
     { value: "Finance", label: "Finance" },
     { value: "Operations", label: "Operations" },
     { value: "HR", label: "Human Resource" },
-    { value: "BusinessHead", label: "Bussiness Head" },
+    { value: "BusinessHead", label: "Business Head" },
     { value: "PNL", label: "PNL" },
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },
