@@ -3,6 +3,9 @@ import Invoice from "@/models/invoice";
 import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
 
+await import("@/models/Source");
+await import("@/models/Users");
+
 connect();
 
 export async function GET(request) {
