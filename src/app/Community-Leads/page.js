@@ -722,7 +722,7 @@ export default function CommunityLeadsPage() {
           />
         </div>
 
-        <div ref={containerRef} className="fixed bottom-5 right-6 z-10">
+        <div ref={containerRef} className="fixed bottom-5 right-6 z-[999]">
           <div className={`relative rounded-full cursor-pointer`}>
             <motion.div
               animate={{ rotate: btnShow ? 45 : 0 }}

@@ -1,3 +1,4 @@
+import styles from "@/app/Modal.module.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,9 +17,10 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
 
   return (
     <div
-      className={
-        "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-50"
-      }
+      className={styles.modalBackdrop}
+      // className={
+      //   "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-[998]"
+      // }
     >
       <div className={`bg-white w-full mx-52 my-auto px-8 py-4 rounded-lg`}>
         <div className="flex w-full justify-between items-center">

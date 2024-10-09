@@ -1,10 +1,10 @@
 import InlineLoader from "@/app/components/InlineLoader";
 import SearchableSelect from "@/app/Leads/dropdown";
+import styles from "@/app/Modal.module.css";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import styles from "../../Modal.module.css";
 
 const BulkModal = ({
   onClose,

@@ -285,11 +285,11 @@ const Sidebar = ({ setSettingsBarOpen }) => {
   }, []);
 
   return (
-    <div className={`fixed ${sidePanelStat && "inset-0"} top-0 left-0 z-40`}>
+    <div className={`fixed ${sidePanelStat && "inset-0"} top-0 left-0 z-[999]`}>
       <Menu
         as="div"
         ref={menuRef}
-        className={`select-none z-50 bg-gray-900 text-gray-100 shadow-lg ${
+        className={`select-none z-[999] bg-gray-900 text-gray-100 shadow-lg ${
           sidePanelStat ? "w-full sm:w-64" : "w-20"
         } transition-all duration-300 ease-in-out overflow-hidden flex flex-col`}
       >

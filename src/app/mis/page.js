@@ -664,10 +664,10 @@ function allDeals() {
               <div className=" overflow-x-auto mt-3 border mb-6 rounded-lg overflow-hidden shadow border-gray-200">
                 <table className="table-fixed min-w-full text-sm divide-y divide-gray-300">
                   <thead className="text-gray-800 font-semibold">
-                    <tr className="text-md sticky py-2 z-[109] top-0 3border-b border-slate-500">
+                    <tr className="text-md sticky py-2 z-[109] top-0 border-b border-slate-500">
                       <th
                         id="firstHeader"
-                        className="!bg-miles-50 sticky left-0 z-[999] py-2"
+                        className="!bg-miles-50 sticky left-0 z-[109] py-2"
                       >
                         <div className="grid items-center px-3 grid-cols-5 w-[650px] ">
                           <p className="!mb-0 !mt-0">Serial No.</p>
@@ -1586,12 +1586,12 @@ function allDeals() {
                           </div>
                         </td>
 
-                        <td scope="row" className="  !px-1 ">
+                        <td scope="row" className="!px-1">
                           <div
                             className={
                               row?.Developer === "other"
-                                ? "grid grid-cols-2 gap-x-4 w-[300px]"
-                                : "grid grid-cols-1 gap-x-4 w-[200px]"
+                                ? "flex flex-col w-[300px]"
+                                : "flex flex-row w-[200px]"
                             }
                           >
                             <SearchableSelect
