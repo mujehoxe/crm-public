@@ -5,48 +5,10 @@ const LogEntry = ({ log, leadData: lead, index }) => {
   const renderLogContent = () => {
     console.log(log);
     switch (true) {
-      case log.action.includes("status updated") ||
-        log.action.includes("Lead Field"):
-        return (
-          <>
-            Changed <span className="font-semibold">{lead.Name}'s</span>{" "}
-            {!log.action.includes("Lead status")
-              ? log.action.split(" ")[2]
-              : "Lead Status"}{" "}
-            {log.previousValue && log.previousValue !== "" ? (
-              <>
-                from <span className="font-semibold">{log.previousValue}</span>{" "}
-              </>
-            ) : null}
-            to <span className="font-semibold">{log.newValue}</span>
-          </>
-        );
-      case log.action.includes("Tags added"):
-        return (
-          <>
-            Added tag(s):{" "}
-            <span className="font-semibold">{log.tags.join(", ")}</span> to{" "}
-            <span className="font-semibold">{lead.Name}'s</span> lead
-          </>
-        );
-      case log.action.includes("Status added"):
-        return (
-          <>
-            Added status: <span className="font-semibold">{log.status}</span> to{" "}
-            <span className="font-semibold">{lead.Name}'s</span> lead
-          </>
-        );
       case log.action.includes("Lead added"):
         return (
           <>
             Added a new lead <span className="font-semibold">{lead.Name}</span>
-          </>
-        );
-      case log.action.includes("Order added"):
-        return (
-          <>
-            Added a new order for{" "}
-            <span className="font-semibold">{lead.Name}</span>
           </>
         );
       case log.action.includes("Whatsapp Template"):
