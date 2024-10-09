@@ -128,7 +128,7 @@ export default function PermissionsManagement({ initialModules, roles }) {
                   <th className="py-4 px-2 text-left text-sm font-semibold capitalize tracking-wider">
                     Module
                   </th>
-                  <th className="py-4 px-2 text-left text-sm font-semibold capitalize tracking-wider">
+                  <th className="py-4 z-10 px-2 border-r border-gray-400 text-left text-sm font-semibold capitalize tracking-wider">
                     Operation
                   </th>
                   {roles.map((role) => (
@@ -160,7 +160,7 @@ export default function PermissionsManagement({ initialModules, roles }) {
                               {moduleName.replaceAll("_", " ")}
                             </td>
                           )}
-                          <td className="capitalize group-hover:bg-miles-100 transition-all text-nowrap py-4 px-2 text-sm text-gray-700 font-medium">
+                          <td className="capitalize border-r border-gray-400 group-hover:bg-miles-100 transition-all text-nowrap py-4 px-2 text-sm text-gray-700 font-medium">
                             {operation.name.replaceAll("_", " ")}
                           </td>
                           {roles.map((role) => (
