@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
-import Leads from "@/models/Leads";
-import connect from "@/dbConfig/dbConfig";
-import Papa from "papaparse";
 import { checkPermission } from "@/app/api/permissions/checkPermission";
+import connect from "@/dbConfig/dbConfig";
+import Leads from "@/models/Leads";
+import { NextResponse } from "next/server";
+import Papa from "papaparse";
 
 connect();
 
 export async function POST(request, { params }) {
-  if (!(await checkPermission(request, "export", "lead")))
+  if (!(await checkPermission("export", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

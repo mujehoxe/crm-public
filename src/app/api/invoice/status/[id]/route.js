@@ -1,15 +1,13 @@
-import getDataFromToken from "@/helpers/getDataFromtoken";
-import { NextRequest, NextResponse } from "next/server";
+import { checkPermission } from "@/app/api/permissions/checkPermission";
 import connect from "@/dbConfig/dbConfig";
 import Invoice from "@/models/invoice";
-import ActivityLog from "@/models/Activity";
 import jwt from "jsonwebtoken";
-import { checkPermission } from "@/app/api/permissions/checkPermission";
+import { NextResponse } from "next/server";
 
 connect();
 
 export async function PUT(request, { params }) {
-  if (!(await checkPermission(request, "approve", "deals_approval")))
+  if (!(await checkPermission("approve", "deals_approval")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

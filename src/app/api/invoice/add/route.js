@@ -1,9 +1,10 @@
 import connect from "@/dbConfig/dbConfig";
-import { NextResponse } from "next/server";
 import Invoice from "@/models/invoice";
-import jwt from "jsonwebtoken";
 import fs from "fs";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 import path from "path";
+
 connect();
 
 export async function POST(request) {
@@ -81,6 +82,7 @@ export async function POST(request) {
           uploadsDir,
           `eoi_${uniqueNumber}_otherImages${index + 1}.pdf`
         );
+
         try {
           fs.writeFileSync(otherImagePath, base64Data, "base64");
           otherFileNames.push(otherImagePath);
@@ -99,7 +101,6 @@ export async function POST(request) {
         let base64Data;
         let fileExtension;
 
-        // Detect the MIME type and set the appropriate file extension
         if (buyerImagesBase64.startsWith("data:application/pdf;base64,")) {
           base64Data = buyerImagesBase64.replace(
             /^data:application\/pdf;base64,/,
@@ -147,41 +148,45 @@ export async function POST(request) {
 
     const tempAddedBuyerData = reqBody.data.tempAddedBuyerData || [];
     let additionalBuyers = [];
+
     if (tempAddedBuyerData.length > 0) {
       additionalBuyers = tempAddedBuyerData.map((buyer) => ({
-        buyername: buyer?.buyername || "",
-        buyerEmail: buyer?.buyeremail || "",
-        buyerContact: buyer?.buyercontact || "",
-        buyerdob: buyer?.buyerdob || "",
-        buyerpassport: buyer?.buyerpassport || "",
-        passportexpiry: buyer?.passportexpiry || "",
+        name: buyer?.name || "",
+        email: buyer?.Email || "",
+        contact: buyer?.Contact || "",
+        dob: buyer?.dob || "",
+        passport: buyer?.passport || "",
+        passportFront: savedFileNames.length > 0 ? savedFileNames[0] : null,
+        passportBack: savedFileNames.length > 1 ? savedFileNames[1] : null,
+        expiry: buyer?.expiry || "",
         nationality: buyer?.nationality || "",
-        Resident: buyer?.Resident || "",
+        resident: buyer?.Resident || "",
+        emiratesid: buyer?.emiratesid || "",
         emiratesExpiry: buyer?.emiratesExpiry || "",
+        emiratesPhoto: savedFileNames.length > 2 ? savedFileNames[2] : null,
         address: buyer?.address || "",
-        emiratesid: buyer?.emirateid || "",
-        passfront: savedFileNames.length > 0 ? savedFileNames[0] : null,
-        passback: savedFileNames.length > 1 ? savedFileNames[1] : null,
-        emiratephoto: savedFileNames.length > 2 ? savedFileNames[2] : null,
       }));
     }
 
     const newInvoice = new Invoice({
       Userid: userId,
-      buyername: buyerOneData.buyername || buyerOneData[0].buyername,
-      buyerEmail: buyerOneData?.buyerEmail || buyerOneData[0]?.buyerEmail || "",
-      buyerContact: buyerOneData.buyerContact || buyerOneData[0].buyerEmail,
-      buyerdob: buyerOneData.buyerdob || buyerOneData[0].buyerdob,
-      buyerpassport:
-        buyerOneData.buyerpassport || buyerOneData[0].buyerpassport,
-      passportexpiry:
-        buyerOneData.passportexpiry || buyerOneData[0].passportexpiry,
-      nationality: buyerOneData.nationality || buyerOneData[0].nationality,
-      Resident: buyerOneData.Resident || buyerOneData[0].Resident,
-      emiratesExpiry:
-        buyerOneData?.emiratesExpiry || buyerOneData[0]?.emiratesExpiry || "",
-      emiratesid: buyerOneData?.emiratesid || buyerOneData[0]?.emiratesid || "",
-      address: buyerOneData.address || buyerOneData[0].address,
+      buyer: {
+        name: buyerOneData.name || buyerOneData[0].name,
+        email: buyerOneData.Email || buyerOneData[0].Email,
+        contact: buyerOneData.Contact || buyerOneData[0].Contact,
+        dob: buyerOneData.dob || buyerOneData[0].dob,
+        passport: buyerOneData.passport || buyerOneData[0].passport,
+        passportExpiry: buyerOneData.expiry || buyerOneData[0].expiry,
+        passfront: savedFileNames.length > 0 ? savedFileNames[0] : null,
+        passback: savedFileNames.length > 1 ? savedFileNames[1] : null,
+        nationality: buyerOneData.nationality || buyerOneData[0].nationality,
+        resident: buyerOneData.Resident || buyerOneData[0].Resident,
+        emiratesid: buyerOneData.emiratesid || buyerOneData[0].emiratesid,
+        emiratesExpiry:
+          buyerOneData.emiratesExpiry || buyerOneData[0].emiratesExpiry,
+        emiratesPhoto: savedFileNames.length > 3 ? savedFileNames[3] : null,
+        address: buyerOneData.address || buyerOneData[0].address,
+      },
       EOI: buyerOneData.tokenDate,
       Leadid: buyerOneData.leadId || buyerOneData[0].leadId,
       Closure: buyerOneData.closureDate,
@@ -214,21 +219,16 @@ export async function POST(request) {
       commisionttype: buyerOneData.commisionttype,
       netcom: buyerOneData.netcom,
       grandTotalCommission: buyerOneData.grandTotalCommission,
-      netcom: buyerOneData.netcom,
       loyaltyBonus: buyerOneData.loyaltyBonus,
       additionalBuyers,
       submittedBy: userId,
-      passfront: savedFileNames.length > 0 ? savedFileNames[0] : null,
-      passback: savedFileNames.length > 1 ? savedFileNames[1] : null,
       visaphoto: savedFileNames.length > 2 ? savedFileNames[2] : null,
-      emiratephoto: savedFileNames.length > 3 ? savedFileNames[3] : null,
       buyerImages: buyerImagesArrayFileNames,
       eoiimage: otherFileNames.length > 0 ? otherFileNames[0] : null,
       bookingmage: otherFileNames.length > 1 ? otherFileNames[1] : null,
       SPAmage: otherFileNames.length > 2 ? otherFileNames[2] : null,
     });
 
-    // Save the new invoice
     const savedInvoice = await newInvoice.save();
 
     return NextResponse.json({

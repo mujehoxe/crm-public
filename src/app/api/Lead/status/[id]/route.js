@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 connect();
 
 export async function PUT(request, { params }) {
-  if (!(await checkPermission(request, "export", "lead")))
+  if (!(await checkPermission("export", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

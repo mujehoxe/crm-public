@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
-import Leads from "@/models/Leads";
 import connect from "@/dbConfig/dbConfig";
+import Leads from "@/models/Leads";
+import { NextResponse } from "next/server";
 import { checkPermission } from "../../permissions/checkPermission";
 
 connect();
 
 export async function GET(request, { params }) {
-  if (!(await checkPermission(request, "view", "lead")))
+  if (!(await checkPermission("view", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

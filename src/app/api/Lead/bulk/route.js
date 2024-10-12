@@ -11,7 +11,7 @@ import { checkPermission } from "../../permissions/checkPermission";
 connect();
 
 export async function PUT(request) {
-  if (!(await checkPermission(request, "map_leads", "lead")))
+  if (!(await checkPermission("map_leads", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

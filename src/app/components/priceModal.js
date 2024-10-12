@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import styles from "../Modal.module.css";
 import axios from "axios";
-import SearchableSelect from "../Leads/dropdown";
+import "bootstrap/dist/css/bootstrap.css";
+import { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "bootstrap/dist/css/bootstrap.css";
-import { NumericFormat } from "react-number-format";
+import SearchableSelect from "../Leads/dropdown";
+import styles from "../Modal.module.css";
 
 const priceModal = ({ userData, onClose2 }) => {
   const [showModal, setShowModal] = useState(true);
   const [savedUser, setSavedUser] = useState(null);
-  const [parentStaff, setParentStaff] = useState([]);
   const [userid, setuserid] = useState(null);
 
-  const toggleDocumentModal = () => {
-    setIsDocumentModalOpen(!isDocumentModalOpen);
-  };
   const [loading, setLoading] = useState(false);
 
   const commissionCurrency = [
@@ -301,7 +297,7 @@ const priceModal = ({ userData, onClose2 }) => {
                       placeholder="Gross Total Comission"
                       disabled
                       value={
-                        priceChangeData.TotalComission === 0
+                        !priceChangeData.TotalComission
                           ? "Net Commission"
                           : priceChangeData.TotalComission.toLocaleString(
                               undefined,
@@ -321,7 +317,7 @@ const priceModal = ({ userData, onClose2 }) => {
                       className="form-control"
                       placeholder="VAT"
                       value={
-                        priceChangeData.VAT === 0
+                        !priceChangeData.VAT
                           ? "Net Commission"
                           : priceChangeData.VAT.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
@@ -339,7 +335,7 @@ const priceModal = ({ userData, onClose2 }) => {
                       className="form-control"
                       placeholder="Total Comission"
                       value={
-                        priceChangeData.ComissionVAT === 0
+                        !priceChangeData.ComissionVAT
                           ? "Net Commission"
                           : priceChangeData.ComissionVAT.toLocaleString(
                               undefined,
@@ -354,13 +350,13 @@ const priceModal = ({ userData, onClose2 }) => {
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
+                  <div>
                     <label className="!mb-0">Loyalty Bonus</label>
                     <NumericFormat
                       className="form-control"
                       placeholder="Loyality Bonus"
                       value={
-                        priceChangeData.loyaltyBonus == 0
+                        !priceChangeData.loyaltyBonus
                           ? "loyalty Bonus"
                           : parseFloat(
                               String(priceChangeData.loyaltyBonus).replace(
@@ -390,7 +386,7 @@ const priceModal = ({ userData, onClose2 }) => {
                       placeholder="Net Comission"
                       disabled
                       value={
-                        priceChangeData.netcom === 0
+                        !priceChangeData.netcom
                           ? "Net Commission"
                           : priceChangeData.netcom.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
@@ -414,7 +410,7 @@ const priceModal = ({ userData, onClose2 }) => {
                       priceChangeData.Comission <= 0 ||
                       priceChangeData.Price <= 0
                     }
-                    className={`text-white bg-miles-700 hover:bg-miles-800   font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2`}
+                    className={`text-white bg-miles-600 hover:bg-miles-800   font-medium rounded-lg text-sm px-6 py-1 me-2 mb-2`}
                   >
                     {isSubmit ? "Submitting..." : "Submit"}
                   </button>

@@ -9,7 +9,7 @@ import path from "path";
 connect();
 
 export async function PUT(request, { params }) {
-  if (!(await checkPermission(request, "edit", "staff")))
+  if (!(await checkPermission("edit", "staff")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

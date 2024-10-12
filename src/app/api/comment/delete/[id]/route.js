@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 connect();
 
 export async function DELETE(request, { params: { id: commentId } }) {
-  if (!(await checkPermission(request, "comment", "lead")))
+  if (!(await checkPermission("comment", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

@@ -1,12 +1,12 @@
-import Meeting from "@/models/Meeting";
-import connect from "@/dbConfig/dbConfig";
-import { NextResponse } from "next/server";
 import { checkPermission } from "@/app/api/permissions/checkPermission";
+import connect from "@/dbConfig/dbConfig";
+import Meeting from "@/models/Meeting";
+import { NextResponse } from "next/server";
 
 connect();
 
 export async function DELETE(request, { params: { id: meetingId } }) {
-  if (!(await checkPermission(request, "add_meeting", "lead")))
+  if (!(await checkPermission("add_meeting", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

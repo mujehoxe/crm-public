@@ -11,7 +11,7 @@ connect();
 
 export async function POST(request) {
   try {
-    if (!(await checkPermission(request, "add_meeting", "lead")))
+    if (!(await checkPermission("add_meeting", "lead")))
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   } catch (err) {
     return NextResponse.json({ error: "Forbidden " + err }, { status: 403 });

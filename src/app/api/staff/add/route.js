@@ -44,7 +44,7 @@ async function addUserToOneSignalAndCRM(userDetails) {
 }
 
 export async function POST(request) {
-  if (!(await checkPermission(request, "add", "staff")))
+  if (!(await checkPermission("add", "staff")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

@@ -1,9 +1,8 @@
-import getDataFromToken from "@/helpers/getDataFromtoken";
-import { NextRequest, NextResponse } from "next/server";
+import { checkPermission } from "@/app/api/permissions/checkPermission";
+import connect from "@/dbConfig/dbConfig";
 import Invoice from "@/models/invoice";
 import User from "@/models/Users";
-import connect from "@/dbConfig/dbConfig";
-import { checkPermission } from "@/app/api/permissions/checkPermission";
+import { NextResponse } from "next/server";
 
 connect();
 async function getAllUserIds(userid) {
@@ -23,7 +22,7 @@ async function getAllUserIds(userid) {
   return userIds;
 }
 export async function GET(request, { params }) {
-  if (!(await checkPermission(request, "view_invoice", "lead")))
+  if (!(await checkPermission("view_invoice", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const parentstaff = params.id;

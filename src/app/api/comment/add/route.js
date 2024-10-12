@@ -9,7 +9,7 @@ import { checkPermission } from "../../permissions/checkPermission";
 connect();
 
 export async function POST(request) {
-  if (!(await checkPermission(request, "comment", "lead")))
+  if (!(await checkPermission("comment", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

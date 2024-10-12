@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React, { useEffect, useId } from "react";
 import Select from "react-select";
 
 const SearchableSelect = ({
@@ -14,7 +14,8 @@ const SearchableSelect = ({
     setSelectedOption(selectedOption);
     onChange(selectedOption);
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     const defaultOption = options.find(
       (option) => option.value === defaultValue
     );

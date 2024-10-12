@@ -141,7 +141,7 @@ function parseCSV(csvData) {
 }
 
 export async function POST(request) {
-  if (!(await checkPermission(request, "import_from_csv", "lead")))
+  if (!(await checkPermission("import_from_csv", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

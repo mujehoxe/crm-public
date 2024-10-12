@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const buyerSchema = new mongoose.Schema({
   name: String,
@@ -128,4 +130,76 @@ const invoiceSchema = new mongoose.Schema({
 const Invoice =
   mongoose.models.Invoice || mongoose.model("Invoice", invoiceSchema);
 
-export default Invoice;
+async function migrateInvoices() {
+  try {
+    // Connect to the database
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("Connected to the database");
+
+    // Find all invoices
+    const invoices = await Invoice.find().lean();
+
+    console.log(`Found ${invoices.length} invoices`);
+
+    let count = 0;
+
+    for (let invoice of invoices) {
+      // Create a new buyer object
+      const buyer = {
+        name: invoice.buyername,
+        email: invoice.buyerEmail,
+        contact: invoice.buyerContact,
+        dob: invoice.buyerdob,
+        passport: invoice.buyerpassport,
+        passportExpiry: invoice.passportexpiry,
+        passportFront: invoice.passfront,
+        passportBack: invoice.passback,
+        nationality: invoice.nationality,
+        resident: invoice.Resident,
+        emiratesId: invoice.emiratesid,
+        emiratesExpiry: invoice.emiratesExpiry,
+        emiratesPhoto: invoice.emiratephoto,
+        address: invoice.address,
+      };
+
+      // Update the invoice document
+      await Invoice.updateOne(
+        { _id: invoice._id },
+        {
+          $set: {
+            buyer: buyer,
+            // Remove old buyer fields
+            buyername: undefined,
+            buyerEmail: undefined,
+            buyerContact: undefined,
+            buyerdob: undefined,
+            buyerpassport: undefined,
+            buyerexpiry: undefined,
+            buyernationality: undefined,
+            buyerResident: undefined,
+            buyeremiratesExpiry: undefined,
+            buyeremiratesid: undefined,
+            buyeraddress: undefined,
+          },
+        }
+      );
+
+      count++;
+      if (count % 100 === 0) {
+        console.log(`Processed ${count} invoices`);
+      }
+    }
+
+    console.log("Migration completed successfully");
+  } catch (error) {
+    console.error("Error during migration:", error);
+  } finally {
+    await mongoose.disconnect();
+  }
+}
+
+migrateInvoices();

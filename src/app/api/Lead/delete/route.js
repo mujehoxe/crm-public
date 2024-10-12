@@ -6,7 +6,7 @@ import { checkPermission } from "../../permissions/checkPermission";
 connect();
 
 export async function DELETE(request) {
-  if (!(await checkPermission(request, "export", "lead")))
+  if (!(await checkPermission("export", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

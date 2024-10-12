@@ -658,14 +658,11 @@ function SuspenceWrapped() {
         buyerImages1: resolvedImages[2],
       };
 
-      const updatedData = {
-        ...data,
-      };
       setSubmitting(true);
       try {
         await axios.post("/api/invoice/add", {
           buyerImages1Base64: imageData,
-          data: updatedData,
+          data,
         });
         setSubmitting(false);
         setFormCounter((prev) => (prev < 4 ? prev + 1 : prev));

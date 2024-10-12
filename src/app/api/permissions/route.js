@@ -1,14 +1,14 @@
-import { NextResponse } from "next/server";
-import { checkPermission } from "./checkPermission";
 import connect from "@/dbConfig/dbConfig";
 import Operation from "@/models/Operation";
 import Role from "@/models/Role";
+import { NextResponse } from "next/server";
+import { checkPermission } from "./checkPermission";
 
 connect();
 
 export async function GET(request) {
   try {
-    if (!(await checkPermission(request, "manage", "permissions")))
+    if (!(await checkPermission("manage", "permissions")))
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   } catch (err) {
     return NextResponse.json({ error: "Forbidden " + err }, { status: 403 });
@@ -35,7 +35,7 @@ export async function GET(request) {
 }
 
 export async function PATCH(request) {
-  if (!(await checkPermission(request, "manage", "permissions")))
+  if (!(await checkPermission("manage", "permissions")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

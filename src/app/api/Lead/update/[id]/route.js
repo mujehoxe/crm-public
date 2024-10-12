@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 connect();
 
 export async function PATCH(request, { params }) {
-  if (!(await checkPermission(request, "add_individual", "lead")))
+  if (!(await checkPermission("add_individual", "lead")))
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {

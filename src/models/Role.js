@@ -1,4 +1,3 @@
-// models/Operation.js
 import mongoose from "mongoose";
 
 const RoleSchema = new mongoose.Schema({
