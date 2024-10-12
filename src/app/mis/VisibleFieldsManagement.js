@@ -97,7 +97,7 @@ export default function VisibleFieldsManagement({ fields }) {
       toast.success(
         data.message || "Invoice fields visibility updated successfully"
       );
-      setClientInitialFields(fields);
+      setClientInitialFields(clientFields);
     } catch (error) {
       console.error("Error updating permissions:", error);
       toast.error(
