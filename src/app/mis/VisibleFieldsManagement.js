@@ -118,7 +118,7 @@ export default function VisibleFieldsManagement({ fields }) {
         Visible Fields Management
       </h2>
       <div className="mb-6 overflow-x-auto shadow">
-        <div className="inline-block min-w-full border border-gray-200 rounded-lg overflow-x-hidden align-middle max-h-[512px]">
+        <div className="inline-block min-w-full border border-gray-200 rounded-t-lg overflow-x-hidden align-middle max-h-[512px]">
           <table className="min-w-full divide-y divide-gray-300">
             <thead className="sticky top-0 z-10 bg-gradient-to-r from-miles-500 to-miles-700 text-white">
               <tr>
