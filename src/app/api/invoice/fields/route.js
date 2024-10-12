@@ -28,9 +28,9 @@ export async function PATCH(request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {
-    const { fields } = await request.json();
+    const { clientFields } = await request.json();
 
-    for (const field of fields) {
+    for (const field of clientFields) {
       await InvoiceFields.findOneAndUpdate(
         { name: field.name },
         { $set: { visibleTo: field.visibleTo } },
