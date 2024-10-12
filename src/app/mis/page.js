@@ -14,6 +14,7 @@ import { NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import "rsuite/dist/rsuite.min.css";
 import * as XLSX from "xlsx";
+import TokenDecoder from "../components/Cookies";
 import RootLayout from "../components/layout";
 import Loader from "../components/Loader";
 import PriceModal from "../components/priceModal";
@@ -35,6 +36,7 @@ function allDeals() {
   const toggleInputType = () => {
     setIsDateInput((prevIsDateInput) => !prevIsDateInput);
   };
+
   const handleKeyDown = (event) => {
     event.preventDefault();
   };
@@ -326,12 +328,6 @@ function allDeals() {
     [filteredData]
   );
 
-  const directIndirectOwnerOP = [
-    { value: "Direct Seller", label: "Direct Seller" },
-    { value: "Indirect Seller", label: "Indirect Seller" },
-    { value: "Owner", label: "Owner" },
-  ];
-
   const agentNames = [
     { value: "superAdmin", label: "Super admin" },
     { value: "Admin", label: "Admin" },
@@ -342,28 +338,6 @@ function allDeals() {
     { value: "TL", label: "TL" },
     { value: "ATL", label: "ATL" },
     { value: "FOS", label: "FOS" },
-  ];
-
-  const readyStatus = [
-    { value: "Ready", label: "Ready" },
-    { value: "Off-Plan", label: "Off-Plan" },
-  ];
-
-  const dealTypes = [
-    { value: "Primary", label: "Primary" },
-    { value: "Secondary", label: "Secondary" },
-  ];
-
-  const saleRents = [
-    { value: "Sale", label: "Sale" },
-    { value: "Rent", label: "Rent" },
-  ];
-
-  const modes = [
-    { value: "Cheque", label: "Cheque" },
-    { value: "Cash", label: "Cash" },
-    { value: "Bank Transfer", label: "Bank Transfer" },
-    { value: "Managers Cheque", label: "Managers Cheque" },
   ];
 
   useEffect(() => {
@@ -428,10 +402,6 @@ function allDeals() {
     }
   };
 
-  const [eoiIndex, seteoiIndex] = useState(null);
-  const [bookingIndex, setbookingIndex] = useState(null);
-  const [showSPAIndex, setSPAIndex] = useState(null);
-
   const [passFront, setpassFront] = useState(null);
   const [passBack, setpassBack] = useState(null);
   const [passFrontIndex, setPassFrontIndex] = useState(null);
@@ -458,7 +428,10 @@ function allDeals() {
 
   const [buyerFieldsCollapsed, setBuyerFieldsCollapsed] = useState(false);
 
+  const userToken = TokenDecoder();
+
   const [fields, setFields] = useState([]);
+  const [visibleFields, setVisibleFields] = useState([]);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -470,13 +443,19 @@ function allDeals() {
         const data = await res.json();
 
         setFields(data.data);
+
+        setVisibleFields(
+          data.data.filter((f) =>
+            f.visibleTo.map((r) => r.name).includes(userToken.role)
+          )
+        );
       } catch (error) {
         console.error("Error fetching fields:", error);
       }
     };
 
-    fetchRoles();
-  }, []);
+    userToken && fetchRoles();
+  }, [userToken]);
 
   function getFieldTypeComponent(row, index, field) {
     return {
@@ -1007,7 +986,7 @@ function allDeals() {
                         </>
                       ) : null}
 
-                      {fields.map((field) => {
+                      {visibleFields.map((field) => {
                         if (["_id", "buyer"].includes(field.name)) return;
                         return (
                           <th className="capitalize !px-1 !bg-miles-50">
@@ -1381,7 +1360,7 @@ function allDeals() {
                           </>
                         )}
 
-                        {fields.map((field) => {
+                        {visibleFields.map((field) => {
                           if ("buyer" === field.name) return;
                           return (
                             <td scope="row" className="px-1 text-center">
