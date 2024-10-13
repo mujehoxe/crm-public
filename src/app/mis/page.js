@@ -9,8 +9,6 @@ import { FaCheck, FaRegEdit } from "react-icons/fa";
 import { ImCheckmark } from "react-icons/im";
 import { IoMdClose, IoMdDownload, IoMdEye } from "react-icons/io";
 import { MdFileDownload } from "react-icons/md";
-import { TbDatabaseEdit } from "react-icons/tb";
-import { NumericFormat } from "react-number-format";
 import "react-toastify/dist/ReactToastify.css";
 import "rsuite/dist/rsuite.min.css";
 import * as XLSX from "xlsx";
@@ -18,6 +16,7 @@ import TokenDecoder from "../components/Cookies";
 import RootLayout from "../components/layout";
 import Loader from "../components/Loader";
 import PriceModal from "../components/priceModal";
+import FieldTypeComponent from "./components/FieldTypeComponent";
 import RowFixedFields from "./RowFixedFields";
 import "./table.css";
 import VisibleFieldsManagement from "./VisibleFieldsManagement";
@@ -31,15 +30,6 @@ function allDeals() {
   const [agentFilter, setAgenFilter] = useState(null);
   const [kycFilter, setKycFilter] = useState("");
   const [userIndex, setUserIndex] = useState(null);
-  const [isDateInput, setIsDateInput] = useState(false);
-
-  const toggleInputType = () => {
-    setIsDateInput((prevIsDateInput) => !prevIsDateInput);
-  };
-
-  const handleKeyDown = (event) => {
-    event.preventDefault();
-  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -457,323 +447,6 @@ function allDeals() {
     userToken && fetchRoles();
   }, [userToken]);
 
-  function getFieldTypeComponent(row, index, field) {
-    return {
-      date: (
-        <div className="w-[130px]">
-          {(!row[field.value] && field.type.alt && (
-            <span className="text-green-600 uppercase font-medium">
-              {field.type.alt}
-            </span>
-          )) || (
-            <input
-              value={row[field.value]}
-              onKeyDown={handleKeyDown}
-              onFocus={toggleInputType}
-              className={`p-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-              onChange={(e) => {
-                const newFilteredData = [...filteredData];
-                newFilteredData[index][field.value] = e.target.value;
-                setFilteredData(newFilteredData);
-              }}
-              type="date"
-            />
-          )}
-        </div>
-      ),
-      select: (
-        <select
-          className="w-[150px] h-8 p-1 rounded-md"
-          onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index][field.value] = e.target.value;
-            setFilteredData(newFilteredData);
-          }}
-          defaultValue={row[field.value]}
-        >
-          <option>No Selection</option>
-          {field.type.options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      ),
-      input: (
-        <input
-          value={row[field.value]}
-          className={`p-1 border-1 border-gray-800 rounded-md bg-[#F1F5F7]`}
-          onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index][field.value] = e.target.value;
-            setFilteredData(newFilteredData);
-          }}
-          type="text"
-        />
-      ),
-      number: (
-        <div className="w-[100px]">
-          <NumericFormat
-            value={row[field.value]}
-            decimalPrecision={0}
-            thousandSeparator=","
-            className={`p-1 w-full border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-            onChange={(e) => {
-              const newValue = e.target.value.replace(/[^0-9]/g, "");
-              if (newValue !== "") {
-                const newFilteredData = [...filteredData];
-                newFilteredData[index][field.value] = parseInt(newValue, 10);
-                setFilteredData(newFilteredData);
-              }
-            }}
-            onBlur={(e) => {
-              const value = e.target.value.replace(/[^0-9]/g, "");
-              if (value === "") {
-                const newFilteredData = [...filteredData];
-                newFilteredData[index][field.value] = "";
-                setFilteredData(newFilteredData);
-              }
-            }}
-          />
-        </div>
-      ),
-      float: (
-        <NumericFormat
-          value={row?.BUA}
-          thousandSeparator=","
-          className={`p-1 w-[130px] border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-          onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index].BUA = e.target.value;
-            setFilteredData(newFilteredData);
-          }}
-        />
-      ),
-      plotNumber: (
-        <input
-          value={row?.Property == "Apartment" ? "N/A" : row?.PlotNumber}
-          className={`p-1 w-[100px] border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-          onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index].PlotNumber = e.target.value;
-            setFilteredData(newFilteredData);
-          }}
-          disabled={row.Property == "Apartment"}
-        />
-      ),
-      monetary: (
-        <div className={`flex justify-between items-center`}>
-          <p className="!mb-0">
-            {row[field.value] !== null && row[field.value] !== undefined
-              ? row[field.value].toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              : ""}
-          </p>
-          {field.editButton && (
-            <button
-              className={`text-slate-900`}
-              onClick={() => toggleModal(index)}
-            >
-              <TbDatabaseEdit className={`text-xl text-slate-500`} />
-            </button>
-          )}
-        </div>
-      ),
-      downloadable: (
-        <div className="flex w-full justify-around gap-2">
-          <IoMdEye
-            className="!m-0 !border-0 cursor-pointer"
-            onClick={() => {
-              showImage(field, index);
-            }}
-          />
-          <IoMdDownload
-            className="!m-0 !border-0 cursor-pointer"
-            onClick={() => {
-              handleDownload(
-                path + row[field.value].split("kyc/").pop(),
-                "file.pdf"
-              );
-            }}
-          />
-        </div>
-      ),
-      comission: (
-        <div className={`flex justify-center items-center`}>
-          <p className="!mb-0 w-[100px]">
-            {row?.Comission} {row?.ComissionType}
-          </p>
-        </div>
-      ),
-      agentComission: row[field.value] && (
-        <div className="w-[130px]">
-          <div className="flex items-center gap-1">
-            <span className="font-semibold">%: </span>
-            <NumericFormat
-              className={`p-1 border-1 border-gray-800 rounded-md border-0`}
-              value={row[field.value]}
-              onChange={(e) => {
-                const newFilteredData = [...filteredData];
-                const newAgentComissionPercent = Number(e.target.value);
-
-                const totalComission = parseFloat(row?.TotalComission);
-                const loyaltyBonus = parseFloat(row?.loyaltyBonus || 0);
-
-                let newAgentComissionAED = 0;
-
-                if (row?.loyaltyBonus) {
-                  newAgentComissionAED =
-                    ((totalComission - loyaltyBonus) *
-                      newAgentComissionPercent) /
-                    100;
-                } else {
-                  newAgentComissionAED =
-                    (totalComission * newAgentComissionPercent) / 100;
-                }
-
-                newAgentComissionAED = parseFloat(
-                  newAgentComissionAED.toFixed(2)
-                );
-
-                newFilteredData[index] = {
-                  ...newFilteredData[index],
-                  [field.value]: newAgentComissionPercent,
-                  [field.accompaniedField]: newAgentComissionAED,
-                };
-
-                setFilteredData(newFilteredData);
-              }}
-            />
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="font-semibold">AED: </span>
-            <NumericFormat
-              className={`p-1 border-1 border-gray-800 rounded-md border-0`}
-              value={(
-                (parseFloat(row?.netcom) * parseFloat(row[field.value])) /
-                100
-              ).toFixed(2)}
-              thousandSeparator=","
-              disabled
-            />
-          </div>
-        </div>
-      ),
-      totalPercentComission: (
-        <div className="w-[200px]">
-          <NumericFormat
-            className={`p-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-            thousandSeparator=","
-            value={
-              field.type.name === "totalPercentComission" && eval(field.value)
-            }
-            disabled
-          />
-        </div>
-      ),
-      comissionStatus: (
-        <div className="flex flex-col items-center gap-1 w-[130px]">
-          <div className="flex items-center justify-start gap-1">
-            <label className="!mb-0">Received?</label>
-            <input
-              className="p-1 disabled:!border-0 disabled:!bg-[#F1F5F7]"
-              type="checkbox"
-              checked={row[field.value] == 1}
-              onChange={(e) => {
-                const newFilteredData = [...filteredData];
-                newFilteredData[index] = {
-                  ...newFilteredData[index],
-                  [field.value]: e.target.checked ? 1 : 0,
-                };
-                setFilteredData(newFilteredData);
-              }}
-            />
-          </div>
-
-          <div>
-            {row[field.value] == 1 ? (
-              <p className="!mb-0 bg-white text-green-500 !mt-0 text-center px-2 py-2 rounded-full">
-                Paid
-              </p>
-            ) : (
-              <p className="!mb-0 !mt-0 text-red-500 px-2 bg-white py-2 text-center rounded-full">
-                Not Paid
-              </p>
-            )}
-          </div>
-        </div>
-      ),
-      sanction: (
-        <div className="w-[120px]">
-          {areSanctionImagesAvailable(row) ? (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
-              Done
-            </p>
-          ) : row.approved == 53 ? (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
-              Approved by Superadmin
-            </p>
-          ) : row.approved == 51 ? (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-red-400">
-              Rejected
-            </p>
-          ) : (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-miles-400">
-              Awaiting
-            </p>
-          )}
-        </div>
-      ),
-      AMLRemarks: (
-        <div className="w-[120px]">
-          {areSanctionImagesAvailable(row) || row.approved != 53 ? (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-yellow-600">
-              Pending
-            </p>
-          ) : (
-            <p className="px-1 text-sm py-2 mb-0 w-content bg-white rounded-full text-center text-green-400">
-              Done
-            </p>
-          )}
-        </div>
-      ),
-      fullComission: (
-        <input
-          disabled
-          className={`p-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-          value={
-            row?.loyaltyBonus
-              ? (parseFloat(row[field.value]) - parseFloat(row?.loyaltyBonus))
-                  .toFixed(2)
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              : parseFloat(row[field.value])
-                  .toFixed(2)
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }
-        />
-      ),
-      claim: (
-        <NumericFormat
-          className={`p-1 w-[130px] border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
-          value={parseFloat(String(row[field.value]).replace(/,/g, ""))
-            .toFixed(2)
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          thousandSeparator=","
-          onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index] = {
-              ...newFilteredData[index],
-              [field.value]: e.target.value,
-            };
-            setFilteredData(newFilteredData);
-          }}
-        />
-      ),
-    };
-  }
-
   return (
     <RootLayout>
       {isModalOpen && (
@@ -1105,8 +778,7 @@ function allDeals() {
                             <td scope="row" className="!px-1">
                               <input
                                 value={row?.buyer?.dob}
-                                onKeyDown={handleKeyDown}
-                                onFocus={toggleInputType}
+                                onKeyDown={(e) => e.preventDefault()}
                                 className={`p-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
                                 max={new Date().toISOString().split("T")[0]}
                                 type="date"
@@ -1122,8 +794,7 @@ function allDeals() {
                                   return (
                                     <div key={id} className={`mt-1`}>
                                       <input
-                                        onKeyDown={handleKeyDown}
-                                        onFocus={toggleInputType}
+                                        onKeyDown={(e) => e.preventDefault()}
                                         value={addBuyers?.buyer.dob}
                                         max={
                                           new Date().toISOString().split("T")[0]
@@ -1353,14 +1024,20 @@ function allDeals() {
                         )}
 
                         {visibleFields.map((field) => {
-                          if ("buyer" === field.name) return;
+                          if (field.name === "buyer") return null;
                           return (
-                            <td scope="row" className="px-1 text-center">
-                              {
-                                getFieldTypeComponent(row, index, field)[
-                                  field.type.name
-                                ]
-                              }
+                            <td
+                              key={field.name}
+                              scope="row"
+                              className="px-1 text-center"
+                            >
+                              <FieldTypeComponent
+                                row={row}
+                                index={index}
+                                field={field}
+                                filteredData={filteredData}
+                                setFilteredData={setFilteredData}
+                              />
                             </td>
                           );
                         })}
@@ -1439,20 +1116,6 @@ function allDeals() {
       )}
     </RootLayout>
   );
-
-  function areSanctionImagesAvailable(row) {
-    return (
-      row?.KYCimage &&
-      row?.KYCimage != "https://crm-milestonehomes.com/public/kyc/undefined" &&
-      row?.UNimage &&
-      row?.UNimage != "https://crm-milestonehomes.com/public/kyc/undefined" &&
-      row?.Sanctionimage &&
-      row?.Sanctionimage !=
-        "https://crm-milestonehomes.com/public/kyc/undefined" &&
-      row?.Riskimage &&
-      row?.Riskimage != "https://crm-milestonehomes.com/public/kyc/undefined"
-    );
-  }
 }
 
 export default allDeals;
