@@ -7,8 +7,13 @@ import { toast } from "react-toastify";
 export default function VisibleFieldsManagement({ fields }) {
   const [roles, setRoles] = useState([]);
 
-  const [clientFields, setClientFields] = useState(fields);
-  const [clientInitialFields, setClientInitialFields] = useState(fields);
+  const [clientFields, setClientFields] = useState([]);
+  const [clientInitialFields, setClientInitialFields] = useState([]);
+
+  useEffect(() => {
+    setClientFields(fields);
+    setClientInitialFields(fields);
+  }, [fields]);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -136,8 +141,8 @@ export default function VisibleFieldsManagement({ fields }) {
               </tr>
             </thead>
             <tbody className="divide-y-2 divide-gray-200">
-              {clientFields &&
-                clientFields?.map((field, fieldIndex) => (
+              {clientFields && clientFields.length > 0 ? (
+                clientFields.map((field, fieldIndex) => (
                   <tr
                     key={`${field.name}`}
                     className={`${
@@ -208,7 +213,14 @@ export default function VisibleFieldsManagement({ fields }) {
                       </td>
                     ))}
                   </tr>
-                ))}
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    No fields available
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
