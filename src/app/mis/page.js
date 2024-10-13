@@ -933,13 +933,13 @@ function allDeals() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto mt-3 border mb-6 rounded-lg overflow-hidden shadow border-gray-200">
+              <div className="overflow-x-auto overflow-hidden mt-3 border mb-6 rounded-lg shadow border-gray-200 max-h-[700px]">
                 <table className="table-fixed min-w-full text-sm divide-y divide-gray-300">
-                  <thead className="text-gray-800 font-semibold">
-                    <tr className="text-md sticky py-2 z-[108] top-0 border-b border-slate-500">
+                  <thead className="sticky top-0 z-10 text-white">
+                    <tr className="text-md sticky py-2 z-[108] bg-gradient-to-r from-miles-500 to-miles-700 top-0 border-b border-slate-500">
                       <th
                         id="firstHeader"
-                        className="!bg-miles-50 sticky left-0 z-[108] py-2"
+                        className="sticky left-0 z-[108] bg-gradient-to-r from-miles-500 to-[#176090] py-2"
                       >
                         <div className="grid items-center px-2 grid-cols-11 w-[480px] ">
                           <p className="!mb-0 !mt-0 col-span-3">Serial No.</p>
@@ -952,11 +952,7 @@ function allDeals() {
                         onClick={() =>
                           setBuyerFieldsCollapsed(!buyerFieldsCollapsed)
                         }
-                        className={`cursor-pointer text-nowrap hover:!bg-miles-100 !px-1 py-2 !bg-miles-50 ${
-                          buyerFieldsCollapsed
-                            ? "shadow-r-md !bg-miles-300"
-                            : "shadow-none !bg-miles-200"
-                        }`}
+                        className={`cursor-pointer text-nowrap !px-1 py-2`}
                       >
                         <div
                           className={`flex justify-between items-center gap-3`}
@@ -970,28 +966,24 @@ function allDeals() {
                         </div>
                       </th>
 
-                      {buyerFieldsCollapsed ? (
+                      {buyerFieldsCollapsed && (
                         <>
-                          <th className="!px-1 !bg-miles-300">Phone Number</th>
-                          <th className="!px-1 !bg-miles-300">Email Id</th>
-                          <th className="!px-1 !bg-miles-300">Birth Date</th>
-                          <th className="!px-1 !bg-miles-300">Passport</th>
-                          <th className="!px-1 !bg-miles-300">Nationality</th>
-                          <th className="!px-1 !bg-miles-300">UAE Resident</th>
-                          <th className="!px-1 !bg-miles-300">Emirates ID</th>
-                          <th className="!px-1 !bg-miles-300">
-                            Emirates Expiry
-                          </th>
-                          <th className="!px-1 !bg-miles-300">Address</th>
+                          <th className="!px-1">Phone Number</th>
+                          <th className="!px-1">Email Id</th>
+                          <th className="!px-1">Birth Date</th>
+                          <th className="!px-1">Passport</th>
+                          <th className="!px-1">Nationality</th>
+                          <th className="!px-1">UAE Resident</th>
+                          <th className="!px-1">Emirates ID</th>
+                          <th className="!px-1">Emirates Expiry</th>
+                          <th className="!px-1">Address</th>
                         </>
-                      ) : null}
+                      )}
 
                       {visibleFields.map((field) => {
                         if (["_id", "buyer"].includes(field.name)) return;
                         return (
-                          <th className="capitalize !px-1 !bg-miles-50">
-                            {field.name}
-                          </th>
+                          <th className="capitalize !px-1">{field.name}</th>
                         );
                       })}
 
