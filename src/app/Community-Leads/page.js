@@ -139,7 +139,6 @@ export default function CommunityLeadsPage() {
   const [bulkOperationMade, setBulkOperationMade] = useState(false);
 
   useEffect(() => {
-    setLeadsData({ ...leadsData, selectedLeads: [] });
     userRole && fetchLeads();
   }, [
     userRole,
