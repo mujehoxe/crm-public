@@ -13,7 +13,7 @@ const BulkModal = ({
   setBulkOperationMade,
   sourceOptions,
   statusOptions,
-  users,
+  agents,
 }) => {
   const [loading, setLoading] = useState(false);
   const [bulkData, setBulkData] = useState({
@@ -96,7 +96,7 @@ const BulkModal = ({
             <div className="mb-4">
               <h5>Assigned</h5>
               <SearchableSelect
-                options={users}
+                options={agents}
                 placeholder="Assign..."
                 onChange={handleChange("assignee")}
                 defaultValue={

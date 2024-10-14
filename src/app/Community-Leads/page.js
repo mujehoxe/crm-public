@@ -24,7 +24,7 @@ import ReminderModal from "./EditModal/Reminders/ReminderModal";
 
 export default function CommunityLeadsPage() {
   const [tagOptions, setTagOptions] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [agents, setAgents] = useState([]);
   const [selectedAgents, setSelectedAgents] = useState([]);
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [selectedSources, setSelectedSources] = useState([]);
@@ -387,7 +387,7 @@ export default function CommunityLeadsPage() {
           const defaultOption = { value: userid, label: username };
           filteredUsers = filteredUsers.filter((user) => user._id !== userid);
 
-          const mappedUsers =
+          const mappedAgents =
             filteredUsers.length > 0
               ? [
                   defaultOption,
@@ -398,7 +398,7 @@ export default function CommunityLeadsPage() {
                 ]
               : [defaultOption];
 
-          setUsers(mappedUsers);
+          setAgents(mappedAgents);
         } catch (error) {
           console.error("Error fetching users:", error);
         }
@@ -561,7 +561,7 @@ export default function CommunityLeadsPage() {
             setBulkOperationMade={setBulkOperationMade}
             sourceOptions={sourceOptions}
             statusOptions={statusOptions}
-            users={users}
+            agents={agents}
           />
         )}
 
@@ -577,8 +577,14 @@ export default function CommunityLeadsPage() {
       {renderModals}
       <div className="container h-screen mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
-        <div className="w-full tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
-          <div className="tablet:col-span-4 mobile:col-span-1 grid tablet:grid-cols-6 mobile:grid-cols-3 items-center h-full mobile:order-last mobile:mt-3 tablet:mt-0 tablet:order-1 gap-x-1">
+        <div className="w-full gap-y-2 tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
+          <input
+            className="rounded-md placeholder:text-[#837979] placeholder:text-opacity-50 col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1"
+            placeholder="Search Leads..."
+            value={filters.searchTerm}
+            onChange={handleSearchTermChange}
+          />
+          <div className="tablet:col-span-full mobile:col-span-1 grid tablet:grid-cols-6 mobile:grid-cols-3 items-center h-full mobile:order-last mobile:mt-3 tablet:mt-0 tablet:order-1 gap-x-1">
             <div className="w-full h-full cursor-pointer">
               <DatePicker.RangePicker
                 format={"DD-MM-YYYY"}
@@ -596,9 +602,9 @@ export default function CommunityLeadsPage() {
                 style={{ width: "100%", height: "100%" }}
                 defaultValue={filters.selectedUser}
                 onChange={handleAgentsChange}
-                options={users}
+                options={agents}
                 maxTagCount="responsive"
-                placeholder={"Users"}
+                placeholder={"Agents"}
               />
             </div>
 
@@ -657,12 +663,6 @@ export default function CommunityLeadsPage() {
               />
             </div>
           </div>
-          <input
-            className="rounded-md tablet:col-span-2 !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1"
-            placeholder="Search Leads.."
-            value={filters.searchTerm}
-            onChange={handleSearchTermChange}
-          />
         </div>
 
         <div className="flex flex-wrap items-center gap-2 mt-3">
