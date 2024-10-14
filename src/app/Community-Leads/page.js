@@ -25,10 +25,10 @@ import ReminderModal from "./EditModal/Reminders/ReminderModal";
 export default function CommunityLeadsPage() {
   const [tagOptions, setTagOptions] = useState([]);
   const [users, setUsers] = useState([]);
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [selectedValues2, setSelectedValues2] = useState([]);
-  const [selectedValues3, setSelectedValues3] = useState([]);
-  const [selectedValues4, setSelectedValues4] = useState([]);
+  const [selectedAgents, setSelectedAgents] = useState([]);
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
+  const [selectedSources, setSelectedSources] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const [leadsData, setLeadsData] = useState({
     leads: [],
@@ -105,13 +105,13 @@ export default function CommunityLeadsPage() {
 
     filters.date && params.append("date", filters.date);
     filters.searchTerm && params.append("searchterm", filters.searchTerm);
-    selectedValues.length > 0 &&
-      params.append("selectedValues", selectedValues);
-    selectedValues2.length > 0 &&
-      params.append("selectedValues2", selectedValues2);
-    selectedValues3.length > 0 &&
-      params.append("selectedValues3", selectedValues3);
-    selectedValues4.length > 0 && params.append("selectedTag", selectedValues4);
+    selectedAgents.length > 0 &&
+      params.append("selectedValues", selectedAgents);
+    selectedStatuses.length > 0 &&
+      params.append("selectedValues2", selectedStatuses);
+    selectedSources.length > 0 &&
+      params.append("selectedValues3", selectedSources);
+    selectedTags.length > 0 && params.append("selectedTag", selectedTags);
 
     return params.toString();
   };
@@ -144,9 +144,9 @@ export default function CommunityLeadsPage() {
   }, [
     userRole,
     userid,
-    selectedValues,
-    selectedValues2,
-    selectedValues3,
+    selectedAgents,
+    selectedStatuses,
+    selectedSources,
     leadsData.leadsPerPage,
     leadsData.currentPage,
     filters.selectedTag,
@@ -409,28 +409,28 @@ export default function CommunityLeadsPage() {
     }
   }, [userRole]);
 
-  const handleUserChange = (selected) => {
+  const handleAgentsChange = (selected) => {
     setFilters({ ...filters, selectedUser: selected });
-    const selectedValues = selected.map((user) => user);
-    setSelectedValues(selectedValues);
+    const selectedAgents = selected.map((user) => user);
+    setSelectedAgents(selectedAgents);
   };
 
   const handleStatusChange = (selected) => {
     setFilters({ ...filters, selectedStatus: selected });
-    const selectedValues2 = selected.map((status) => status);
-    setSelectedValues2(selectedValues2);
+    const selectedStatuses = selected.map((status) => status);
+    setSelectedStatuses(selectedStatuses);
   };
 
   const handleSourceChange = (selected) => {
     setFilters({ ...filters, selectedSource: selected });
-    const selectedValues3 = selected.map((source) => source);
-    setSelectedValues3(selectedValues3);
+    const selectedSources = selected.map((source) => source);
+    setSelectedSources(selectedSources);
   };
 
   const handleTagChange = (selected) => {
     setFilters({ ...filters, selectedTag: selected });
-    const selectedValues4 = selected.map((tags) => tags);
-    setSelectedValues4(selectedValues4);
+    const selectedTags = selected.map((tags) => tags);
+    setSelectedTags(selectedTags);
   };
 
   const handleDateChange = (date) => {
@@ -596,7 +596,7 @@ export default function CommunityLeadsPage() {
                 allowClear
                 style={{ width: "100%", height: "100%" }}
                 defaultValue={filters.selectedUser}
-                onChange={handleUserChange}
+                onChange={handleAgentsChange}
                 options={users}
                 maxTagCount="responsive"
                 placeholder={"Users"}
