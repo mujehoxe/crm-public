@@ -95,7 +95,7 @@ export default function CommunityLeadsPage() {
       case "FOS":
         return `/api/Lead/FOS/${userid}`;
       case "BusinessHead":
-        return `/api/Lead/hiearchy?role=ATL&userid=${userid}`;
+        return `/api/Lead/hiearchy?role=BusinessHead&userid=${userid}`;
       case "PNL":
         return `/api/Lead/hiearchy?role=PNL&userid=${userid}`;
       case "TL":
@@ -130,7 +130,9 @@ export default function CommunityLeadsPage() {
     try {
       const url = getBaseURL();
       const params = getQueryParams();
-      const response = await axios.get(`${url}?${params}`);
+
+      const separator = url.includes("?") ? "&" : "?";
+      const response = await axios.get(`${url}${separator}${params}`);
 
       setLeadsData({
         ...leadsData,
@@ -317,74 +319,6 @@ export default function CommunityLeadsPage() {
           const response = await axios.get("/api/staff/get");
 
           let filteredAgents = response.data.data;
-          if (userRole === "BusinessHead") {
-            const PNLUsers = response.data.data.filter(
-              (user) => user.Role === "PNL" && user.PrentStaff === userid
-            );
-            const PNLIds = PNLUsers.map((user) => user._id);
-            const tlUsers = response.data.data.filter(
-              (user) => user.Role === "TL" && PNLIds.includes(user.PrentStaff)
-            );
-            const tlIds = tlUsers.map((user) => user._id);
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && tlIds.includes(user.PrentStaff)
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredAgents = [
-              ...PNLUsers,
-              ...tlUsers,
-              ...atlUsers,
-              ...fosUsers,
-            ];
-          } else if (userRole === "TL") {
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && user.PrentStaff === userid
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredAgents = [...atlUsers, ...fosUsers];
-          } else if (userRole === "PNL") {
-            const tlUsers = response.data.data.filter(
-              (user) => user.Role === "TL" && user.PrentStaff === userid
-            );
-            const tlIds = tlUsers.map((user) => user._id);
-            const atlUsers = response.data.data.filter(
-              (user) => user.Role === "ATL" && tlIds.includes(user.PrentStaff)
-            );
-            const atlIds = atlUsers.map((user) => user._id);
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
-            );
-            filteredAgents = [...tlUsers, ...atlUsers, ...fosUsers];
-          } else if (userRole === "ATL") {
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && user.PrentStaff === userid
-            );
-            filteredAgents = [...fosUsers];
-          } else if (userRole === "FOS") {
-            const fosUsers = response.data.data.filter(
-              (user) => user.Role === "FOS" && user._id === userid
-            );
-            filteredAgents = [...fosUsers];
-          } else if (userRole === "Admin") {
-            filteredAgents = response.data.data;
-          }
-          filteredAgents = filteredAgents.filter(
-            (user) =>
-              ![
-                "HR",
-                "Finance",
-                "Manager",
-                "Operations",
-                "Marketing",
-                "SalesHead",
-              ].includes(user.Role)
-          );
 
           const username =
             response.data.data.find((user) => user._id === userid)?.username ||
