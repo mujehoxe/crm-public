@@ -312,11 +312,11 @@ export default function CommunityLeadsPage() {
 
   useEffect(() => {
     if (userRole) {
-      const fetchUsers = async () => {
+      const fetchAgents = async () => {
         try {
           const response = await axios.get("/api/staff/get");
 
-          let filteredUsers = response.data.data;
+          let filteredAgents = response.data.data;
           if (userRole === "BusinessHead") {
             const PNLUsers = response.data.data.filter(
               (user) => user.Role === "PNL" && user.PrentStaff === userid
@@ -333,7 +333,12 @@ export default function CommunityLeadsPage() {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
-            filteredUsers = [...PNLUsers, ...tlUsers, ...atlUsers, ...fosUsers];
+            filteredAgents = [
+              ...PNLUsers,
+              ...tlUsers,
+              ...atlUsers,
+              ...fosUsers,
+            ];
           } else if (userRole === "TL") {
             const atlUsers = response.data.data.filter(
               (user) => user.Role === "ATL" && user.PrentStaff === userid
@@ -342,7 +347,7 @@ export default function CommunityLeadsPage() {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
-            filteredUsers = [...atlUsers, ...fosUsers];
+            filteredAgents = [...atlUsers, ...fosUsers];
           } else if (userRole === "PNL") {
             const tlUsers = response.data.data.filter(
               (user) => user.Role === "TL" && user.PrentStaff === userid
@@ -355,21 +360,21 @@ export default function CommunityLeadsPage() {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && atlIds.includes(user.PrentStaff)
             );
-            filteredUsers = [...tlUsers, ...atlUsers, ...fosUsers];
+            filteredAgents = [...tlUsers, ...atlUsers, ...fosUsers];
           } else if (userRole === "ATL") {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && user.PrentStaff === userid
             );
-            filteredUsers = [...fosUsers];
+            filteredAgents = [...fosUsers];
           } else if (userRole === "FOS") {
             const fosUsers = response.data.data.filter(
               (user) => user.Role === "FOS" && user._id === userid
             );
-            filteredUsers = [...fosUsers];
+            filteredAgents = [...fosUsers];
           } else if (userRole === "Admin") {
-            filteredUsers = response.data.data;
+            filteredAgents = response.data.data;
           }
-          filteredUsers = filteredUsers.filter(
+          filteredAgents = filteredAgents.filter(
             (user) =>
               ![
                 "HR",
@@ -385,13 +390,13 @@ export default function CommunityLeadsPage() {
             response.data.data.find((user) => user._id === userid)?.username ||
             "Default Username";
           const defaultOption = { value: userid, label: username };
-          filteredUsers = filteredUsers.filter((user) => user._id !== userid);
+          filteredAgents = filteredAgents.filter((user) => user._id !== userid);
 
           const mappedAgents =
-            filteredUsers.length > 0
+            filteredAgents.length > 0
               ? [
                   defaultOption,
-                  ...filteredUsers.map((user) => ({
+                  ...filteredAgents.map((user) => ({
                     value: user._id,
                     label: user.username,
                   })),
@@ -400,11 +405,11 @@ export default function CommunityLeadsPage() {
 
           setAgents(mappedAgents);
         } catch (error) {
-          console.error("Error fetching users:", error);
+          console.error("Error fetching agents:", error);
         }
       };
 
-      fetchUsers();
+      fetchAgents();
     }
   }, [userRole]);
 
