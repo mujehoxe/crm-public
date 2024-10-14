@@ -9,10 +9,12 @@ export default function VisibleFieldsManagement({ fields }) {
 
   const [clientFields, setClientFields] = useState([]);
   const [clientInitialFields, setClientInitialFields] = useState([]);
+  const [filteredFields, setFilteredFields] = useState([]);
 
   useEffect(() => {
     setClientFields(fields);
     setClientInitialFields(fields);
+    setFilteredFields(fields);
   }, [fields]);
 
   useEffect(() => {
@@ -33,8 +35,16 @@ export default function VisibleFieldsManagement({ fields }) {
     fetchRoles();
   }, []);
 
-  const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const newFilteredFields = clientFields.filter((field) =>
+      field.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredFields(newFilteredFields);
+  }, [searchTerm]);
+
+  const [saving, setSaving] = useState(false);
 
   const handleFieldVisibilityChange = (fieldName, role) => {
     const updatedFields = [...clientFields];
@@ -113,10 +123,6 @@ export default function VisibleFieldsManagement({ fields }) {
     }
   };
 
-  const filteredFields = clientFields.filter((field) =>
-    field.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <div>
       <h2 className="text-xl mt-8 mb-2 font-bold text-gray-900">
@@ -142,7 +148,7 @@ export default function VisibleFieldsManagement({ fields }) {
             </thead>
             <tbody className="divide-y-2 divide-gray-200">
               {clientFields && clientFields.length > 0 ? (
-                clientFields.map((field, fieldIndex) => (
+                filteredFields.map((field, fieldIndex) => (
                   <tr
                     key={`${field.name}`}
                     className={`${
