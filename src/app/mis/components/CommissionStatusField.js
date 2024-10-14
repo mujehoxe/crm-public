@@ -1,4 +1,4 @@
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row, index, field, setFilteredData }) {
   return (
     <div className="flex flex-col items-center gap-1 w-[130px]">
       <div className="flex items-center justify-start gap-1">
@@ -8,12 +8,11 @@ export default function ({ row, index, field, filteredData, setFilteredData }) {
           type="checkbox"
           checked={row[field.value] == 1}
           onChange={(e) => {
-            const newFilteredData = [...filteredData];
-            newFilteredData[index] = {
-              ...newFilteredData[index],
-              [field.value]: e.target.checked ? 1 : 0,
-            };
-            setFilteredData(newFilteredData);
+            setFilteredData((prev) => {
+              const newData = [...prev];
+              newData[index][field.value] = e.target.checked ? 1 : 0;
+              return newData;
+            });
           }}
         />
       </div>

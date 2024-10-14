@@ -34,13 +34,7 @@ const fieldComponents = {
   claim: ClaimField,
 };
 
-const FieldTypeComponent = ({
-  row,
-  index,
-  field,
-  filteredData,
-  setFilteredData,
-}) => {
+const FieldTypeComponent = ({ row, index, field, setFilteredData }) => {
   const Component = fieldComponents[field.type.name];
 
   if (!Component) {
@@ -53,7 +47,6 @@ const FieldTypeComponent = ({
       row={row}
       index={index}
       field={field}
-      filteredData={filteredData}
       setFilteredData={setFilteredData}
     />
   );

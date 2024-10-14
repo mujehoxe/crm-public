@@ -1,43 +1,40 @@
 import { NumericFormat } from "react-number-format";
 
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row, index, field, setFilteredData }) {
   return (
     row[field.value] && (
       <div className="w-[130px]">
         <div className="flex items-center gap-1">
           <span className="font-semibold">%: </span>
           <NumericFormat
-            className={`p-1 border-1 border-gray-800 rounded-md border-0`}
+            className={`p-1 border-1 w-16 border-gray-800 rounded-md border-0`}
             value={row[field.value]}
             onChange={(e) => {
-              const newFilteredData = [...filteredData];
-              const newAgentComissionPercent = Number(e.target.value);
+              setFilteredData((prev) => {
+                const newData = [...prev];
+                const newAgentComissionPercent = Number(e.target.value);
 
-              const totalComission = parseFloat(row?.TotalComission);
-              const loyaltyBonus = parseFloat(row?.loyaltyBonus || 0);
+                const totalComission = parseFloat(row?.TotalComission);
+                const loyaltyBonus = parseFloat(row?.loyaltyBonus || 0);
 
-              let newAgentComissionAED = 0;
+                let newAgentComissionAED = 0;
 
-              if (row?.loyaltyBonus) {
-                newAgentComissionAED =
-                  ((totalComission - loyaltyBonus) * newAgentComissionPercent) /
-                  100;
-              } else {
-                newAgentComissionAED =
-                  (totalComission * newAgentComissionPercent) / 100;
-              }
+                if (row?.loyaltyBonus) {
+                  newAgentComissionAED =
+                    ((totalComission - loyaltyBonus) *
+                      newAgentComissionPercent) /
+                    100;
+                } else {
+                  newAgentComissionAED =
+                    (totalComission * newAgentComissionPercent) / 100;
+                }
 
-              newAgentComissionAED = parseFloat(
-                newAgentComissionAED.toFixed(2)
-              );
+                newAgentComissionAED = parseFloat(
+                  newAgentComissionAED.toFixed(2)
+                );
 
-              newFilteredData[index] = {
-                ...newFilteredData[index],
-                [field.value]: newAgentComissionPercent,
-                [field.accompaniedField]: newAgentComissionAED,
-              };
-
-              setFilteredData(newFilteredData);
+                newData[index][field.accompaniedField] = newAgentComissionAED;
+              });
             }}
           />
         </div>

@@ -1,6 +1,6 @@
 import { areSanctionImagesAvailable } from "./utils";
 
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row }) {
   return (
     <div className="w-[120px]">
       {areSanctionImagesAvailable(row) ? (

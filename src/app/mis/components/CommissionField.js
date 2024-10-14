@@ -1,4 +1,4 @@
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row }) {
   return (
     <div className={`flex justify-center items-center`}>
       <p className="!mb-0 w-[100px]">

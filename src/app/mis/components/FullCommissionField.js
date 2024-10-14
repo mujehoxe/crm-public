@@ -1,4 +1,4 @@
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row, field }) {
   return (
     <input
       disabled

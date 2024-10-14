@@ -1,6 +1,6 @@
 import { TbDatabaseEdit } from "react-icons/tb";
 
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row, index, field }) {
   return (
     <div className={`flex justify-between items-center`}>
       <p className="!mb-0">

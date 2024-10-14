@@ -1,6 +1,6 @@
 import { IoMdDownload, IoMdEye } from "react-icons/io";
 
-export default function ({ row, index, field, filteredData, setFilteredData }) {
+export default function ({ row, index, field }) {
   return (
     <div className="flex w-full justify-around gap-2">
       <IoMdEye

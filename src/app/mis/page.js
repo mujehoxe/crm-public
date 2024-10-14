@@ -678,10 +678,11 @@ function allDeals() {
                             value={row?.buyer?.name}
                             className={`p-1 border-1 border-gray-800 rounded-md disabled:!border-0 disabled:!bg-[#F1F5F7]`}
                             onChange={(e) => {
-                              const newFilteredData = [...filteredData];
-                              newFilteredData[index].buyer.name =
-                                e.target.value;
-                              setFilteredData(newFilteredData);
+                              setFilteredData((prev) => {
+                                const newData = [...prev];
+                                newData[index].buyer.name = e.target.value;
+                                return newData;
+                              });
                             }}
                           />
                           {row.additionalBuyers?.length > 0

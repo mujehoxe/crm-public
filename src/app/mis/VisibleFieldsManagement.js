@@ -132,7 +132,7 @@ export default function VisibleFieldsManagement({ fields }) {
                 </th>
                 {roles.map((role) => (
                   <th
-                    key={role}
+                    key={role.name}
                     className="py-4 px-2 text-sm font-semibold text-center capitalize tracking-wider"
                   >
                     {role.name}
@@ -154,7 +154,7 @@ export default function VisibleFieldsManagement({ fields }) {
                     </td>
                     {roles.map((role) => (
                       <td
-                        key={`${field.name}-${role}`}
+                        key={`${field.value}-${role.name}`}
                         className="group-hover:bg-miles-100 transition-all text-center"
                       >
                         <div className="inline-flex items-center">
