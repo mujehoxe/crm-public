@@ -30,11 +30,20 @@ export default function CommunityLeadsPage() {
   const [selectedSources, setSelectedSources] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
+  const countOptions = [
+    { value: "10", label: "Show 10 results" },
+    { value: "50", label: "Show 50 results" },
+    { value: "100 ", label: "Show 100 results" },
+    { value: "300 ", label: "Show 300 results" },
+    { value: "500 ", label: "Show 500 results" },
+    { value: "1000 ", label: "Show 1000 results" },
+  ];
+
   const [leadsData, setLeadsData] = useState({
     leads: [],
     selectedLeads: [],
     currentPage: 1,
-    leadsPerPage: 6,
+    leadsPerPage: countOptions[0].value,
     totalLeads: 0,
     loading: false,
   });
@@ -272,15 +281,6 @@ export default function CommunityLeadsPage() {
   const handleParse = (data) => {
     setParsedData(data);
   };
-
-  const countOptions = [
-    { value: "10", label: "10" },
-    { value: "50", label: "50" },
-    { value: "100 ", label: "100" },
-    { value: "300 ", label: "300" },
-    { value: "500 ", label: "500" },
-    { value: "1000 ", label: "1000" },
-  ];
 
   const deleteSelectedLeads = async () => {
     try {
@@ -644,7 +644,6 @@ export default function CommunityLeadsPage() {
                 mode="single"
                 style={{ width: "100%", height: "100%" }}
                 allowClear
-                defaultValue={filters.selectedTag}
                 onChange={(selected) => {
                   setLeadsData({
                     ...leadsData,
@@ -653,6 +652,7 @@ export default function CommunityLeadsPage() {
                   });
                 }}
                 options={countOptions}
+                defaultValue={leadsData.leadsPerPage}
                 placeholder={"Count"}
               />
             </div>
