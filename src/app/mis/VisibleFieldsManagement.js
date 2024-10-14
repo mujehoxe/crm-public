@@ -239,6 +239,7 @@ export default function VisibleFieldsManagement({ fields }) {
 								focus:shadow-md bg-white px-3 py-0 w-full"
           >
             <input
+              className="outline-none"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

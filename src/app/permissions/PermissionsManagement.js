@@ -12,6 +12,19 @@ export default function PermissionsManagement({ initialModules, roles }) {
   const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const filteredModules = Object.entries(modules).reduce(
+    (acc, [moduleName, operations]) => {
+      const filteredOperations = operations.filter((operation) =>
+        operation.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      if (filteredOperations.length > 0) {
+        acc[moduleName] = filteredOperations;
+      }
+      return acc;
+    },
+    {}
+  );
+
   const handlePermissionChange = (moduleName, operationName, role) => {
     setModules((prevModules) => ({
       ...prevModules,
@@ -100,19 +113,6 @@ export default function PermissionsManagement({ initialModules, roles }) {
       setSaving(false);
     }
   };
-
-  const filteredModules = Object.entries(modules).reduce(
-    (acc, [moduleName, operations]) => {
-      const filteredOperations = operations.filter((operation) =>
-        operation.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      if (filteredOperations.length > 0) {
-        acc[moduleName] = filteredOperations;
-      }
-      return acc;
-    },
-    {}
-  );
 
   return (
     <RootLayout>
@@ -237,6 +237,7 @@ export default function PermissionsManagement({ initialModules, roles }) {
 								focus:shadow-md bg-white px-3 py-0 w-full"
             >
               <input
+                className="outline-none"
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
