@@ -115,12 +115,12 @@ export default function CommunityLeadsPage() {
     filters.date && params.append("date", filters.date);
     filters.searchTerm && params.append("searchterm", filters.searchTerm);
     selectedAgents.length > 0 &&
-      params.append("selectedValues", selectedAgents);
+      params.append("selectedAgents", selectedAgents);
     selectedStatuses.length > 0 &&
-      params.append("selectedValues2", selectedStatuses);
+      params.append("selectedStatuses", selectedStatuses);
     selectedSources.length > 0 &&
       params.append("selectedValues3", selectedSources);
-    selectedTags.length > 0 && params.append("selectedTag", selectedTags);
+    selectedTags.length > 0 && params.append("selectedTags", selectedTags);
 
     return params.toString();
   };

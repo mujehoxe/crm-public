@@ -42,40 +42,26 @@ export async function GET(request) {
         ].filter(Boolean), // Remove null values
       }),
     };
-    const selectedValuesString = searchParams.get("selectedValues") || "";
-    const selectedValuesString2 = searchParams.get("selectedValues2") || "";
-    const selectedValuesString3 = searchParams.get("selectedValues3") || "";
-    const selectedValuesString4 = searchParams.get("selectedTag") || "";
+    const selectedAgentsString = searchParams.get("selectedAgents") || "";
+    const selectedSourcesString = searchParams.get("selectedStatuses") || "";
+    const selectedStatusesString = searchParams.get("selectedSources") || "";
+    const selectedTagsString = searchParams.get("selectedTags") || "";
     const dateString = searchParams.get("date") || "";
-    const selectedValues = selectedValuesString
-      ? selectedValuesString.split(",")
-      : [];
-    const selectedValues2 = selectedValuesString2
-      ? selectedValuesString2.split(",")
-      : [];
-    const selectedValues3 = selectedValuesString3
-      ? selectedValuesString3.split(",")
-      : [];
-    const selectedValues4 = selectedValuesString4
-      ? selectedValuesString4.split(",")
-      : [];
 
-    // Add selectedValues and selectedValues2 conditions
-    if (selectedValues.length > 0) {
-      query.Assigned = { $in: selectedValues };
-    }
+    const selectedAgents = selectedAgentsString.split(",").filter(Boolean);
+    const selectedStatuses = selectedSourcesString.split(",").filter(Boolean);
+    const selectedSources = selectedStatusesString.split(",").filter(Boolean);
+    const selectedTags = selectedTagsString.split(",").filter(Boolean);
 
-    if (selectedValues2.length > 0) {
-      query.LeadStatus = { $in: selectedValues2 };
-    }
+    if (selectedAgents.length > 0) query.Assigned = { $in: selectedAgents };
 
-    if (selectedValues3.length > 0) {
-      query.Source = { $in: selectedValues3 };
-    }
+    if (selectedStatuses.length > 0)
+      query.LeadStatus = { $in: selectedStatuses };
 
-    if (selectedValues4.length > 0) {
-      query.tags = { $in: selectedValues4 };
-    }
+    if (selectedSources.length > 0) query.Source = { $in: selectedSources };
+
+    if (selectedTags.length > 0) query.tags = { $in: selectedTags };
+
     if (dateString != "" && dateString != ",") {
       const dates = dateString.split(",");
 
