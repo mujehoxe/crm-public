@@ -25,10 +25,6 @@ import ReminderModal from "./EditModal/Reminders/ReminderModal";
 export default function CommunityLeadsPage() {
   const [tagOptions, setTagOptions] = useState([]);
   const [agents, setAgents] = useState([]);
-  const [selectedAgents, setSelectedAgents] = useState([]);
-  const [selectedStatuses, setSelectedStatuses] = useState([]);
-  const [selectedSources, setSelectedSources] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
 
   const countOptions = [
     { value: "10", label: "Show 10 results" },
@@ -68,10 +64,10 @@ export default function CommunityLeadsPage() {
 
   const [filters, setFilters] = useState({
     searchTerm: "",
-    selectedUser: [],
-    selectedStatus: [],
-    selectedSource: [],
-    selectedTag: [],
+    selectedAgents: [],
+    selectedStatuses: [],
+    selectedSources: [],
+    selectedTags: [],
     date: [],
   });
 
@@ -114,13 +110,14 @@ export default function CommunityLeadsPage() {
 
     filters.date && params.append("date", filters.date);
     filters.searchTerm && params.append("searchterm", filters.searchTerm);
-    selectedAgents.length > 0 &&
-      params.append("selectedAgents", selectedAgents);
-    selectedStatuses.length > 0 &&
-      params.append("selectedStatuses", selectedStatuses);
-    selectedSources.length > 0 &&
-      params.append("selectedValues3", selectedSources);
-    selectedTags.length > 0 && params.append("selectedTags", selectedTags);
+    filters.selectedAgents?.length > 0 &&
+      params.append("selectedAgents", filters.selectedAgents);
+    filters.selectedStatuses?.length > 0 &&
+      params.append("selectedStatuses", filters.selectedStatuses);
+    filters.selectedSources?.length > 0 &&
+      params.append("selectedSources", filters.selectedSources);
+    filters.selectedTags?.length > 0 &&
+      params.append("selectedTags", filters.selectedTags);
 
     return params.toString();
   };
@@ -154,12 +151,12 @@ export default function CommunityLeadsPage() {
   }, [
     userRole,
     userid,
-    selectedAgents,
-    selectedStatuses,
-    selectedSources,
     leadsData.leadsPerPage,
     leadsData.currentPage,
-    filters.selectedTag,
+    filters.selectedTags,
+    filters.selectedAgents,
+    filters.selectedStatuses,
+    filters.selectedSources,
     filters.date,
     filters.searchTerm,
     bulkOperationMade,
@@ -347,30 +344,6 @@ export default function CommunityLeadsPage() {
     }
   }, [userRole]);
 
-  const handleAgentsChange = (selected) => {
-    setFilters({ ...filters, selectedUser: selected });
-    const selectedAgents = selected.map((user) => user);
-    setSelectedAgents(selectedAgents);
-  };
-
-  const handleStatusChange = (selected) => {
-    setFilters({ ...filters, selectedStatus: selected });
-    const selectedStatuses = selected.map((status) => status);
-    setSelectedStatuses(selectedStatuses);
-  };
-
-  const handleSourceChange = (selected) => {
-    setFilters({ ...filters, selectedSource: selected });
-    const selectedSources = selected.map((source) => source);
-    setSelectedSources(selectedSources);
-  };
-
-  const handleTagChange = (selected) => {
-    setFilters({ ...filters, selectedTag: selected });
-    const selectedTags = selected.map((tags) => tags);
-    setSelectedTags(selectedTags);
-  };
-
   const handleDateChange = (date) => {
     if (date) {
       setFilters({ ...filters, date: [date[0].$d, date[1].$d] });
@@ -517,12 +490,33 @@ export default function CommunityLeadsPage() {
       <div className="container h-screen mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
         <div className="w-full gap-y-2 tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
-          <input
-            className="rounded-md placeholder:text-[#837979] placeholder:text-opacity-50 col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1"
-            placeholder="Search Leads..."
-            value={filters.searchTerm}
-            onChange={handleSearchTermChange}
-          />
+          <div className="flex justify-between items-center rounded-md placeholder:text-[#837979] col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1">
+            <input
+              className="placeholder:text-opacity-50 w-full"
+              placeholder="Search Leads..."
+              value={filters.searchTerm}
+              onChange={handleSearchTermChange}
+            />
+            <div className="cursor-pointer sm:w-60">
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: "100%", height: "100%" }}
+                defaultValue={filters.selectedAgents}
+                onChange={(selected) => {
+                  setFilters({ ...filters, searchBox: selected });
+                }}
+                options={[
+                  { value: "comments", lable: "Include comments" },
+                  { value: "reminders", lable: "Include reminders" },
+                  { value: "meetings", lable: "Include meetings" },
+                ]}
+                maxTagCount="responsive"
+                placeholder={"Filters"}
+              />
+            </div>
+          </div>
+
           <div className="tablet:col-span-full mobile:col-span-1 grid tablet:grid-cols-6 mobile:grid-cols-3 items-center h-full mobile:order-last mobile:mt-3 tablet:mt-0 tablet:order-1 gap-x-1">
             <div className="w-full h-full cursor-pointer">
               <DatePicker.RangePicker
@@ -539,8 +533,10 @@ export default function CommunityLeadsPage() {
                 mode="multiple"
                 allowClear
                 style={{ width: "100%", height: "100%" }}
-                defaultValue={filters.selectedUser}
-                onChange={handleAgentsChange}
+                defaultValue={filters.selectedAgents}
+                onChange={(selected) => {
+                  setFilters({ ...filters, selectedAgents: selected });
+                }}
                 options={agents}
                 maxTagCount="responsive"
                 placeholder={"Agents"}
@@ -552,8 +548,10 @@ export default function CommunityLeadsPage() {
                 mode="multiple"
                 allowClear
                 style={{ width: "100%", height: "100%" }}
-                defaultValue={filters.selectedStatus}
-                onChange={handleStatusChange}
+                defaultValue={filters.selectedStatuses}
+                onChange={(selected) => {
+                  setFilters({ ...filters, selectedStatuses: selected });
+                }}
                 options={statusOptions}
                 placeholder={"Status"}
                 maxTagCount="responsive"
@@ -565,8 +563,10 @@ export default function CommunityLeadsPage() {
                 mode="multiple"
                 allowClear
                 style={{ width: "100%", height: "100%" }}
-                defaultValue={filters.selectedStatus}
-                onChange={handleSourceChange}
+                defaultValue={filters.selectedStatuses}
+                onChange={(selected) => {
+                  setFilters({ ...filters, selectedSources: selected });
+                }}
                 options={sourceOptions}
                 placeholder={"Source"}
                 maxTagCount="responsive"
@@ -577,8 +577,10 @@ export default function CommunityLeadsPage() {
                 mode="multiple"
                 allowClear
                 style={{ width: "100%", height: "100%" }}
-                defaultValue={filters.selectedTag}
-                onChange={handleTagChange}
+                defaultValue={filters.selectedTags}
+                onChange={(selected) => {
+                  setFilters({ ...filters, selectedTags: selected });
+                }}
                 options={tagOptions}
                 placeholder={"Tags"}
                 maxTagCount="responsive"
