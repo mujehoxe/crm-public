@@ -65,7 +65,11 @@ export async function POST(request) {
     }
 
     const searchRegex = new RegExp(filters.searchTerm, "i");
-    if (filters.searchTerm && filters.searchBoxFilters.includes("LeadName")) {
+    if (
+      filters.searchTerm &&
+      filters.searchTerm !== "" &&
+      filters.searchBoxFilters.includes("LeadName")
+    ) {
       baseQuery.Name = { $regex: searchRegex };
     }
 
@@ -74,6 +78,7 @@ export async function POST(request) {
 
     if (
       filters.searchBoxFilters.length === 0 ||
+      filters.searchTerm === "" ||
       filters.searchBoxFilters.includes("LeadName")
     ) {
       totalLeads = await Leads.countDocuments(baseQuery);
@@ -83,7 +88,7 @@ export async function POST(request) {
         .limit(limit);
     }
 
-    if (filters.searchTerm) {
+    if (filters.searchTerm && filters.searchTerm !== "") {
       let additionalLeadsIds = new Set();
 
       const { Name: _, ...baseQueryWithoutName } = baseQuery;
