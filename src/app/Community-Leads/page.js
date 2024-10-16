@@ -23,9 +23,10 @@ import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import ReminderModal from "./EditModal/Reminders/ReminderModal";
 
 export default function CommunityLeadsPage() {
+  const [sourceOptions, setSourceOptions] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]);
   const [tagOptions, setTagOptions] = useState([]);
   const [agents, setAgents] = useState([]);
-
   const countOptions = [
     { value: "10", label: "Show 10 results" },
     { value: "50", label: "Show 50 results" },
@@ -34,6 +35,23 @@ export default function CommunityLeadsPage() {
     { value: "500 ", label: "Show 500 results" },
     { value: "1000 ", label: "Show 1000 results" },
   ];
+
+  const searchOptions = [
+    { value: "LeadName", label: "By lead name" },
+    { value: "Comments", label: "By comments" },
+    { value: "Reminders", label: "By reminders" },
+    { value: "Meetings", label: "By meetings" },
+  ];
+
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    selectedAgents: [],
+    selectedStatuses: [],
+    selectedSources: [],
+    selectedTags: [],
+    date: [],
+    searchBoxFilters: [searchOptions[0].value],
+  });
 
   const [leadsData, setLeadsData] = useState({
     leads: [],
@@ -61,18 +79,6 @@ export default function CommunityLeadsPage() {
       setModalStates({ ...modalStates, reminderOpenForLead: id });
     },
   });
-
-  const [filters, setFilters] = useState({
-    searchTerm: "",
-    selectedAgents: [],
-    selectedStatuses: [],
-    selectedSources: [],
-    selectedTags: [],
-    date: [],
-  });
-
-  const [sourceOptions, setSourceOptions] = useState([]);
-  const [statusOptions, setStatusOptions] = useState([]);
 
   const userData = TokenDecoder();
   const userid = userData ? userData.id : null;
@@ -103,33 +109,17 @@ export default function CommunityLeadsPage() {
     }
   };
 
-  const getQueryParams = () => {
-    const params = new URLSearchParams();
-    params.append("page", leadsData.currentPage);
-    params.append("limit", leadsData.leadsPerPage);
-
-    filters.date && params.append("date", filters.date);
-    filters.searchTerm && params.append("searchterm", filters.searchTerm);
-    filters.selectedAgents?.length > 0 &&
-      params.append("selectedAgents", filters.selectedAgents);
-    filters.selectedStatuses?.length > 0 &&
-      params.append("selectedStatuses", filters.selectedStatuses);
-    filters.selectedSources?.length > 0 &&
-      params.append("selectedSources", filters.selectedSources);
-    filters.selectedTags?.length > 0 &&
-      params.append("selectedTags", filters.selectedTags);
-
-    return params.toString();
-  };
-
   const fetchLeads = async () => {
     setLeadsData({ ...leadsData, loading: true });
     try {
       const url = getBaseURL();
-      const params = getQueryParams();
 
-      const separator = url.includes("?") ? "&" : "?";
-      const response = await axios.get(`${url}${separator}${params}`);
+      const response = await axios.post(`${url}`, {
+        ...filters,
+        page: leadsData.currentPage,
+        limit: leadsData.leadsPerPage,
+        userid,
+      });
 
       setLeadsData({
         ...leadsData,
@@ -162,6 +152,14 @@ export default function CommunityLeadsPage() {
     bulkOperationMade,
   ]);
 
+  useEffect(() => {
+    console.log(filters.searchBoxFilters);
+    userRole &&
+      filters.searchTerm != "" &&
+      filters.searchBoxFilters.length > 0 &&
+      fetchLeads();
+  }, [filters.searchBoxFilters]);
+
   const [btnShow, setBtnShow] = useState(false);
 
   const fetchDataAndDownloadExcel = async () => {
@@ -192,7 +190,6 @@ export default function CommunityLeadsPage() {
       ...modalStates,
       isBulkModalOpen: !modalStates.isBulkModalOpen,
     });
-    console.log(modalStates.isBulkModalOpen);
   };
 
   const handleCardClick = (cardLead, e) => {
@@ -404,32 +401,30 @@ export default function CommunityLeadsPage() {
     ]
   );
 
-  const renderLeadGrid = useMemo(() => {
-    if (filters.searchTerm) {
-      return leadsData.leads.length > 0 ? (
+  const LeadGrid = () => {
+    const renderLeadGrid = useMemo(() => {
+      if (!Array.isArray(leadsData.leads) || leadsData.leads.length === 0) {
+        return (
+          <p>
+            {filters.searchTerm
+              ? "No leads found for the given search term."
+              : "No leads found."}
+          </p>
+        );
+      }
+
+      return (
         <ul
           role="list"
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 ml-0 pl-0"
         >
           {renderLeadCards(leadsData.leads)}
         </ul>
-      ) : (
-        <p>No leads found for the given search term.</p>
       );
-    } else if (Array.isArray(leadsData.leads)) {
-      return leadsData.leads.length > 0 ? (
-        <ul
-          role="list"
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 my-4 ml-0 pl-0"
-        >
-          {renderLeadCards(leadsData.leads)}
-        </ul>
-      ) : (
-        <p>No leads found.</p>
-      );
-    }
-    return null;
-  }, [filters.searchTerm, leadsData.leads, renderLeadCards]);
+    }, [filters.searchTerm, leadsData.leads, renderLeadCards]);
+
+    return renderLeadGrid;
+  };
 
   const renderModals = useMemo(() => {
     return (
@@ -492,7 +487,7 @@ export default function CommunityLeadsPage() {
         <div className="w-full gap-y-2 tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
           <div className="flex justify-between items-center rounded-md placeholder:text-[#837979] col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1">
             <input
-              className="placeholder:text-opacity-50 w-full"
+              className="placeholder:text-opacity-50 outline-none w-full"
               placeholder="Search Leads..."
               value={filters.searchTerm}
               onChange={handleSearchTermChange}
@@ -502,15 +497,18 @@ export default function CommunityLeadsPage() {
                 mode="multiple"
                 allowClear
                 style={{ width: "100%", height: "100%" }}
-                defaultValue={filters.selectedAgents}
+                defaultValue={filters.searchBoxFilters}
                 onChange={(selected) => {
-                  setFilters({ ...filters, searchBox: selected });
+                  setFilters({ ...filters, searchBoxFilters: selected });
                 }}
-                options={[
-                  { value: "comments", lable: "Include comments" },
-                  { value: "reminders", lable: "Include reminders" },
-                  { value: "meetings", lable: "Include meetings" },
-                ]}
+                value={filters.searchBoxFilters}
+                onClear={() => {
+                  setFilters({
+                    ...filters,
+                    searchBoxFilters: [searchOptions[0].value],
+                  });
+                }}
+                options={searchOptions}
                 maxTagCount="responsive"
                 placeholder={"Filters"}
               />
@@ -638,29 +636,28 @@ export default function CommunityLeadsPage() {
         {leadsData.loading ? (
           <InlineLoader className="flex w-full mt-10 text-center text-miles-900 justify-center rounded-2xl bg-miles-100 items-center h-56" />
         ) : (
-          getTotalPages() > 0 && (
+          leadsData.leads.length > 0 && (
             <>
-              {renderLeadGrid}
+              <LeadGrid />
               <span className="text-sm text-gray-700 mt-2">
                 Showing {Math.min(leadsData.leadsPerPage, leadsData.totalLeads)}{" "}
                 leads of {leadsData.totalLeads} total
               </span>
+              <div className="mt-auto">
+                <Pagination
+                  currentPage={leadsData.currentPage}
+                  setCurrentPage={(pageNumber) =>
+                    setLeadsData({
+                      ...leadsData,
+                      currentPage: pageNumber,
+                    })
+                  }
+                  totalPages={getTotalPages()}
+                />
+              </div>
             </>
           )
         )}
-
-        <div className="mt-auto">
-          <Pagination
-            currentPage={leadsData.currentPage}
-            setCurrentPage={(pageNumber) =>
-              setLeadsData({
-                ...leadsData,
-                currentPage: pageNumber,
-              })
-            }
-            totalPages={getTotalPages()}
-          />
-        </div>
 
         <div ref={containerRef} className="fixed bottom-5 right-6 z-[999]">
           <div className={`relative rounded-full cursor-pointer`}>

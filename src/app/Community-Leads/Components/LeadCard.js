@@ -257,7 +257,6 @@ export default function LeadCard({
                 onClick={(e) => e.stopPropagation()}
                 onChange={(_, option) => selectChange(option, "LeadStatus")}
                 options={statusOptions}
-                option
                 placeholder={"Status"}
               />
               <Select
@@ -268,7 +267,6 @@ export default function LeadCard({
                 onClick={(e) => e.stopPropagation()}
                 onChange={(_, option) => selectChange(option, "Source")}
                 options={sourceOptions}
-                option
                 placeholder={"Source"}
               />
             </div>
