@@ -1,5 +1,6 @@
 "use client";
 import RootLayout from "@/app/components/layout";
+import { NoSymbolIcon } from "@heroicons/react/24/solid";
 import { DatePicker, Select } from "antd";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -403,13 +404,18 @@ export default function CommunityLeadsPage() {
 
   const LeadGrid = () => {
     const renderLeadGrid = useMemo(() => {
-      if (!Array.isArray(leadsData.leads) || leadsData.leads.length === 0) {
+      if (
+        !leadsData.leads ||
+!Array.isArray(leadsData.leads) ||
+leadsData.leads.length === 0
+) {
         return (
-          <p>
-            {filters.searchTerm
+          <span className="flex justify-center items-center gap-2 py-32 font-medium">
+            <NoSymbolIcon className="size-6 text-gray-600" />
+            {filters.searchTerm && filters.searchTerm !== ""
               ? "No leads found for the given search term."
               : "No leads found."}
-          </p>
+          </span>
         );
       }
 
@@ -636,7 +642,6 @@ export default function CommunityLeadsPage() {
         {leadsData.loading ? (
           <InlineLoader className="flex w-full mt-10 text-center text-miles-900 justify-center rounded-2xl bg-miles-100 items-center h-56" />
         ) : (
-          leadsData.leads.length > 0 && (
             <>
               <LeadGrid />
               <span className="text-sm text-gray-700 mt-2">
@@ -656,7 +661,6 @@ export default function CommunityLeadsPage() {
                 />
               </div>
             </>
-          )
         )}
 
         <div ref={containerRef} className="fixed bottom-5 right-6 z-[999]">
