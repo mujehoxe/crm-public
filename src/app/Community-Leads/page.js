@@ -406,9 +406,9 @@ export default function CommunityLeadsPage() {
     const renderLeadGrid = useMemo(() => {
       if (
         !leadsData.leads ||
-!Array.isArray(leadsData.leads) ||
-leadsData.leads.length === 0
-) {
+        !Array.isArray(leadsData.leads) ||
+        leadsData.leads.length === 0
+      ) {
         return (
           <span className="flex justify-center items-center gap-2 py-32 font-medium">
             <NoSymbolIcon className="size-6 text-gray-600" />
@@ -488,7 +488,7 @@ leadsData.leads.length === 0
   return (
     <RootLayout>
       {renderModals}
-      <div className="container h-screen mx-auto">
+      <div className="container p-4 md:px-8 lg:px-16 xl:px-24 h-screen mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
         <div className="w-full gap-y-2 tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
           <div className="flex justify-between items-center rounded-md placeholder:text-[#837979] col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1">
@@ -642,25 +642,25 @@ leadsData.leads.length === 0
         {leadsData.loading ? (
           <InlineLoader className="flex w-full mt-10 text-center text-miles-900 justify-center rounded-2xl bg-miles-100 items-center h-56" />
         ) : (
-            <>
-              <LeadGrid />
-              <span className="text-sm text-gray-700 mt-2">
-                Showing {Math.min(leadsData.leadsPerPage, leadsData.totalLeads)}{" "}
-                leads of {leadsData.totalLeads} total
-              </span>
-              <div className="mt-auto">
-                <Pagination
-                  currentPage={leadsData.currentPage}
-                  setCurrentPage={(pageNumber) =>
-                    setLeadsData({
-                      ...leadsData,
-                      currentPage: pageNumber,
-                    })
-                  }
-                  totalPages={getTotalPages()}
-                />
-              </div>
-            </>
+          <>
+            <LeadGrid />
+            <span className="text-sm text-gray-700 mt-2">
+              Showing {Math.min(leadsData.leadsPerPage, leadsData.totalLeads)}{" "}
+              leads of {leadsData.totalLeads} total
+            </span>
+            <div className="mt-auto">
+              <Pagination
+                currentPage={leadsData.currentPage}
+                setCurrentPage={(pageNumber) =>
+                  setLeadsData({
+                    ...leadsData,
+                    currentPage: pageNumber,
+                  })
+                }
+                totalPages={getTotalPages()}
+              />
+            </div>
+          </>
         )}
 
         <div ref={containerRef} className="fixed bottom-5 right-6 z-[999]">
