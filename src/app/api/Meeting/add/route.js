@@ -67,10 +67,8 @@ export async function POST(request) {
     logger.info("New Meeting added:", savedMeeting);
     const currentDate = new Date().toLocaleDateString();
 
-    const action = `meeting added`;
-
     const activityLog = new ActivityLog({
-      action,
+      action: `Meeting added`,
       Userid: userId,
       Leadid: leadid,
       date: currentDate,

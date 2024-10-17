@@ -43,7 +43,7 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
         activityLog.previousValue ? " from " + activityLog.previousValue : ""
       }${activityLog.newValue ? " to " + activityLog.newValue : ""}`,
     };
-  } else if (activityLog.action == "meeting added")
+  } else if (activityLog.action == "Meeting added")
     notification.contents = {
       en: `${activityLog.action} by "${
         activityLog.Userid.username || "Unknown User"
@@ -93,7 +93,7 @@ async function fetchTargetedPlayerIds(activityLog) {
 
   const users = await User.find({ _id: { $in: userIds } });
 
-  if (activityLog.action === "reassigned") {
+  if (activityLog.action === "Lead reassignment") {
     const previousAssigned = await User.findOne({
       username: activityLog.previousValue,
     }).exec();
