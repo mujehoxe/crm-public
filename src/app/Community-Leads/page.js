@@ -19,6 +19,7 @@ import InlineLoader from "../components/InlineLoader";
 import Pagination from "../components/Pagination";
 import BulkModal from "./Bulk/bulk";
 import LeadCard from "./Components/LeadCard";
+import DebouncedSearchInput from "./DebouncedSearchInput";
 import InfoModal from "./EditModal/InfoModal";
 import MeetingModal from "./EditModal/Meetings/MeetingModal";
 import ReminderModal from "./EditModal/Reminders/ReminderModal";
@@ -60,7 +61,7 @@ export default function CommunityLeadsPage() {
     currentPage: 1,
     leadsPerPage: countOptions[0].value,
     totalLeads: 0,
-    loading: false,
+    loading: true,
   });
 
   const getTotalPages = useCallback(
@@ -85,7 +86,7 @@ export default function CommunityLeadsPage() {
   const userid = userData ? userData.id : null;
   const userRole = userData ? userData.role : null;
 
-  const handleSearchTermChange = ({ target: { value } }) => {
+  const handleSearchTermChange = (value) => {
     setFilters({ ...filters, searchTerm: value });
     setLeadsData({ ...leadsData, currentPage: 1 });
   };
@@ -149,16 +150,15 @@ export default function CommunityLeadsPage() {
     filters.selectedStatuses,
     filters.selectedSources,
     filters.date,
-    filters.searchTerm,
     bulkOperationMade,
   ]);
 
   useEffect(() => {
-    console.log(filters.searchBoxFilters);
-    userRole &&
-      filters.searchTerm != "" &&
-      filters.searchBoxFilters.length > 0 &&
-      fetchLeads();
+    userRole && fetchLeads();
+  }, [filters.searchTerm]);
+
+  useEffect(() => {
+    userRole && filters.searchBoxFilters.length > 0 && fetchLeads();
   }, [filters.searchBoxFilters]);
 
   const [btnShow, setBtnShow] = useState(false);
@@ -492,11 +492,11 @@ export default function CommunityLeadsPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Leads</h1>
         <div className="w-full gap-y-2 tablet:grid tablet:grid-cols-6 mobile:flex mobile:flex-col mobile:justify-center tablet:items-center mobile:items-stretch mobile:gap-x-1 mt-2">
           <div className="flex justify-between items-center rounded-md placeholder:text-[#837979] col-span-full !border border-slate-300 text-lg focus:outline-none transition-all duration-200 focus:shadow-md bg-white px-3 py-1">
-            <input
-              className="placeholder:text-opacity-50 outline-none w-full"
+            <DebouncedSearchInput
+              initialValue={filters.searchTerm}
+              onSearchChange={handleSearchTermChange}
               placeholder="Search Leads..."
-              value={filters.searchTerm}
-              onChange={handleSearchTermChange}
+              debounceTime={300}
             />
             <div className="cursor-pointer sm:w-60">
               <Select
