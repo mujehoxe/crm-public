@@ -23,20 +23,11 @@ const activityLogSchema = new mongoose.Schema(
   { strict: false }
 );
 
-const ONE_SIGNAL_APP_ID = "d1134921-c416-419e-a0a7-0c98e2640e2a";
-const ONE_SIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API_KEY;
 async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
   const notification = {
-    app_id: ONE_SIGNAL_APP_ID,
+    app_id: process.env.ONE_SIGNAL_APP_ID,
     headings: {
-      en: `"${activityLog.Leadid.Name}" ${activityLog.action} by ${
-        activityLog.Userid.username || "Unknown User"
-      }`,
-    },
-    contents: {
-      en: `Changed${
-        activityLog.previousValue ? " from " + activityLog.previousValue : ""
-      }${activityLog.newValue ? " to " + activityLog.newValue : ""}`,
+      en: `${activityLog.action} for lead "${activityLog.Leadid.Name}"`,
     },
     data: {
       timestamp: activityLog.timestamp,
@@ -46,6 +37,23 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
     include_player_ids: targetedPlayerIds,
   };
 
+  if (activityLog.previousValue || activityLog.newValue) {
+    notification.contents = {
+      en: `Changed${
+        activityLog.previousValue ? " from " + activityLog.previousValue : ""
+      }${activityLog.newValue ? " to " + activityLog.newValue : ""}`,
+    };
+  } else if (activityLog.action == "meeting added")
+    notification.contents = {
+      en: `${activityLog.action} by "${
+        activityLog.Userid.username || "Unknown User"
+      }"`,
+    };
+  else
+    notification.contents = {
+      en: `${activityLog.action}`,
+    };
+
   try {
     const response = await axios.post(
       "https://onesignal.com/api/v1/notifications",
@@ -53,7 +61,7 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${ONE_SIGNAL_REST_API_KEY}`,
+          Authorization: `Basic ${process.env.ONE_SIGNAL_REST_API_KEY}`,
         },
       }
     );
@@ -64,7 +72,6 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
       "Error sending OneSignal notification:",
       error.response ? error.response.data : error.message
     );
-    throw error;
   }
 }
 
@@ -86,16 +93,16 @@ async function fetchTargetedPlayerIds(activityLog) {
 
   const users = await User.find({ _id: { $in: userIds } });
 
-  if ((activityLog.action = "reassigned")) {
+  if (activityLog.action === "reassigned") {
     const previousAssigned = await User.findOne({
       username: activityLog.previousValue,
     }).exec();
     users.push(previousAssigned);
-    console.log("**", users);
   }
 
-  const playerIds = users.map((user) => user.onesignalPlayerId).filter(Boolean);
-  console.log("**", playerIds);
+  const playerIds = users
+    .map((user) => user?.onesignalPlayerId)
+    .filter(Boolean);
 
   return playerIds;
 }
