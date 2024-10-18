@@ -1,11 +1,12 @@
-import React from "react";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
 import { FaRegUserCircle } from "react-icons/fa";
 
 const priorityMap = {
-  Low: { bg: "bg-yellow-100", text: "text-yellow-800" },
-  Medium: { bg: "bg-orange-100", text: "text-orange-800" },
-  High: { bg: "bg-purple-100", text: "text-purple-800" },
-  Urgent: { bg: "bg-red-100", text: "text-red-800" },
+  Low: { bg: "bg-yellow-100", text: "fill-yellow-800" },
+  Medium: { bg: "bg-orange-100", text: "fill-orange-800" },
+  High: { bg: "bg-purple-100", text: "fill-purple-800" },
+  Urgent: { bg: "bg-red-100", text: "fill-red-800" },
 };
 
 function MeetingCard({ meeting, onDelete, isLoading }) {
@@ -21,25 +22,29 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
           <h3 className="font-semibold text-lg text-gray-800">
             {meeting.Subject}
           </h3>
-          <div>
+          <div className="flex items-center gap-1">
             <span
-              className={`text-xs px-2 py-1 rounded-full ${
+              className={`flex items-center text-xs px-2 py-1 rounded-full ${
                 priorityMap[meeting.Priority]?.bg || "bg-gray-100"
-              } ${priorityMap[meeting.Priority]?.text || "text-gray-700"}`}
+              }`}
             >
-              <i
-                className={`fa fa-circle mr-2 ${
-                  priorityMap[meeting.Priority]?.text || "text-gray-700"
-                } mr-1`}
-              />{" "}
+              <svg
+                viewBox="0 0 6 6"
+                aria-hidden="true"
+                className={`size-1.5 rounded-full mr-1 ${
+                  priorityMap[meeting.Priority]?.text || "fill-gray-700"
+                }`}
+              >
+                <circle r={3} cx={3} cy={3} />
+              </svg>
               {meeting.Priority}
             </span>
             <button
               onClick={onDelete}
               disabled={isLoading}
-              className="text-xs bg-red-200 text-red-800 p-1 w-6 h-6 rounded-full ml-2"
+              className="text-xs bg-red-200 text-red-800 flex justify-center items-center text-center size-6 rounded-full"
             >
-              <i className="fa fa-trash" />
+              <TrashIcon className="size-4" />
             </button>
           </div>
         </div>
@@ -130,9 +135,11 @@ function MeetingCard({ meeting, onDelete, isLoading }) {
           <div className="flex justify-between items-center text-xs text-gray-500">
             <span>Meeting Type: {meeting.MeetingType}</span>
             {meeting.Comment && (
-              <div className="flex items-center text-miles-500">
-                <i className="fas fa-comment mr-2" />
-                <span>{meeting.Comment}</span>
+              <div className="flex items-center text-miles-500 gap-2">
+                <ChatBubbleOvalLeftIcon className="size-4 text-miles-400" />
+                <span className="first-letter:uppercase">
+                  {meeting.Comment}
+                </span>
               </div>
             )}
           </div>

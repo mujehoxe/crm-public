@@ -1,4 +1,5 @@
-import React from "react";
+import { CalendarDateRangeIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/solid";
 import { FaRegUserCircle } from "react-icons/fa";
 
 const formatDateAndTime = (dateTimeString) => {
@@ -15,9 +16,9 @@ const formatDateAndTime = (dateTimeString) => {
   const daysDiff = Math.floor(diffInSeconds / (24 * 60 * 60));
 
   return (
-    <div>
-      <i
-        className={`fa fa-calendar mr-2 ${
+    <div className="flex items-center">
+      <CalendarDateRangeIcon
+        className={`size-5 mr-1 ${
           daysDiff > 0 ? "text-red-600" : "text-miles-600"
         }`}
       />
@@ -61,12 +62,21 @@ function ReminderCard({ reminder, onDelete, isLoading }) {
           <button
             onClick={onDelete}
             disabled={isLoading}
-            className="text-xs bg-red-200 text-red-800 p-1 w-6 h-6 rounded-full ml-2"
+            className="text-xs bg-red-200 text-red-800 flex justify-center items-center text-center size-6 rounded-full"
           >
-            <i className="fa fa-trash" />
+            <TrashIcon className="size-4" />
           </button>
         </div>
       </header>
+
+      <div className="p-4">
+        {reminder.Comment && (
+          <div className="flex items-center gap-2">
+            <ChatBubbleOvalLeftIcon className="size-4 text-miles-400" />
+            <span className="first-letter:uppercase">{reminder.Comment}</span>
+          </div>
+        )}
+      </div>
 
       <footer className="bg-gray-100 px-4 py-3">
         <div className="flex justify-between items-center text-xs text-gray-500">
@@ -75,12 +85,6 @@ function ReminderCard({ reminder, onDelete, isLoading }) {
               {formatDateAndTime(reminder.DateTime)}
             </span>
           </div>
-          {reminder.Comment && (
-            <div className="flex items-center text-miles-500">
-              <i className="fas fa-comment mr-2" />
-              <span>{reminder.Comment}</span>
-            </div>
-          )}
         </div>
       </footer>
     </article>
