@@ -1,5 +1,6 @@
 import InlineLoader from "@/app/components/InlineLoader";
 import SearchableSelect from "@/app/Leads/dropdown";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
@@ -58,13 +59,13 @@ const BulkModal = ({
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full overflow-y-auto">
+      <div className="relative bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full overflow-y-auto">
         <button
           className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
           onClick={onClose}
           aria-label="Close"
         >
-          &times;
+          <XMarkIcon className="size-6" />
         </button>
 
         <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">

@@ -1,4 +1,5 @@
 import styles from "@/app/Modal.module.css";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import ActivityLogs from "./ActivityLogs/ActivityLogs";
@@ -22,18 +23,19 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
             {leadData.Name}
             <span className="text-lg">({leadData.Phone})</span>
           </p>
-          <span
-            className="text-4xl m-0 p-0 hover:text-red-500 cursor-pointer"
+          <button
+            className="text-gray-500 hover:text-gray-700 cursor-pointer absolute top-4 right-4"
             onClick={onClose}
+            aria-label="Close"
           >
-            &times;
-          </span>
+            <XMarkIcon className="size-6" />
+          </button>
         </div>
         <div className="mt-6 p-0">
           <div className="container">
             <div className="flex gap-2 mb-2">
               <button
-                className={`text-gray-600 px-6 rounded-lg text-lg ${
+                className={`text-gray-600 px-6 py-1 rounded-lg text-lg ${
                   activeTab === "tab1" ? "bg-gray-200" : "hover:bg-slate-100"
                 }`}
                 onClick={(e) => handleTabClick("tab1", e)}
@@ -41,7 +43,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
                 Comments
               </button>
               <button
-                className={`text-gray-600 px-6 rounded-lg text-lg ${
+                className={`text-gray-600 px-6 py-1 rounded-lg text-lg ${
                   activeTab === "tab2" ? "bg-gray-200" : "hover:bg-slate-100"
                 }`}
                 onClick={(e) => handleTabClick("tab2", e)}
@@ -49,7 +51,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
                 Reminders
               </button>
               <button
-                className={`text-gray-600 px-6 rounded-lg text-lg ${
+                className={`text-gray-600 px-6 py-1 rounded-lg text-lg ${
                   activeTab === "tab3" ? "bg-gray-200" : "hover:bg-slate-100"
                 }`}
                 onClick={(e) => handleTabClick("tab3", e)}
@@ -57,7 +59,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
                 Meetings
               </button>
               <button
-                className={`text-gray-600 px-6 rounded-lg text-lg ${
+                className={`text-gray-600 px-6 py-1 rounded-lg text-lg ${
                   activeTab === "tab4" ? "bg-gray-200" : "hover:bg-slate-100"
                 }`}
                 onClick={(e) => handleTabClick("tab4", e)}

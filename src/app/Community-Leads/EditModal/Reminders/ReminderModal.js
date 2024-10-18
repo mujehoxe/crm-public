@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -69,15 +70,19 @@ const ReminderModal = ({ onClose, lead }) => {
   return (
     <div className={styles.modalBackdrop}>
       <div className={styles.modalContent}>
-        <span className={styles.closeButton} onClick={onClose}>
-          &times;
-        </span>
-        <h4 className="text-center">Add Reminder</h4>
-        <h5 className="text-center">{loading && <InlineLoader />}</h5>
+        <button
+          className="text-gray-500 hover:text-gray-700 cursor-pointer absolute top-4 right-4"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <XMarkIcon className="size-6" />
+        </button>
+        <h4>Add Reminder</h4>
+        <h5>{loading && <InlineLoader />}</h5>
         <div className="mt-4">
           <div className="mb-4 text-left">
             <input
-              className="border rounded-md p-2 w-full"
+              className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
               type="datetime-local"
               onChange={(e) =>
                 setReminder({ ...reminder, DateTime: e.target.value })
@@ -98,7 +103,7 @@ const ReminderModal = ({ onClose, lead }) => {
 
           <div className="mb-4 text-left">
             <input
-              className="border rounded-md p-2 w-full"
+              className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
               onChange={(e) =>
                 setReminder({ ...reminder, Comment: e.target.value })
               }

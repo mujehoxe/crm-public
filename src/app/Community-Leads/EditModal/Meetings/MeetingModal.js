@@ -1,4 +1,5 @@
 import SearchableSelect from "@/app/Leads/dropdown";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -103,16 +104,20 @@ const MeetingModal = ({ onClose, leadId }) => {
   return (
     <div className={styles.modalBackdrop}>
       <div className={styles.modalContent}>
-        <span className={styles.closeButton} onClick={onClose}>
-          &times;
-        </span>
-        <h4 className="text-center">Add Meeting</h4>
-        <h5 className="text-center">{loading && <InlineLoader />}</h5>
+        <button
+          className="text-gray-500 hover:text-gray-700 cursor-pointer absolute top-4 right-4"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <XMarkIcon className="size-6" />
+        </button>
+        <h4>Add Meeting</h4>
+        <h5>{loading && <InlineLoader />}</h5>
         <div className="mt-4">
           <div>
             <div className="mb-4 text-left">
               <input
-                className="border rounded-md p-2 w-full"
+                className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                 id="subject"
                 onChange={(e) =>
                   setMeeting({ ...meeting, Subject: e.target.value })
@@ -123,7 +128,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             </div>
             <div className="mb-4 text-left">
               <input
-                className="border rounded-md p-2 w-full"
+                className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                 onChange={(e) =>
                   setMeeting({ ...meeting, MeetingDate: e.target.value })
                 }
@@ -165,7 +170,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             <>
               <div className="mb-4 text-left">
                 <input
-                  className="border rounded-md p-2 w-full"
+                  className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentName: e.target.value })
                   }
@@ -175,7 +180,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="border rounded-md p-2 w-full"
+                  className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentPhone: e.target.value })
                   }
@@ -185,7 +190,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="border rounded-md p-2 w-full"
+                  className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentCompany: e.target.value })
                   }
@@ -199,7 +204,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             <>
               <div className="mb-4 text-left">
                 <input
-                  className="border rounded-md p-2 w-full"
+                  className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                   onChange={(e) =>
                     setMeeting({ ...meeting, Developer: e.target.value })
                   }
@@ -209,7 +214,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="border rounded-md p-2 w-full"
+                  className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
                   onChange={(e) =>
                     setMeeting({ ...meeting, Location: e.target.value })
                   }
@@ -240,7 +245,7 @@ const MeetingModal = ({ onClose, leadId }) => {
           </div>
           <div className="mb-4 text-left">
             <input
-              className="border rounded-md p-2 w-full"
+              className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder  css-19bb58m text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
               onChange={(e) =>
                 setMeeting({ ...meeting, Comment: e.target.value })
               }
