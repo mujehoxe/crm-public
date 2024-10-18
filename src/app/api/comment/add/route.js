@@ -36,7 +36,7 @@ export async function POST(request) {
     const savedComment = await newComment.save();
     logger.info("New Comment added:", savedComment);
 
-    const action = `comment added`;
+    const action = `Comment added`;
 
     const activityLog = new ActivityLog({
       action,

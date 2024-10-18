@@ -32,7 +32,7 @@ export async function POST(request) {
     const userId = decoded.id;
     const leadid = Leadid;
 
-    const action = `reminder added`;
+    const action = `Reminder added`;
 
     const activityLog = new ActivityLog({
       action,
