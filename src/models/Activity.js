@@ -44,17 +44,13 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
         activityLog.previousValue ? " from " + activityLog.previousValue : ""
       }${activityLog.newValue ? " to " + activityLog.newValue : ""}`,
     };
-  } else if ("Meeting added")
+  } else if (["Meeting added", "Reminder added"].includes(activityLog.action))
     notification.contents = {
       en: `${activityLog.action} by "${
         activityLog.Userid.username || "Unknown User"
       }"\nOn ${activityLog.info?.Date} at ${activityLog.info?.Time}\n${
         activityLog.info?.Comment ? `Comment: ${activityLog.info.Comment}` : ""
       }`,
-    };
-  else
-    notification.contents = {
-      en: `${activityLog.action}`,
     };
 
   try {

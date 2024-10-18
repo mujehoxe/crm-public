@@ -25,7 +25,6 @@ export async function POST(request) {
     const token = request.cookies.get("token")?.value || "";
     const user = jwt.decode(token, process.env.JWT_SECRET_KEY);
     const userId = user.id;
-    const username = user.name;
 
     const newComment = new Comment({
       LeadId: leadData._id,
@@ -36,7 +35,7 @@ export async function POST(request) {
     const savedComment = await newComment.save();
     logger.info("New Comment added:", savedComment);
 
-    const action = `Comment added`;
+    const action = `comment added`;
 
     const activityLog = new ActivityLog({
       action,

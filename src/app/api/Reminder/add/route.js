@@ -34,11 +34,18 @@ export async function POST(request) {
 
     const action = `Reminder added`;
 
+    const [date, Time] = reqBody.DateTime.split("T");
+
     const activityLog = new ActivityLog({
       action,
       Userid: userId,
       Leadid: leadid,
       date: new Date().toLocaleDateString(),
+      info: {
+        Date: date,
+        Time,
+        Comment,
+      },
     });
 
     await activityLog.save();
