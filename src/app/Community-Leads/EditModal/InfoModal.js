@@ -24,7 +24,7 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
             <span className="text-lg">({leadData.Phone})</span>
           </p>
           <button
-            className="text-gray-500 hover:text-gray-700 cursor-pointer absolute top-4 right-4"
+            className="text-gray-500 hover:text-gray-700 cursor-pointer"
             onClick={onClose}
             aria-label="Close"
           >
