@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import styles from "../Modal.module.css";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "../Modal.module.css";
 const Remindershowmodal = ({ onClose, lead }) => {
   const [Reminders, setReminders] = useState([]);
   useEffect(() => {
@@ -28,17 +27,14 @@ const Remindershowmodal = ({ onClose, lead }) => {
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <div className="card-body mt-4">
-          <div>
-            <div className="bg-light-grey mt-2">
-              {Reminders.map((Reminders) => (
-                <p key={Reminders._id}>
-                  Reminder {Reminders.Comment} Assigned to{" "}
-                  {Reminders.Assignees.username} Date and time{" "}
-                  {Reminders.DateTime}
-                </p>
-              ))}
-            </div>
+        <div className="mt-4">
+          <div className="bg-gray-100 p-4 rounded-md">
+            {Reminders.map((reminder) => (
+              <p key={reminder._id} className="mb-2">
+                Reminder {reminder.Comment} assigned to{" "}
+                {reminder.Assignees.username}, Date and time {reminder.DateTime}
+              </p>
+            ))}
           </div>
         </div>
       </div>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import styles from "../Modal.module.css";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "../Modal.module.css";
 
 const DocumentModal = ({ isOpen, onClose, savedUser }) => {
   const [loading, setLoading] = useState(false);
@@ -64,14 +63,16 @@ const DocumentModal = ({ isOpen, onClose, savedUser }) => {
             <span className={styles.closeButton} onClick={onClose}>
               &times;
             </span>
-            <p>{loading ? "processing" : "Add Documents "}</p>
-            <div className="card-body mt-4">
+            <p className="text-center">
+              {loading ? "processing" : "Add Documents"}
+            </p>
+            <div className="mt-4">
               <div>
                 <div className="mb-4">
-                  <div className="input-group" {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <div className="form-control">
-                      Passport (Front & Back), Visa , Emirate Id, Passport Size
+                  <div className="border rounded-md p-2" {...getRootProps()}>
+                    <input {...getInputProps()} className="hidden" />
+                    <div className="form-control text-gray-600">
+                      Passport (Front & Back), Visa, Emirates ID, Passport Size
                       Photo, Attested Degree Certificate, Others
                     </div>
                   </div>
@@ -81,11 +82,11 @@ const DocumentModal = ({ isOpen, onClose, savedUser }) => {
                     {selectedFiles.map((file, index) => (
                       <div
                         key={index}
-                        className="d-flex align-items-center justify-content-between"
+                        className="flex items-center justify-between mb-2"
                       >
                         <span>{file.name}</span>
                         <button
-                          className="btn btn-sm btn-danger"
+                          className="text-red-500 hover:text-red-700 font-medium text-sm"
                           onClick={() => handleRemoveFile(index)}
                         >
                           Remove
@@ -96,7 +97,7 @@ const DocumentModal = ({ isOpen, onClose, savedUser }) => {
                 )}
                 <div className="mb-4">
                   <button
-                    className="btn btn-primary w-100"
+                    className="bg-miles-600 text-white hover:bg-miles-800 w-full py-2 rounded-md"
                     onClick={handleUpload}
                     disabled={loading || selectedFiles.length === 0}
                   >

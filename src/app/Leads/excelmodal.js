@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styles from "../Modal.module.css";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
-import { useDropzone } from "react-dropzone";
 import Papa from "papaparse";
+import { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { ToastContainer, toast } from "react-toastify";
-import SearchableSelect from "./dropdown";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "../Modal.module.css";
+import SearchableSelect from "./dropdown";
 
 const Excelmodal = ({ onClose, onParse }) => {
   const [StatusCount, setStatusCount] = useState([]);
@@ -127,61 +126,70 @@ const Excelmodal = ({ onClose, onParse }) => {
   };
 
   return (
-    <div className={styles.modalBackdrop}>
+    <div
+      className={`${styles.modalBackdrop} fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center`}
+    >
       <ToastContainer />
-      <div className={styles.modalContent}>
-        <span className={styles.closeButton} onClick={onClose}>
+
+      <div
+        className={`${styles.modalContent} bg-white rounded-lg p-6 shadow-lg max-w-lg w-full`}
+      >
+        {/* Close Button */}
+        <span
+          className={`${styles.closeButton} absolute top-4 right-4 text-2xl cursor-pointer`}
+          onClick={onClose}
+        >
           &times;
         </span>
-        <h4>Upload CSV File</h4>
-        <div className="card-body mt-4">
-          <div>
-            <div className="d-flex">
-              <div className="mb-4">
-                <SearchableSelect
-                  className="position-relative"
-                  options={options1}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("LeadStatus", selectedOption)
-                  }
-                  placeholder="Status..."
-                />
-              </div>
-              <div className="mb-4">
-                <SearchableSelect
-                  className="position-relative"
-                  options={options2}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("Source", selectedOption)
-                  }
-                  placeholder="Source..."
-                />
-              </div>
-            </div>
 
-            <div className="mb-4">
-              <div className="input-group" {...getRootProps()}>
-                <input {...getInputProps()} />
-                <div className="form-control">
-                  Drag 'n' drop a CSV file here, or click to select file
-                </div>
-              </div>
-            </div>
-            <div className="d-flex justify-content-between">
-              <div className="mb-4">
-                <button
-                  className="btn btn-primary w-100"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </div>
-              <div className="mb-4">
-                <button className="btn btn-primary w-100" onClick={parseCSV}>
-                  Simulate Data
-                </button>
-              </div>
-            </div>
+        <h4 className="text-xl font-semibold mb-4">Upload CSV File</h4>
+
+        <div className="card-body mt-4 space-y-6">
+          {/* Status & Source Select */}
+          <div className="flex space-x-4">
+            <SearchableSelect
+              className="relative w-full"
+              options={options1}
+              onChange={(selectedOption) =>
+                handleSelectChange("LeadStatus", selectedOption)
+              }
+              placeholder="Status..."
+            />
+            <SearchableSelect
+              className="relative w-full"
+              options={options2}
+              onChange={(selectedOption) =>
+                handleSelectChange("Source", selectedOption)
+              }
+              placeholder="Source..."
+            />
+          </div>
+
+          {/* CSV Upload Input */}
+          <div
+            {...getRootProps()}
+            className="border border-gray-300 rounded-md p-4 cursor-pointer"
+          >
+            <input {...getInputProps()} />
+            <p className="text-center text-gray-500">
+              Drag 'n' drop a CSV file here, or click to select file
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-between space-x-4">
+            <button
+              className="w-full px-6 py-1 text-white bg-miles-600 rounded-md hover:bg-miles-700 focus:outline-none focus:ring-2 focus:ring-miles-500 transition-all"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+            <button
+              className="w-full px-6 py-1 text-white bg-miles-600 rounded-md hover:bg-miles-700 focus:outline-none focus:ring-2 focus:ring-miles-500 transition-all"
+              onClick={parseCSV}
+            >
+              Simulate Data
+            </button>
           </div>
         </div>
       </div>

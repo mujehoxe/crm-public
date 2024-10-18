@@ -1,5 +1,4 @@
 import styles from "@/app/Modal.module.css";
-import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import ActivityLogs from "./ActivityLogs/ActivityLogs";
@@ -16,26 +15,21 @@ const InfoModal = ({ leadData, modalStates, onClose }) => {
   };
 
   return (
-    <div
-      className={styles.modalBackdrop}
-      // className={
-      //   "fixed top-0 left-0 w-full h-full flex justify-center items-start  bg-slate-700/30 z-[998]"
-      // }
-    >
-      <div className={`bg-white w-full mx-52 my-auto px-8 py-4 rounded-lg`}>
+    <div className={styles.modalBackdrop}>
+      <div className="bg-white w-full mx-52 my-auto px-8 py-4 rounded-lg shadow-lg">
         <div className="flex w-full justify-between items-center">
-          <p className="capitalize m-0 p-0 text-3xl font-Satoshi font-[500] flex items-end gap-2">
+          <p className="capitalize m-0 p-0 text-3xl font-Satoshi font-medium flex items-end gap-2">
             {leadData.Name}
             <span className="text-lg">({leadData.Phone})</span>
           </p>
           <span
-            className="text-4xl m-0 p-0 hover:text-red-500 cursor-pointer "
+            className="text-4xl m-0 p-0 hover:text-red-500 cursor-pointer"
             onClick={onClose}
           >
             &times;
           </span>
         </div>
-        <div className="card-body mt-6 p-0">
+        <div className="mt-6 p-0">
           <div className="container">
             <div className="flex gap-2 mb-2">
               <button

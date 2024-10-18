@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styles from "../../../Modal.module.css";
-import axios from "axios";
 import SearchableSelect from "@/app/Leads/dropdown";
-import "bootstrap/dist/css/bootstrap.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import InlineLoader from "../../../components/InlineLoader";
+import styles from "../../../Modal.module.css";
 
 const MeetingModal = ({ onClose, leadId }) => {
   const [users, setUsers] = useState([]);
@@ -107,13 +106,13 @@ const MeetingModal = ({ onClose, leadId }) => {
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <h4>Add Meeting</h4>
-        <h5>{loading && <InlineLoader />}</h5>
-        <div className="card-body mt-4">
+        <h4 className="text-center">Add Meeting</h4>
+        <h5 className="text-center">{loading && <InlineLoader />}</h5>
+        <div className="mt-4">
           <div>
             <div className="mb-4 text-left">
               <input
-                className="form-control"
+                className="border rounded-md p-2 w-full"
                 id="subject"
                 onChange={(e) =>
                   setMeeting({ ...meeting, Subject: e.target.value })
@@ -124,7 +123,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             </div>
             <div className="mb-4 text-left">
               <input
-                className="form-control"
+                className="border rounded-md p-2 w-full"
                 onChange={(e) =>
                   setMeeting({ ...meeting, MeetingDate: e.target.value })
                 }
@@ -166,7 +165,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             <>
               <div className="mb-4 text-left">
                 <input
-                  className="form-control"
+                  className="border rounded-md p-2 w-full"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentName: e.target.value })
                   }
@@ -176,7 +175,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="form-control"
+                  className="border rounded-md p-2 w-full"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentPhone: e.target.value })
                   }
@@ -186,7 +185,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="form-control"
+                  className="border rounded-md p-2 w-full"
                   onChange={(e) =>
                     setMeeting({ ...meeting, agentCompany: e.target.value })
                   }
@@ -200,7 +199,7 @@ const MeetingModal = ({ onClose, leadId }) => {
             <>
               <div className="mb-4 text-left">
                 <input
-                  className="form-control"
+                  className="border rounded-md p-2 w-full"
                   onChange={(e) =>
                     setMeeting({ ...meeting, Developer: e.target.value })
                   }
@@ -210,7 +209,7 @@ const MeetingModal = ({ onClose, leadId }) => {
               </div>
               <div className="mb-4 text-left">
                 <input
-                  className="form-control"
+                  className="border rounded-md p-2 w-full"
                   onChange={(e) =>
                     setMeeting({ ...meeting, Location: e.target.value })
                   }
@@ -241,7 +240,7 @@ const MeetingModal = ({ onClose, leadId }) => {
           </div>
           <div className="mb-4 text-left">
             <input
-              className="form-control"
+              className="border rounded-md p-2 w-full"
               onChange={(e) =>
                 setMeeting({ ...meeting, Comment: e.target.value })
               }
@@ -251,7 +250,7 @@ const MeetingModal = ({ onClose, leadId }) => {
           </div>
           <div className="mb-4">
             <button
-              className="btn btn-primary w-100 disabled:bg-gray-400"
+              className="bg-miles-600 text-white hover:bg-miles-800 w-full py-2 rounded-md disabled:bg-gray-400"
               onClick={onSubmit}
               disabled={loading}
             >

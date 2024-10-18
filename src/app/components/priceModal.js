@@ -1,5 +1,4 @@
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
 import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { ToastContainer, toast } from "react-toastify";
@@ -157,15 +156,15 @@ const priceModal = ({ userData, onClose2 }) => {
             <h4 className="text-center">
               {loading ? "Please Wait" : "Change Price"}
             </h4>
-            <div className="card-body mt-4 p-0">
+            <div className="mt-4 p-0">
               <div className="container">
-                <div className="grid grid-cols-2 gap-x-3 gap-y-3">
-                  <div className="">
-                    <label className="!mb-0">
-                      Unit Price <span className={`text-red-500 !mb-0`}>*</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="mb-0">
+                      Unit Price <span className="text-red-500">*</span>
                     </label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="Price"
                       value={
                         priceChangeData.Price == 0
@@ -176,23 +175,24 @@ const priceModal = ({ userData, onClose2 }) => {
                               .toFixed(2)
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                       }
-                      onChange={(e) => {
+                      onChange={(e) =>
                         setPriceChangeData({
                           ...priceChangeData,
                           Price: e.target.value,
-                        });
-                      }}
+                        })
+                      }
                       allowLeadingZeros
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">
-                      Comission <span className={`text-red-500 !mb-0`}>*</span>
+
+                  <div>
+                    <label className="mb-0">
+                      Comission <span className="text-red-500">*</span>
                     </label>
-                    <div className="grid grid-cols-4 gap-x-2">
+                    <div className="grid grid-cols-4 gap-2">
                       <NumericFormat
-                        className="form-control col-span-3"
+                        className="col-span-3 w-full border rounded-md p-2"
                         disabled={priceChangeData?.ComissionType === ""}
                         placeholder="Comission"
                         thousandSeparator=","
@@ -212,16 +212,13 @@ const priceModal = ({ userData, onClose2 }) => {
                         }
                         onChange={(e) => {
                           const newComission = e.target.value;
-
                           if (newComission === "") {
-                            // If the input is cleared, reset the commission to 0
                             setPriceChangeData({
                               ...priceChangeData,
                               Comission: 0,
                             });
                             return;
                           }
-
                           if (priceChangeData.ComissionType === "%") {
                             if (
                               !isNaN(newComission) &&
@@ -249,24 +246,25 @@ const priceModal = ({ userData, onClose2 }) => {
                         }}
                       />
                       <SearchableSelect
-                        className="!w-[600px] col-start-3"
+                        className="w-[600px] col-span-1"
                         options={commissionCurrency}
                         defaultValue={priceChangeData.ComissionType}
                         value={priceChangeData.ComissionType}
-                        onChange={(e) => {
+                        onChange={(e) =>
                           setPriceChangeData({
                             ...priceChangeData,
                             ComissionType: e.value,
                             Comission: 0,
-                          });
-                        }}
+                          })
+                        }
                       />
                     </div>
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">Spot Cash</label>
+
+                  <div>
+                    <label className="mb-0">Spot Cash</label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="SpotCash"
                       value={
                         priceChangeData.SpotCash == 0
@@ -277,23 +275,24 @@ const priceModal = ({ userData, onClose2 }) => {
                               .toFixed(2)
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                       }
-                      onChange={(e) => {
+                      onChange={(e) =>
                         setPriceChangeData({
                           ...priceChangeData,
                           SpotCash: e.target.value,
-                        });
-                      }}
+                        })
+                      }
                       allowLeadingZeros
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">
-                      Gross Total Comsission{" "}
-                      <span className={`text-red-500 !mb-0`}>*</span>
+
+                  <div>
+                    <label className="mb-0">
+                      Gross Total Comission{" "}
+                      <span className="text-red-500">*</span>
                     </label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="Gross Total Comission"
                       disabled
                       value={
@@ -311,11 +310,13 @@ const priceModal = ({ userData, onClose2 }) => {
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">VAT 5% </label>
+
+                  <div>
+                    <label className="mb-0">VAT 5%</label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="VAT"
+                      disabled
                       value={
                         !priceChangeData.VAT
                           ? "Net Commission"
@@ -324,16 +325,17 @@ const priceModal = ({ userData, onClose2 }) => {
                               maximumFractionDigits: 2,
                             })
                       }
-                      disabled
                       allowLeadingZeros
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">Comission inclding VAT</label>
+
+                  <div>
+                    <label className="mb-0">Comission Including VAT</label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="Total Comission"
+                      disabled
                       value={
                         !priceChangeData.ComissionVAT
                           ? "Net Commission"
@@ -345,19 +347,19 @@ const priceModal = ({ userData, onClose2 }) => {
                               }
                             )
                       }
-                      disabled
                       allowLeadingZeros
                       thousandSeparator=","
                     />
                   </div>
+
                   <div>
-                    <label className="!mb-0">Loyalty Bonus</label>
+                    <label className="mb-0">Loyalty Bonus</label>
                     <NumericFormat
-                      className="form-control"
-                      placeholder="Loyality Bonus"
+                      className="w-full border rounded-md p-2"
+                      placeholder="Loyalty Bonus"
                       value={
                         !priceChangeData.loyaltyBonus
-                          ? "loyalty Bonus"
+                          ? "Loyalty Bonus"
                           : parseFloat(
                               String(priceChangeData.loyaltyBonus).replace(
                                 /,/g,
@@ -367,22 +369,23 @@ const priceModal = ({ userData, onClose2 }) => {
                               .toFixed(2)
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                       }
-                      onChange={(e) => {
+                      onChange={(e) =>
                         setPriceChangeData({
                           ...priceChangeData,
                           loyaltyBonus: e.target.value,
-                        });
-                      }}
+                        })
+                      }
                       allowLeadingZeros
                       thousandSeparator=","
                     />
                   </div>
-                  <div className=" ">
-                    <label className="!mb-0">
+
+                  <div>
+                    <label className="mb-0">
                       Net Comission/Total Comission
                     </label>
                     <NumericFormat
-                      className="form-control"
+                      className="w-full border rounded-md p-2"
                       placeholder="Net Comission"
                       disabled
                       value={
@@ -399,7 +402,7 @@ const priceModal = ({ userData, onClose2 }) => {
                   </div>
                 </div>
 
-                <div className={`w-full justify-center items-center flex mt-3`}>
+                <div className="w-full flex justify-center mt-3">
                   <button
                     onClick={submit}
                     disabled={
@@ -407,10 +410,9 @@ const priceModal = ({ userData, onClose2 }) => {
                       priceChangeData.ComissionVAT <= 0 ||
                       priceChangeData.VAT <= 0 ||
                       priceChangeData.TotalComission <= 0 ||
-                      priceChangeData.Comission <= 0 ||
-                      priceChangeData.Price <= 0
+                      priceChangeData.Comission <= 0
                     }
-                    className={`text-white bg-miles-600 hover:bg-miles-800   font-medium rounded-lg text-sm px-6 py-1 me-2 mb-2`}
+                    className="text-white bg-miles-600 hover:bg-miles-800 font-medium rounded-lg text-sm px-6 py-1"
                   >
                     {isSubmit ? "Submitting..." : "Submit"}
                   </button>

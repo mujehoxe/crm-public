@@ -2,7 +2,6 @@
 import TokenDecoder from "@/app/components/Cookies";
 import RootLayout from "@/app/components/layout";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
@@ -297,219 +296,193 @@ function SuspenseWrappde() {
     <RootLayout>
       <div className="pl-[138px] pr-8">
         <div className="card-body mt-24">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-3 mb-4">
-                <SearchableSelect
-                  options={options1}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("LeadStatus", selectedOption)
-                  }
-                  placeholder="Status..."
-                />
-              </div>
-              <div className="col-md-3 mb-4">
-                <SearchableSelect
-                  options={getSourceOptions()}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("Source", selectedOption)
-                  }
-                  placeholder="Source..."
-                />
-              </div>
-              <div className="col-md-3 mb-4">
-                <SearchableSelect
-                  options={users}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("Assigned", selectedOption)
-                  }
-                  placeholder="Assigned..."
-                />
-              </div>
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Status */}
+              <SearchableSelect
+                options={options1}
+                onChange={(selectedOption) =>
+                  handleSelectChange("LeadStatus", selectedOption)
+                }
+                placeholder="Status..."
+              />
 
-              <div className="col-md-3 mb-4">
-                <SearchableSelect
-                  options={options10}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("tags", selectedOption)
-                  }
-                  placeholder="Dld  Tags..."
-                />
-              </div>
+              {/* Source */}
+              <SearchableSelect
+                options={getSourceOptions()}
+                onChange={(selectedOption) =>
+                  handleSelectChange("Source", selectedOption)
+                }
+                placeholder="Source..."
+              />
 
-              <div className="mb-4">
-                <SearchableSelect
-                  options={options10}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("marketingtags", selectedOption)
-                  }
-                  placeholder="Marketing Tags..."
-                />
-              </div>
+              <SearchableSelect
+                options={users}
+                onChange={(selectedOption) =>
+                  handleSelectChange("Assigned", selectedOption)
+                }
+                placeholder="Assigned..."
+              />
 
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.Name}
-                  onChange={(e) => setLead({ ...Leads, Name: e.target.value })}
-                  placeholder="Name"
-                  required
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="tel"
-                  value={Leads.Phone}
-                  onChange={(e) => setLead({ ...Leads, Phone: e.target.value })}
-                  placeholder="Phone"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="tel"
-                  value={Leads.AltPhone}
-                  onChange={(e) =>
-                    setLead({ ...Leads, AltPhone: e.target.value })
-                  }
-                  placeholder="Alt Phone"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.Address}
-                  onChange={(e) =>
-                    setLead({ ...Leads, Address: e.target.value })
-                  }
-                  placeholder="Address"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="email"
-                  value={Leads.Email}
-                  onChange={(e) => setLead({ ...Leads, Email: e.target.value })}
-                  placeholder="Email address"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.City}
-                  onChange={(e) => setLead({ ...Leads, City: e.target.value })}
-                  placeholder="City"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.Project}
-                  onChange={(e) =>
-                    setLead({ ...Leads, Project: e.target.value })
-                  }
-                  placeholder="Project"
-                />
-              </div>
+              <SearchableSelect
+                options={options10}
+                onChange={(selectedOption) =>
+                  handleSelectChange("tags", selectedOption)
+                }
+                placeholder="DLD Tags..."
+              />
 
-              <div className="col-md-6 mb-4">
-                <NumericFormat
-                  value={parseFloat(String(Leads.Budget).replace(/,/g, ""))
-                    .toFixed(2)
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                  placeholder="Budget/Investement Value..."
-                  onChange={(e) =>
-                    setLead({ ...Leads, Budget: e.target.value })
-                  }
-                  className="form-control"
-                  allowLeadingZeros
-                  thousandSeparator=","
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <SearchableSelect
-                  options={options4}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("Country", selectedOption)
-                  }
-                  placeholder="Countires..."
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.Location}
-                  onChange={(e) =>
-                    setLead({ ...Leads, Location: e.target.value })
-                  }
-                  placeholder="Prefered Location"
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.ZipCode}
-                  onChange={(e) =>
-                    setLead({ ...Leads, ZipCode: e.target.value })
-                  }
-                  placeholder="Zip Code"
-                />
-              </div>
+              <SearchableSelect
+                options={options10}
+                onChange={(selectedOption) =>
+                  handleSelectChange("marketingtags", selectedOption)
+                }
+                placeholder="Marketing Tags..."
+              />
 
-              <div className="col-md-6 mb-4">
-                <SearchableSelect
-                  options={options8}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("Type", selectedOption)
-                  }
-                  placeholder="Type..."
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <SearchableSelect
-                  options={options5}
-                  onChange={(selectedOption) =>
-                    handleSelectChange("typeprop", selectedOption)
-                  }
-                  placeholder="Property Type..."
-                />
-              </div>
-              <div className="col-md-6 mb-4">
-                <input
-                  className="form-control"
-                  type="text"
-                  value={Leads.unitnumber}
-                  onChange={(e) =>
-                    setLead({ ...Leads, unitnumber: e.target.value })
-                  }
-                  placeholder="Unit Number"
-                />
-              </div>
-              <div className="col-md-12 mb-4">
-                <textarea
-                  required=""
-                  placeholder="Description"
-                  className="form-control"
-                  value={Leads.Description ?? Description}
-                  onChange={(e) =>
-                    setLead({ ...Leads, Description: e.target.value })
-                  }
-                  rows="5"
-                ></textarea>
-              </div>
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.Name}
+                onChange={(e) => setLead({ ...Leads, Name: e.target.value })}
+                placeholder="Name"
+                required
+              />
 
-              <div className="mb-4">
+              <input
+                className="form-input"
+                type="tel"
+                value={Leads.Phone}
+                onChange={(e) => setLead({ ...Leads, Phone: e.target.value })}
+                placeholder="Phone"
+              />
+
+              <input
+                className="form-input"
+                type="tel"
+                value={Leads.AltPhone}
+                onChange={(e) =>
+                  setLead({ ...Leads, AltPhone: e.target.value })
+                }
+                placeholder="Alt Phone"
+              />
+
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.Address}
+                onChange={(e) => setLead({ ...Leads, Address: e.target.value })}
+                placeholder="Address"
+              />
+
+              <input
+                className="form-input"
+                type="email"
+                value={Leads.Email}
+                onChange={(e) => setLead({ ...Leads, Email: e.target.value })}
+                placeholder="Email address"
+              />
+
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.City}
+                onChange={(e) => setLead({ ...Leads, City: e.target.value })}
+                placeholder="City"
+              />
+
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.Project}
+                onChange={(e) => setLead({ ...Leads, Project: e.target.value })}
+                placeholder="Project"
+              />
+              <NumericFormat
+                value={parseFloat(String(Leads.Budget).replace(/,/g, ""))
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                placeholder="Budget/Investment Value..."
+                onChange={(e) => setLead({ ...Leads, Budget: e.target.value })}
+                className="form-input"
+                allowLeadingZeros
+                thousandSeparator=","
+              />
+
+              {/* Country */}
+              <SearchableSelect
+                options={options4}
+                onChange={(selectedOption) =>
+                  handleSelectChange("Country", selectedOption)
+                }
+                placeholder="Countries..."
+              />
+
+              {/* Preferred Location */}
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.Location}
+                onChange={(e) =>
+                  setLead({ ...Leads, Location: e.target.value })
+                }
+                placeholder="Preferred Location"
+              />
+
+              {/* Zip Code */}
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.ZipCode}
+                onChange={(e) => setLead({ ...Leads, ZipCode: e.target.value })}
+                placeholder="Zip Code"
+              />
+
+              {/* Type */}
+              <SearchableSelect
+                options={options8}
+                onChange={(selectedOption) =>
+                  handleSelectChange("Type", selectedOption)
+                }
+                placeholder="Type..."
+              />
+
+              {/* Property Type */}
+              <SearchableSelect
+                options={options5}
+                onChange={(selectedOption) =>
+                  handleSelectChange("typeprop", selectedOption)
+                }
+                placeholder="Property Type..."
+              />
+
+              {/* Unit Number */}
+              <input
+                className="form-input"
+                type="text"
+                value={Leads.unitnumber}
+                onChange={(e) =>
+                  setLead({ ...Leads, unitnumber: e.target.value })
+                }
+                placeholder="Unit Number"
+              />
+
+              {/* Description */}
+              <textarea
+                className="form-input"
+                value={Leads.Description ?? Description}
+                onChange={(e) =>
+                  setLead({ ...Leads, Description: e.target.value })
+                }
+                rows="5"
+                placeholder="Description"
+              ></textarea>
+
+              {/* Submit Button */}
+              <div className="col-span-2">
                 <button
-                  className="btn btn-primary w-100"
-                  disabled={loading == true}
+                  className="w-full px-6 py-1 text-white bg-miles-600 rounded-md shadow-md hover:bg-miles-700 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150"
+                  disabled={loading}
                   onClick={onSubmit}
                 >
                   Submit

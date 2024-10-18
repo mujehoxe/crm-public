@@ -1,12 +1,10 @@
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegUserCircle } from "react-icons/fa";
 import DocumentModal from "../components/doument";
 import SearchableSelect from "../Leads/dropdown";
-import styles from "../Modal.module.css";
 
 const Modal = ({ users, setUsers, onClose2, userdata }) => {
   const [showModal, setShowModal] = useState(true);
@@ -188,167 +186,148 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
   return (
     <>
       {showModal && (
-        <div className={styles.modalBackdrop}>
-          <div className={styles.modalContent + " p-4 ml-20 max-h-screen"}>
-            <span className={styles.closeButton} onClick={onClose2}>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-xl w-full overflow-y-auto">
+            <button
+              className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
+              onClick={onClose2}
+              aria-label="Close"
+            >
               &times;
-            </span>
-            <h4>{userdata ? "Update Staff" : "Add Staff"}</h4>
-            {loading && <h5>Processing...</h5>}
-            <div className="card-body mt-4 p-0">
-              <div className="">
-                <div className="row">
-                  <div className="mb-4 col-sm-12 col-xl-6">
-                    <input
-                      className="form-control"
-                      type="text"
-                      placeholder="Name"
-                      value={formData.username}
-                      onChange={(e) =>
-                        setFormData({ ...formData, username: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="mb-4 col-sm-12 col-xl-6">
-                    <input
-                      className="form-control"
-                      type="email"
-                      placeholder="Email"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="mb-4 col-sm-12 col-xl-6">
-                    <input
-                      className="form-control"
-                      type="email"
-                      placeholder="Personal Email"
-                      value={formData.personalemail}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          personalemail: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+            </button>
 
-                  <div className="mb-4 col-sm-12 col-xl-6">
-                    <input
-                      className="form-control"
-                      type="tel"
-                      placeholder="Phone"
-                      value={formData.Phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, Phone: e.target.value })
-                      }
-                    />
-                  </div>
+            <h4 className="text-lg font-semibold mb-4">
+              {userdata ? "Update Staff" : "Add Staff"}
+            </h4>
+            {loading && <p className="text-blue-500">Processing...</p>}
 
-                  <div className={`mb-4 ${formData.Role ? "col-6" : "col-12"}`}>
-                    <SearchableSelect
-                      options={roleOptions}
-                      defaultValue={formData.Role}
-                      onChange={(selectedOption) =>
-                        handleSelectChange("Role", selectedOption)
-                      }
-                      autoComplete="new-role"
-                      name={`${Math.random().toString(36).substr(2, 10)}`}
-                      placeholder="Role..."
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-miles-500 w-full"
+                  type="text"
+                  placeholder="Name"
+                  value={formData.username}
+                  onChange={(e) =>
+                    setFormData({ ...formData, username: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-miles-500 w-full"
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-miles-500 w-full"
+                  type="email"
+                  placeholder="Personal Email"
+                  value={formData.personalemail}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      personalemail: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-miles-500 w-full"
+                  type="tel"
+                  placeholder="Phone"
+                  value={formData.Phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Phone: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <SearchableSelect
+                  options={roleOptions}
+                  defaultValue={formData.Role}
+                  onChange={(selectedOption) =>
+                    handleSelectChange("Role", selectedOption)
+                  }
+                  autoComplete="new-role"
+                  placeholder="Role..."
+                  className="w-full"
+                />
+
+                {formData.Role && formData.PrentStaff && (
+                  <SearchableSelect
+                    options={parentStaffOptions}
+                    defaultValue={formData.PrentStaff}
+                    onChange={(selectedOption) =>
+                      handleSelectChange("PrentStaff", selectedOption)
+                    }
+                    placeholder="Parent Staff..."
+                    className="w-full"
+                  />
+                )}
+              </div>
+
+              <div
+                {...getRootProps()}
+                className="p-4 border-2 border-dashed border-gray-300 rounded-md flex justify-between items-center gap-4"
+              >
+                <input {...getInputProps()} />
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-gray-600">Click to select or</p>
+                  <p className="text-sm text-gray-600">
+                    Drag and drop an image here
+                  </p>
+                  <ArrowUpTrayIcon className="h-6 w-6 text-gray-400" />
+                </div>
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-50">
+                  {formData.filePreview ? (
+                    <img
+                      src={formData.filePreview}
+                      className="w-full h-full object-cover"
+                      alt="Preview"
                     />
-                  </div>
-                  {formData.Role && formData.PrentStaff && (
-                    <div className="mb-4 col-sm-12 col-xl-6">
-                      <SearchableSelect
-                        options={parentStaffOptions}
-                        defaultValue={formData.PrentStaff}
-                        onChange={(selectedOption) =>
-                          handleSelectChange("PrentStaff", selectedOption)
-                        }
-                        placeholder="Parent Staff..."
-                      />
-                    </div>
+                  ) : (
+                    <FaRegUserCircle className="w-full h-full text-gray-300" />
                   )}
-
-                  <div className="mb-4 col-12">
-                    <div
-                      className="input-group p-4 flex items-center justify-around gap-x-4 rounded-md border-2 border-miles-200 border-dashed"
-                      {...getRootProps()}
-                    >
-                      <input {...getInputProps()} />
-                      <div className="my-auto flex flex-col space-y-2 items-center">
-                        <span>Click to select or,</span>
-                        <span>
-                          Drag and drop an image here, or click to select image
-                        </span>
-                        <ArrowUpTrayIcon className="size-6" />
-                      </div>
-                      <div
-                        className="size-40 my-auto object-cover overflow-hidden border-2 border-miles-100 bg-gray-50"
-                        style={{ borderRadius: "9999px" }}
-                      >
-                        {formData.filePreview ? (
-                          <img
-                            src={formData.filePreview}
-                            className="size-full object-cover rounded-full"
-                            alt="Preview"
-                          />
-                        ) : (
-                          <FaRegUserCircle className="size-full text-gray-300" />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mb-4 col-12">
-                    <input
-                      className="form-control"
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="new-password"
-                      value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
-                    />
-                  </div>
-
-                  <div className="">
-                    {userdata ? (
-                      <button
-                        className="btn btn-primary w-100"
-                        onClick={handleUpdate}
-                        disabled={loading}
-                      >
-                        Update
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-primary w-100"
-                        onClick={handleSubmit}
-                        disabled={loading}
-                      >
-                        Submit
-                      </button>
-                    )}
-                  </div>
                 </div>
               </div>
+
+              <input
+                className="border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-miles-500 w-full"
+                type="password"
+                placeholder="Password"
+                autoComplete="new-password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+              />
+
+              <button
+                className={`w-full py-2 px-4 text-white rounded-md transition ${
+                  loading
+                    ? "bg-miles-300 cursor-not-allowed"
+                    : "bg-miles-600 hover:bg-miles-500"
+                }`}
+                onClick={userdata ? handleUpdate : handleSubmit}
+                disabled={loading}
+              >
+                {userdata ? "Update" : "Submit"}
+              </button>
             </div>
           </div>
         </div>
       )}
-      <div>
-        {isDocumentModalOpen && (
-          <DocumentModal
-            isOpen={isDocumentModalOpen}
-            onClose={() => setIsDocumentModalOpen(false)}
-            savedUser={userid}
-          />
-        )}
-      </div>
+
+      {isDocumentModalOpen && (
+        <DocumentModal
+          isOpen={isDocumentModalOpen}
+          onClose={() => setIsDocumentModalOpen(false)}
+          savedUser={userid}
+        />
+      )}
     </>
   );
 };

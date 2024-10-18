@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styles from "../../../Modal.module.css";
 import axios from "axios";
-import SearchableSelect from "../../../Leads/dropdown";
-import "bootstrap/dist/css/bootstrap.css";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import InlineLoader from "../../../components/InlineLoader";
+import SearchableSelect from "../../../Leads/dropdown";
+import styles from "../../../Modal.module.css";
 
 const ReminderModal = ({ onClose, lead }) => {
   const [users, setUsers] = useState([]);
@@ -73,12 +72,12 @@ const ReminderModal = ({ onClose, lead }) => {
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <h4>Add Reminder</h4>
-        <h5>{loading && <InlineLoader />}</h5>
-        <div className="card-body mt-4">
+        <h4 className="text-center">Add Reminder</h4>
+        <h5 className="text-center">{loading && <InlineLoader />}</h5>
+        <div className="mt-4">
           <div className="mb-4 text-left">
             <input
-              className="form-control"
+              className="border rounded-md p-2 w-full"
               type="datetime-local"
               onChange={(e) =>
                 setReminder({ ...reminder, DateTime: e.target.value })
@@ -99,7 +98,7 @@ const ReminderModal = ({ onClose, lead }) => {
 
           <div className="mb-4 text-left">
             <input
-              className="form-control"
+              className="border rounded-md p-2 w-full"
               onChange={(e) =>
                 setReminder({ ...reminder, Comment: e.target.value })
               }
@@ -109,7 +108,10 @@ const ReminderModal = ({ onClose, lead }) => {
           </div>
 
           <div className="mb-4">
-            <button className="btn btn-primary w-100" onClick={onSubmit}>
+            <button
+              className="bg-miles-600 text-white hover:bg-miles-800 w-full py-2 rounded-md"
+              onClick={onSubmit}
+            >
               Submit
             </button>
           </div>

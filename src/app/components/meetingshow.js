@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import styles from "../Modal.module.css";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styles from "../Modal.module.css";
 const Meetingshowmodal = ({ onClose, lead }) => {
   const [Meeting, setMeetings] = useState([]);
   useEffect(() => {
@@ -23,20 +22,18 @@ const Meetingshowmodal = ({ onClose, lead }) => {
     <div className={styles.modalBackdrop}>
       <ToastContainer />
       <div className={styles.modalContent}>
-        <h4>Meeting</h4>
+        <h4 className="text-center">Meeting</h4>
         <span className={styles.closeButton} onClick={onClose}>
           &times;
         </span>
-        <div className="card-body mt-4">
-          <div>
-            <div className="bg-light-grey mt-2">
-              {Meeting.map((Meeting) => (
-                <p key={Meeting._id}>
-                  Subject {Meeting.Subject} With Developer {Meeting.Developer}{" "}
-                  On Date {Meeting.MeetingDate}
-                </p>
-              ))}
-            </div>
+        <div className="mt-4">
+          <div className="bg-gray-100 p-4 rounded-md">
+            {Meeting.map((meeting) => (
+              <p key={meeting._id} className="text-left mb-2">
+                Subject: {meeting.Subject} With Developer: {meeting.Developer}{" "}
+                On Date: {meeting.MeetingDate}
+              </p>
+            ))}
           </div>
         </div>
       </div>

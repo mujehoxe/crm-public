@@ -1,8 +1,6 @@
 import InlineLoader from "@/app/components/InlineLoader";
 import SearchableSelect from "@/app/Leads/dropdown";
-import styles from "@/app/Modal.module.css";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
@@ -59,97 +57,111 @@ const BulkModal = ({
   };
 
   return (
-    <div className={styles.modalBackdrop}>
-      <div className={styles.modalContent}>
-        <span className={styles.closeButton} onClick={onClose}>
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full overflow-y-auto">
+        <button
+          className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
+          onClick={onClose}
+          aria-label="Close"
+        >
           &times;
-        </span>
-        <h4>Bulk Actions {loading && <InlineLoader disableText={true} />}</h4>
-        <div className="card-body mt-4">
+        </button>
+
+        <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          Bulk Actions
+          {loading && <InlineLoader disableText={true} />}
+        </h4>
+
+        <div className="space-y-6">
+          {/* Status Field */}
           <div>
-            <div className="mb-4">
-              <h5>Status</h5>
-              <SearchableSelect
-                options={statusOptions}
-                defaultValue={
-                  selectedLeads.length === 1
-                    ? selectedLeads[0].LeadStatus?._id
-                    : undefined
-                }
-                placeholder="Change Status..."
-                onChange={handleChange("status")}
-              />
-            </div>
-            <div className="mb-4">
-              <h5>Source</h5>
-              <SearchableSelect
-                options={sourceOptions}
-                defaultValue={
-                  selectedLeads.length === 1
-                    ? selectedLeads[0].Source._id
-                    : undefined
-                }
-                placeholder="Change Source..."
-                onChange={handleChange("source")}
-              />
-            </div>
-            <div className="mb-4">
-              <h5>Assigned</h5>
-              <SearchableSelect
-                options={agents}
-                placeholder="Assign..."
-                onChange={handleChange("assignee")}
-                defaultValue={
-                  selectedLeads.length === 1
-                    ? selectedLeads[0].Assigned?._id
-                    : undefined
-                }
-              />
-            </div>
+            <h5 className="text-sm font-medium">Status</h5>
+            <SearchableSelect
+              options={statusOptions}
+              defaultValue={
+                selectedLeads.length === 1
+                  ? selectedLeads[0].LeadStatus?._id
+                  : undefined
+              }
+              placeholder="Change Status..."
+              onChange={handleChange("status")}
+              className="w-full"
+            />
+          </div>
 
-            <div className="mb-4">
-              <h5 className="">Description</h5>
-              <p className="">Describe the change being made</p>
-              <div class="pl-2 css-13cymwt-control">
-                <textarea
-                  placeholder="Description your changes"
-                  className="text-inherit bg-transparent w-full border-none m-0 p-0 h-32 outline-none pt-1 text-gray-500"
-                  style={{
-                    gridArea: "1 / 2",
-                    fontFamily: "inherit",
-                    outline: "none",
-                  }}
-                  onBlur={(e) => setDescription(e.target.value)}
-                ></textarea>
-              </div>
-            </div>
+          {/* Source Field */}
+          <div>
+            <h5 className="text-sm font-medium">Source</h5>
+            <SearchableSelect
+              options={sourceOptions}
+              defaultValue={
+                selectedLeads.length === 1
+                  ? selectedLeads[0].Source._id
+                  : undefined
+              }
+              placeholder="Change Source..."
+              onChange={handleChange("source")}
+              className="w-full"
+            />
+          </div>
 
-            <div
-              onClick={toggleBooleanField("clearData")}
-              className="flex select-none flex-row cursor-pointer text-red-600 mb-4 items-center gap-2"
+          {/* Assigned Agent Field */}
+          <div>
+            <h5 className="text-sm font-medium">Assigned</h5>
+            <SearchableSelect
+              options={agents}
+              placeholder="Assign..."
+              onChange={handleChange("assignee")}
+              defaultValue={
+                selectedLeads.length === 1
+                  ? selectedLeads[0].Assigned?._id
+                  : undefined
+              }
+              className="w-full"
+            />
+          </div>
+
+          {/* Description Field */}
+          <div>
+            <h5 className="text-sm font-medium">Description</h5>
+            <p className="text-sm text-gray-500 mb-2">
+              Describe the change being made
+            </p>
+            <textarea
+              placeholder="Describe your changes"
+              className="w-full h-32 p-2 border border-gray-300 rounded-md resize-none focus:ring-2 focus:ring-miles-500"
+              onBlur={(e) => setDescription(e.target.value)}
+            ></textarea>
+          </div>
+
+          {/* Clear Data Checkbox */}
+          <div
+            onClick={toggleBooleanField("clearData")}
+            className="flex items-center gap-2 cursor-pointer select-none text-red-600"
+          >
+            <FaCheck
+              className={`w-5 h-5 rounded border-2 ${
+                bulkData.clearData
+                  ? "bg-red-600 border-red-600 text-white"
+                  : "border-gray-300 text-transparent"
+              }`}
+            />
+            <span>Clear Data</span>
+          </div>
+
+          {/* Submit Button */}
+          <div className="text-right">
+            <button
+              className={`px-6 py-2 rounded-md shadow-md text-white transition-all duration-150 focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 ${
+                loading
+                  ? "bg-gray-300 text-gray-400 cursor-wait"
+                  : "bg-miles-600 hover:bg-miles-500"
+              }`}
+              onClick={handleSubmit}
+              disabled={loading}
             >
-              <FaCheck
-                className={`w-4 h-4 rounded text-center text-xs border-2  ${
-                  bulkData.clearData
-                    ? "text-white bg-red-600 border-red-600"
-                    : "text-transparent"
-                }`}
-              />
-              <span className="p-0 m-0">Clear Data</span>
-            </div>
-
-            <div className="mb-4 text-right">
-              <button
-                className={`
-                  px-6 py-1 bg-miles-600 disabled:bg-gray-300 text-white disabled:text-gray-400 rounded-md shadow-md hover:bg-miles-700 ${
-                    loading && "cursor-wait"
-                  } focus:ring-2 focus:ring-miles-500 focus:ring-offset-2 transition-all duration-150`}
-                onClick={handleSubmit}
-                disabled={loading}
-              >
-                Submit
-              </button>
-            </div>
+              Submit
+            </button>
           </div>
         </div>
       </div>
