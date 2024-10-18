@@ -1,6 +1,5 @@
 import connect from "@/dbConfig/dbConfig";
 import ActivityLog from "@/models/Activity";
-import Leads from "@/models/Leads";
 import Meeting from "@/models/Meeting";
 import logger from "@/utils/logger";
 import jwt from "jsonwebtoken";
@@ -10,6 +9,8 @@ import { checkPermission } from "../../permissions/checkPermission";
 connect();
 
 export async function POST(request) {
+  const reqBody = await request.json();
+
   try {
     if (!(await checkPermission("add_meeting", "lead")))
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -18,49 +19,15 @@ export async function POST(request) {
   }
 
   try {
-    const reqBody = await request.json();
-    const {
-      Subject,
-      MeetingDate,
-      Priority,
-      Followers,
-      Lead,
-      Status,
-      Comment,
-      MeetingType,
-      directoragnet,
-      agentName,
-      agentPhone,
-      agentCompany,
-      Developer,
-      Location,
-    } = reqBody;
     const token = request.cookies.get("token")?.value || "";
 
-    const decoded = jwt.decode(token);
-    const userId = decoded.id;
-    const username = decoded.name;
-    const leadid = Lead;
-
-    const { Name, Email, Phone } = await Leads.findById(leadid).exec();
+    const user = jwt.decode(token);
 
     const newMeeting = new Meeting({
-      Subject,
-      MeetingDate,
-      Priority,
-      MeetingType,
-      directoragnet,
-      agentName,
-      agentPhone,
-      agentCompany,
-      Developer,
-      Location,
-      Assignees: userId,
-      Followers,
-      Leadid: Lead,
-      Status,
-      Comment,
-      addedby: userId,
+      ...reqBody,
+      Assignees: user.id,
+      Leadid: reqBody.Lead,
+      addedby: user.id,
     });
 
     const savedMeeting = await newMeeting.save();
@@ -69,10 +36,11 @@ export async function POST(request) {
 
     const activityLog = new ActivityLog({
       action: `Meeting added`,
-      Userid: userId,
-      Leadid: leadid,
+      Userid: user.id,
+      Leadid: reqBody.Lead,
       date: currentDate,
-      MeetingDate,
+      MeetingDate: reqBody.MeetingDate,
+      MeetingTime: reqBody.Time,
     });
 
     await activityLog.save();

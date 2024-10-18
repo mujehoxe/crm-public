@@ -2,6 +2,7 @@ import axios from "axios";
 import mongoose from "mongoose";
 import User from "./Users";
 
+await import("./Leads");
 await import("./Source");
 await import("./Status");
 await import("./Tags");
@@ -47,7 +48,7 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
     notification.contents = {
       en: `${activityLog.action} by "${
         activityLog.Userid.username || "Unknown User"
-      }"\non ${activityLog.MeetingDate}`,
+      }"\non ${activityLog.MeetingDate} at ${activityLog.MeetingTime}`,
     };
   else
     notification.contents = {

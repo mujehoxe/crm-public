@@ -59,6 +59,7 @@ const MeetingModal = ({ onClose, leadId }) => {
   const [meeting, setMeeting] = useState({
     Subject: "",
     MeetingDate: "",
+    Time: "",
     Priority: "",
     Lead: leadId,
     Assignees: "",
@@ -129,10 +130,17 @@ const MeetingModal = ({ onClose, leadId }) => {
             <div className="mb-4 text-left">
               <input
                 className="css-13cymwt-control css-hlgwow css-1jqq78o-placeholder text-inherit bg-transparent opacity-100 w-full min-w-[2px] border-0 m-0 outline-none p-0"
-                onChange={(e) =>
-                  setMeeting({ ...meeting, MeetingDate: e.target.value })
-                }
-                type="date"
+                onChange={(e) => {
+                  const dateTimeString = e.target.value;
+                  const [date, time] = dateTimeString.split("T");
+
+                  setMeeting((prevMeeting) => ({
+                    ...prevMeeting,
+                    MeetingDate: date,
+                    Time: time,
+                  }));
+                }}
+                type="datetime-local"
                 placeholder="Meeting Date"
               />
             </div>

@@ -9,6 +9,9 @@ const MeetingSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a MeetingDate"],
   },
+  Time: {
+    type: String,
+  },
   Priority: {
     type: String,
     required: [true, "Please provide a Priority"],
