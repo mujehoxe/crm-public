@@ -48,7 +48,9 @@ async function sendOneSignalNotification(activityLog, targetedPlayerIds) {
     notification.contents = {
       en: `${activityLog.action} by "${
         activityLog.Userid.username || "Unknown User"
-      }"\non ${activityLog.MeetingDate} at ${activityLog.MeetingTime}`,
+      }"\nOn ${activityLog.info?.Date} at ${activityLog.info?.Time}\n${
+        activityLog.info?.Comment ? `Comment: ${activityLog.info.Comment}` : ""
+      }`,
     };
   else
     notification.contents = {

@@ -39,8 +39,11 @@ export async function POST(request) {
       Userid: user.id,
       Leadid: reqBody.Lead,
       date: currentDate,
-      MeetingDate: reqBody.MeetingDate,
-      MeetingTime: reqBody.Time,
+      info: {
+        Date: reqBody.MeetingDate,
+        Time: reqBody.Time,
+        Comment: reqBody.Comment,
+      },
     });
 
     await activityLog.save();
