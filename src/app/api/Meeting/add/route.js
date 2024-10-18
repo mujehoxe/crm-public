@@ -72,7 +72,9 @@ export async function POST(request) {
       Userid: userId,
       Leadid: leadid,
       date: currentDate,
+      MeetingDate,
     });
+
     await activityLog.save();
 
     return NextResponse.json({
