@@ -47,7 +47,7 @@ const Reminders = ({ modalStates, leadData }) => {
       <div className="flex justify-center">
         <button
           onClick={() => modalStates.setReminderOpenForLead(leadData._id)}
-          className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 rounded"
+          className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 py-1 rounded"
         >
           <PlusIcon className="size-4" /> Add Reminder
         </button>

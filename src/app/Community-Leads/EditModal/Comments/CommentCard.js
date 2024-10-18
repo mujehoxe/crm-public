@@ -8,7 +8,7 @@ function CommentCard({ comments, index, onDelete, isLoading }) {
   }, [comments]);
 
   return (
-    <div className="flex text-sm text-gray-500">
+    <div className="flex text-sm p-4 text-gray-500">
       <div className="flex-none py-4 mr-2">
         <img
           alt={comments[index].UserId.username}
@@ -45,9 +45,9 @@ function CommentCard({ comments, index, onDelete, isLoading }) {
       <button
         onClick={onDelete}
         disabled={isLoading}
-        className="text-xs bg-red-200 text-red-800 p-1 w-6 h-6 rounded-full mt-4 mr-4"
+        className="text-xs mt-4 bg-red-200 text-red-800 flex justify-center items-center text-center size-6 rounded-full"
       >
-        <TrashIcon />
+        <TrashIcon className="size-4" />
       </button>
     </div>
   );

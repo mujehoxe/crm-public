@@ -128,7 +128,7 @@ const Comments = ({ modalStates, leadData }) => {
                         </button>
                         <button
                           type="submit"
-                          className="px-6 bg-miles-500 text-white rounded hover:bg-miles-600"
+                          className="px-6 py-1 bg-miles-500 text-white rounded hover:bg-miles-600"
                           disabled={loading}
                         >
                           {sending ? "Sending..." : "Send"}
@@ -146,7 +146,7 @@ const Comments = ({ modalStates, leadData }) => {
         <div className="flex justify-end mt-4">
           <button
             onClick={() => setAdding(true)}
-            className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 rounded"
+            className="flex items-center bg-miles-500 hover:bg-miles-600 text-white px-6 py-1 rounded"
           >
             <PlusIcon className="size-4" /> Add Comment
           </button>
