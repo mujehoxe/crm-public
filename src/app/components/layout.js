@@ -7,7 +7,6 @@ import "../page.module.css";
 import TokenDecoder from "./Cookies";
 import Loader from "./Loader"; // Import the Loader component
 import Rightbar from "./Rightbar";
-import Jsfile from "./Scripts";
 import Sidebar from "./sidebar";
 import Topbar from "./topbar";
 
@@ -55,7 +54,6 @@ export default function RootLayout({ children }) {
             )}
           </div>
         </div>
-        <Jsfile />
       </div>
     </>
   );
