@@ -17,6 +17,18 @@ const ReminderSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
+ReminderSchema.post("save", async function (doc, next) {
+  await doc.populate([
+    {
+      path: "Leadid",
+      populate: { path: "Assigned" }, // Nested population
+    },
+    { path: "Assignees" },
+  ]);
+
+  next();
+});
+
 const Reminder =
   mongoose.models.Reminder || mongoose.model("Reminder", ReminderSchema);
 
