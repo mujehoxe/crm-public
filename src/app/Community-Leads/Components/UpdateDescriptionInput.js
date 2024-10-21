@@ -1,6 +1,6 @@
 import InlineLoader from "@/app/components/InlineLoader";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function UpdateDescriptionInput({
   isUpdateDescriptionInput,
@@ -9,7 +9,7 @@ export default function UpdateDescriptionInput({
   handleUpdateSubmit,
 }) {
   return (
-    <AnimatePresence>
+    <>
       {isUpdateDescriptionInput && (
         <motion.div className="p-3">
           <motion.div
@@ -38,10 +38,10 @@ export default function UpdateDescriptionInput({
                 type="text"
                 name="update-description"
                 id="update-description"
-                className="block w-full rounded-lg text-gray-900 bg-slate-100 focus:border 
-                border-gray-300 px-2 py-1 shadow-sm sm:text-sm
-                  focus:outline-none focus:ring-2 focus:ring-miles-500 focus:border-miles-500
-                  transition-colors duration-200 placeholder-gray-400"
+                className="block w-full rounded-lg text-gray-900 bg-slate-100 
+                  px-2 py-1 shadow-sm sm:text-sm placeholder-gray-400
+                  focus:outline-none border-2 focus:border-miles-400
+                  transition-colors duration-200"
                 placeholder="Enter your update description"
                 autoFocus={true}
                 disabled={loading}
@@ -76,6 +76,6 @@ export default function UpdateDescriptionInput({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   );
 }

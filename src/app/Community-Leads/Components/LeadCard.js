@@ -457,14 +457,13 @@ export default function LeadCard({
                 </motion.div>
               </motion.div>
             )}
+            <UpdateDescriptionInput
+              isUpdateDescriptionInput={isUpdateDescriptionInput}
+              loading={loading}
+              setUpdateBody={setUpdateBody}
+              handleUpdateSubmit={handleUpdateSubmit}
+            />
           </AnimatePresence>
-
-          <UpdateDescriptionInput
-            isUpdateDescriptionInput={isUpdateDescriptionInput}
-            loading={loading}
-            setUpdateBody={setUpdateBody}
-            handleUpdateSubmit={handleUpdateSubmit}
-          />
         </div>
       </div>
     </li>
