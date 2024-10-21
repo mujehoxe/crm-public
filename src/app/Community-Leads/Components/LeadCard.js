@@ -347,8 +347,10 @@ export default function LeadCard({
                   onBlur={({ target: { innerText } }) => {
                     descriptionChanged(innerText);
                   }}
-                  className={`text-sm text-gray-900 w-full rounded-md min-h-[40px] line-clamp-2 ${
-                    isDescriptionInput && "border-2 border-gray-300 px-1"
+                  onClick={(e) => e.stopPropagation()}
+                  className={`text-sm p-1 text-gray-900 w-full rounded-md min-h-[40px] line-clamp-2 ${
+                    isDescriptionInput &&
+                    "border-2 border-miles-300 outline-miles-400 px-1"
                   }`}
                 >
                   {lead.Description || "No Description"}
