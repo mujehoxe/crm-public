@@ -594,7 +594,6 @@ export default function CommunityLeadsPage() {
               <Select
                 mode="single"
                 style={{ width: "100%", height: "100%" }}
-                allowClear
                 onChange={(selected) => {
                   setLeadsData({
                     ...leadsData,
