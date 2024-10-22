@@ -256,7 +256,7 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
                   className="w-full"
                 />
 
-                {formData.Role && formData.PrentStaff && (
+                {formData.Role && (
                   <SearchableSelect
                     options={parentStaffOptions}
                     defaultValue={formData.PrentStaff}
