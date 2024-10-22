@@ -198,9 +198,11 @@ const Modal = ({ users, setUsers, onClose, userdata }) => {
               <XMarkIcon className="size-6" />
             </button>
 
-            <h4 className="text-lg font-semibold mb-4">
+            <h4 className="flex items-center text-lg font-semibold mb-4">
               {userdata ? "Update Staff" : "Add Staff"}
-              {loading && <InlineLoader disableText={true} />}
+              {loading && (
+                <InlineLoader className="ml-2 size-4" disableText={true} />
+              )}
             </h4>
 
             <div className="space-y-6">
