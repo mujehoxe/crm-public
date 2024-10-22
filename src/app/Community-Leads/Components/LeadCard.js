@@ -343,7 +343,7 @@ export default function LeadCard({
                 >
                   <a
                     href={`tel:${lead.Phone}`}
-                    className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-miles-700 ring-1 ring-inset ring-miles-700/10"
+                    className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-miles-600 ring-1 ring-inset ring-miles-600/10"
                   >
                     <FaPhone className="mr-1" /> {lead.Phone}
                   </a>
@@ -365,7 +365,7 @@ export default function LeadCard({
                     href={`https://wa.me/${encodeURIComponent(
                       lead.Phone
                     )}?text=${encodeURIComponent("Your custom message here")}`}
-                    className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-miles-700 ring-1 ring-inset ring-miles-700/10"
+                    className="inline-flex items-center rounded-full bg-miles-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10"
                   >
                     <FaWhatsapp className="mr-1" /> WhatsApp
                   </a>
