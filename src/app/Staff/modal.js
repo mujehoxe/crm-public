@@ -277,11 +277,10 @@ const Modal = ({ users, setUsers, onClose2: onClose, userdata }) => {
               >
                 <input {...getInputProps()} />
                 <div className="text-center space-y-2">
-                  <p className="text-sm text-gray-600">Click to select or</p>
                   <p className="text-sm text-gray-600">
-                    Drag and drop an image here
+                    Click to select or Drag and drop an image here
                   </p>
-                  <ArrowUpTrayIcon className="h-6 w-6 text-gray-400" />
+                  <ArrowUpTrayIcon className="h-6 w-6 m-auto text-gray-400" />
                 </div>
                 <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-50">
                   {formData.filePreview ? (
