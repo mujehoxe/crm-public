@@ -8,7 +8,7 @@ import DocumentModal from "../components/doument";
 import InlineLoader from "../components/InlineLoader";
 import SearchableSelect from "../Leads/dropdown";
 
-const Modal = ({ users, setUsers, onClose2: onClose, userdata }) => {
+const Modal = ({ users, setUsers, onClose, userdata }) => {
   const [showModal, setShowModal] = useState(true);
   const [parentStaffOptions, setParentStaffOptions] = useState([]);
   const [userid, setuserid] = useState(null);

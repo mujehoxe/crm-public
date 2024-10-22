@@ -88,7 +88,7 @@ export default function Staff() {
           users={users}
           setUsers={setUsers}
           userdata={selectedUser}
-          onClose2={toggleModal}
+          onClose={toggleModal}
         />
       )}{" "}
       {isDocumentModalOpen && (
