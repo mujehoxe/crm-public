@@ -1,9 +1,4 @@
-import EditableSpan from "@/app/Community-Leads/Components/EditableSpan";
-import {
-  CheckCircleIcon,
-  PencilIcon,
-  PlusCircleIcon,
-} from "@heroicons/react/24/solid";
+import { CheckCircleIcon, PencilIcon } from "@heroicons/react/24/solid";
 import { Select } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,6 +7,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { FaPhone, FaWhatsapp } from "react-icons/fa6";
 import { IoIosInformationCircle } from "react-icons/io";
 import { toast } from "react-toastify";
+import TagsManager from "./TagManager";
 import UpdateDescriptionInput from "./UpdateDescriptionInput";
 
 export default function LeadCard({
@@ -72,6 +68,22 @@ export default function LeadCard({
   const [isUpdateDescriptionInput, setIsUpdateDescriptionInput] =
     useState(false);
 
+  useEffect(() => {
+    if (updateBody && Object.keys(updateBody).length > 0) {
+      const o = {};
+      const n = {};
+
+      Object.keys(updateBody)
+        .filter((k) => k != "updateDescription")
+        .forEach((k) => {
+          o[k] = lead[k];
+          n[k] = updateBody[k];
+        });
+
+      setIsUpdateDescriptionInput(JSON.stringify(n) !== JSON.stringify(o));
+    }
+  }, [updateBody, lead]);
+
   const [addingTag, setAddingTag] = useState({
     marketingtags: false,
     tags: false,
@@ -130,69 +142,11 @@ export default function LeadCard({
     }
   }
 
-  function tagChange(innerText, field, index) {
-    setUpdateBody((prevState) => {
-      populateUpdateBodyTags(prevState, field, index);
-
-      if (prevState[field][index].Tag !== innerText) {
-        const newState = { ...prevState };
-        newState[field][index].Tag = innerText;
-        setIsUpdateDescriptionInput(true);
-        return newState;
-      }
-
-      return prevState;
-    });
-  }
-
-  function addTag(innerText, field) {
-    if (innerText !== "") {
-      populateUpdateBodyTags(updateBody, field, -1);
-
-      if (updateBody[field][updateBody[field].length - 1].newTag)
-        setUpdateBody((prevState) => {
-          return {
-            ...prevState,
-            [field]: [
-              ...prevState[field].slice(0, -1),
-              { Tag: innerText, newTag: true },
-            ],
-          };
-        });
-      else
-        setUpdateBody((prevState) => ({
-          ...prevState,
-          [field]: [...prevState[field], { Tag: innerText, newTag: true }],
-        }));
-      setIsUpdateDescriptionInput(true);
-    }
-  }
-
-  const deleteTag = (field, index) => {
-    populateUpdateBodyTags(updateBody, field, index);
-
-    setUpdateBody((prevState) => ({
-      ...prevState,
-      [field]: prevState[field].filter((_, i) => i !== index),
-    }));
-    setIsUpdateDescriptionInput(true);
-  };
-
-  function selectChange(option, field) {
-    lead[field]?._id !== option?.value
-      ? setUpdateBody({
-          ...updateBody,
-          [field]: option,
-        }) || setIsUpdateDescriptionInput(true)
-      : setIsUpdateDescriptionInput(false);
-  }
-
   function descriptionChanged(innerText) {
     setIsDescriptionInput(false);
     if ((lead.Description || "No Description") !== innerText) {
       updateBody.Description = innerText;
-      setIsUpdateDescriptionInput(true);
-    } else setIsUpdateDescriptionInput(false);
+    }
   }
 
   return (
@@ -255,7 +209,12 @@ export default function LeadCard({
                 style={{ width: "150px" }}
                 defaultValue={lead.LeadStatus?.Status}
                 onClick={(e) => e.stopPropagation()}
-                onChange={(_, option) => selectChange(option, "LeadStatus")}
+                onChange={(_, option) =>
+                  setUpdateBody({
+                    ...updateBody,
+                    LeadStatus: { ...lead.LeadStatus, Status: option.label },
+                  })
+                }
                 options={statusOptions}
                 placeholder={"Status"}
               />
@@ -265,7 +224,12 @@ export default function LeadCard({
                 style={{ width: "150px" }}
                 defaultValue={lead.Source?.Source}
                 onClick={(e) => e.stopPropagation()}
-                onChange={(_, option) => selectChange(option, "Source")}
+                onChange={(_, option) =>
+                  setUpdateBody({
+                    ...updateBody,
+                    Source: { ...lead.Source, Source: option.label },
+                  })
+                }
                 options={sourceOptions}
                 placeholder={"Source"}
               />
@@ -274,67 +238,31 @@ export default function LeadCard({
             <div className="space-x-1 items-center">
               <span className="text-sm text-nowrap font-medium text-gray-500">
                 Marketing Tags:
-                <PlusCircleIcon
-                  className="inline size-5 text-miles-500 hover:text-miles-400 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setAddingTag({ ...addingTag, marketingtags: true });
-                  }}
-                />
               </span>
-              <div className="flex flex-wrap items-center space-x-1 mt-1">
-                {lead?.marketingtags?.length > 0 &&
-                  lead.marketingtags.map((tag, index) => (
-                    <EditableSpan
-                      key={`${tag._id}`}
-                      content={tag.Tag}
-                      onBlur={(innerText) =>
-                        tagChange(innerText, "marketingtags", index)
-                      }
-                      onDelete={() => deleteTag("marketingtags", index)}
-                    />
-                  ))}
-                {addingTag.marketingtags && (
-                  <EditableSpan
-                    content={""}
-                    onBlur={(innerText) => addTag(innerText, "marketingtags")}
-                    newTag={true}
-                  />
-                )}
-              </div>
+              <TagsManager
+                initialTags={lead.marketingtags}
+                onTagsChanged={(newTags) => {
+                  setUpdateBody({
+                    ...updateBody,
+                    marketingtags: newTags,
+                  });
+                }}
+              />
             </div>
 
             <div className="space-x-1 items-center">
               <span className="text-sm text-nowrap font-medium text-gray-500">
                 DLD Tags:
-                <PlusCircleIcon
-                  className="inline size-5 text-miles-500 hover:text-miles-400 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setAddingTag({ ...addingTag, tags: true });
-                  }}
-                />
               </span>
-              <div className="flex flex-wrap mt-1 space-x-1">
-                {lead?.tags?.length > 0 &&
-                  lead.tags.map((tag, index) => (
-                    <EditableSpan
-                      key={`${tag._id}`}
-                      content={tag.Tag}
-                      onBlur={(innerText) =>
-                        tagChange(innerText, "tags", index)
-                      }
-                      onDelete={() => deleteTag("tags", index)}
-                    />
-                  ))}
-                {addingTag.tags && (
-                  <EditableSpan
-                    content={""}
-                    onBlur={(innerText) => addTag(innerText, "tags")}
-                    newTag={true}
-                  />
-                )}
-              </div>
+              <TagsManager
+                initialTags={lead.tags}
+                onTagsChanged={(newTags) => {
+                  setUpdateBody({
+                    ...updateBody,
+                    tags: newTags,
+                  });
+                }}
+              />
             </div>
 
             <div className="space-y-1">
