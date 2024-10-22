@@ -158,7 +158,10 @@ export default function CommunityLeadsPage() {
   }, [filters.searchTerm]);
 
   useEffect(() => {
-    userRole && filters.searchBoxFilters.length > 0 && fetchLeads();
+    if (filters.searchBoxFilters.length == 0)
+      setFilters({ ...filters, searchBoxFilters: [searchOptions[0].value] });
+
+    if (userRole) fetchLeads();
   }, [filters.searchBoxFilters]);
 
   const [btnShow, setBtnShow] = useState(false);
