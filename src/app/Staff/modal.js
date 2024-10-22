@@ -1,12 +1,14 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegUserCircle } from "react-icons/fa";
 import DocumentModal from "../components/doument";
+import InlineLoader from "../components/InlineLoader";
 import SearchableSelect from "../Leads/dropdown";
 
-const Modal = ({ users, setUsers, onClose2, userdata }) => {
+const Modal = ({ users, setUsers, onClose2: onClose, userdata }) => {
   const [showModal, setShowModal] = useState(true);
   const [parentStaffOptions, setParentStaffOptions] = useState([]);
   const [userid, setuserid] = useState(null);
@@ -187,19 +189,19 @@ const Modal = ({ users, setUsers, onClose2, userdata }) => {
     <>
       {showModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-xl w-full overflow-y-auto">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg max-w-xl w-full overflow-y-auto">
             <button
-              className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
-              onClick={onClose2}
+              className="text-gray-500 hover:text-gray-700 cursor-pointer absolute top-4 right-4"
+              onClick={onClose}
               aria-label="Close"
             >
-              &times;
+              <XMarkIcon className="size-6" />
             </button>
 
             <h4 className="text-lg font-semibold mb-4">
               {userdata ? "Update Staff" : "Add Staff"}
+              {loading && <InlineLoader disableText={true} />}
             </h4>
-            {loading && <p className="text-blue-500">Processing...</p>}
 
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
