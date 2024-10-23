@@ -38,9 +38,11 @@ const UsersSchema = new mongoose.Schema({
   },
   PrentStaff: {
     type: String,
-    required: [true, "Please provide a PrentStaff"],
+    ref: "Users",
+    required: function () {
+      return this.isNew;
+    },
   },
-
   Avatar: String,
   documents: String,
   onesignalPlayerId: {

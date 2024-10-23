@@ -34,7 +34,6 @@ export async function PUT(request, { params }) {
       personalemail,
       Role,
       Phone,
-      PrentStaff,
     };
 
     if (password) {
@@ -44,7 +43,6 @@ export async function PUT(request, { params }) {
     }
 
     if (image) {
-      const filePath = file.path;
       const imagePath = path.join(
         process.cwd(),
         "public",
@@ -57,6 +55,8 @@ export async function PUT(request, { params }) {
         ""
       );
     }
+
+    if (PrentStaff) updatedFields.PrentStaff = PrentStaff;
 
     const updatedUser = await User.findByIdAndUpdate(id, updatedFields, {
       new: true,
