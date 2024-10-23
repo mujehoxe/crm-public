@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegUserCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 import DocumentModal from "../components/doument";
 import InlineLoader from "../components/InlineLoader";
 import SearchableSelect from "../Leads/dropdown";
@@ -11,7 +12,7 @@ import SearchableSelect from "../Leads/dropdown";
 const Modal = ({ users, setUsers, onClose, userdata }) => {
   const [showModal, setShowModal] = useState(true);
   const [parentStaffOptions, setParentStaffOptions] = useState([]);
-  const [userid, setuserid] = useState(null);
+  const [userid, setUserid] = useState(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
 
   const roleOptions = [
@@ -149,12 +150,14 @@ const Modal = ({ users, setUsers, onClose, userdata }) => {
         image: imageData,
         PrentStaff: formData.PrentStaff, // Use PrentStaff as the key
       });
-      setuserid(response.data.savedUser._id);
+      toast.success("User created successfully");
+      setUserid(response.data.savedUser._id);
       setShowModal(false); // Close the Modal
       setIsDocumentModalOpen(true);
       setUsers((prevUsers) => [...prevUsers, response.data.savedUser]);
     } catch (error) {
       console.error("Error:", error);
+      toast.error("User creation encountered an error" + error);
     }
     setLoading(false);
   };
@@ -174,15 +177,16 @@ const Modal = ({ users, setUsers, onClose, userdata }) => {
         image: imageData,
         PrentStaff: formData.PrentStaff, // Use PrentStaff as the key
       });
-      setuserid(response.data.savedUser._id);
+      toast.success("User updated successfully");
+      setUserid(response.data.updatedUser._id);
       setShowModal(false); // Close the Modal
       setIsDocumentModalOpen(true);
       setUsers((prevUsers) => [...prevUsers, response.data.savedUser]); // Update the list of users
     } catch (error) {
       console.error("Error:", error);
-    } finally {
-      setLoading(false);
+      toast.error("Updating user encountered an error" + error);
     }
+    setLoading(false);
   };
 
   return (
