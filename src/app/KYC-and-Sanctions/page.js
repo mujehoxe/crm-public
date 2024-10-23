@@ -14,7 +14,8 @@ import * as XLSX from "xlsx";
 import TokenDecoder from "../components/Cookies";
 import DocumentModal from "../components/doument";
 import RootLayout from "../components/layout";
-import Modal from "../Staff/modal";
+import StaffModal from "../Staff/modal";
+
 function allDeals() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -348,10 +349,10 @@ function allDeals() {
   return (
     <RootLayout>
       {isModalOpen && (
-        <Modal
+        <StaffModal
           setUsers={setUsers}
           userdata={selectedUser}
-          onClose2={toggleModal}
+          onClose={toggleModal}
         />
       )}{" "}
       {/* Render modal if isModalOpen is true */}
