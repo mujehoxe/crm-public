@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../Modal.module.css";
 
 const DocumentModal = ({ isOpen, onClose, savedUser }) => {
   const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
     onDrop: (acceptedFiles) => {
@@ -20,6 +21,7 @@ const DocumentModal = ({ isOpen, onClose, savedUser }) => {
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
+
   const handleUpload = async () => {
     try {
       setLoading(true);
@@ -58,7 +60,6 @@ const DocumentModal = ({ isOpen, onClose, savedUser }) => {
     <div>
       {isOpen && (
         <div className={styles.modalBackdrop}>
-          <ToastContainer />
           <div className={styles.modalContent}>
             <span className={styles.closeButton} onClick={onClose}>
               &times;
