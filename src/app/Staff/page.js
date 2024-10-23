@@ -90,7 +90,7 @@ export default function Staff() {
           userdata={selectedUser}
           onClose={toggleModal}
         />
-      )}{" "}
+      )}
       {isDocumentModalOpen && (
         <DocumentModal
           isOpen={isDocumentModalOpen}
@@ -98,13 +98,11 @@ export default function Staff() {
           savedUser={selectedUserId}
         />
       )}
-      <div className="container mx-auto h-screen">
+      <div className="container p-4 md:px-8 lg:px-16 xl:px-24 h-screen mx-auto">
         <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto w-full !min-w-[300px]">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">
-              Staff Members
-            </h1>
-            <p className="mt-2 text-sm text-gray-700">
+          <div className="sm:flex-auto gap-4 w-full !min-w-[300px]">
+            <h1 className="text-2xl font-bold text-gray-900">Staff Members</h1>
+            <p className="mb-6 text-sm text-gray-700">
               A list of all staff members including their name, email, phone,
               role, and associated documents.
             </p>
