@@ -45,7 +45,7 @@ export default function Staff() {
   }, []);
 
   const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    user?.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const toggleDocumentModal = (e, userId) => {
