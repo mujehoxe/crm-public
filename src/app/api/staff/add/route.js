@@ -66,9 +66,10 @@ export async function POST(request) {
 
     const imagePath = path.join(dir, `${Date.now()}_${username}.png`);
 
-    fs.writeFileSync(imagePath, Buffer.from(image, "base64"), {
-      recursive: true,
-    });
+    if (image)
+      fs.writeFileSync(imagePath, Buffer.from(image, "base64"), {
+        recursive: true,
+      });
 
     const user = await User.findOne({ email });
 
@@ -101,6 +102,7 @@ export async function POST(request) {
       savedUser,
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

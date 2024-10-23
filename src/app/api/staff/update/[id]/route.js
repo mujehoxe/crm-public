@@ -36,6 +36,8 @@ export async function PUT(request, { params }) {
       Phone,
     };
 
+    if (PrentStaff) updatedFields.PrentStaff = PrentStaff;
+
     if (password) {
       const salt = await bcryptjs.genSalt(10);
       const hashedPassword = await bcryptjs.hash(password, salt);
@@ -55,8 +57,6 @@ export async function PUT(request, { params }) {
         ""
       );
     }
-
-    if (PrentStaff) updatedFields.PrentStaff = PrentStaff;
 
     const updatedUser = await User.findByIdAndUpdate(id, updatedFields, {
       new: true,
